@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config_plugin>
+	
+	<!-- configuration item as sample -->
+	<value>sample value from config</value>
+	
+</config_plugin>
