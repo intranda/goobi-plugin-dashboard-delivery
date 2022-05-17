@@ -8,6 +8,7 @@
     xmlns:intranda="http://xmlns.jcp.org/jsf/composite/composites"
     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
     template="/uii/template/reduced_content_template.html">
 
     <composite:interface>
@@ -47,59 +48,112 @@
     color: #6e1769;
 }
 </style>
+        <h:panelGroup
+            layout="block"
+            id="main-area">
+            <!-- main area, select document type -->
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='main'}">
+                <h:outputFormat value="#{msgs['plugin_dashboard_deliveryWellcomeMessage']}">
+                    <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
+                </h:outputFormat>
+                <div class="area">
+                    <!-- Journals -->
+                    <div class="item">
 
-        <!-- main area, select document type -->
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='main'}">
-            <h:outputFormat value="#{msgs['plugin_dashboard_deliveryWellcomeMessage']}">
-                <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
-            </h:outputFormat>
-            <div class="area">
+                        <h:outputText
+                            styleClass="header"
+                            value="#{msgs.plugin_dashboard_deliverJournalsHeader}" />
+                        <br />
 
-                <!-- Journals -->
-                <div class="item">
+                        <h:outputText value="#{msgs.plugin_dashboard_deliverJournals}" />
 
-                    <h:outputText
-                        styleClass="header"
-                        value="#{msgs.plugin_dashboard_deliverJournalsHeader}" />
-                    <br />
 
-                    <h:outputText value="#{msgs.plugin_dashboard_deliverJournals}" />
+                        <button
+                            jsf:id="journals"
+                            class="btn btn-primary-400"
+                            title="#{msgs.plugin_dashboard_deliverJournalsButton}">
+                            <h:outputText value="#{msgs.plugin_dashboard_deliverJournalsButton}" />
+                            <f:setPropertyActionListener
+                                value="upload"
+                                target="#{DashboardForm.plugin.navigation}" />
+                            <f:setPropertyActionListener
+                                value="journal"
+                                target="#{DashboardForm.plugin.documentType}" />
+                            <f:ajax
+                                render="main-area"
+                                execute="@this" />
+                        </button>
 
-                    <button class="btn btn-primary-400">
-                        <h:outputText value="#{msgs.plugin_dashboard_deliverJournalsButton}" />
+                    </div>
 
+
+                    <!-- Monographs -->
+                    <div class="item">
+                        <h:outputText
+                            styleClass="header"
+                            value="#{msgs.plugin_dashboard_deliverMonographHeader}" />
+                        <br />
+                        <h:outputText value="#{msgs.plugin_dashboard_deliverMonograph}" />
+                        <button
+                            jsf:id="monograph"
+                            class="btn btn-primary-400"
+                            title="#{msgs.plugin_dashboard_deliverMonographButton}">
+                            <h:outputText value="#{msgs.plugin_dashboard_deliverMonographButton}" />
+                            <f:setPropertyActionListener
+                                value="upload"
+                                target="#{DashboardForm.plugin.navigation}" />
+                            <f:setPropertyActionListener
+                                value="monograph"
+                                target="#{DashboardForm.plugin.documentType}" />
+                            <f:ajax
+                                render="main-area"
+                                execute="@this" />
+                        </button>
+                    </div>
+
+
+                    <!-- Help -->
+                    <div class="item">
+                        <h:outputText
+                            styleClass="header"
+                            value="#{msgs.plugin_dashboard_deliverHelpHeader}" />
+                        <br />
+                        <h:outputText value="#{msgs.plugin_dashboard_deliverHelp}" />
+                        <button class="btn btn-primary-400">
+                            <h:outputText value="#{msgs.plugin_dashboard_deliverHelpButton}" />
+                        </button>
+
+                    </div>
+                </div>
+            </ui:fragment>
+
+
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='upload'}">
+
+
+
+                <div class="submit">
+                    <button
+                        jsf:id="backToMain"
+                        class="float-left btn btn-primary font-size-s">
+                        <h:outputText value="#{msgs.back}" />
+                        <f:setPropertyActionListener
+                            value="main"
+                            target="#{DashboardForm.plugin.navigation}" />
+
+                        <f:ajax
+                            render="main-area"
+                            execute="@this" />
                     </button>
+
+
                 </div>
 
 
-                <!-- Monographs -->
-                <div class="item">
-                    <h:outputText
-                        styleClass="header"
-                        value="#{msgs.plugin_dashboard_deliverMonographHeader}" />
-                    <br />
-                    <h:outputText value="#{msgs.plugin_dashboard_deliverMonograph}" />
-                    <button class="btn btn-primary-400">
-                        <h:outputText value="#{msgs.plugin_dashboard_deliverMonographButton}" />
-                    </button>
-                </div>
+
+            </ui:fragment>
 
 
-                <!-- Help -->
-                <div class="item">
-                    <h:outputText
-                        styleClass="header"
-                        value="#{msgs.plugin_dashboard_deliverHelpHeader}" />
-                    <br />
-                    <h:outputText value="#{msgs.plugin_dashboard_deliverHelp}" />
-                    <button class="btn btn-primary-400">
-                        <h:outputText value="#{msgs.plugin_dashboard_deliverHelpButton}" />
-                    </button>
-
-                </div>
-
-            </div>
-        </ui:fragment>
-
+        </h:panelGroup>
     </ui:define>
 </ui:composition>

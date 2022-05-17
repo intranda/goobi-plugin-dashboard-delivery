@@ -27,6 +27,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     private String navigation = "main";
 
     @Getter
+    @Setter
+    private String documentType;
+
+
+    @Getter
     private PluginGuiType pluginGuiType = PluginGuiType.FULL;
 
     /**
