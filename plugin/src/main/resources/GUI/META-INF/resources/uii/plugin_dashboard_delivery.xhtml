@@ -28,18 +28,77 @@
 
 
     <ui:define name="content">
+
+        <style>
+.area {
+    display: grid;
+    grid-template-columns: 20% 20% 20%;
+    grid-column-gap: 50px;
+    justify-content: space-evenly;
+}
+
+.item {
+    width: 100%;
+    height: 200px;
+    background: #eee;
+}
+
+.header {
+    color: #6e1769;
+}
+</style>
+
         <!-- main area, select document type -->
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='main'}">
             <h:outputFormat value="#{msgs['plugin_dashboard_deliveryWellcomeMessage']}">
                 <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
             </h:outputFormat>
+            <div class="area">
 
-<!--  -->
+                <!-- Journals -->
+                <div class="item">
+
+                    <h:outputText
+                        styleClass="header"
+                        value="#{msgs.plugin_dashboard_deliverJournalsHeader}" />
+                    <br />
+
+                    <h:outputText value="#{msgs.plugin_dashboard_deliverJournals}" />
+
+                    <button class="btn btn-primary-400">
+                        <h:outputText value="#{msgs.plugin_dashboard_deliverJournalsButton}" />
+
+                    </button>
+                </div>
 
 
+                <!-- Monographs -->
+                <div class="item">
+                    <h:outputText
+                        styleClass="header"
+                        value="#{msgs.plugin_dashboard_deliverMonographHeader}" />
+                    <br />
+                    <h:outputText value="#{msgs.plugin_dashboard_deliverMonograph}" />
+                    <button class="btn btn-primary-400">
+                        <h:outputText value="#{msgs.plugin_dashboard_deliverMonographButton}" />
+                    </button>
+                </div>
 
 
+                <!-- Help -->
+                <div class="item">
+                    <h:outputText
+                        styleClass="header"
+                        value="#{msgs.plugin_dashboard_deliverHelpHeader}" />
+                    <br />
+                    <h:outputText value="#{msgs.plugin_dashboard_deliverHelp}" />
+                    <button class="btn btn-primary-400">
+                        <h:outputText value="#{msgs.plugin_dashboard_deliverHelpButton}" />
+                    </button>
 
+                </div>
+
+            </div>
         </ui:fragment>
 
     </ui:define>
