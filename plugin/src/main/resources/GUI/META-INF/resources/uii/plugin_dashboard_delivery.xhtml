@@ -1,44 +1,46 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:composite="http://xmlns.jcp.org/jsf/composite"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:x="http://myfaces.apache.org/tomahawk"
-	xmlns:intranda="http://xmlns.jcp.org/jsf/composite/composites"
-	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:p="http://primefaces.org/ui">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:x="http://myfaces.apache.org/tomahawk"
+    xmlns:intranda="http://xmlns.jcp.org/jsf/composite/composites"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:p="http://primefaces.org/ui"
+    template="/uii/template/reduced_content_template.html">
 
-	<composite:interface>
-	</composite:interface>
+    <composite:interface>
 
-	<composite:implementation>
 
-		<h:panelGroup>
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="box box-color box-bordered lightgrey">
-						<div class="box-title">
-							<h3>
-								<i class="fa fa-plug"></i>
-								<h:outputText
-									value="#{msgs[DashboardForm.plugin.title]}" />
-							</h3>
-						</div>
-						<div class="box-content">
 
-							<h:panelGroup id="actionform" styleClass="col-sm-12">
-								<div class="row">
-									<h:form>
-										hello dashboard plugin: #{DashboardForm.plugin.value}
-									</h:form>
-								</div>
-							</h:panelGroup>
+    </composite:interface>
 
-						</div>
-					</div>
-				</div>
-			</div>
-		</h:panelGroup>
+    <!-- breadcrumb area -->
+    <ui:define name="breadcrumb">
+        <intranda:breadcrumb
+            id="index"
+            label="#{DashboardForm.plugin==null?msgs.startseite:msgs.dashboard}"
+            action="external_index"
+            navId="a0"
+            noSeparator="#{true}" />
+    </ui:define>
 
-	</composite:implementation>
+
+    <ui:define name="content">
+        <!-- main area, select document type -->
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='main'}">
+            <h:outputFormat value="#{msgs['plugin_dashboard_deliveryWellcomeMessage']}">
+                <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
+            </h:outputFormat>
+
+<!--  -->
+
+
+
+
+
+        </ui:fragment>
+
+    </ui:define>
 </ui:composition>
