@@ -47,7 +47,29 @@
 .header {
     color: #6e1769;
 }
+
+.statuslist {
+    list-style: none;
+}
+
+.statuslist li {
+    float: left;
+    margin: 10px;
+}
+
+.status.active {
+    color: yellow;
+}
+
+.status.inactive {
+    color: grey;
+}
+
+.status.finished {
+    color: green;
+}
 </style>
+
         <h:panelGroup
             layout="block"
             id="main-area">
@@ -56,100 +78,221 @@
                 <h:outputFormat value="#{msgs['plugin_dashboard_deliveryWellcomeMessage']}">
                     <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
                 </h:outputFormat>
-                <div class="area">
-                    <!-- Journals -->
-                    <div class="item">
+                <h:form>
+                    <div class="area">
+                        <!-- Journals -->
+                        <div class="item">
 
-                        <h:outputText
-                            styleClass="header"
-                            value="#{msgs.plugin_dashboard_deliverJournalsHeader}" />
-                        <br />
+                            <h:outputText
+                                styleClass="header"
+                                value="#{msgs.plugin_dashboard_deliverJournalsHeader}" />
+                            <br />
 
-                        <h:outputText value="#{msgs.plugin_dashboard_deliverJournals}" />
+                            <h:outputText value="#{msgs.plugin_dashboard_deliverJournals}" />
 
 
-                        <button
-                            jsf:id="journals"
-                            class="btn btn-primary-400"
-                            title="#{msgs.plugin_dashboard_deliverJournalsButton}">
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverJournalsButton}" />
-                            <f:setPropertyActionListener
-                                value="upload"
-                                target="#{DashboardForm.plugin.navigation}" />
-                            <f:setPropertyActionListener
-                                value="journal"
-                                target="#{DashboardForm.plugin.documentType}" />
-                            <f:ajax
-                                render="main-area"
-                                execute="@this" />
-                        </button>
+                            <button
+                                jsf:id="journals"
+                                class="btn btn-primary-400"
+                                title="#{msgs.plugin_dashboard_deliverJournalsButton}">
+                                <h:outputText value="#{msgs.plugin_dashboard_deliverJournalsButton}" />
+                                <f:setPropertyActionListener
+                                    value="upload"
+                                    target="#{DashboardForm.plugin.navigation}" />
+                                <f:setPropertyActionListener
+                                    value="journal"
+                                    target="#{DashboardForm.plugin.documentType}" />
+                                <f:ajax
+                                    render="main-area"
+                                    execute="@this" />
+                            </button>
 
+                        </div>
+
+
+                        <!-- Monographs -->
+                        <div class="item">
+                            <h:outputText
+                                styleClass="header"
+                                value="#{msgs.plugin_dashboard_deliverMonographHeader}" />
+                            <br />
+                            <h:outputText value="#{msgs.plugin_dashboard_deliverMonograph}" />
+                            <button
+                                jsf:id="monograph"
+                                class="btn btn-primary-400"
+                                title="#{msgs.plugin_dashboard_deliverMonographButton}">
+                                <h:outputText value="#{msgs.plugin_dashboard_deliverMonographButton}" />
+                                <f:setPropertyActionListener
+                                    value="upload"
+                                    target="#{DashboardForm.plugin.navigation}" />
+                                <f:setPropertyActionListener
+                                    value="monograph"
+                                    target="#{DashboardForm.plugin.documentType}" />
+                                <f:ajax
+                                    render="main-area"
+                                    execute="@this" />
+                            </button>
+                        </div>
+
+
+                        <!-- Help -->
+                        <div class="item">
+                            <h:outputText
+                                styleClass="header"
+                                value="#{msgs.plugin_dashboard_deliverHelpHeader}" />
+                            <br />
+                            <h:outputText value="#{msgs.plugin_dashboard_deliverHelp}" />
+                            <button class="btn btn-primary-400">
+                                <h:outputText value="#{msgs.plugin_dashboard_deliverHelpButton}" />
+                            </button>
+
+                        </div>
                     </div>
 
-
-                    <!-- Monographs -->
-                    <div class="item">
-                        <h:outputText
-                            styleClass="header"
-                            value="#{msgs.plugin_dashboard_deliverMonographHeader}" />
-                        <br />
-                        <h:outputText value="#{msgs.plugin_dashboard_deliverMonograph}" />
-                        <button
-                            jsf:id="monograph"
-                            class="btn btn-primary-400"
-                            title="#{msgs.plugin_dashboard_deliverMonographButton}">
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverMonographButton}" />
-                            <f:setPropertyActionListener
-                                value="upload"
-                                target="#{DashboardForm.plugin.navigation}" />
-                            <f:setPropertyActionListener
-                                value="monograph"
-                                target="#{DashboardForm.plugin.documentType}" />
-                            <f:ajax
-                                render="main-area"
-                                execute="@this" />
-                        </button>
-                    </div>
-
-
-                    <!-- Help -->
-                    <div class="item">
-                        <h:outputText
-                            styleClass="header"
-                            value="#{msgs.plugin_dashboard_deliverHelpHeader}" />
-                        <br />
-                        <h:outputText value="#{msgs.plugin_dashboard_deliverHelp}" />
-                        <button class="btn btn-primary-400">
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverHelpButton}" />
-                        </button>
-
-                    </div>
-                </div>
+                </h:form>
             </ui:fragment>
 
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='upload'}">
 
 
-
-                <div class="submit">
-                    <button
-                        jsf:id="backToMain"
-                        class="float-left btn btn-primary font-size-s">
-                        <h:outputText value="#{msgs.back}" />
-                        <f:setPropertyActionListener
-                            value="main"
-                            target="#{DashboardForm.plugin.navigation}" />
-
-                        <f:ajax
-                            render="main-area"
-                            execute="@this" />
-                    </button>
-
-
-                </div>
+                <h:form
+                    prependId="false"
+                    id="uploadForm"
+                    enctype="multipart/form-data">
+                    <h:inputFile
+                        id="file"
+                        value="#{DashboardForm.plugin.file}"
+                        name="file" />
+                    <h:commandButton
+                        id="submit"
+                        value="submit" />
+                </h:form>
+            </ui:fragment>
 
 
+
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='data1'}">
+                <h:form styleClass="form-validate">
+
+                    <ui:repeat
+                        var="group"
+                        value="#{DashboardForm.plugin.configuredGroups}">
+                        <ui:fragment rendered="#{group.pageName=='data1' and group.documentType == DashboardForm.plugin.documentType}">
+                            <h2>
+                                <h:outputText value="#{group.label}" />
+                            </h2>
+
+                            <ui:repeat
+                                var="field"
+                                value="#{group.fields}">
+
+                                <div class="form-group">
+                                    <h:outputLabel value="#{field.label}" />
+                                    <i
+                                        jsf:rendered="#{field.required}"
+                                        class="fa fa-asterisk pull-right font-asterisk"
+                                        title="#{msgs.requiredField}"
+                                        data-toggle="tooltip" />
+
+                                    <div class="">
+                                        <x:inputText
+                                            id="input"
+                                            rendered="#{field.displayType=='input'}"
+                                            pt:aria-label="#{field.label}"
+                                            styleClass="form-control"
+                                            value="#{field.value}">
+                                            <f:ajax
+                                                render="@this"
+                                                execute="@this" />
+                                            <f:passThroughAttribute
+                                                name="placeholder"
+                                                value="" />
+                                        </x:inputText>
+                                        
+                                        
+                                        
+                                    </div>
+                                </div>
+
+
+                            </ui:repeat>
+
+
+
+                        </ui:fragment>
+                    </ui:repeat>
+
+
+                </h:form>
+
+            </ui:fragment>
+
+
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main'}">
+                <h:form id="navigationForm">
+                    <div class="submit">
+                        <ul class="statuslist">
+                            <li>
+                                <button
+                                    jsf:action="#{DashboardForm.plugin.previousPage}"
+                                    jsf:id="backToMain"
+                                    class="float-left btn btn-primary font-size-s">
+                                    <h:outputText value="#{msgs.back}" />
+                                    <f:ajax
+                                        render="main-area"
+                                        execute="@this" />
+                                </button>
+
+                            </li>
+                            <li>
+
+                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
+                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
+                                </h:panelGroup>
+                            </li>
+                            <li>
+                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
+                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
+                                </h:panelGroup>
+                            </li>
+                            <li>
+                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
+                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_data2}" />
+                                </h:panelGroup>
+                            </li>
+
+                            <li>
+                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
+                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_data3}" />
+                                </h:panelGroup>
+                            </li>
+                            <li>
+                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
+                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_overview}" />
+                                </h:panelGroup>
+
+                            </li>
+                            <li>
+                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='finish' ? 'active': 'inactive'}">
+                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_finish}" />
+                                </h:panelGroup>
+                            </li>
+                            <li>
+                                <button
+                                    jsf:action="#{DashboardForm.plugin.nextPage}"
+                                    jsf:id="nextStep"
+                                    class="float-left btn btn-primary font-size-s">
+                                    <h:outputText value="#{msgs.next}" />
+                                    <f:ajax
+                                        render="main-area"
+                                        execute="@this" />
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                </h:form>
 
             </ui:fragment>
 

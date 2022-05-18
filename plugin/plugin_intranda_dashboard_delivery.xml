@@ -1,8 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <config_plugin>
-	
-	<!-- configuration item as sample -->
-	<value>sample value from config</value>
-	
+
+    <group label="Titelinformationen" pageName="data1" documentType="monograph">
+        <field rulesetName="TitleDocMain" label="Titel" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Die Angabe ist ein Pflichtfeld" helpMessage="Tragen Sie hier den Titel ein."></field>
+        <field rulesetName="TitleDocSub" label="Untertitel" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="b" validationExpression="" validationErrorText="" helpMessage="Hilfetext für Untertitel"></field>
+    </group>
+
+    <group label="Verantwortliche: Personen und Körperschaften" pageName="data1" documentType="monograph">
+
+        <field rulesetName="Author" label="Autor*in, beteiligte Person" displayType="person" metadataLevel="anchor" cardinality="*" marcMainTag="100" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <selectfield value="Author" label="Autor" />
+            <selectfield value="Artist" label="Künstler" />
+            <selectfield value="Translator" label="Übersetzer" />
+        </field>
+
+        <field rulesetName="Author" label="Beteiligte Organisation" displayType="corporate" metadataLevel="anchor" cardinality="*" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <selectfield value="Author" label="Autor" />
+            <selectfield value="Artist" label="Künstler" />
+            <selectfield value="Translator" label="Übersetzer" />
+        </field>
+    </group>
+
+
+    <group label="Sprache" pageName="data1" documentType="monograph">
+        <field rulesetName="DocLanguage" label="Sprache" displayType="dropdown" metadataLevel="anchor" cardinality="+" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Die Angabe ist ein Pflichtfeld" helpMessage="Tragen Sie hier den Titel ein.">
+
+            <selectfield value="ger" label="Deutsch" />
+            <selectfield value="eng" label="Englisch" />
+
+        </field>
+
+    </group>
+
 </config_plugin>
