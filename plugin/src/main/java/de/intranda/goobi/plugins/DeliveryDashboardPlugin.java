@@ -192,5 +192,14 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 break;
         }
     }
+    @Getter @Setter
+    private MetadataField currentField;
+
+    public void duplicateMetadataField() {
+
+
+        System.out.println("Found field to duplicate: " + currentField.getLabel());
+
+    }
 
 }

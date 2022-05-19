@@ -22,15 +22,84 @@
         </field>
     </group>
 
+    
+
+    <group label="Angaben zur Entstehung" pageName="data1" documentType="monograph">
+        <field rulesetName="EditionStatement" label="Auflage, Stand oder Version" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" 
+        validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+        <field rulesetName="PublicationYear" label="Erscheinungsjahr" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" 
+        validationExpression="\d{4}" validationErrorText="Geben Sie eiene vierstellige Jahreszahl ein" helpMessage="Tragen Sie hier das Jahr ein."></field>
+        </group>
 
     <group label="Sprache" pageName="data1" documentType="monograph">
         <field rulesetName="DocLanguage" label="Sprache" displayType="dropdown" metadataLevel="anchor" cardinality="+" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Die Angabe ist ein Pflichtfeld" helpMessage="Tragen Sie hier den Titel ein.">
-
             <selectfield value="ger" label="Deutsch" />
             <selectfield value="eng" label="Englisch" />
-
         </field>
-
     </group>
+
+    <group label="Ident-Nummern" pageName="data2" documentType="monograph">
+        <field rulesetName="CatalogIDDigital" label="Ident-Nummer" displayType="picklist" metadataLevel="anchor" cardinality="?" marcMainTag="110" 
+        marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <selectfield value="ISBN" label="ISBN" />
+            <selectfield value="ISMN" label="ISMN" />
+            <selectfield value="DOI" label="DOI" />
+            <selectfield value="URN" label="URN" />
+            <selectfield value="Handle" label="Handle" />
+            <selectfield value="UPC" label="UPC" />
+            <selectfield value="GTIN/EAN" label="GTIN/EAN" />
+            <selectfield value="Best.-Nr." label="Best.-Nr." />
+            <selectfield value="Eindeutige Identifikation (beliebige Angabe)" label="Eindeutige Identifikation (beliebige Angabe)" />
+            <selectfield value="keine" label="keine" />
+        </field>
+    </group>
+
+    <group label="Beziehungen zu anderen Ressourcen" pageName="data2" documentType="monograph">
+        <field rulesetName="SeriesTitle" label="Titel der Reihe" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="a" 
+        validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+        <field rulesetName="SeriesOrder" label="Zählung des Bandes" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="a" 
+        validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>        
+        </group>
+
+        <group label="Beschreibung des Inhalts" pageName="data2" documentType="monograph">
+            <field rulesetName="Classification" label="Sachgruppe/Thema" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" 
+            marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+                <selectfield value="Wert1" label="Wert1" />
+                <selectfield value="Wert2" label="Wert2" />
+                <selectfield value="Wert3" label="Wert3" />
+            </field>
+            <field rulesetName="SubjectTopic" label="Schlagwort(e)" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="a" 
+            validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+
+            <field rulesetName="Abstract" label="Zusammenfassung oder Abstract" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" 
+            validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+        </group>
+
+
+        <group label="Zugriffs- und Rechteinformation" pageName="data3" documentType="monograph">
+            <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" 
+            marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+                <selectfield value="CC0" label="CC0" />
+                <selectfield value="CC-BY" label="CC-BY" />
+            </field>
+            <field rulesetName="AccessCondition" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" 
+            marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+                <selectfield value="Open Access" label="Open Access" />
+                <selectfield value="Zugangsbeschränkt" label="Zugangsbeschränkt" />
+            </field>            
+            <field rulesetName="URL" label="Adresse der Originalveröffentlichung (URL)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" 
+            validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+        </group>
+
+        <group label="Anmerkungen" pageName="data3" documentType="monograph">
+            <field rulesetName="Remarks" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" 
+            marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            </field>
+            <field rulesetName="AccessCondition" label="Angabe zur freiwilligen Selbstkontrolle" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" 
+            marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+                <selectfield value="...." label="...." />
+                <selectfield value="..." label="..." />
+            </field>            
+        </group>
 
 </config_plugin>

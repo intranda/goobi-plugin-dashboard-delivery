@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.lang.StringUtils;
+
 import lombok.Data;
 
 @Data
@@ -32,5 +34,42 @@ public class MetadataField {
     private String role; // actual role, used for persons and corporations
 
     private List<SelectItem> selectList = new ArrayList<>(); // list of selectable values
+
+    private boolean validationError; // true if validation fails
+
+    public void setBooleanValue(boolean val) {
+        if (val) {
+            value = "true";
+        } else {
+            value = "false";
+        }
+    }
+
+    public boolean getBooleanValue() {
+        return StringUtils.isNotBlank(value) && "true".equals(value);
+    }
+
+    public boolean validateValue() {
+
+        String val = value;
+        if (StringUtils.isNotBlank(value2)) {
+            val = value2;
+        }
+
+        validationError = false;
+        if (required && StringUtils.isBlank(val)) {
+            validationError = true;
+            return false;
+        }
+
+        if (StringUtils.isNotBlank(validationExpression) && StringUtils.isNotBlank(val)) {
+            if (!val.matches(validationExpression)) {
+                validationError = true;
+                return false;
+            }
+
+        }
+        return true;
+    }
 
 }
