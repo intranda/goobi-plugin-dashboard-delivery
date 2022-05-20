@@ -96,7 +96,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                     case "dropdown":
                     case "person":
                     case "corporate":
-
+                    case "picklist":
                         List<HierarchicalConfiguration> valueList = field.configurationsAt("/selectfield");
                         for (HierarchicalConfiguration v : valueList) {
                             SelectItem si = new SelectItem(v.getString("@value"), v.getString("@label"));
@@ -192,11 +192,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 break;
         }
     }
-    @Getter @Setter
+
+    @Getter
+    @Setter
     private MetadataField currentField;
 
     public void duplicateMetadataField() {
-
 
         System.out.println("Found field to duplicate: " + currentField.getLabel());
 
