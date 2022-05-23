@@ -18,9 +18,9 @@
         </field>
 
         <field rulesetName="Author" label="Beteiligte Organisation" displayType="corporate" metadataLevel="anchor" cardinality="*" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
-            <selectfield value="Author" label="Autor" />
-            <selectfield value="Artist" label="Künstler" />
-            <selectfield value="Translator" label="Übersetzer" />
+            <selectfield value="CorporateAuthor" label="Autor" />
+            <selectfield value="CorporateArtist" label="Künstler" />
+            <selectfield value="CorporateContributor" label="Mitwirkende Körperschaft" />
         </field>
     </group>
 
@@ -89,9 +89,110 @@
     </group>
 
 
-<!-- metadata for journals -->
+    <!-- metadata for journals -->
+
+    <group label="Titelinformationen" pageName="data1" documentType="journal">
+        <field rulesetName="TitleDocMain" label="Titel" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Die Angabe ist ein Pflichtfeld" helpMessage="Tragen Sie hier den Titel ein."></field>
+        <field rulesetName="TitleDocSub" label="Untertitel" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="b" validationExpression="" validationErrorText="" helpMessage="Hilfetext für Untertitel"></field>
+    </group>
+
+    <group label="Verantwortliche:  Körperschaften" pageName="data1" documentType="journal">
+
+        <field rulesetName="Author" label="Beteiligte Organisation" displayType="corporate" metadataLevel="anchor" cardinality="*" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <selectfield value="CorporateAuthor" label="Autor" />
+            <selectfield value="CorporateArtist" label="Künstler" />
+            <selectfield value="CorporateContributor" label="Mitwirkende Körperschaft" />
+        </field>
+    </group>
 
 
-<!-- metadata for issues -->
+    <group label="Angaben zur Entstehung" pageName="data1" documentType="journal">
+        <field rulesetName="PublicationStart" label="Erscheinungsdatum der ersten Ausgabe" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="\d{4,8}" validationErrorText="TTMMJJJJ und/oder MMJJJJJ und/oder JJJJ" helpMessage="TTMMJJJJ und/oder MMJJJJJ und/oder JJJJ"></field>
+        <field rulesetName="PublicationRun" label="Nummerierung der Erstausgabe (Jahrgangs-, Heftangabe etc.)" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="264" marcSubTag="c" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier das Jahr ein."></field>
+    </group>
+    <group label="Sprache" pageName="data1" documentType="journal">
+        <field rulesetName="DocLanguage" label="Sprache" displayType="dropdown" metadataLevel="anchor" cardinality="+" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Die Angabe ist ein Pflichtfeld" helpMessage="Tragen Sie hier den Titel ein.">
+            <selectfield value="ger" label="Deutsch" />
+            <selectfield value="eng" label="Englisch" />
+        </field>
+    </group>
+
+    <group label="Ident-Nummern" pageName="data1" documentType="journal">
+        <field rulesetName="CatalogIDDigital" label="Ident-Nummer" displayType="picklist" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <selectfield value="ISSN" label="ISSN" />
+            <selectfield value="DOI" label="DOI" />
+            <selectfield value="URN" label="URN" />
+            <selectfield value="Handle" label="Handle" />
+            <selectfield value="Eindeutige Identifikation (beliebige Angabe)" label="Eindeutige Identifikation (beliebige Angabe)" />
+            <selectfield value="keine" label="keine" />
+        </field>
+    </group>
+
+
+    <group label="Beschreibung des Inhalts" pageName="data2" documentType="journal">
+        <field rulesetName="Classification" label="Sachgruppe/Thema" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <selectfield value="Wert1" label="Wert1" />
+            <selectfield value="Wert2" label="Wert2" />
+            <selectfield value="Wert3" label="Wert3" />
+        </field>
+    </group>
+
+    <group label="Zugriffs- und Rechteinformation" pageName="data2" documentType="journal">
+        <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <selectfield value="CC0" label="CC0" />
+            <selectfield value="CC-BY" label="CC-BY" />
+        </field>
+        <field rulesetName="AccessCondition" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <selectfield value="Open Access" label="Open Access" />
+            <selectfield value="Zugangsbeschränkt" label="Zugangsbeschränkt" />
+        </field>
+        <field rulesetName="URL" label="Adresse der Originalveröffentlichung (URL)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+    </group>
+
+    <group label="Anmerkungen" pageName="data2" documentType="journal">
+        <field rulesetName="Remarks" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
+    </group>
+
+
+    <!-- metadata for issues -->
+
+
+    <group label="Titelinformationen" pageName="data1" documentType="issue">
+        <field rulesetName="TitleDocMain" label="Eigenständiger Titel des Heftes" displayType="input" metadataLevel="child" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+    </group>
+
+
+    <group label="Angaben zur Entstehung" pageName="data1" documentType="issue">
+        <field rulesetName="PublicationYear" label="Erscheinungsdatum" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d{4,8}" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+        <field rulesetName="CurrentNoSorting" label="Bandnummer" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d+" validationErrorText="Nur Ziffern" helpMessage="Tragen Sie hier das Jahr ein."></field>
+        <field rulesetName="CurrentNo" label="Jahrgang" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Geben Sie eiene vierstellige Jahreszahl ein" helpMessage="Label."></field>
+        <field rulesetName="PartNumber" label="Heftnummer" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Unklar wozu das dienen soll"></field>
+    </group>
+
+
+    <group label="Beziehungen zu anderen Ressourcen" pageName="data2" documentType="issue">
+        <!-- TODO list all valid titles of the current customer/institution -->
+        <field rulesetName="AccessLicense" label="Zeitschriftentitel" displayType="dropdown" metadataLevel="child" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <selectfield value="TODO" label="TODO" />
+        </field>
+    </group>
+
+    <!-- TODO default values are taken from journal title values -->
+    <group label="Zugriffs- und Rechteinformation" pageName="data2" documentType="issue">
+        <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <selectfield value="CC0" label="CC0" />
+            <selectfield value="CC-BY" label="CC-BY" />
+        </field>
+        <field rulesetName="AccessCondition" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <selectfield value="Open Access" label="Open Access" />
+            <selectfield value="Zugangsbeschränkt" label="Zugangsbeschränkt" />
+        </field>
+        <field rulesetName="URL" label="Adresse der Originalveröffentlichung (URL)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+    </group>
+
+    <group label="Anmerkungen" pageName="data2" documentType="journal">
+        <field rulesetName="Remarks" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
+    </group>
+
 
 </config_plugin>
