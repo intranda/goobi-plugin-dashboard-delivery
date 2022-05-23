@@ -36,6 +36,8 @@
     grid-template-columns: 20% 20% 20%;
     grid-column-gap: 50px;
     justify-content: space-evenly;
+        grid-row-gap: 20px;
+    
 }
 
 .item {
@@ -100,6 +102,7 @@
                 </h:outputFormat>
                 <h:form>
                     <div class="area">
+
                         <!-- Journals -->
                         <div class="item">
                             <h:outputText
@@ -134,7 +137,7 @@
                             <button
                                 jsf:id="monograph"
                                 class="btn btn-primary-400"
-                                title="#{msgs.plugin_dashboard_deliverMonographButton}">
+                                title="#{msgs.plugin_dashboard_deliverMonographButton}" jsf:action="#{DashboardForm.plugin.startNewImport}">
                                 <h:outputText value="#{msgs.plugin_dashboard_deliverMonographButton}" />
                                 <f:setPropertyActionListener
                                     value="upload"
@@ -161,6 +164,30 @@
                             </button>
 
                         </div>
+                        
+                        
+                        <!-- edit user data -->
+                        <div class="item">
+                            <h:outputText
+                                styleClass="header"
+                                value="#{msgs.plugin_dashboard_deliverShowDataHeader}" />
+                            <br />
+                            <h:outputText value="#{msgs.plugin_dashboard_deliverShowData}" />
+                            <button
+                                jsf:id="userData"
+                                class="btn btn-primary-400"
+                                title="#{msgs.plugin_dashboard_deliverShowDataButton}">
+                                <h:outputText value="#{msgs.plugin_dashboard_deliverShowDataButton}" />
+                                <f:setPropertyActionListener
+                                    value="main"
+                                    target="#{DashboardForm.plugin.navigation}" />
+                                <f:ajax
+                                    render="main-area"
+                                    execute="@this" />
+                            </button>
+                        </div>
+                        
+                        
                     </div>
 
                 </h:form>

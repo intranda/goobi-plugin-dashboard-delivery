@@ -14,7 +14,7 @@ public class MetadataField {
 
     private String rulesetName; // ruleset name
     private String label; // display name in UI
-    private String displayType; // input, textarea, dropdown, person, corporate
+    private String displayType; // input, textarea, dropdown, person, corporate, picklist
 
     private String metadataLevel; // anchor or volume, only relevant for periodical data
 
