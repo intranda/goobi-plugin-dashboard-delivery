@@ -1,0 +1,141 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:x="http://myfaces.apache.org/tomahawk"
+    xmlns:intranda="http://xmlns.jcp.org/jsf/composite/composites"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:zlb="http://xmlns.jcp.org/jsf/composite/composites"
+    template="/uii/template/reduced_content_template.html">
+    <composite:interface>
+    </composite:interface>
+
+    <composite:implementation>
+
+
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='titleSelection'}">
+<h:form>
+                    <div class="area">
+
+            <!-- create new title -->
+            <div class="item">
+                <h:outputText
+                    styleClass="header"
+                    value="#{msgs.plugin_dashboard_deliverNewJournalTitleHeader}" />
+                <br />
+                <h:outputText value="#{msgs.plugin_dashboard_deliverNewJournalTitle}" />
+                <br/>
+                <button
+                    jsf:id="newTitle"
+                    class="btn btn-primary-400"
+                    title="#{msgs.plugin_dashboard_deliverNewJournalTitleButton}">
+                    <h:outputText value="#{msgs.plugin_dashboard_deliverNewJournalTitleButton}" />
+                    <f:setPropertyActionListener
+                        value="newTitle"
+                        target="#{DashboardForm.plugin.navigation}" />
+                    <f:ajax
+                        render="main-area"
+                        execute="@this" />
+                </button>
+            </div>
+
+            <!-- add issue to existing title -->
+
+            <div class="item">
+                <h:outputText
+                    styleClass="header"
+                    value="#{msgs.plugin_dashboard_deliverNewJournalIssueHeader}" />
+                <br />
+                <h:outputText value="#{msgs.plugin_dashboard_deliverNewIssueTitle}" />
+                <br/>
+                <button
+                    jsf:id="newIssue"
+                    class="btn btn-primary-400"
+                    title="#{msgs.plugin_dashboard_deliverNewIssueTitleButton}">
+                    <h:outputText value="#{msgs.plugin_dashboard_deliverNewIssueTitleButton}" />
+                    <f:setPropertyActionListener
+                        value="newIssue"
+                        target="#{DashboardForm.plugin.navigation}" />
+                    <f:ajax
+                        render="main-area"
+                        execute="@this" />
+                </button>
+            </div>
+</div>
+</h:form>
+        </ui:fragment>
+
+
+
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main'}">
+            <h:form>
+                <div class="submit">
+                    <ul class="statuslist">
+                        <li>
+                            <button
+                                jsf:action="#{DashboardForm.plugin.previousPage}"
+                                jsf:id="backToMain"
+                                class="float-left btn btn-primary font-size-s">
+                                <h:outputText value="#{msgs.back}" />
+                                <f:ajax
+                                    render="main-area"
+                                    execute="@this" />
+                            </button>
+
+                        </li>
+                        <li>
+                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
+                            </h:panelGroup>
+                        </li>
+                        <li>
+                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
+                            </h:panelGroup>
+                        </li>
+                        <li>
+                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_data2}" />
+                            </h:panelGroup>
+                        </li>
+
+                        <li>
+                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_data3}" />
+                            </h:panelGroup>
+                        </li>
+                        <li>
+                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_overview}" />
+                            </h:panelGroup>
+
+                        </li>
+                        <li>
+                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='finish' ? 'active': 'inactive'}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_finish}" />
+                            </h:panelGroup>
+                        </li>
+                        <li>
+                            <button
+                                jsf:action="#{DashboardForm.plugin.nextPage}"
+                                jsf:id="nextStep"
+                                class="float-left btn btn-primary font-size-s">
+                                <h:outputText value="#{msgs.next}" />
+                                <f:ajax
+                                    render="main-area"
+                                    execute="@this" />
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+            </h:form>
+
+        </ui:fragment>
+    </composite:implementation>
+
+</ui:composition>

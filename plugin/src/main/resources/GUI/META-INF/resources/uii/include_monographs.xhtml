@@ -296,7 +296,148 @@
                 </ui:repeat>
             </h:form>
         </ui:fragment>
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='overview'}">
+            <h:form styleClass="form-validate layout">
+                <ui:repeat
+                    var="group"
+                    value="#{DashboardForm.plugin.configuredGroups}">
+                    <ui:fragment rendered="#{group.documentType == DashboardForm.plugin.documentType}">
+                        <h2>
+                            <h:outputText value="#{group.label}" />
+                        </h2>
 
+                        <ui:repeat
+                            var="field"
+                            value="#{group.fields}"
+                            varStatus="status">
+                            <h:panelGroup
+                                layout="block"
+                                styleClass="form-group grid-row">
+                                <h:outputLabel value="#{field.label}" />
+
+
+                                <ui:fragment rendered="#{field.displayType == 'person'}">
+                                    <div class="form-field persongrid">
+                                        <h:outputText
+                                            styleClass="form-control"
+                                            value="#{field.value}" />
+                                        <h:outputText
+                                            styleClass="form-control"
+                                            value="#{field.value2}" />
+                                        <h:outputText
+                                            styleClass="form-control"
+                                            value="#{field.role}" />
+                                    </div>
+                                </ui:fragment>
+
+                                <ui:fragment rendered="#{field.displayType == 'corporate'}">
+                                    <div class="form-field corporategrid">
+                                        <h:outputText
+                                            styleClass="form-control"
+                                            value="#{field.value}" />
+                                        <h:outputText
+                                            styleClass="form-control"
+                                            value="#{field.role}" />
+                                    </div>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{field.displayType == 'picklist'}">
+                                    <div class="form-field corporategrid">
+                                        <h:outputText
+                                            styleClass="form-control"
+                                            value="#{field.role}" />
+                                        <h:outputText
+                                            styleClass="form-control"
+                                            value="#{field.value}" />
+                                    </div>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
+                                    <div class="form-field">
+                                        <h:outputText
+                                            styleClass="form-control"
+                                            value="#{field.value}" />
+                                    </div>
+                                </ui:fragment>
+                            </h:panelGroup>
+                        </ui:repeat>
+                    </ui:fragment>
+                </ui:repeat>
+            </h:form>
+        </ui:fragment>
+
+
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='finish'}">
+
+
+creation finished text, button to go back to main screen
+
+</ui:fragment>
+
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main'}">
+            <h:form id="navigationForm">
+                <div class="submit">
+                    <ul class="statuslist">
+                        <li>
+                            <button
+                                jsf:action="#{DashboardForm.plugin.previousPage}"
+                                jsf:id="backToMain"
+                                class="float-left btn btn-primary font-size-s">
+                                <h:outputText value="#{msgs.back}" />
+                                <f:ajax
+                                    render="main-area"
+                                    execute="@this" />
+                            </button>
+
+                        </li>
+                        <li>
+
+                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
+                            </h:panelGroup>
+                        </li>
+                        <li>
+                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
+                            </h:panelGroup>
+                        </li>
+                        <li>
+                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_data2}" />
+                            </h:panelGroup>
+                        </li>
+
+                        <li>
+                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_data3}" />
+                            </h:panelGroup>
+                        </li>
+                        <li>
+                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_overview}" />
+                            </h:panelGroup>
+
+                        </li>
+                        <li>
+                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='finish' ? 'active': 'inactive'}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_finish}" />
+                            </h:panelGroup>
+                        </li>
+                        <li>
+                            <button
+                                jsf:action="#{DashboardForm.plugin.nextPage}"
+                                jsf:id="nextStep"
+                                class="float-left btn btn-primary font-size-s">
+                                <h:outputText value="#{msgs.next}" />
+                                <f:ajax
+                                    render="main-area"
+                                    execute="@this" />
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+            </h:form>
+
+        </ui:fragment>
     </composite:implementation>
 
 </ui:composition>

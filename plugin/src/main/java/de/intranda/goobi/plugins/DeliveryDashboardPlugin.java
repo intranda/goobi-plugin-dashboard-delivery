@@ -186,6 +186,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "main":
                 // first page, do nothing,
                 break;
+            case "titleSelection":
+                navigation = "main";
+                break;
             case "upload":
                 navigation = "main";
                 break;
