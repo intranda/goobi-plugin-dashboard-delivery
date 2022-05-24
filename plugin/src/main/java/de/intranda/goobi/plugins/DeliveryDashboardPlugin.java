@@ -189,6 +189,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "titleSelection":
                 navigation = "main";
                 break;
+            case "newIssue":
+            case "newTitle":
+                navigation = "titleSelection";
+                break;
             case "upload":
                 navigation = "main";
                 break;
@@ -201,15 +205,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "data3":
                 navigation = "data2";
                 break;
-
             case "overview":
                 navigation = "data3";
                 break;
-
             case "finish":
                 navigation = "overview";
                 break;
-
             default:
                 break;
         }
