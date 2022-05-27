@@ -2,6 +2,17 @@
 
 <config_plugin>
 
+<doctypes>
+    <!-- used to create monographic items -->
+    <monographic>Monograph</monographic>
+    <!-- Document type to register ZDB title data -->
+    <zdbRecordType>ZdbTitle</zdbRecordType>
+    <!-- document types to create new issue items -->
+    <journalType>Periodical</journalType>
+    <issueType>PeriodicalVolume</issueType>
+</doctypes>
+
+
     <!-- metadata fields for monographic items -->
 
     <group label="Titelinformationen" pageName="data1" documentType="monograph">
@@ -172,8 +183,7 @@
 
     <group label="Beziehungen zu anderen Ressourcen" pageName="data2" documentType="issue">
         <!-- TODO list all valid titles of the current customer/institution -->
-        <field rulesetName="AccessLicense" label="Zeitschriftentitel" displayType="dropdown" metadataLevel="child" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
-            <selectfield value="TODO" label="TODO" />
+        <field rulesetName="AccessLicense" label="Zeitschriftentitel" displayType="journaltitles" metadataLevel="child" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
         </field>
     </group>
 
@@ -190,7 +200,7 @@
         <field rulesetName="URL" label="Adresse der Originalveröffentlichung (URL)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
     </group>
 
-    <group label="Anmerkungen" pageName="data2" documentType="journal">
+    <group label="Anmerkungen" pageName="data2" documentType="issue">
         <field rulesetName="Remarks" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
     </group>
 

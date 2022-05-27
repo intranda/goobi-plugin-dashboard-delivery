@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import javax.faces.model.SelectItem;
@@ -23,6 +22,7 @@ import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.lang.StringUtils;
 import org.goobi.beans.Process;
 import org.goobi.beans.Processproperty;
 import org.goobi.beans.User;
@@ -94,7 +94,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     // TODO get it from configuration file
     private String processTemplateName = "Standard";
-    private String zdbProcessTemplateName = "Standard";
+    private String zdbProcessTemplateName = "ZDB_template";
+
+    private String monographicDocType;
+    private String zdbTitleDocType;
+    private String journalDocType;
+    private String issueDocType;
 
     @Getter
     private List<FieldGrouping> configuredGroups = new ArrayList<>();
@@ -116,6 +121,13 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     private void readConfiguration() {
         XMLConfiguration config = ConfigPlugins.getPluginConfig(title);
         config.setExpressionEngine(new XPathExpressionEngine());
+        configuredGroups.clear();
+
+        monographicDocType = config.getString("/doctypes/monographic", "Monograph");
+        zdbTitleDocType = config.getString("/doctypes/zdbRecordType", "ZdbTitle");
+        journalDocType = config.getString("/doctypes/journalType", "Periodical");
+        issueDocType = config.getString("/doctypes/issueType", "PeriodicalVolume");
+
         List<HierarchicalConfiguration> groups = config.configurationsAt("/group");
 
         for (HierarchicalConfiguration group : groups) {
@@ -159,6 +171,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                             mf.getSelectList().add(si);
                         }
 
+                        break;
+
+                    case "journaltitles":
+                        mf.setSelectList(generateListOfJournalTitles());
                         break;
                     default:
                         break;
@@ -307,22 +323,18 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             physical = dd.createDocStruct(prefs.getDocStrctTypeByName("BoundBook"));
             dd.setPhysicalDocStruct(physical);
             if (documentType.equals("monograph")) {
-                docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName("Monograph"));
+                docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(monographicDocType));
                 dd.setLogicalDocStruct(docstruct);
                 Metadata md = createIdentifierMetadata(prefs);
                 docstruct.addMetadata(md);
             } else if (documentType.equals("journal")) {
-                docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName("Periodical"));
-                DocStruct child = dd.createDocStruct(prefs.getDocStrctTypeByName("PeriodicalVolume"));
-                docstruct.addChild(child);
+                docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(zdbTitleDocType));
                 dd.setLogicalDocStruct(docstruct);
                 Metadata md = createIdentifierMetadata(prefs);
                 docstruct.addMetadata(md);
-                md = createIdentifierMetadata(prefs);
-                child.addMetadata(md);
             } else if (documentType.equals("issue")) {
-                anchor = dd.createDocStruct(prefs.getDocStrctTypeByName("Periodical")); //TODO get data from selected process
-                docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName("PeriodicalVolume"));
+                anchor = dd.createDocStruct(prefs.getDocStrctTypeByName(journalDocType));
+                docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(issueDocType));
                 dd.setLogicalDocStruct(anchor);
                 anchor.addChild(docstruct);
                 Metadata md = createIdentifierMetadata(prefs);
@@ -346,49 +358,51 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     private void importMetadata(Prefs prefs, DocStruct docstruct, FieldGrouping fg) {
 
         for (MetadataField mf : fg.getFields()) {
-            switch (mf.getDisplayType()) {
-                case "person":
-                    try {
-                        Person person = new Person(prefs.getMetadataTypeByName(mf.getRole()));
-                        person.setFirstname(mf.getValue());
-                        person.setLastname(mf.getValue2());
-                        docstruct.addPerson(person);
-                    } catch (MetadataTypeNotAllowedException e) {
-                        log.error(e);
-                    }
-                    break;
-                case "corporate":
+            if (StringUtils.isNotBlank(mf.getValue())) {
+                switch (mf.getDisplayType()) {
+                    case "person":
+                        try {
+                            Person person = new Person(prefs.getMetadataTypeByName(mf.getRole()));
+                            person.setFirstname(mf.getValue());
+                            person.setLastname(mf.getValue2());
+                            docstruct.addPerson(person);
+                        } catch (MetadataTypeNotAllowedException e) {
+                            log.error(e);
+                        }
+                        break;
+                    case "corporate":
 
-                    try {
-                        Corporate corp = new Corporate(prefs.getMetadataTypeByName(mf.getRole()));
-                        corp.setMainName(mf.getValue());
-                        docstruct.addCorporate(corp);
-                    } catch (MetadataTypeNotAllowedException e) {
-                        log.error(e);
-                    }
+                        try {
+                            Corporate corp = new Corporate(prefs.getMetadataTypeByName(mf.getRole()));
+                            corp.setMainName(mf.getValue());
+                            docstruct.addCorporate(corp);
+                        } catch (MetadataTypeNotAllowedException e) {
+                            log.error(e);
+                        }
 
-                    break;
+                        break;
 
-                case "picklist":
-                    try {
-                        Metadata md = new Metadata(prefs.getMetadataTypeByName(mf.getRole()));
-                        md.setValue(mf.getValue());
-                        docstruct.addMetadata(md);
-                    } catch (MetadataTypeNotAllowedException e) {
-                        log.error(e);
-                    }
-                    break;
+                    case "picklist":
+                        try {
+                            Metadata md = new Metadata(prefs.getMetadataTypeByName(mf.getRole()));
+                            md.setValue(mf.getValue());
+                            docstruct.addMetadata(md);
+                        } catch (MetadataTypeNotAllowedException e) {
+                            log.error(e);
+                        }
+                        break;
 
-                default:
-                    // input, textarea, dropdown, ...
-                    try {
-                        Metadata md = new Metadata(prefs.getMetadataTypeByName(mf.getRulesetName()));
-                        md.setValue(mf.getValue());
-                        docstruct.addMetadata(md);
-                    } catch (MetadataTypeNotAllowedException e) {
-                        log.error(e);
-                    }
-                    break;
+                    default:
+                        // input, textarea, dropdown, ...
+                        try {
+                            Metadata md = new Metadata(prefs.getMetadataTypeByName(mf.getRulesetName()));
+                            md.setValue(mf.getValue());
+                            docstruct.addMetadata(md);
+                        } catch (MetadataTypeNotAllowedException e) {
+                            log.error("Error adding " + mf.getRulesetName());
+                        }
+                        break;
+                }
             }
         }
     }
@@ -409,7 +423,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         StorageProvider.getInstance().deleteDataInDir(temporaryFolder);
         files.clear();
 
-        generateListOfJournalTitles();
     }
 
     public void createJournalTitle() {
@@ -429,7 +442,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         // TODO send mail to zlb staff
     }
 
-    private void generateListOfJournalTitles() {
+    private List<SelectItem> generateListOfJournalTitles() {
+
+        List<SelectItem> availableTitles = new ArrayList<>();
+
         // TODO propulate a pickup list for issue creation
         // - search in journal processes only (special project, process title starts with a specific term?)
         // - was created by this institution (or user?)
@@ -437,8 +453,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         // - approved by zlb (has reached a certain step) ?
 
         String institutionName = Helper.getCurrentUser().getInstitutionName();
-        String zdbRecordDocType = "Periodical";
-        String zdbIdName = "CatalogIDPeriodicalDB";
+        String zdbIdName = "CatalogIDPeriodicalDB"; // TODO config
         //        SET @doctype='Periodical';
         //        SET @institutionName='test';
         //
@@ -458,29 +473,28 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         //        and not exists (select * from metadata m2 where m2.name="CatalogIDPeriodicalDB" and m2.processid = metadata.processid)
         //        group by metadata.value having count(metadata.value) =1) ;
 
-        List<Map<String, String>> results = null;
         StringBuilder sql = new StringBuilder();
 
         sql.append("select * from metadata where processid in ( ");
-        sql.append(
-                " select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = metadata.processid ");
-        sql.append("where titel =\"Institution\" and wert = ? ");
+        sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
+        sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
         sql.append("and metadata.name = \"DocStruct\" and metadata.value= ? ");
         sql.append(") and metadata.name= ? ");
         sql.append("UNION ");
         sql.append("select * from metadata where processid in ( ");
-        sql.append(
-                "select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = metadata.processid ");
-        sql.append("where titel =\"Institution\" and wert = ? and metadata.name=\"CatalogIDDigital\" ");
-        sql.append(" and not exists (select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid) ");
-        sql.append(" group by metadata.value having count(metadata.value) =1) ");
+        sql.append("select processid from metadata where processid in ( ");
+        sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
+        sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
+        sql.append("and metadata.name = \"DocStruct\" and metadata.value= ? ");
+        sql.append("and not exists (select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid) ");
+        sql.append(") and metadata.name=\"CatalogIDDigital\"  group by metadata.value having count(metadata.value)=1) ");
 
-        Map<Integer, Map<String, String>> answer = null;
+        Map<Integer, Map<String, String>> results = null;
         Connection connection = null;
         try {
             connection = MySQLHelper.getInstance().getConnection();
-            answer = new QueryRunner().query(connection, sql.toString(), resultSetToMapHandler, institutionName, zdbRecordDocType, zdbIdName,
-                    institutionName, zdbIdName);
+            results = new QueryRunner().query(connection, sql.toString(), resultSetToMapHandler, institutionName, zdbTitleDocType, zdbIdName,
+                    institutionName, zdbTitleDocType, zdbIdName);
         } catch (SQLException e) {
             log.error(e);
         } finally {
@@ -492,17 +506,19 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
             }
         }
-        for (Integer processid : answer.keySet()) {
-            System.out.println("process: " + processid);
-            Map<String, String> val = answer.get(processid);
-            for (Entry<String, String> metadata : val.entrySet()) {
-                System.out.println(metadata.getKey() + ": " + metadata.getValue());
-            }
+
+        for (Integer processid : results.keySet()) {
+            String title = results.get(processid).get("TitleDocMain");
+            SelectItem item = new SelectItem(processid, title);
+            availableTitles.add(item);
         }
+
+        return availableTitles;
     }
 
     public static ResultSetHandler<Map<Integer, Map<String, String>>> resultSetToMapHandler =
             new ResultSetHandler<Map<Integer, Map<String, String>>>() {
+
         @Override
         public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
             Map<Integer, Map<String, String>> answer = new HashMap<>();
