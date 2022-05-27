@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.faces.model.SelectItem;
 import javax.servlet.http.Part;
@@ -299,14 +300,26 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             if (documentType.equals("monograph")) {
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName("Monograph"));
                 dd.setLogicalDocStruct(docstruct);
+                Metadata md = createIdentifierMetadata(prefs);
+                docstruct.addMetadata(md);
             } else if (documentType.equals("journal")) {
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName("Periodical"));
+                DocStruct child = dd.createDocStruct(prefs.getDocStrctTypeByName("PeriodicalVolume"));
+                docstruct.addChild(child);
                 dd.setLogicalDocStruct(docstruct);
-            } else if (documentType.equals("journal")) {
+                Metadata md = createIdentifierMetadata(prefs);
+                docstruct.addMetadata(md);
+                md = createIdentifierMetadata(prefs);
+                child.addMetadata(md);
+            } else if (documentType.equals("issue")) {
                 anchor = dd.createDocStruct(prefs.getDocStrctTypeByName("Periodical")); //TODO get data from selected process
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName("PeriodicalVolume"));
                 dd.setLogicalDocStruct(anchor);
                 anchor.addChild(docstruct);
+                Metadata md = createIdentifierMetadata(prefs);
+                docstruct.addMetadata(md);
+                md = createIdentifierMetadata(prefs);
+                anchor.addMetadata(md);
             }
 
             for (FieldGrouping fg : configuredGroups) {
@@ -442,6 +455,17 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
         PropertyManager.saveProcessProperty(userProperty);
         PropertyManager.saveProcessProperty(institutionProperty);
+    }
+
+    private Metadata createIdentifierMetadata(Prefs prefs) {
+        Metadata md = null;
+        try {
+            md = new Metadata(prefs.getMetadataTypeByName("CatalogIDDigital"));
+        } catch (MetadataTypeNotAllowedException e) {
+        }
+        UUID uuid = UUID.randomUUID();
+        md.setValue(uuid.toString());
+        return md;
     }
 
 }
