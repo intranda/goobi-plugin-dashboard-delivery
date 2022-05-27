@@ -5,8 +5,14 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import javax.faces.model.SelectItem;
@@ -15,6 +21,8 @@ import javax.servlet.http.Part;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
 import org.goobi.beans.Process;
 import org.goobi.beans.Processproperty;
 import org.goobi.beans.User;
@@ -31,6 +39,7 @@ import de.sub.goobi.helper.StorageProvider;
 import de.sub.goobi.helper.enums.PropertyType;
 import de.sub.goobi.helper.exceptions.DAOException;
 import de.sub.goobi.helper.exceptions.SwapException;
+import de.sub.goobi.persistence.managers.MySQLHelper;
 import de.sub.goobi.persistence.managers.ProcessManager;
 import de.sub.goobi.persistence.managers.PropertyManager;
 import lombok.Getter;
@@ -399,6 +408,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         // delete previous uploaded files
         StorageProvider.getInstance().deleteDataInDir(temporaryFolder);
         files.clear();
+
+        generateListOfJournalTitles();
     }
 
     public void createJournalTitle() {
@@ -425,7 +436,98 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         // - has no issue yet OR has a zdb id (metadata is filled)
         // - approved by zlb (has reached a certain step) ?
 
+        String institutionName = Helper.getCurrentUser().getInstitutionName();
+        String zdbRecordDocType = "Periodical";
+        String zdbIdName = "CatalogIDPeriodicalDB";
+        //        SET @doctype='Periodical';
+        //        SET @institutionName='test';
+        //
+        //        # get all title records with existing zdb id
+        //        select * from metadata where processid in (
+        //        select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = metadata.processid
+        //        # limit result to current institution
+        //        where titel ="Institution" and wert =@institutionName
+        //        # limit result to periodica
+        //        and metadata.name = "DocStruct" and metadata.value=@doctype
+        //        ) and metadata.name="CatalogIDPeriodicalDB"
+        //        UNION
+        //        # get all title records without issues (id was only used once)
+        //        select * from metadata where processid in (
+        //        select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = metadata.processid
+        //        where titel ="Institution" and wert =@institutionName and metadata.name="CatalogIDDigital"
+        //        and not exists (select * from metadata m2 where m2.name="CatalogIDPeriodicalDB" and m2.processid = metadata.processid)
+        //        group by metadata.value having count(metadata.value) =1) ;
+
+        List<Map<String, String>> results = null;
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("select * from metadata where processid in ( ");
+        sql.append(
+                " select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = metadata.processid ");
+        sql.append("where titel =\"Institution\" and wert = ? ");
+        sql.append("and metadata.name = \"DocStruct\" and metadata.value= ? ");
+        sql.append(") and metadata.name= ? ");
+        sql.append("UNION ");
+        sql.append("select * from metadata where processid in ( ");
+        sql.append(
+                "select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = metadata.processid ");
+        sql.append("where titel =\"Institution\" and wert = ? and metadata.name=\"CatalogIDDigital\" ");
+        sql.append(" and not exists (select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid) ");
+        sql.append(" group by metadata.value having count(metadata.value) =1) ");
+
+        Map<Integer, Map<String, String>> answer = null;
+        Connection connection = null;
+        try {
+            connection = MySQLHelper.getInstance().getConnection();
+            answer = new QueryRunner().query(connection, sql.toString(), resultSetToMapHandler, institutionName, zdbRecordDocType, zdbIdName,
+                    institutionName, zdbIdName);
+        } catch (SQLException e) {
+            log.error(e);
+        } finally {
+            if (connection != null) {
+                try {
+                    MySQLHelper.closeConnection(connection);
+                } catch (SQLException e) {
+                    log.error(e);
+                }
+            }
+        }
+        for (Integer processid : answer.keySet()) {
+            System.out.println("process: " + processid);
+            Map<String, String> val = answer.get(processid);
+            for (Entry<String, String> metadata : val.entrySet()) {
+                System.out.println(metadata.getKey() + ": " + metadata.getValue());
+            }
+        }
     }
+
+    public static ResultSetHandler<Map<Integer, Map<String, String>>> resultSetToMapHandler =
+            new ResultSetHandler<Map<Integer, Map<String, String>>>() {
+        @Override
+        public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
+            Map<Integer, Map<String, String>> answer = new HashMap<>();
+            try {
+                while (rs.next()) {
+                    Integer processid = rs.getInt("processid");
+                    String metadataName = rs.getString("name");
+                    String metadataValue = rs.getString("value");
+                    Map<String, String> metadataMap = new HashMap<>();
+                    if (answer.containsKey(processid)) {
+                        metadataMap = answer.get(processid);
+                    } else {
+                        metadataMap = new HashMap<>();
+                        answer.put(processid, metadataMap);
+                    }
+                    metadataMap.put(metadataName, metadataValue);
+                }
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+            return answer;
+        }
+    };
 
     private void createProperties(Process process) {
         User user = Helper.getCurrentUser();
