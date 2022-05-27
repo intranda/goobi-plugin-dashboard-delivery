@@ -15,6 +15,8 @@ import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
 import org.goobi.beans.Process;
+import org.goobi.beans.Processproperty;
+import org.goobi.beans.User;
 import org.goobi.production.enums.PluginGuiType;
 import org.goobi.production.enums.PluginType;
 import org.goobi.production.plugin.interfaces.IDashboardPlugin;
@@ -23,10 +25,13 @@ import de.intranda.goobi.plugins.utils.FieldGrouping;
 import de.intranda.goobi.plugins.utils.MetadataField;
 import de.sub.goobi.config.ConfigPlugins;
 import de.sub.goobi.helper.BeanHelper;
+import de.sub.goobi.helper.Helper;
 import de.sub.goobi.helper.StorageProvider;
+import de.sub.goobi.helper.enums.PropertyType;
 import de.sub.goobi.helper.exceptions.DAOException;
 import de.sub.goobi.helper.exceptions.SwapException;
 import de.sub.goobi.persistence.managers.ProcessManager;
+import de.sub.goobi.persistence.managers.PropertyManager;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -77,7 +82,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     // upload a file
     private Part file;
 
+    // TODO get it from configuration file
     private String processTemplateName = "Standard";
+    private String zdbProcessTemplateName = "Standard";
 
     @Getter
     private List<FieldGrouping> configuredGroups = new ArrayList<>();
@@ -270,8 +277,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             log.error(e);
         }
 
-        // set property for institution
-        // set property for user name
+        createProperties(process);
 
         // TODO send success mail, start any automatic tasks
 
@@ -293,34 +299,20 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             if (documentType.equals("monograph")) {
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName("Monograph"));
                 dd.setLogicalDocStruct(docstruct);
-            } else {
-                anchor = dd.createDocStruct(prefs.getDocStrctTypeByName(""));
-                docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(""));
+            } else if (documentType.equals("journal")) {
+                docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName("Periodical"));
+                dd.setLogicalDocStruct(docstruct);
+            } else if (documentType.equals("journal")) {
+                anchor = dd.createDocStruct(prefs.getDocStrctTypeByName("Periodical")); //TODO get data from selected process
+                docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName("PeriodicalVolume"));
                 dd.setLogicalDocStruct(anchor);
                 anchor.addChild(docstruct);
             }
 
             for (FieldGrouping fg : configuredGroups) {
-                switch (fg.getDocumentType()) {
-                    case "monograph":
-                        if (documentType.equals("monograph")) {
-                            importMetadata(prefs, docstruct, fg);
-                        }
-                        break;
-                    case "journal":
-                        if (!documentType.equals("monograph")) {
-                            importMetadata(prefs, anchor, fg);
-                        }
-                        break;
-                    case "issue":
-                        if (!documentType.equals("monograph")) {
-                            importMetadata(prefs, docstruct, fg);
-                        }
-                        break;
-                    default:
-                        break;
+                if (fg.getDocumentType().equals(documentType)) {
+                    importMetadata(prefs, docstruct, fg);
                 }
-
             }
 
         } catch (UGHException e) {
@@ -394,6 +386,62 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         // delete previous uploaded files
         StorageProvider.getInstance().deleteDataInDir(temporaryFolder);
         files.clear();
+    }
+
+    public void createJournalTitle() {
+
+        Process template = ProcessManager.getProcessByTitle(zdbProcessTemplateName);
+        Prefs prefs = template.getRegelsatz().getPreferences();
+        String processTitle = "zdb"; // TODO zdb + institution + user + some record metadata?
+
+        // create fileformat, import entered metadata
+        Fileformat fileformat = createFileformat(prefs);
+
+        // save metadata and create goobi process
+        Process process = new BeanHelper().createAndSaveNewProcess(template, processTitle, fileformat);
+
+        createProperties(process);
+
+        // TODO send mail to zlb staff
+    }
+
+    private void generateListOfJournalTitles() {
+        // TODO propulate a pickup list for issue creation
+        // - search in journal processes only (special project, process title starts with a specific term?)
+        // - was created by this institution (or user?)
+        // - has no issue yet OR has a zdb id (metadata is filled)
+        // - approved by zlb (has reached a certain step) ?
+
+    }
+
+    private void createProperties(Process process) {
+        User user = Helper.getCurrentUser();
+        String acccountName = "";
+        String institutionName = "";
+        if (user != null) {
+            acccountName = user.getLogin();
+            institutionName = user.getInstitution().getLongName();
+        }
+
+        // add properties
+        Processproperty userProperty = new Processproperty();
+        userProperty.setProcessId(process.getId());
+        userProperty.setProzess(process);
+        userProperty.setTitel("UserName");
+        userProperty.setType(PropertyType.String);
+        userProperty.setWert(acccountName);
+        process.getEigenschaften().add(userProperty);
+
+        Processproperty institutionProperty = new Processproperty();
+        institutionProperty.setProcessId(process.getId());
+        institutionProperty.setProzess(process);
+        institutionProperty.setTitel("Institution");
+        institutionProperty.setType(PropertyType.String);
+        institutionProperty.setWert(institutionName);
+        process.getEigenschaften().add(institutionProperty);
+
+        PropertyManager.saveProcessProperty(userProperty);
+        PropertyManager.saveProcessProperty(institutionProperty);
     }
 
 }

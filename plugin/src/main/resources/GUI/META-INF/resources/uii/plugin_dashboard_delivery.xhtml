@@ -89,6 +89,11 @@
     gap: var(- -gap);
     grid-template-columns: 45% 45%;
 }
+
+.layout {
+    display: grid;
+    grid-gap: var(- -gap);
+}
 </style>
 
         <h:panelGroup
@@ -220,14 +225,18 @@
             <ui:fragment
                 id="monographs"
                 rendered="#{DashboardForm.plugin.documentType == 'monograph'}">
-                <ui:include src="include_monographs.xhtml" />
+                <div class="container">
+                    <ui:include src="include_monographs.xhtml" />
+                </div>
             </ui:fragment>
 
 
             <ui:fragment
                 id="journals"
                 rendered="#{DashboardForm.plugin.documentType == 'journal'}">
-                <ui:include src="include_journals.xhtml" />
+                <div class="container">
+                    <ui:include src="include_journals.xhtml" />
+                </div>
             </ui:fragment>
 
 
