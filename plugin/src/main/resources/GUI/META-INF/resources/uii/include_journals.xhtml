@@ -249,8 +249,18 @@
                             </ui:fragment>
 
                         </ui:repeat>
+                        
                     </ui:fragment>
                 </ui:repeat>
+                                     <button
+                                jsf:action="#{DashboardForm.plugin.createJournalIssue}"
+                                jsf:id="createIssue"
+                                class="float-left btn btn-primary font-size-s">
+                                <h:outputText value="#{msgs.next}" />
+                                <f:ajax
+                                    render="main-area"
+                                    execute="@this" />
+                            </button>
             </h:form>
 
 </ui:fragment>

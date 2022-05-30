@@ -183,7 +183,7 @@
 
     <group label="Beziehungen zu anderen Ressourcen" pageName="data2" documentType="issue">
         <!-- TODO list all valid titles of the current customer/institution -->
-        <field rulesetName="AccessLicense" label="Zeitschriftentitel" displayType="journaltitles" metadataLevel="child" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="" label="Zeitschriftentitel" displayType="journaltitles" metadataLevel="child" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
         </field>
     </group>
 

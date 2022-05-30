@@ -327,20 +327,73 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 dd.setLogicalDocStruct(docstruct);
                 Metadata md = createIdentifierMetadata(prefs);
                 docstruct.addMetadata(md);
-            } else if (documentType.equals("journal")) {
+            } else if (documentType.equals("journal") && navigation.equals("newTitle")) {
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(zdbTitleDocType));
                 dd.setLogicalDocStruct(docstruct);
                 Metadata md = createIdentifierMetadata(prefs);
                 docstruct.addMetadata(md);
-            } else if (documentType.equals("issue")) {
+            } else if (documentType.equals("journal") && navigation.equals("newIssue")) {
                 anchor = dd.createDocStruct(prefs.getDocStrctTypeByName(journalDocType));
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(issueDocType));
                 dd.setLogicalDocStruct(anchor);
                 anchor.addChild(docstruct);
                 Metadata md = createIdentifierMetadata(prefs);
                 docstruct.addMetadata(md);
-                md = createIdentifierMetadata(prefs);
-                anchor.addMetadata(md);
+
+                for (FieldGrouping fg : configuredGroups) {
+                    if (fg.getDocumentType().equals("issue")) {
+                        for (MetadataField mf : fg.getFields()) {
+                            if (mf.getDisplayType().equals("journaltitles")) {
+                                String processid = mf.getValue();
+                                // load metadata
+                                Process otherProc = ProcessManager.getProcessById(Integer.parseInt(processid));
+                                try {
+                                    Fileformat other = otherProc.readMetadataFile();
+                                    // copy metadata to anchor
+                                    DocStruct templateDocstruct = other.getDigitalDocument().getLogicalDocStruct();
+                                    if (templateDocstruct.getAllMetadata() != null) {
+                                        for (Metadata templateMetadata : templateDocstruct.getAllMetadata()) {
+                                            try {
+                                                Metadata clone = new Metadata(templateMetadata.getType());
+                                                clone.setValue(templateMetadata.getValue());
+                                                anchor.addMetadata(clone);
+                                            } catch (Exception e) {
+                                                log.trace(e);
+                                            }
+                                        }
+                                    }
+                                    if (templateDocstruct.getAllPersons() != null) {
+                                        for (Person templatePerson : templateDocstruct.getAllPersons()) {
+                                            try {
+                                                Person clone = new Person(templatePerson.getType());
+                                                clone.setFirstname(templatePerson.getFirstname());
+                                                clone.setLastname(templatePerson.getLastname());
+                                                anchor.addPerson(clone);
+                                            } catch (Exception e) {
+                                                log.trace(e);
+                                            }
+                                        }
+                                    }
+                                    if (templateDocstruct.getAllCorporates() != null) {
+                                        for (Corporate templateCorporate : templateDocstruct.getAllCorporates()) {
+                                            try {
+                                                Corporate clone = new Corporate(templateCorporate.getType());
+                                                clone.setMainName(templateCorporate.getMainName());
+                                                anchor.addCorporate(clone);
+                                            } catch (Exception e) {
+                                                log.trace(e);
+                                            }
+                                        }
+                                    }
+
+                                } catch (IOException | InterruptedException | SwapException | DAOException e) {
+                                    log.error(e);
+                                }
+
+                            }
+                        }
+                    }
+                }
             }
 
             for (FieldGrouping fg : configuredGroups) {
@@ -358,7 +411,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     private void importMetadata(Prefs prefs, DocStruct docstruct, FieldGrouping fg) {
 
         for (MetadataField mf : fg.getFields()) {
-            if (StringUtils.isNotBlank(mf.getValue())) {
+            if (StringUtils.isNotBlank(mf.getValue()) && StringUtils.isNotBlank(mf.getRulesetName())) {
                 switch (mf.getDisplayType()) {
                     case "person":
                         try {
@@ -442,18 +495,24 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         // TODO send mail to zlb staff
     }
 
+    public void createJournalIssue() {
+
+        createProcess();
+        // TODO send mail to zlb staff
+    }
+
     private List<SelectItem> generateListOfJournalTitles() {
 
         List<SelectItem> availableTitles = new ArrayList<>();
 
-        // TODO propulate a pickup list for issue creation
+        // propulate a pickup list for issue creation
         // - search in journal processes only (special project, process title starts with a specific term?)
         // - was created by this institution (or user?)
         // - has no issue yet OR has a zdb id (metadata is filled)
         // - approved by zlb (has reached a certain step) ?
 
         String institutionName = Helper.getCurrentUser().getInstitutionName();
-        String zdbIdName = "CatalogIDPeriodicalDB"; // TODO config
+        String zdbIdName = "CatalogIDPeriodicalDB"; // TODO get from config
         //        SET @doctype='Periodical';
         //        SET @institutionName='test';
         //
@@ -485,16 +544,16 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         sql.append("select processid from metadata where processid in ( ");
         sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
         sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
-        sql.append("and metadata.name = \"DocStruct\" and metadata.value= ? ");
         sql.append("and not exists (select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid) ");
-        sql.append(") and metadata.name=\"CatalogIDDigital\"  group by metadata.value having count(metadata.value)=1) ");
-
+        sql.append(") and metadata.name=\"CatalogIDDigital\" group by metadata.value having count(metadata.value)=1"
+                + "and metadata.name = \"DocStruct\" and ?) ");
+        // TODO see workbench
         Map<Integer, Map<String, String>> results = null;
         Connection connection = null;
         try {
             connection = MySQLHelper.getInstance().getConnection();
             results = new QueryRunner().query(connection, sql.toString(), resultSetToMapHandler, institutionName, zdbTitleDocType, zdbIdName,
-                    institutionName, zdbTitleDocType, zdbIdName);
+                    institutionName, zdbIdName, zdbTitleDocType);
         } catch (SQLException e) {
             log.error(e);
         } finally {
