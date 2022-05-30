@@ -1,13 +1,20 @@
 package de.intranda.goobi.plugins.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
+import org.goobi.vocabulary.Field;
+import org.goobi.vocabulary.VocabRecord;
+import org.goobi.vocabulary.Vocabulary;
 
+import de.intranda.goobi.plugins.DeliveryDashboardPlugin;
+import de.sub.goobi.persistence.managers.VocabularyManager;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 public class MetadataField {
@@ -35,7 +42,18 @@ public class MetadataField {
 
     private List<SelectItem> selectList = new ArrayList<>(); // list of selectable values
 
+    private List<VocabRecord> vocabList = new ArrayList<>(); // list of selectable values
+
     private boolean validationError; // true if validation fails
+
+    @Getter
+    private String vocabularyName;
+    private String  vocabularyDisplayField;
+    private String  vocabularyImportField;
+
+
+    @Getter
+    private String vocabularyUrl;
 
     public void setBooleanValue(boolean val) {
         if (val) {
@@ -72,4 +90,31 @@ public class MetadataField {
         return true;
     }
 
+    public void setVocabulary(String name, String displayField, String importFied) {
+        vocabularyName = name;
+        vocabularyDisplayField=displayField;
+        vocabularyImportField=importFied;
+
+        Vocabulary currentVocabulary = VocabularyManager.getVocabularyByTitle(vocabularyName);
+        vocabularyUrl = DeliveryDashboardPlugin.vocabularyUrl + currentVocabulary.getId();
+        if (currentVocabulary != null ) {
+            VocabularyManager.getAllRecords(currentVocabulary);
+            vocabList = currentVocabulary.getRecords();
+            Collections.sort(vocabList);
+            selectList = new ArrayList<>(vocabList.size());
+            if (currentVocabulary != null && currentVocabulary.getId() != null) {
+                for (VocabRecord vr : vocabList) {
+                    for (Field f : vr.getFields()) {
+                        if (StringUtils.isBlank(vocabularyDisplayField) && f.getDefinition().isMainEntry()) {
+                            selectList.add(new SelectItem(String.valueOf(vr.getId()), f.getValue()));
+                            break;
+                        } else if (f.getDefinition().getLabel().equals(vocabularyDisplayField)) {
+                            selectList.add(new SelectItem(String.valueOf(vr.getId()), f.getValue()));
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -29,6 +29,8 @@ import org.goobi.beans.User;
 import org.goobi.production.enums.PluginGuiType;
 import org.goobi.production.enums.PluginType;
 import org.goobi.production.plugin.interfaces.IDashboardPlugin;
+import org.goobi.vocabulary.Field;
+import org.goobi.vocabulary.VocabRecord;
 
 import de.intranda.goobi.plugins.utils.FieldGrouping;
 import de.intranda.goobi.plugins.utils.MetadataField;
@@ -60,6 +62,8 @@ import ugh.fileformats.mets.MetsMods;
 @PluginImplementation
 @Log4j2
 public class DeliveryDashboardPlugin implements IDashboardPlugin {
+
+    public static String vocabularyUrl;
 
     @Getter
     private String title = "intranda_dashboard_delivery";
@@ -123,6 +127,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         config.setExpressionEngine(new XPathExpressionEngine());
         configuredGroups.clear();
 
+        vocabularyUrl = config.getString("/vocabularyServerUrl");
+
         monographicDocType = config.getString("/doctypes/monographic", "Monograph");
         zdbTitleDocType = config.getString("/doctypes/zdbRecordType", "ZdbTitle");
         journalDocType = config.getString("/doctypes/journalType", "Periodical");
@@ -162,8 +168,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
                 switch (mf.getDisplayType()) {
                     case "dropdown":
-                    case "person":
-                    case "corporate":
                     case "picklist":
                         List<HierarchicalConfiguration> valueList = field.configurationsAt("/selectfield");
                         for (HierarchicalConfiguration v : valueList) {
@@ -172,7 +176,14 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                         }
 
                         break;
-
+                    case "corporate":
+                    case "person":
+                    case "vocabulary":
+                        String vocabularyName = field.getString("/vocabulary/@name");
+                        String displayField = field.getString("/vocabulary/@displayField", null);
+                        String importField = field.getString("/vocabulary/@importField", null);
+                        mf.setVocabulary(vocabularyName, displayField, importField);
+                        break;
                     case "journaltitles":
                         mf.setSelectList(generateListOfJournalTitles());
                         break;
@@ -415,7 +426,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 switch (mf.getDisplayType()) {
                     case "person":
                         try {
-                            Person person = new Person(prefs.getMetadataTypeByName(mf.getRole()));
+                            String roleTerm = getValueFromRecord(mf, mf.getRole());
+                            Person person = new Person(prefs.getMetadataTypeByName(roleTerm));
                             person.setFirstname(mf.getValue());
                             person.setLastname(mf.getValue2());
                             docstruct.addPerson(person);
@@ -426,7 +438,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                     case "corporate":
 
                         try {
-                            Corporate corp = new Corporate(prefs.getMetadataTypeByName(mf.getRole()));
+                            String roleTerm = getValueFromRecord(mf, mf.getRole());
+                            Corporate corp = new Corporate(prefs.getMetadataTypeByName(roleTerm));
                             corp.setMainName(mf.getValue());
                             docstruct.addCorporate(corp);
                         } catch (MetadataTypeNotAllowedException e) {
@@ -458,6 +471,27 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
             }
         }
+    }
+
+    private String getValueFromRecord(MetadataField mf, String field) {
+        String answer = null;
+        for (VocabRecord rec : mf.getVocabList()) {
+            if (field.equals(String.valueOf(rec.getId()))) {
+                for (Field f : rec.getFields()) {
+                    if (StringUtils.isNotBlank(mf.getVocabularyImportField()) && f.getLabel().equals(mf.getVocabularyImportField())) {
+                        answer = f.getValue();
+                        break;
+                    } else if (StringUtils.isBlank(mf.getVocabularyImportField()) && StringUtils.isNotBlank(mf.getVocabularyDisplayField()) && f.getLabel().equals(mf.getVocabularyDisplayField())) {
+                        answer = f.getValue();
+                        break;
+                    } else if (StringUtils.isBlank(mf.getVocabularyImportField()) && StringUtils.isBlank(mf.getVocabularyDisplayField()) && f.getDefinition().isMainEntry()) {
+                        answer = f.getValue();
+                        break;
+                    }
+                }
+            }
+        }
+        return answer;
     }
 
     public void duplicateMetadataField() {
@@ -545,8 +579,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
         sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
         sql.append("and not exists (select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid) ");
-        sql.append(") and metadata.name=\"CatalogIDDigital\" group by metadata.value having count(metadata.value)=1"
-                + "and metadata.name = \"DocStruct\" and ?) ");
+        sql.append(") and metadata.name=\"CatalogIDDigital\" group by metadata.value having count(metadata.value)=1");
+        sql.append(" and metadata.name = \"DocStruct\" and metadata.value= ?) ");
         // TODO see workbench
         Map<Integer, Map<String, String>> results = null;
         Connection connection = null;
@@ -565,11 +599,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
             }
         }
-
-        for (Integer processid : results.keySet()) {
-            String title = results.get(processid).get("TitleDocMain");
-            SelectItem item = new SelectItem(processid, title);
-            availableTitles.add(item);
+        if (results != null) {
+            for (Integer processid : results.keySet()) {
+                String title = results.get(processid).get("TitleDocMain");
+                SelectItem item = new SelectItem(processid, title);
+                availableTitles.add(item);
+            }
         }
 
         return availableTitles;
