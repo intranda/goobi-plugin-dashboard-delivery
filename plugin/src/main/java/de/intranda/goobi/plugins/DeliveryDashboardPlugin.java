@@ -481,10 +481,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                     if (StringUtils.isNotBlank(mf.getVocabularyImportField()) && f.getLabel().equals(mf.getVocabularyImportField())) {
                         answer = f.getValue();
                         break;
-                    } else if (StringUtils.isBlank(mf.getVocabularyImportField()) && StringUtils.isNotBlank(mf.getVocabularyDisplayField()) && f.getLabel().equals(mf.getVocabularyDisplayField())) {
+                    } else if (StringUtils.isBlank(mf.getVocabularyImportField()) && StringUtils.isNotBlank(mf.getVocabularyDisplayField())
+                            && f.getLabel().equals(mf.getVocabularyDisplayField())) {
                         answer = f.getValue();
                         break;
-                    } else if (StringUtils.isBlank(mf.getVocabularyImportField()) && StringUtils.isBlank(mf.getVocabularyDisplayField()) && f.getDefinition().isMainEntry()) {
+                    } else if (StringUtils.isBlank(mf.getVocabularyImportField()) && StringUtils.isBlank(mf.getVocabularyDisplayField())
+                            && f.getDefinition().isMainEntry()) {
                         answer = f.getValue();
                         break;
                     }
@@ -567,12 +569,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         //        group by metadata.value having count(metadata.value) =1) ;
 
         StringBuilder sql = new StringBuilder();
-
         sql.append("select * from metadata where processid in ( ");
+        sql.append("select processid from metadata where processid in ( ");
         sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
         sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
         sql.append("and metadata.name = \"DocStruct\" and metadata.value= ? ");
-        sql.append(") and metadata.name= ? ");
+        sql.append(") and metadata.name= ? )");
         sql.append("UNION ");
         sql.append("select * from metadata where processid in ( ");
         sql.append("select processid from metadata where processid in ( ");
