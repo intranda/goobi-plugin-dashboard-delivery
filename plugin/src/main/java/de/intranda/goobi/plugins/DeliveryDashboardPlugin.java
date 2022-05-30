@@ -583,7 +583,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         sql.append("and not exists (select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid) ");
         sql.append(") and metadata.name=\"CatalogIDDigital\" group by metadata.value having count(metadata.value)=1");
         sql.append(" and metadata.name = \"DocStruct\" and metadata.value= ?) ");
-        // TODO see workbench
+
         Map<Integer, Map<String, String>> results = null;
         Connection connection = null;
         try {
@@ -681,5 +681,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         md.setValue(uuid.toString());
         return md;
     }
+
+
 
 }

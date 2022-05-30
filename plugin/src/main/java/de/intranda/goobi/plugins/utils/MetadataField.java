@@ -44,13 +44,9 @@ public class MetadataField {
 
     private List<VocabRecord> vocabList = new ArrayList<>(); // list of selectable values
 
-    private boolean validationError; // true if validation fails
-
-    @Getter
     private String vocabularyName;
-    private String  vocabularyDisplayField;
-    private String  vocabularyImportField;
-
+    private String vocabularyDisplayField;
+    private String vocabularyImportField;
 
     @Getter
     private String vocabularyUrl;
@@ -74,15 +70,12 @@ public class MetadataField {
             val = value2;
         }
 
-        validationError = false;
         if (required && StringUtils.isBlank(val)) {
-            validationError = true;
             return false;
         }
 
         if (StringUtils.isNotBlank(validationExpression) && StringUtils.isNotBlank(val)) {
             if (!val.matches(validationExpression)) {
-                validationError = true;
                 return false;
             }
 
@@ -92,12 +85,12 @@ public class MetadataField {
 
     public void setVocabulary(String name, String displayField, String importFied) {
         vocabularyName = name;
-        vocabularyDisplayField=displayField;
-        vocabularyImportField=importFied;
+        vocabularyDisplayField = displayField;
+        vocabularyImportField = importFied;
 
         Vocabulary currentVocabulary = VocabularyManager.getVocabularyByTitle(vocabularyName);
         vocabularyUrl = DeliveryDashboardPlugin.vocabularyUrl + currentVocabulary.getId();
-        if (currentVocabulary != null ) {
+        if (currentVocabulary != null) {
             VocabularyManager.getAllRecords(currentVocabulary);
             vocabList = currentVocabulary.getRecords();
             Collections.sort(vocabList);
@@ -116,5 +109,21 @@ public class MetadataField {
                 }
             }
         }
+    }
+
+    public boolean isValid() {
+        if (value == null || StringUtils.isBlank(value)) {
+            if (required) {
+                if (StringUtils.isBlank(validationErrorText)) {
+                    validationErrorText = "Field is required";
+                }
+                return false;
+            }
+        } else if (StringUtils.isNotBlank(validationExpression)) {
+            if (!value.matches(validationExpression)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
