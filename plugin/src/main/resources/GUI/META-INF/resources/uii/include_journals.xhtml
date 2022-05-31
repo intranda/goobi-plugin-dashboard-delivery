@@ -119,7 +119,7 @@
                             </ui:fragment>
 
                             <ui:fragment rendered="#{field.displayType == 'picklist'}">
-                                <zlb:corporate
+                                <zlb:picklist
                                     identifier="field_#{status.index}"
                                     labelText="#{field.label}"
                                     labelHelpText="{field.helpMessage}"
@@ -222,7 +222,7 @@
                             </ui:fragment>
 
                             <ui:fragment rendered="#{field.displayType == 'picklist'}">
-                                <zlb:corporate
+                                <zlb:picklist
                                     identifier="field_#{status.index}"
                                     labelText="#{field.label}"
                                     labelHelpText="{field.helpMessage}"

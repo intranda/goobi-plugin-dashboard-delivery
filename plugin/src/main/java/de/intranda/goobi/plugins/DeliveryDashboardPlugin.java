@@ -500,7 +500,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         // TODO
         System.out.println("Found field to duplicate: " + currentField.getLabel());
 
-        // TODO find field in group, get location of the field in list, add a second field one position behind
+        // TODO find field in group, get location of the field in list, add a second field one position behind, mark as optional
 
     }
 

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.validator.routines.checkdigit.EAN13CheckDigit;
 import org.goobi.vocabulary.Field;
 import org.goobi.vocabulary.VocabRecord;
 import org.goobi.vocabulary.Vocabulary;
@@ -112,18 +113,169 @@ public class MetadataField {
     }
 
     public boolean isValid() {
+        // check field type, different validation for different types
+        if ("person".equals(displayType)) {
+            // if required, role and either firstname or lastname must be filled
+            if (required) {
+                if (StringUtils.isBlank(role) || (StringUtils.isBlank(value) && StringUtils.isBlank(value2))) {
+                    return false;
+                }
+            }
+            return true;
+        } else if ("corporate".equals(displayType)) {
+            // if required, role and name must be filled
+            if (required) {
+                if (StringUtils.isBlank(role) || StringUtils.isBlank(value)) {
+                    return false;
+                }
+            }
+            return true;
+        } else if ("picklist".equals(displayType)) {
+            // if required, type and value must be selected
+            if (required) {
+                if (StringUtils.isBlank(role) || StringUtils.isBlank(value)) {
+                    return false;
+                }
+            }
+            // different validation based on selected type
+            if (StringUtils.isNotBlank(role) && StringUtils.isNotBlank(value)) {
+                switch (role) {
+                    case "ISBN":
+                        //  zulässige Zeichen: Ziffern, Bindestriche und X
+                        //  Zeichenbegrenzung: max. 17 Zeichen
+
+                        if (value.length() > 17) {
+                            // to many characters
+                            return false;
+                        }
+                        // ISBN-13: 978-3-86680-192-9
+                        // ISBN-10: 3-86640-001-2
+
+                        // remove hyphens
+                        String number = value.replace("-", "");
+                        // must be numeric or numeric + X
+                        if (!number.matches("[0-9]{10}|[0-9]{9}X|[0-9]{13}|[0-9]{12}X")) {
+                            // invalid characters
+                            validationErrorText = "Falsche Anzahl oder ungültige Zeichen, bitte ISBN-10 oder ISBN-13 angeben.";
+                            return false;
+                        }
+                        // check length, should be 10 or 13
+                        // 10 -> isbn validation
+                        if (number.length() == 10) {
+                            if (!validateIdentifier(number)) {
+                                validationErrorText = "Ungültige ISBN-10 Nummer.";
+                                return false;
+                            }
+                        }
+                        // 13 -> ean validation
+                        if (number.length() == 13) {
+                            if (!EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(number)) {
+                                validationErrorText = "Ungültige ISBN-13 Nummer.";
+                                return false;
+                            }
+                        }
+                        // wrong number of digits
+                        if (number.length() != 10 && number.length() != 13) {
+                            validationErrorText = "Falsche Anzahl Zeichen, bitte ISBN-10 oder ISBN-13 angeben.";
+                            return false;
+                        }
+                        break;
+
+                    case "GTIN/EAN":
+                        // last character is used as checksum. Calculation is done with this algorithm: https://www.gs1.org/services/how-calculate-check-digit-manually
+                        // some valid codes:
+                        // GTIN-8: 12345670
+                        // EAN / GTIN-13: 4012345000009
+                        // GTIN-14: 94054321000019
+
+                        // zulässige Zeichen: Ziffern
+                        // Zeichenbegrenzung: max. 14 Zeichen, bei geringerer Stelligkeit werden vorangehende Leerstellen mit Nullen aufgefüllt
+                        if (value.length() > 14) {
+                            // to many characters
+                            return false;
+                        }
+                        if (!EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(value)) {
+                            validationErrorText = "Kein gültiger GTIN/EAN Code.";
+                            return false;
+                        }
+
+                        if (value.length() < 14) {
+                            // fill string with leading 000
+                            StringBuilder sb = new StringBuilder();
+                            for (int i = 0; i < 14 - value.length(); i++) {
+                                sb.append("0");
+                            }
+                            sb.append(value);
+
+                            value = sb.toString();
+                        }
+                        break;
+
+                    case "ISSN":
+                        // zulässige Zeichen: Ziffern, Bindestriche und X
+                        // Zeichenbegrenzung: 9 Zeichen
+                        if (!value.matches("[0-9]{8}|[0-9]{7}X|[0-9]{4}\\-[0-9]{4}|[0-9]{4}\\-[0-9]{3}X")) {
+                            // invalid characters
+                            return false;
+                        }
+
+                        if (!validateIdentifier(value)) {
+                            // invalid characters
+                            // valid examples: 0317-8471, 1050-124X
+                            validationErrorText = "ISSN ist invalide. Bitte eine gültige ISSN in der Form XXXX-XXXX angeben.";
+                            return false;
+                        }
+                        break;
+                }
+            }
+        }
+
+        //  simple field validation
+
         if (value == null || StringUtils.isBlank(value)) {
             if (required) {
-                if (StringUtils.isBlank(validationErrorText)) {
-                    validationErrorText = "Field is required";
-                }
                 return false;
             }
-        } else if (StringUtils.isNotBlank(validationExpression)) {
+        }
+
+        else if (StringUtils.isNotBlank(value) && StringUtils.isNotBlank(validationExpression)) {
             if (!value.matches(validationExpression)) {
                 return false;
             }
         }
+
         return true;
+    }
+
+    /*
+     * Validate, if the given string is a valid identifier
+     * 
+     * Algorithm:
+     * remove optional hyphens
+     * Take all but the last digits of the identifier
+     * Take the weighting factors associated with each digit: ... 8 7 6 5 4 3 2
+     * Multiply each digit in turn by its weighting factor
+     * Add these numbers together
+     * Divide this sum by the modulus 11
+     * Substract the remainder from 11
+     * Compare the remainder with the most right position. If the remainder is 10, expect 'X' or 'x'
+     * 
+     */
+
+    public static boolean validateIdentifier(String value) {
+        value = value.replace("-", "");
+        int checksum = 0;
+        int weight = 2;
+        int val;
+        int l = value.length() - 1;
+        for (int i = l - 1; i >= 0; i--) {
+            val = value.charAt(i) - '0';
+            checksum += val * weight++;
+        }
+        int mod = checksum % 11;
+        if (mod != 0) {
+            mod = 11 - mod;
+        }
+        return mod == (value.charAt(l) == 'X' || value.charAt(l) == 'x' ? 10 : value.charAt(l) - '0');
     }
 }
