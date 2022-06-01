@@ -46,7 +46,9 @@
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.selectList}"
                                     subClass="persongrid"
-                                    fieldName="#{field.label}" />
+                                    fieldName="#{field.label}"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render=":grp" />
                             </ui:fragment>
 
                             <ui:fragment rendered="#{field.displayType == 'corporate'}">
@@ -60,7 +62,9 @@
                                     propertyValid="#{field.valid}"
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.selectList}"
-                                    subClass="corporategrid" />
+                                    subClass="corporategrid"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render=":grp" />
                             </ui:fragment>
 
                             <ui:fragment rendered="#{field.displayType == 'picklist'}">
@@ -74,7 +78,9 @@
                                     propertyValid="#{field.valid}"
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.selectList}"
-                                    subClass="corporategrid" />
+                                    subClass="corporategrid"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render=":grp" />
                             </ui:fragment>
 
 
@@ -90,18 +96,10 @@
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.selectList}"
                                     booleanValue="#{field.booleanValue}"
-                                    subValue="#{field.value2}" />
+                                    subValue="#{field.value2}"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render=":grp" />
                             </ui:fragment>
-                            <!--                                 <h:panelGroup rendered="#{field.cardinality == '+' or field.cardinality == '*'}"> -->
-                            <!--                                     <button -->
-                            <!--                                         jsf:id="button" -->
-                            <!--                                         jsf:action="#{DashboardForm.plugin.duplicateMetadataField}"> -->
-                            <!--                                         <i class="fa fa-plus" /> -->
-                            <!--                                         <f:setPropertyActionListener -->
-                            <!--                                             value="#{field}" -->
-                            <!--                                             target="#{DashboardForm.plugin.currentField}" /> -->
-                            <!--                                     </button> -->
-                            <!--                                 </h:panelGroup> -->
                         </ui:repeat>
                     </ui:fragment>
                 </ui:repeat>
@@ -141,7 +139,9 @@
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.selectList}"
                                     subClass="persongrid"
-                                    fieldName="#{field.label}" />
+                                    fieldName="#{field.label}"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render=":grp" />
                             </ui:fragment>
 
                             <ui:fragment rendered="#{field.displayType == 'corporate'}">
@@ -155,7 +155,9 @@
                                     propertyValid="#{field.valid}"
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.selectList}"
-                                    subClass="corporategrid" />
+                                    subClass="corporategrid"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render=":grp" />
                             </ui:fragment>
 
                             <ui:fragment rendered="#{field.displayType == 'picklist'}">
@@ -169,7 +171,9 @@
                                     propertyValid="#{field.valid}"
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.selectList}"
-                                    subClass="corporategrid" />
+                                    subClass="corporategrid"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render=":grp" />
                             </ui:fragment>
 
 
@@ -185,18 +189,10 @@
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.selectList}"
                                     booleanValue="#{field.booleanValue}"
-                                    subValue="#{field.value2}" />
+                                    subValue="#{field.value2}"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render=":grp" />
                             </ui:fragment>
-                            <!--                                 <h:panelGroup rendered="#{field.cardinality == '+' or field.cardinality == '*'}"> -->
-                            <!--                                     <button -->
-                            <!--                                         jsf:id="button" -->
-                            <!--                                         jsf:action="#{DashboardForm.plugin.duplicateMetadataField}"> -->
-                            <!--                                         <i class="fa fa-plus" /> -->
-                            <!--                                         <f:setPropertyActionListener -->
-                            <!--                                             value="#{field}" -->
-                            <!--                                             target="#{DashboardForm.plugin.currentField}" /> -->
-                            <!--                                     </button> -->
-                            <!--                                 </h:panelGroup> -->
                         </ui:repeat>
                     </ui:fragment>
                 </ui:repeat>
@@ -235,7 +231,9 @@
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.selectList}"
                                     subClass="persongrid"
-                                    fieldName="#{field.label}" />
+                                    fieldName="#{field.label}"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render=":grp" />
                             </ui:fragment>
 
                             <ui:fragment rendered="#{field.displayType == 'corporate'}">
@@ -249,7 +247,9 @@
                                     propertyValid="#{field.valid}"
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.selectList}"
-                                    subClass="corporategrid" />
+                                    subClass="corporategrid"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render=":grp" />
                             </ui:fragment>
 
                             <ui:fragment rendered="#{field.displayType == 'picklist'}">
@@ -263,7 +263,9 @@
                                     propertyValid="#{field.valid}"
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.selectList}"
-                                    subClass="corporategrid" />
+                                    subClass="corporategrid"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render=":grp" />
                             </ui:fragment>
 
 
@@ -279,18 +281,10 @@
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.selectList}"
                                     booleanValue="#{field.booleanValue}"
-                                    subValue="#{field.value2}" />
+                                    subValue="#{field.value2}"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render=":grp" />
                             </ui:fragment>
-                            <!--                                 <h:panelGroup rendered="#{field.cardinality == '+' or field.cardinality == '*'}"> -->
-                            <!--                                     <button -->
-                            <!--                                         jsf:id="button" -->
-                            <!--                                         jsf:action="#{DashboardForm.plugin.duplicateMetadataField}"> -->
-                            <!--                                         <i class="fa fa-plus" /> -->
-                            <!--                                         <f:setPropertyActionListener -->
-                            <!--                                             value="#{field}" -->
-                            <!--                                             target="#{DashboardForm.plugin.currentField}" /> -->
-                            <!--                                     </button> -->
-                            <!--                                 </h:panelGroup> -->
                         </ui:repeat>
                     </ui:fragment>
                 </ui:repeat>

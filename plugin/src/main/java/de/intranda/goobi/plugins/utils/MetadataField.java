@@ -120,6 +120,7 @@ public class MetadataField {
                 if (StringUtils.isBlank(role) || (StringUtils.isBlank(value) && StringUtils.isBlank(value2))) {
                     return false;
                 }
+                // TODO if firstname or lastname is used, role must be set
             }
             return true;
         } else if ("corporate".equals(displayType)) {
@@ -128,6 +129,7 @@ public class MetadataField {
                 if (StringUtils.isBlank(role) || StringUtils.isBlank(value)) {
                     return false;
                 }
+                // TODO if name is filled, role must be set
             }
             return true;
         } else if ("picklist".equals(displayType)) {
@@ -277,5 +279,31 @@ public class MetadataField {
             mod = 11 - mod;
         }
         return mod == (value.charAt(l) == 'X' || value.charAt(l) == 'x' ? 10 : value.charAt(l) - '0');
+    }
+
+
+    public MetadataField cloneField() {
+        MetadataField mf = new MetadataField();
+        mf.setCardinality(cardinality);
+        mf.setDisplayType(displayType);
+        mf.setHelpMessage(helpMessage);
+        mf.setLabel(label);
+        mf.setMarcMainTag(marcMainTag);
+        mf.setMarcSubTag(marcSubTag);
+        mf.setMetadataLevel(metadataLevel);
+        mf.setRequired(false);
+
+        mf.setRulesetName(rulesetName);
+        mf.setSelectList(selectList);
+        mf.setValidationErrorText(validationErrorText);
+        mf.setValidationExpression(validationExpression);
+        mf.setVocabList(vocabList);
+        mf.setVocabularyDisplayField(vocabularyDisplayField);
+        mf.setVocabularyImportField(vocabularyImportField);
+        mf.setVocabularyName(vocabularyName);
+        mf.setVocabularyUrl(vocabularyUrl);
+
+        return mf;
+
     }
 }

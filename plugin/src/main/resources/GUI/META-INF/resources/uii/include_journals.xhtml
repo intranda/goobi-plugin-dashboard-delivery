@@ -82,88 +82,97 @@
                         <h2>
                             <h:outputText value="#{group.label}" />
                         </h2>
-                                
+
                         <ui:repeat
                             var="field"
                             value="#{group.fields}"
                             varStatus="status">
+                            <h:panelGroup id="grp">
+                                <ui:fragment rendered="#{field.displayType == 'person'}">
+                                    <zlb:person
+                                        identifier="field_#{status.index}"
+                                        labelText="#{field.label}"
+                                        labelHelpText="{field.helpMessage}"
+                                        value="#{field.value}"
+                                        required="#{field.required}"
+                                        secondValue="#{field.value2}"
+                                        role="#{field.role}"
+                                        propertyValid="#{field.valid}"
+                                        errorMessageText="#{field.validationErrorText}"
+                                        selectItems="#{field.selectList}"
+                                        subClass="persongrid"
+                                        fieldName="#{field.label}"
+                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                        render=":grp" />
+                                </ui:fragment>
 
-                            <ui:fragment rendered="#{field.displayType == 'person'}">
-                                <zlb:person
-                                    identifier="field_#{status.index}"
-                                    labelText="#{field.label}"
-                                    labelHelpText="{field.helpMessage}"
-                                    value="#{field.value}"
-                                    required="#{field.required}"
-                                    secondValue="#{field.value2}"
-                                    role="#{field.role}"
-                                    propertyValid="#{field.valid}"
-                                    errorMessageText="#{field.validationErrorText}"
-                                    selectItems="#{field.selectList}"
-                                    subClass="persongrid"
-                                    fieldName="#{field.label}" />
-                            </ui:fragment>
+                                <ui:fragment rendered="#{field.displayType == 'corporate'}">
+                                    <zlb:corporate
+                                        identifier="field_#{status.index}"
+                                        labelText="#{field.label}"
+                                        labelHelpText="{field.helpMessage}"
+                                        value="#{field.value}"
+                                        required="#{field.required}"
+                                        role="#{field.role}"
+                                        propertyValid="#{field.valid}"
+                                        errorMessageText="#{field.validationErrorText}"
+                                        selectItems="#{field.selectList}"
+                                        subClass="corporategrid"
+                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                        render=":grp" />
+                                </ui:fragment>
 
-                            <ui:fragment rendered="#{field.displayType == 'corporate'}">
-                                <zlb:corporate
-                                    identifier="field_#{status.index}"
-                                    labelText="#{field.label}"
-                                    labelHelpText="{field.helpMessage}"
-                                    value="#{field.value}"
-                                    required="#{field.required}"
-                                    role="#{field.role}"
-                                    propertyValid="#{field.valid}"
-                                    errorMessageText="#{field.validationErrorText}"
-                                    selectItems="#{field.selectList}"
-                                    subClass="corporategrid" />
-                            </ui:fragment>
-
-                            <ui:fragment rendered="#{field.displayType == 'picklist'}">
-                                <zlb:picklist
-                                    identifier="field_#{status.index}"
-                                    labelText="#{field.label}"
-                                    labelHelpText="{field.helpMessage}"
-                                    value="#{field.value}"
-                                    required="#{field.required}"
-                                    role="#{field.role}"
-                                    propertyValid="#{field.valid}"
-                                    errorMessageText="#{field.validationErrorText}"
-                                    selectItems="#{field.selectList}"
-                                    subClass="corporategrid" />
-                            </ui:fragment>
-
-
-                            <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
-                                <zlb:field
-                                    identifier="field_#{status.index}"
-                                    labelText="#{field.label}"
-                                    labelHelpText="{field.helpMessage}"
-                                    required="#{field.required}"
-                                    value="#{field.value}"
-                                    fieldType="#{field.displayType}"
-                                    propertyValid="#{field.valid}"
-                                    errorMessageText="#{field.validationErrorText}"
-                                    selectItems="#{field.selectList}"
-                                    booleanValue="#{field.booleanValue}"
-                                    subValue="#{field.value2}" />
-                            </ui:fragment>
+                                <ui:fragment rendered="#{field.displayType == 'picklist'}">
+                                    <zlb:picklist
+                                        identifier="field_#{status.index}"
+                                        labelText="#{field.label}"
+                                        labelHelpText="{field.helpMessage}"
+                                        value="#{field.value}"
+                                        required="#{field.required}"
+                                        role="#{field.role}"
+                                        propertyValid="#{field.valid}"
+                                        errorMessageText="#{field.validationErrorText}"
+                                        selectItems="#{field.selectList}"
+                                        subClass="corporategrid"
+                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                        render=":grp" />
+                                </ui:fragment>
 
 
+                                <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
+                                    <zlb:field
+                                        identifier="field_#{status.index}"
+                                        labelText="#{field.label}"
+                                        labelHelpText="{field.helpMessage}"
+                                        required="#{field.required}"
+                                        value="#{field.value}"
+                                        fieldType="#{field.displayType}"
+                                        propertyValid="#{field.valid}"
+                                        errorMessageText="#{field.validationErrorText}"
+                                        selectItems="#{field.selectList}"
+                                        booleanValue="#{field.booleanValue}"
+                                        subValue="#{field.value2}"
+                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                        render=":grp" />
+
+                                </ui:fragment>
+
+                            </h:panelGroup>
 
                         </ui:repeat>
                     </ui:fragment>
                 </ui:repeat>
-                
-                 <button
-                                jsf:action="#{DashboardForm.plugin.createJournalTitle}"
-                                jsf:id="nextStep"
-                                class="float-left btn btn-primary font-size-s">
-                                <h:outputText value="#{msgs.next}" />
-                                <f:ajax
-                                    render="main-area"
-                                    execute="@this" />
-                            </button>
-                
+
+                <button
+                    jsf:action="#{DashboardForm.plugin.createJournalTitle}"
+                    jsf:id="nextStep"
+                    class="float-left btn btn-primary font-size-s">
+                    <h:outputText value="#{msgs.next}" />
+                    <f:ajax
+                        render="main-area"
+                        execute="@this" />
+                </button>
+
             </h:form>
 
 
@@ -175,7 +184,9 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
 
-<h:form styleClass="form-validate layout">
+            <!-- TODO add file upload area -->
+
+            <h:form styleClass="form-validate layout">
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
@@ -185,88 +196,96 @@
                             <h:outputText value="#{group.label}" />
                         </h2>
 
+                        <h:panelGroup id="grp">
+
+                            <ui:repeat
+                                var="field"
+                                value="#{group.fields}"
+                                varStatus="status">
+                                <ui:fragment rendered="#{field.displayType == 'person'}">
+                                    <zlb:person
+                                        identifier="field_#{status.index}"
+                                        labelText="#{field.label}"
+                                        labelHelpText="{field.helpMessage}"
+                                        value="#{field.value}"
+                                        required="#{field.required}"
+                                        secondValue="#{field.value2}"
+                                        role="#{field.role}"
+                                        propertyValid="#{field.valid}"
+                                        errorMessageText="#{field.validationErrorText}"
+                                        selectItems="#{field.selectList}"
+                                        subClass="persongrid"
+                                        fieldName="#{field.label}"
+                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                        render=":grp" />
+                                </ui:fragment>
+
+                                <ui:fragment rendered="#{field.displayType == 'corporate'}">
+                                    <zlb:corporate
+                                        identifier="field_#{status.index}"
+                                        labelText="#{field.label}"
+                                        labelHelpText="{field.helpMessage}"
+                                        value="#{field.value}"
+                                        required="#{field.required}"
+                                        role="#{field.role}"
+                                        propertyValid="#{field.valid}"
+                                        errorMessageText="#{field.validationErrorText}"
+                                        selectItems="#{field.selectList}"
+                                        subClass="corporategrid"
+                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                        render=":grp" />
+                                </ui:fragment>
+
+                                <ui:fragment rendered="#{field.displayType == 'picklist'}">
+                                    <zlb:picklist
+                                        identifier="field_#{status.index}"
+                                        labelText="#{field.label}"
+                                        labelHelpText="{field.helpMessage}"
+                                        value="#{field.value}"
+                                        required="#{field.required}"
+                                        role="#{field.role}"
+                                        propertyValid="#{field.valid}"
+                                        errorMessageText="#{field.validationErrorText}"
+                                        selectItems="#{field.selectList}"
+                                        subClass="corporategrid"
+                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                        render=":grp" />
+                                </ui:fragment>
 
 
-                        <ui:repeat
-                            var="field"
-                            value="#{group.fields}"
-                            varStatus="status">
-                            <ui:fragment rendered="#{field.displayType == 'person'}">
-                                <zlb:person
-                                    identifier="field_#{status.index}"
-                                    labelText="#{field.label}"
-                                    labelHelpText="{field.helpMessage}"
-                                    value="#{field.value}"
-                                    required="#{field.required}"
-                                    secondValue="#{field.value2}"
-                                    role="#{field.role}"
-                                    propertyValid="#{field.valid}"
-                                    errorMessageText="#{field.validationErrorText}"
-                                    selectItems="#{field.selectList}"
-                                    subClass="persongrid"
-                                    fieldName="#{field.label}" />
-                            </ui:fragment>
+                                <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
+                                    <zlb:field
+                                        identifier="field_#{status.index}"
+                                        labelText="#{field.label}"
+                                        labelHelpText="{field.helpMessage}"
+                                        required="#{field.required}"
+                                        value="#{field.value}"
+                                        fieldType="#{field.displayType}"
+                                        propertyValid="#{field.valid}"
+                                        errorMessageText="#{field.validationErrorText}"
+                                        selectItems="#{field.selectList}"
+                                        booleanValue="#{field.booleanValue}"
+                                        subValue="#{field.value2}"
+                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                        render=":grp" />
+                                </ui:fragment>
 
-                            <ui:fragment rendered="#{field.displayType == 'corporate'}">
-                                <zlb:corporate
-                                    identifier="field_#{status.index}"
-                                    labelText="#{field.label}"
-                                    labelHelpText="{field.helpMessage}"
-                                    value="#{field.value}"
-                                    required="#{field.required}"
-                                    role="#{field.role}"
-                                    propertyValid="#{field.valid}"
-                                    errorMessageText="#{field.validationErrorText}"
-                                    selectItems="#{field.selectList}"
-                                    subClass="corporategrid" />
-                            </ui:fragment>
-
-                            <ui:fragment rendered="#{field.displayType == 'picklist'}">
-                                <zlb:picklist
-                                    identifier="field_#{status.index}"
-                                    labelText="#{field.label}"
-                                    labelHelpText="{field.helpMessage}"
-                                    value="#{field.value}"
-                                    required="#{field.required}"
-                                    role="#{field.role}"
-                                    propertyValid="#{field.valid}"
-                                    errorMessageText="#{field.validationErrorText}"
-                                    selectItems="#{field.selectList}"
-                                    subClass="corporategrid" />
-                            </ui:fragment>
-
-
-                            <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
-                                <zlb:field
-                                    identifier="field_#{status.index}"
-                                    labelText="#{field.label}"
-                                    labelHelpText="{field.helpMessage}"
-                                    required="#{field.required}"
-                                    value="#{field.value}"
-                                    fieldType="#{field.displayType}"
-                                    propertyValid="#{field.valid}"
-                                    errorMessageText="#{field.validationErrorText}"
-                                    selectItems="#{field.selectList}"
-                                    booleanValue="#{field.booleanValue}"
-                                    subValue="#{field.value2}"/>
-                            </ui:fragment>
-
-                        </ui:repeat>
-                        
+                            </ui:repeat>
+                        </h:panelGroup>
                     </ui:fragment>
                 </ui:repeat>
-                                     <button
-                                jsf:action="#{DashboardForm.plugin.createJournalIssue}"
-                                jsf:id="createIssue"
-                                class="float-left btn btn-primary font-size-s">
-                                <h:outputText value="#{msgs.next}" />
-                                <f:ajax
-                                    render="main-area"
-                                    execute="@this" />
-                            </button>
+                <button
+                    jsf:action="#{DashboardForm.plugin.createJournalIssue}"
+                    jsf:id="createIssue"
+                    class="float-left btn btn-primary font-size-s">
+                    <h:outputText value="#{msgs.next}" />
+                    <f:ajax
+                        render="main-area"
+                        execute="@this" />
+                </button>
             </h:form>
 
-</ui:fragment>
+        </ui:fragment>
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main'}">

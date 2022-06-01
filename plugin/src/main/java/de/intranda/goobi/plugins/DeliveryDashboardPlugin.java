@@ -497,11 +497,27 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     public void duplicateMetadataField() {
-        // TODO
-        System.out.println("Found field to duplicate: " + currentField.getLabel());
-
-        // TODO find field in group, get location of the field in list, add a second field one position behind, mark as optional
-
+        // find field in group,
+        for (FieldGrouping fg : configuredGroups) {
+            if (fg.getDocumentType().equals(documentType)) {
+                // get location of the field in list
+                int position = 0;
+                boolean found = false;
+                for (MetadataField mf : fg.getFields()) {
+                    if (mf ==currentField) {
+                        found = true;
+                        break;
+                    }
+                    position=position +1;
+                }
+                if (found) {
+                    // add a second field of the same type one position behind, mark as optional
+                    MetadataField clone = currentField.cloneField();
+                    fg.getFields().add(position+1, clone);
+                    break;
+                }
+            }
+        }
     }
 
     public void startNewImport() {
