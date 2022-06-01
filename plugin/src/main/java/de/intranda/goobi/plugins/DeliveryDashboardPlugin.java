@@ -96,8 +96,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     // upload a file
     private Part file;
 
-    // TODO get it from configuration file
-    private String processTemplateName = "Standard";
+    private String monographTemplateName = "Standard";
+    private String journalTemplateName = "Standard";
     private String zdbProcessTemplateName = "ZDB_template";
 
     private String monographicDocType;
@@ -133,6 +133,13 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         zdbTitleDocType = config.getString("/doctypes/zdbRecordType", "ZdbTitle");
         journalDocType = config.getString("/doctypes/journalType", "Periodical");
         issueDocType = config.getString("/doctypes/issueType", "PeriodicalVolume");
+
+
+        monographTemplateName = config.getString("/processtemplates/monograph");
+        journalTemplateName = config.getString("/processtemplates/journal");
+        zdbProcessTemplateName= config.getString("/processtemplates/zdbTitle");
+
+
 
         List<HierarchicalConfiguration> groups = config.configurationsAt("/group");
 
@@ -279,7 +286,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 break;
             case "overview":
                 navigation = "finish";
-                createProcess();
+                createProcess(monographTemplateName);
 
                 break;
             default:
@@ -287,9 +294,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         }
     }
 
-    private void createProcess() {
-        // TODO do all use the same template? Or each institution a different one? All in the same project or a new project for each user?
-        Process template = ProcessManager.getProcessByTitle(processTemplateName);
+    private void createProcess(String templateName) {
+        // do all use the same template? Or each institution a different one? All in the same project or a new project for each user?
+        Process template = ProcessManager.getProcessByTitle(templateName);
 
         Prefs prefs = template.getRegelsatz().getPreferences();
         String processTitle = "TODO"; // TODO institution + user + some record metadata?
@@ -548,9 +555,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     public void createJournalIssue() {
-
-        createProcess();
-        // TODO send mail to zlb staff
+        createProcess(journalTemplateName);
     }
 
     private List<SelectItem> generateListOfJournalTitles() {

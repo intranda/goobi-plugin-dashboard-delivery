@@ -2,15 +2,22 @@
 
 <config_plugin>
 
-<doctypes>
-    <!-- used to create monographic items -->
-    <monographic>Monograph</monographic>
-    <!-- Document type to register ZDB title data -->
-    <zdbRecordType>ZdbTitle</zdbRecordType>
-    <!-- document types to create new issue items -->
-    <journalType>Periodical</journalType>
-    <issueType>PeriodicalVolume</issueType>
-</doctypes>
+    <doctypes>
+        <!-- used to create monographic items -->
+        <monographic>Monograph</monographic>
+        <!-- Document type to register ZDB title data -->
+        <zdbRecordType>ZdbTitle</zdbRecordType>
+        <!-- document types to create new issue items -->
+        <journalType>Periodical</journalType>
+        <issueType>PeriodicalVolume</issueType>
+    </doctypes>
+
+    <processtemplates>
+        <monograph>Standard</monograph>
+        <zdbTitle>ZDB_template</zdbTitle>
+        <journal>Standard</journal>
+    </processtemplates>
+
 
 
     <!-- metadata fields for monographic items -->
@@ -26,12 +33,14 @@
             <selectfield value="Author" label="Autor" />
             <selectfield value="Artist" label="Künstler" />
             <selectfield value="Translator" label="Übersetzer" />
+            <!-- <vocabulary name="PersonRoleTerms" displayField="Bezeichnung" importField="Metadatum" /> -->
         </field>
 
         <field rulesetName="Author" label="Beteiligte Organisation" displayType="corporate" metadataLevel="anchor" cardinality="*" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
             <selectfield value="CorporateAuthor" label="Autor" />
             <selectfield value="CorporateArtist" label="Künstler" />
             <selectfield value="CorporateContributor" label="Mitwirkende Körperschaft" />
+            <!-- <vocabulary name="CorporateRoleTerms" displayField="Bezeichnung" importField="Metadatum" /> -->
         </field>
     </group>
 
@@ -113,6 +122,8 @@
             <selectfield value="CorporateAuthor" label="Autor" />
             <selectfield value="CorporateArtist" label="Künstler" />
             <selectfield value="CorporateContributor" label="Mitwirkende Körperschaft" />
+            <!--             <vocabulary name="CorporateRoleTerms" displayField="Bezeichnung" importField="Metadatum" />
+             -->
         </field>
     </group>
 
