@@ -105,6 +105,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     private String journalDocType;
     private String issueDocType;
 
+    private String zdbIdFieldName;
+
     @Getter
     private List<FieldGrouping> configuredGroups = new ArrayList<>();
 
@@ -133,13 +135,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         zdbTitleDocType = config.getString("/doctypes/zdbRecordType", "ZdbTitle");
         journalDocType = config.getString("/doctypes/journalType", "Periodical");
         issueDocType = config.getString("/doctypes/issueType", "PeriodicalVolume");
-
+        zdbIdFieldName = config.getString("/doctypes/zdbId", "CatalogIDPeriodicalDB");
 
         monographTemplateName = config.getString("/processtemplates/monograph");
         journalTemplateName = config.getString("/processtemplates/journal");
-        zdbProcessTemplateName= config.getString("/processtemplates/zdbTitle");
-
-
+        zdbProcessTemplateName = config.getString("/processtemplates/zdbTitle");
 
         List<HierarchicalConfiguration> groups = config.configurationsAt("/group");
 
@@ -295,17 +295,27 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     private void createProcess(String templateName) {
+
+        User user = Helper.getCurrentUser();
+        String acccountName = "";
+        String institutionName = "";
+        if (user != null) {
+            acccountName = user.getLogin();
+            institutionName = user.getInstitution().getShortName();
+        }
+        String identifier = UUID.randomUUID().toString();
+
         // do all use the same template? Or each institution a different one? All in the same project or a new project for each user?
         Process template = ProcessManager.getProcessByTitle(templateName);
-
         Prefs prefs = template.getRegelsatz().getPreferences();
-        String processTitle = "TODO"; // TODO institution + user + some record metadata?
+        // username + shortname + counter
+        String processTitle = acccountName + "_" + institutionName + "_" + identifier;
 
         // create fileformat, import entered metadata
-        Fileformat fileformat = createFileformat(prefs);
+        Fileformat fileformat = createFileformat(prefs, identifier);
 
         // save metadata and create goobi process
-        Process process = new BeanHelper().createAndSaveNewProcess(template, processTitle, fileformat);
+        Process process = new BeanHelper().createAndSaveNewProcess(template, processTitle.replaceAll("\\W", "").toLowerCase(), fileformat);
 
         //  after creation, move uploaded files into process source folder
         try {
@@ -321,13 +331,13 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             log.error(e);
         }
 
-        createProperties(process);
+        createProperties(process, acccountName, institutionName);
 
         // TODO send success mail, start any automatic tasks
 
     }
 
-    private Fileformat createFileformat(Prefs prefs) {
+    private Fileformat createFileformat(Prefs prefs, String identifier) {
 
         Fileformat fileformat = null;
         try {
@@ -340,22 +350,30 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             DocStruct physical = null;
             physical = dd.createDocStruct(prefs.getDocStrctTypeByName("BoundBook"));
             dd.setPhysicalDocStruct(physical);
+
+            Metadata md = null;
+            try {
+                md = new Metadata(prefs.getMetadataTypeByName("CatalogIDDigital"));
+                md.setValue(identifier);
+            } catch (MetadataTypeNotAllowedException e) {
+            }
+
             if (documentType.equals("monograph")) {
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(monographicDocType));
                 dd.setLogicalDocStruct(docstruct);
-                Metadata md = createIdentifierMetadata(prefs);
+                //                Metadata md = createIdentifierMetadata(prefs);
                 docstruct.addMetadata(md);
             } else if (documentType.equals("journal") && navigation.equals("newTitle")) {
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(zdbTitleDocType));
                 dd.setLogicalDocStruct(docstruct);
-                Metadata md = createIdentifierMetadata(prefs);
+                //                Metadata md = createIdentifierMetadata(prefs);
                 docstruct.addMetadata(md);
             } else if (documentType.equals("journal") && navigation.equals("newIssue")) {
                 anchor = dd.createDocStruct(prefs.getDocStrctTypeByName(journalDocType));
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(issueDocType));
                 dd.setLogicalDocStruct(anchor);
                 anchor.addChild(docstruct);
-                Metadata md = createIdentifierMetadata(prefs);
+                //                Metadata md = createIdentifierMetadata(prefs);
                 docstruct.addMetadata(md);
 
                 for (FieldGrouping fg : configuredGroups) {
@@ -511,16 +529,16 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 int position = 0;
                 boolean found = false;
                 for (MetadataField mf : fg.getFields()) {
-                    if (mf ==currentField) {
+                    if (mf == currentField) {
                         found = true;
                         break;
                     }
-                    position=position +1;
+                    position = position + 1;
                 }
                 if (found) {
                     // add a second field of the same type one position behind, mark as optional
                     MetadataField clone = currentField.cloneField();
-                    fg.getFields().add(position+1, clone);
+                    fg.getFields().add(position + 1, clone);
                     break;
                 }
             }
@@ -539,17 +557,26 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     public void createJournalTitle() {
 
+        String identifier = UUID.randomUUID().toString();
+
+        User user = Helper.getCurrentUser();
+        String acccountName = "";
+        String institutionName = "";
+        if (user != null) {
+            acccountName = user.getLogin();
+            institutionName = user.getInstitution().getShortName();
+        }
         Process template = ProcessManager.getProcessByTitle(zdbProcessTemplateName);
         Prefs prefs = template.getRegelsatz().getPreferences();
-        String processTitle = "zdb"; // TODO zdb + institution + user + some record metadata?
+        String processTitle = "zdb" + "_" + acccountName + "_" + institutionName + "_" + identifier;
 
         // create fileformat, import entered metadata
-        Fileformat fileformat = createFileformat(prefs);
+        Fileformat fileformat = createFileformat(prefs, identifier);
 
         // save metadata and create goobi process
-        Process process = new BeanHelper().createAndSaveNewProcess(template, processTitle, fileformat);
+        Process process = new BeanHelper().createAndSaveNewProcess(template, processTitle.replaceAll("\\W", "").toLowerCase(), fileformat);
 
-        createProperties(process);
+        createProperties(process, acccountName, institutionName);
 
         // TODO send mail to zlb staff
     }
@@ -569,25 +596,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         // - approved by zlb (has reached a certain step) ?
 
         String institutionName = Helper.getCurrentUser().getInstitutionName();
-        String zdbIdName = "CatalogIDPeriodicalDB"; // TODO get from config
-        //        SET @doctype='Periodical';
-        //        SET @institutionName='test';
-        //
-        //        # get all title records with existing zdb id
-        //        select * from metadata where processid in (
-        //        select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = metadata.processid
-        //        # limit result to current institution
-        //        where titel ="Institution" and wert =@institutionName
-        //        # limit result to periodica
-        //        and metadata.name = "DocStruct" and metadata.value=@doctype
-        //        ) and metadata.name="CatalogIDPeriodicalDB"
-        //        UNION
-        //        # get all title records without issues (id was only used once)
-        //        select * from metadata where processid in (
-        //        select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = metadata.processid
-        //        where titel ="Institution" and wert =@institutionName and metadata.name="CatalogIDDigital"
-        //        and not exists (select * from metadata m2 where m2.name="CatalogIDPeriodicalDB" and m2.processid = metadata.processid)
-        //        group by metadata.value having count(metadata.value) =1) ;
 
         StringBuilder sql = new StringBuilder();
         sql.append("select * from metadata where processid in ( ");
@@ -609,8 +617,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         Connection connection = null;
         try {
             connection = MySQLHelper.getInstance().getConnection();
-            results = new QueryRunner().query(connection, sql.toString(), resultSetToMapHandler, institutionName, zdbTitleDocType, zdbIdName,
-                    institutionName, zdbIdName, zdbTitleDocType);
+            results = new QueryRunner().query(connection, sql.toString(), resultSetToMapHandler, institutionName, zdbTitleDocType, zdbIdFieldName,
+                    institutionName, zdbIdFieldName, zdbTitleDocType);
         } catch (SQLException e) {
             log.error(e);
         } finally {
@@ -662,14 +670,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         }
     };
 
-    private void createProperties(Process process) {
-        User user = Helper.getCurrentUser();
-        String acccountName = "";
-        String institutionName = "";
-        if (user != null) {
-            acccountName = user.getLogin();
-            institutionName = user.getInstitution().getLongName();
-        }
+    private void createProperties(Process process, String acccountName, String institutionName) {
 
         // add properties
         Processproperty userProperty = new Processproperty();
@@ -692,17 +693,15 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         PropertyManager.saveProcessProperty(institutionProperty);
     }
 
-    private Metadata createIdentifierMetadata(Prefs prefs) {
-        Metadata md = null;
-        try {
-            md = new Metadata(prefs.getMetadataTypeByName("CatalogIDDigital"));
-        } catch (MetadataTypeNotAllowedException e) {
-        }
-        UUID uuid = UUID.randomUUID();
-        md.setValue(uuid.toString());
-        return md;
-    }
-
-
+    //    private Metadata createIdentifierMetadata(Prefs prefs) {
+    //        Metadata md = null;
+    //        try {
+    //            md = new Metadata(prefs.getMetadataTypeByName("CatalogIDDigital"));
+    //        } catch (MetadataTypeNotAllowedException e) {
+    //        }
+    //        UUID uuid = UUID.randomUUID();
+    //        md.setValue(uuid.toString());
+    //        return md;
+    //    }
 
 }

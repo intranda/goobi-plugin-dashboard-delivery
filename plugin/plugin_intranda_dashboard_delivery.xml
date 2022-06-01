@@ -10,11 +10,17 @@
         <!-- document types to create new issue items -->
         <journalType>Periodical</journalType>
         <issueType>PeriodicalVolume</issueType>
+
+        <!-- metadata field for ZDB ID -->
+        <zdbId>CatalogIDPeriodicalDB</zdbId>
     </doctypes>
 
     <processtemplates>
+        <!-- process template for monogrpaphic items -->        
         <monograph>Standard</monograph>
+        <!-- process template to register ZDB title data -->
         <zdbTitle>ZDB_template</zdbTitle>
+        <!-- process template for issues-->        
         <journal>Standard</journal>
     </processtemplates>
 
