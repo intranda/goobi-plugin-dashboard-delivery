@@ -203,6 +203,17 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         }
     }
 
+
+    public void readUserConfiguration() {
+        User user = Helper.getCurrentUser();
+        if (user != null) {
+
+
+
+        }
+
+    }
+
     public void save() {
         if (file == null) {
             // no file selected, abort
@@ -237,6 +248,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "main":
                 // first page, do nothing,
                 break;
+            case "userdata":
             case "titleSelection":
                 navigation = "main";
                 break;

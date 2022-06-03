@@ -188,7 +188,7 @@
                                 title="#{msgs.plugin_dashboard_deliverShowDataButton}">
                                 <h:outputText value="#{msgs.plugin_dashboard_deliverShowDataButton}" />
                                 <f:setPropertyActionListener
-                                    value="main"
+                                    value="userdata"
                                     target="#{DashboardForm.plugin.navigation}" />
                                 <f:ajax
                                     render="main-area"
@@ -239,7 +239,13 @@
                 </div>
             </ui:fragment>
 
-
+            <ui:fragment
+                id="userdata"
+                rendered="#{DashboardForm.plugin.navigation== 'userdata'}">
+                <div class="container">
+                    <ui:include src="include_userdata.xhtml" />
+                </div>
+            </ui:fragment>
 
 
         </h:panelGroup>
