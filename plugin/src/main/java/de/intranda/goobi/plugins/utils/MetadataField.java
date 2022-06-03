@@ -15,7 +15,6 @@ import org.goobi.vocabulary.Vocabulary;
 import de.intranda.goobi.plugins.DeliveryDashboardPlugin;
 import de.sub.goobi.persistence.managers.VocabularyManager;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class MetadataField {
@@ -49,8 +48,10 @@ public class MetadataField {
     private String vocabularyDisplayField;
     private String vocabularyImportField;
 
-    @Getter
     private String vocabularyUrl;
+
+
+    private String additionalType; // is not shown in UI, is used to store field name from user or institution objects
 
     public void setBooleanValue(boolean val) {
         if (val) {

@@ -42,9 +42,11 @@ import de.sub.goobi.helper.StorageProvider;
 import de.sub.goobi.helper.enums.PropertyType;
 import de.sub.goobi.helper.exceptions.DAOException;
 import de.sub.goobi.helper.exceptions.SwapException;
+import de.sub.goobi.persistence.managers.InstitutionManager;
 import de.sub.goobi.persistence.managers.MySQLHelper;
 import de.sub.goobi.persistence.managers.ProcessManager;
 import de.sub.goobi.persistence.managers.PropertyManager;
+import de.sub.goobi.persistence.managers.UserManager;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -225,12 +227,16 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             userData = new FieldGrouping();
             userData.setDocumentType("user");
             userData.setLabel("User");
-            // TODO add regular user data like account name, email, location,....
+            //  add regular user data like account name, email, ....
+
+            getUserData(user);
 
             institutionData = new FieldGrouping();
             institutionData.setDocumentType("institution");
             institutionData.setLabel("Institution");
-            // TODO add regular institution data
+            // add regular institution data
+
+            getInstitutionData(inst);
 
             contactData = new FieldGrouping();
             contactData.setDocumentType("contact");
@@ -277,6 +283,108 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
             }
         }
+    }
+
+    private void getUserData(User user) {
+        MetadataField loginField = new MetadataField();
+        loginField.setLabel(Helper.getTranslation("login_new_account_accountName"));
+        loginField.setDisplayType("output");
+        loginField.setRequired(true);
+        loginField.setCardinality("1");
+        loginField.setAdditionalType("login");
+        loginField.setValue(user.getLogin());
+        userData.getFields().add(loginField);
+
+        MetadataField firstname = new MetadataField();
+        firstname.setLabel(Helper.getTranslation("firstname"));
+        firstname.setDisplayType("input");
+        firstname.setRequired(true);
+        firstname.setCardinality("1");
+        firstname.setAdditionalType("firstname");
+        firstname.setValue(user.getVorname());
+        userData.getFields().add(firstname);
+
+        MetadataField lastname = new MetadataField();
+        lastname.setLabel(Helper.getTranslation("lastname"));
+        lastname.setDisplayType("input");
+        lastname.setRequired(true);
+        lastname.setCardinality("1");
+        lastname.setAdditionalType("lastname");
+        lastname.setValue(user.getNachname());
+        userData.getFields().add(lastname);
+
+        MetadataField emailAddress = new MetadataField();
+        emailAddress.setLabel(Helper.getTranslation("login_new_account_emailAddress"));
+        emailAddress.setDisplayType("output");
+        emailAddress.setRequired(true);
+        emailAddress.setCardinality("1");
+        emailAddress.setAdditionalType("email");
+        emailAddress.setValue(user.getEmail());
+        userData.getFields().add(emailAddress);
+    }
+
+    private void getInstitutionData(Institution inst) {
+        MetadataField shortName = new MetadataField();
+        shortName.setLabel(Helper.getTranslation("institution_shortName"));
+        shortName.setDisplayType("input");
+        shortName.setRequired(true);
+        shortName.setCardinality("1");
+        shortName.setAdditionalType("shortName");
+        shortName.setValue(inst.getShortName());
+        institutionData.getFields().add(shortName);
+
+        MetadataField longName = new MetadataField();
+        longName.setLabel(Helper.getTranslation("institution_longName"));
+        longName.setDisplayType("input");
+        longName.setRequired(true);
+        longName.setCardinality("1");
+        longName.setAdditionalType("longName");
+        longName.setValue(inst.getLongName());
+        institutionData.getFields().add(longName);
+    }
+
+    // update user object, save it
+    public void saveUserData() {
+        User user = Helper.getCurrentUser();
+        for (MetadataField mf : userData.getFields()) {
+            if ("firstname".equals(mf.getAdditionalType())) {
+                user.setVorname(mf.getValue());
+            } else if ("lastname".equals(mf.getAdditionalType())) {
+                user.setNachname(mf.getValue());
+            }
+        }
+        try {
+            UserManager.saveUser(user);
+        } catch (DAOException e) {
+            log.error(e);
+        }
+    }
+
+    public void saveInstitutionData() {
+        User user = Helper.getCurrentUser();
+        Institution institution = user.getInstitution();
+        for (MetadataField mf : institutionData.getFields()) {
+            if (StringUtils.isNotBlank(mf.getAdditionalType())) {
+                if ("shortName".equals(mf.getAdditionalType())) {
+                    institution.setShortName(mf.getValue());
+                } else if ("longName".equals(mf.getAdditionalType())) {
+                    institution.setLongName(mf.getValue());
+                }
+            } else {
+                institution.getAdditionalData().put(mf.getRulesetName(), mf.getValue());
+            }
+        }
+        InstitutionManager.saveInstitution(institution);
+    }
+
+    public void saveContactData() {
+        User user = Helper.getCurrentUser();
+        Institution institution = user.getInstitution();
+        for (MetadataField mf : contactData.getFields()) {
+            institution.getAdditionalData().put(mf.getRulesetName(), mf.getValue());
+        }
+
+        InstitutionManager.saveInstitution(institution);
     }
 
     public void save() {

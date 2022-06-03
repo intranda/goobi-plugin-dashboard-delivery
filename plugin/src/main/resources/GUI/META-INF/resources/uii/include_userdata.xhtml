@@ -120,6 +120,21 @@
                             render=":grp" />
                     </h:panelGroup>
                 </ui:repeat>
+
+
+                <button
+                    jsf:action="#{DashboardForm.plugin.saveUserData}"
+                    jsf:id="saveUserData"
+                    class="float-left btn btn-primary font-size-s">
+                    <h:outputText value="#{msgs.save}" />
+                    <f:ajax
+                        render="main-area"
+                        execute="@this" />
+
+                    <f:setPropertyActionListener
+                        value="userdata"
+                        target="#{DashboardForm.plugin.navigation}" />
+                </button>
             </h:form>
         </ui:fragment>
 
@@ -148,8 +163,20 @@
                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                             render=":grp" />
                     </h:panelGroup>
-
                 </ui:repeat>
+
+                <button
+                    jsf:action="#{DashboardForm.plugin.saveInstitutionData}"
+                    jsf:id="saveInstitutionData"
+                    class="float-left btn btn-primary font-size-s">
+                    <h:outputText value="#{msgs.save}" />
+                    <f:ajax
+                        render="main-area"
+                        execute="@this" />
+                    <f:setPropertyActionListener
+                        value="userdata"
+                        target="#{DashboardForm.plugin.navigation}" />
+                </button>
             </h:form>
         </ui:fragment>
 
@@ -179,8 +206,20 @@
                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                             render=":grp" />
                     </h:panelGroup>
-
                 </ui:repeat>
+
+                <button
+                    jsf:action="#{DashboardForm.plugin.saveContactData}"
+                    jsf:id="saveContactData"
+                    class="float-left btn btn-primary font-size-s">
+                    <h:outputText value="#{msgs.save}" />
+                    <f:ajax
+                        render="main-area"
+                        execute="@this" />
+                    <f:setPropertyActionListener
+                        value="userdata"
+                        target="#{DashboardForm.plugin.navigation}" />
+                </button>
             </h:form>
         </ui:fragment>
 
