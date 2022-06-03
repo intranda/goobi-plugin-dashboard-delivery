@@ -185,7 +185,8 @@
                             <button
                                 jsf:id="userData"
                                 class="btn btn-primary-400"
-                                title="#{msgs.plugin_dashboard_deliverShowDataButton}">
+                                title="#{msgs.plugin_dashboard_deliverShowDataButton}"
+                                jsf:action="#{DashboardForm.plugin.readUserConfiguration}">
                                 <h:outputText value="#{msgs.plugin_dashboard_deliverShowDataButton}" />
                                 <f:setPropertyActionListener
                                     value="userdata"
@@ -239,13 +240,11 @@
                 </div>
             </ui:fragment>
 
-            <ui:fragment
-                id="userdata"
-                rendered="#{DashboardForm.plugin.navigation== 'userdata'}">
-                <div class="container">
-                    <ui:include src="include_userdata.xhtml" />
-                </div>
-            </ui:fragment>
+
+            <div class="container">
+                <ui:include src="include_userdata.xhtml" />
+            </div>
+
 
 
         </h:panelGroup>

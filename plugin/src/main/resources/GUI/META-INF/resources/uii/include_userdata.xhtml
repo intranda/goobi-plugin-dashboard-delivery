@@ -36,7 +36,7 @@
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_deliverUserDataButton}" />
                             <f:setPropertyActionListener
-                                value="newTitle"
+                                value="user"
                                 target="#{DashboardForm.plugin.navigation}" />
                             <f:ajax
                                 render="main-area"
@@ -44,7 +44,7 @@
                         </button>
                     </div>
 
-                  <!-- institution data -->
+                    <!-- institution data -->
                     <div class="item">
                         <h:outputText
                             styleClass="header"
@@ -59,15 +59,15 @@
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_deliverInstitutionDataButton}" />
                             <f:setPropertyActionListener
-                                value="newTitle"
+                                value="institution"
                                 target="#{DashboardForm.plugin.navigation}" />
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
                         </button>
                     </div>
-                    
-                     <!-- contact person data -->
+
+                    <!-- contact person data -->
                     <div class="item">
                         <h:outputText
                             styleClass="header"
@@ -82,7 +82,7 @@
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_deliverContactPersonDataButton}" />
                             <f:setPropertyActionListener
-                                value="newTitle"
+                                value="contact"
                                 target="#{DashboardForm.plugin.navigation}" />
                             <f:ajax
                                 render="main-area"
@@ -94,16 +94,94 @@
         </ui:fragment>
 
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newTitle'}">
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
             <h:form styleClass="form-validate layout">
-              
-    
+                <h2>
+                    <h:outputText value="#{DashboardForm.plugin.userData.label}" />
+                </h2>
+                <ui:repeat
+                    var="field"
+                    value="#{DashboardForm.plugin.userData.fields}"
+                    varStatus="status">
+                    <h:panelGroup id="grp">
+                        <zlb:field
+                            identifier="field_#{status.index}"
+                            labelText="#{field.label}"
+                            labelHelpText="{field.helpMessage}"
+                            required="#{field.required}"
+                            value="#{field.value}"
+                            fieldType="#{field.displayType}"
+                            propertyValid="#{field.valid}"
+                            errorMessageText="#{field.validationErrorText}"
+                            selectItems="#{field.selectList}"
+                            booleanValue="#{field.booleanValue}"
+                            subValue="#{field.value2}"
+                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                            render=":grp" />
+                    </h:panelGroup>
+                </ui:repeat>
+            </h:form>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
+            <h:form styleClass="form-validate layout">
+                <h2>
+                    <h:outputText value="#{DashboardForm.plugin.institutionData.label}" />
+                </h2>
+                <ui:repeat
+                    var="field"
+                    value="#{DashboardForm.plugin.institutionData.fields}"
+                    varStatus="status">
+                    <h:panelGroup id="grp">
+                        <zlb:field
+                            identifier="field_#{status.index}"
+                            labelText="#{field.label}"
+                            labelHelpText="{field.helpMessage}"
+                            required="#{field.required}"
+                            value="#{field.value}"
+                            fieldType="#{field.displayType}"
+                            propertyValid="#{field.valid}"
+                            errorMessageText="#{field.validationErrorText}"
+                            selectItems="#{field.selectList}"
+                            booleanValue="#{field.booleanValue}"
+                            subValue="#{field.value2}"
+                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                            render=":grp" />
+                    </h:panelGroup>
+
+                </ui:repeat>
             </h:form>
         </ui:fragment>
 
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
+            <h:form styleClass="form-validate layout">
+                <h2>
+                    <h:outputText value="#{DashboardForm.plugin.contactData.label}" />
+                </h2>
+                <ui:repeat
+                    var="field"
+                    value="#{DashboardForm.plugin.contactData.fields}"
+                    varStatus="status">
+                    <h:panelGroup id="grp">
+                        <zlb:field
+                            identifier="field_#{status.index}"
+                            labelText="#{field.label}"
+                            labelHelpText="{field.helpMessage}"
+                            required="#{field.required}"
+                            value="#{field.value}"
+                            fieldType="#{field.displayType}"
+                            propertyValid="#{field.valid}"
+                            errorMessageText="#{field.validationErrorText}"
+                            selectItems="#{field.selectList}"
+                            booleanValue="#{field.booleanValue}"
+                            subValue="#{field.value2}"
+                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                            render=":grp" />
+                    </h:panelGroup>
 
+                </ui:repeat>
+            </h:form>
         </ui:fragment>
 
 

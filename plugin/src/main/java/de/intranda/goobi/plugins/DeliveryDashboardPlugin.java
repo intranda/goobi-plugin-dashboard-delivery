@@ -23,6 +23,7 @@ import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.lang.StringUtils;
+import org.goobi.beans.Institution;
 import org.goobi.beans.Process;
 import org.goobi.beans.Processproperty;
 import org.goobi.beans.User;
@@ -109,6 +110,15 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     @Getter
     private List<FieldGrouping> configuredGroups = new ArrayList<>();
+
+    private static final String configurationName = "intranda_administration_deliveryManagement";
+
+    @Getter
+    private FieldGrouping userData;;
+    @Getter
+    private FieldGrouping institutionData;
+    @Getter
+    private FieldGrouping contactData;
 
     @Getter
     private List<Path> files = new ArrayList<>();
@@ -203,15 +213,70 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         }
     }
 
-
     public void readUserConfiguration() {
         User user = Helper.getCurrentUser();
         if (user != null) {
+            Institution inst = user.getInstitution();
+            XMLConfiguration conf = ConfigPlugins.getPluginConfig(configurationName);
+            conf.setExpressionEngine(new XPathExpressionEngine());
 
+            List<HierarchicalConfiguration> fields = conf.configurationsAt("/fields/field");
 
+            userData = new FieldGrouping();
+            userData.setDocumentType("user");
+            userData.setLabel("User");
+            // TODO add regular user data like account name, email, location,....
 
+            institutionData = new FieldGrouping();
+            institutionData.setDocumentType("institution");
+            institutionData.setLabel("Institution");
+            // TODO add regular institution data
+
+            contactData = new FieldGrouping();
+            contactData.setDocumentType("contact");
+            contactData.setLabel("Contact");
+
+            for (HierarchicalConfiguration hc : fields) {
+
+                String type = hc.getString("@type");
+
+                String fieldType = hc.getString("@fieldType", "input");
+                String label = hc.getString("@label");
+                String name = hc.getString("@name");
+                boolean required = hc.getBoolean("@required", false);
+                String validation = hc.getString("@validation", null);
+                String validationErrorMessage = hc.getString("@validationErrorDescription", null);
+                String helpMessage = hc.getString("@helpMessage");
+
+                MetadataField mf = new MetadataField();
+                mf.setLabel(label);
+                mf.setDisplayType(fieldType);
+                mf.setRequired(required);
+                mf.setCardinality(required ? "1" : "?");
+                mf.setValidationExpression(validation);
+                mf.setValidationErrorText(validationErrorMessage);
+                mf.setHelpMessage(helpMessage);
+                mf.setRulesetName(name);
+
+                if (fieldType.equals("dropdown") || fieldType.equals("combo")) {
+                    List<HierarchicalConfiguration> valueList = hc.configurationsAt("/value");
+                    for (HierarchicalConfiguration v : valueList) {
+                        SelectItem si = new SelectItem(v.getString("."), v.getString("."));
+                        mf.getSelectList().add(si);
+                    }
+                }
+                if ("institution".equals(type) && name.startsWith("contact")) {
+                    contactData.getFields().add(mf);
+                    mf.setValue(inst.getAdditionalData().get(name));
+                } else if ("institution".equals(type)) {
+                    institutionData.getFields().add(mf);
+                    mf.setValue(inst.getAdditionalData().get(name));
+                } else {
+                    userData.getFields().add(mf);
+                    mf.setValue(user.getAdditionalData().get(name));
+                }
+            }
         }
-
     }
 
     public void save() {
@@ -251,6 +316,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "userdata":
             case "titleSelection":
                 navigation = "main";
+                break;
+            case "user":
+            case "institution":
+            case "contact":
+                navigation = "userdata";
                 break;
             case "newIssue":
             case "newTitle":
