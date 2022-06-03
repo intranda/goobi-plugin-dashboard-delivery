@@ -894,4 +894,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     //        return md;
     //    }
 
+    public void getExistingDataForInstitution() {
+        User user = Helper.getCurrentUser();
+        Institution institution = user.getInstitution();
+
+        // generate list with all existing processes for current institution
+        // paginator?
+    }
+
 }
