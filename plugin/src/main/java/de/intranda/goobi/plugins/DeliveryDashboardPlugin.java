@@ -35,6 +35,7 @@ import org.goobi.vocabulary.VocabRecord;
 
 import de.intranda.goobi.plugins.utils.FieldGrouping;
 import de.intranda.goobi.plugins.utils.MetadataField;
+import de.intranda.goobi.plugins.utils.ProcessPaginator;
 import de.sub.goobi.config.ConfigPlugins;
 import de.sub.goobi.helper.BeanHelper;
 import de.sub.goobi.helper.Helper;
@@ -127,8 +128,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     private Path temporaryFolder;
 
+    @Getter
+    protected ProcessPaginator paginator;
+
     public DeliveryDashboardPlugin() {
-        log.info("Delivery dashboard plugin started");
         try {
             temporaryFolder = Files.createTempDirectory("delivery");
         } catch (IOException e) {
@@ -423,7 +426,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 break;
             case "userdata":
             case "titleSelection":
+            case "existingData":
                 navigation = "main";
+                documentType = "";
                 break;
             case "user":
             case "institution":
@@ -883,21 +888,21 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         PropertyManager.saveProcessProperty(institutionProperty);
     }
 
-    //    private Metadata createIdentifierMetadata(Prefs prefs) {
-    //        Metadata md = null;
-    //        try {
-    //            md = new Metadata(prefs.getMetadataTypeByName("CatalogIDDigital"));
-    //        } catch (MetadataTypeNotAllowedException e) {
-    //        }
-    //        UUID uuid = UUID.randomUUID();
-    //        md.setValue(uuid.toString());
-    //        return md;
-    //    }
-
     public void getExistingDataForInstitution() {
         User user = Helper.getCurrentUser();
         Institution institution = user.getInstitution();
 
+        ProcessManager m = new ProcessManager();
+        StringBuilder sql = new StringBuilder();
+        sql.append("(prozesse.ProzesseID in (select prozesseID from prozesseeigenschaften where prozesseeigenschaften.Titel =");
+        sql.append("'Institution' AND prozesseeigenschaften.Wert =");
+        sql.append("'");
+        sql.append(institution.getShortName());
+        sql.append("')) ");
+
+        sql.append("AND prozesse.istTemplate = false ");
+
+        paginator = new ProcessPaginator("erstellungsdatum desc", sql.toString(), m);
         // generate list with all existing processes for current institution
         // paginator?
     }

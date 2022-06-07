@@ -19,7 +19,10 @@
 
             <h:form>
 <!-- list existing processes, show status, show delivered metadata -->      
+<ui:repeat var="process" value="#{DashboardForm.plugin.paginator.list}">
 
+<h:outputText value="#{process.titel}"/>
+</ui:repeat>
 
             </h:form>
 
