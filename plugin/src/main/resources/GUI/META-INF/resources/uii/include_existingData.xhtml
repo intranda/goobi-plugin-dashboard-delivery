@@ -44,7 +44,32 @@
 
             </ui:repeat>
 
+
+
+
         </h:form>
+
+
+        <h:form>
+            <div class="submit">
+                <ul class="statuslist">
+                    <li>
+                        <button
+                            jsf:action="#{DashboardForm.plugin.previousPage}"
+                            jsf:id="backToMain"
+                            class="float-left btn btn-primary font-size-s">
+                            <h:outputText value="#{msgs.back}" />
+                            <f:ajax
+                                render="main-area"
+                                execute="@this" />
+                        </button>
+
+                    </li>
+                </ul>
+            </div>
+
+        </h:form>
+
 
     </composite:implementation>
 

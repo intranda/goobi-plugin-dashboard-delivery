@@ -261,10 +261,11 @@
                 </div>
             </ui:fragment>
 
-
-            <div class="container">
-                <ui:include src="include_userdata.xhtml" />
-            </div>
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata' or DashboardForm.plugin.navigation=='user' or DashboardForm.plugin.navigation=='institution'or DashboardForm.plugin.navigation=='contact'}">
+                <div class="container">
+                    <ui:include src="include_userdata.xhtml" />
+                </div>
+            </ui:fragment>
 
             <ui:fragment
                 id="data"

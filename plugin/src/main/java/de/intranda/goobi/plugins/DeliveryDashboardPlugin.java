@@ -441,6 +441,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 break;
             case "upload":
                 navigation = "main";
+                documentType = "";
                 break;
             case "data1":
                 navigation = "upload";
