@@ -17,14 +17,34 @@
     <composite:implementation>
 
 
-            <h:form>
-<!-- list existing processes, show status, show delivered metadata -->      
-<ui:repeat var="process" value="#{DashboardForm.plugin.paginator.list}">
+        <h:form>
+            <!-- list existing processes, show status, show delivered metadata -->
+            <ui:repeat
+                var="process"
+                value="#{DashboardForm.plugin.paginator.list}">
+                <div class="process-status">
+                    <h2>
+                        <h:outputText value="#{process.titel}" />
+                    </h2>
+                    <dl>
+                        <ui:repeat
+                            var="step"
+                            value="#{process.schritte}">
+                            <dt>
+                                <h:outputText value="#{step.titel}" />
+                            </dt>
+                            <dd>
+                                <h:outputText value="#{step.bearbeitungsstatusEnum.title}" />
+                            </dd>
+                        </ui:repeat>
+                    </dl>
 
-<h:outputText value="#{process.titel}"/>
-</ui:repeat>
+                </div>
 
-            </h:form>
+
+            </ui:repeat>
+
+        </h:form>
 
     </composite:implementation>
 
