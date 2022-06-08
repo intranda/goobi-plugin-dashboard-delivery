@@ -10,47 +10,700 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:jsf="http://xmlns.jcp.org/jsf"
     xmlns:zlb="http://xmlns.jcp.org/jsf/composite/composites"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
     template="/uii/template/reduced_content_template.html">
     <composite:interface>
     </composite:interface>
 
     <composite:implementation>
 
+        <script type="text/javascript">
+                                    function switchExpanded( id ) {
+                                        console.log( "called by: " + id );
+                                        var x = document.getElementById( id ).getAttribute( "aria-expanded" );
+                                        console.log( x )
+                                        if ( x == "true" ) {
+                                            x = "false"
+                                        }
+                                        else {
+                                            x = "true"
+                                        }
+                                        document.getElementById( id ).setAttribute( "aria-expanded", x );
+                                    }
+                                </script>
 
-        <h:form>
-            <!-- list existing processes, show status, show delivered metadata -->
-            <ui:repeat
-                var="process"
-                value="#{DashboardForm.plugin.paginator.list}">
-                <div class="process-status">
-                    <h2>
-                        <h:outputText value="#{process.titel}" />
-                    </h2>
-                    <dl>
-                        <ui:repeat
-                            var="step"
-                            value="#{process.schritte}">
-                            <dt>
-                                <h:outputText value="#{step.titel}" />
-                            </dt>
-                            <dd>
-                                <h:outputText value="#{step.bearbeitungsstatusEnum.title}" />
-                            </dd>
-                        </ui:repeat>
-                    </dl>
 
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box box-color box-bordered">
+                    <div class="box-title">
+                        <h2>
+                            <i class="fa fa-tasks"></i>
+                            <h:outputText value="#{myPageTitle}" />
+                        </h2>
+                    </div>
+                    <div class="box-content nopadding">
+                        <div class="dataTables_wrapper">
+                            <div class="row">
+
+                                <h:form id="searchform">
+
+                                    <div class="col-md-1">
+                                        <div
+                                            class="dataTables_length"
+                                            style="margin-bottom: 10px;">
+                                            <button
+                                                class="expandbutton font-black"
+                                                jsf:action="#{DashboardForm.plugin.generateFilterWithIdentfiers}"
+                                                title="#{msgs.process_generateFilterQueryForHits}">
+                                                <i class="btn fa fa-filter margin-right-5" />
+                                                <h:outputText value="#{msgs.treffer}: #{DashboardForm.plugin.paginator.totalResults}" />
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!--                                             <div class="col-md-11"> -->
+                                    <!--                                                 <x:aliasBeansScope> -->
+                                    <!--                                                     <x:aliasBean -->
+                                    <!--                                                         alias="#{Form}" -->
+                                    <!--                                                         value="#{ProzessverwaltungForm}" /> -->
+                                    <!--                                                     <x:aliasBean -->
+                                    <!--                                                         alias="#{label}" -->
+                                    <!--                                                         value="#{msgs.filterProcesses}" /> -->
+
+                                    <!--                                                 </x:aliasBeansScope> -->
+
+                                    <!--                                                 <ui:include src="includes/process/list_filterAndDisplay.xhtml" /> -->
+                                    <!--                                             </div> -->
+
+                                </h:form>
+                            </div>
+                            <h:form id="myform">
+
+
+
+                                <!-- +++++++++++++++++  Display as table ++++++++++++++++++++++++ -->
+                                <table
+                                    role="grid"
+                                    id="processTable"
+                                    class="table table-hover table-nomargin dataTable table-bordered responsive">
+                                    <!-- ### Columnheader row ### -->
+                                    <thead>
+                                        <tr role="row">
+
+
+                                            <!-- Embedded Metadata -->
+                                            <intranda:columnheader
+                                                addClass="tableColumnOverflow maxWidth300"
+                                                value="#{msgs.metadata}"
+                                                sortable="false" />
+                                            <!-- Alle Schritte Auflisten -->
+                                            <intranda:columnheader
+                                                addClass="tableColumnOverflow maxWidth300"
+                                                name="titel"
+                                                form="#{ProzessverwaltungForm}"
+                                                value="#{msgs.prozessTitel}"
+                                                rendered="true"
+                                                ajaxRender=":myform"
+                                                id="ajaxcolumn" />
+                                            <!-- Vorgangsdatum -->
+                                            <intranda:columnheader
+                                                addClass="tableColumnOverflow maxwidth200"
+                                                name="vorgangsdatum"
+                                                form="#{ProzessverwaltungForm}"
+                                                value="#{msgs.vorgangsdatum}"
+                                                ajaxRender=":myform" />
+                                            <!-- Status -->
+                                            <intranda:columnheader
+                                                addClass="tableColumnOverflow width200"
+                                                name="fortschritt"
+                                                form="#{ProzessverwaltungForm}"
+                                                value="#{msgs.status}"
+                                                ajaxRender=":myform" />
+
+
+
+                                            <!-- number of images -->
+                                            <intranda:columnheader
+                                                value="#{msgs.NumberOfImages}"
+                                                addClass="tableColumnOverflow maxWidth120"
+                                                name="numberOfImages"
+                                                form="#{ProzessverwaltungForm}"
+                                                ajaxRender=":myform" />
+                                            <!-- Buttons -->
+                                            <intranda:columnheader
+                                                addClass="width200"
+                                                value="#{msgs.auswahl}"
+                                                sortable="false" />
+                                        </tr>
+                                    </thead>
+                                    <ui:repeat
+                                        var="item"
+                                        value="#{DashboardForm.plugin.paginator.list}"
+                                        varStatus="status">
+                                        <tr role="row">
+
+                                            <!-- Embedded Metadata -->
+                                            <td>
+                                                <table>
+                                                    <ui:repeat
+                                                        var="metadata"
+                                                        value="#{item.metadataList}"
+                                                        varStatus="metadatastatus"
+                                                        id="metadatalist">
+                                                        <h:panelGroup rendered="#{metadata.one == 'TitleDocMain'
+                                                                             or metadata.one == 'Author'
+                                                                             or metadata.one == 'PlaceOfPublication'
+                                                                             or metadata.one == 'PublicationYear'
+                                                                             or metadata.one == 'PublisherName'
+                                                                             or metadata.one == 'CatalogIDDigital'
+                                                                             or metadata.one == 'shelfmarksource'}">
+                                                            <tr>
+                                                                <td style="border: none !important; padding: 2px; vertical-align: top;">
+                                                                    <h:outputText value="#{msgs['process_grid_'.concat(metadata.one)]}:" />
+                                                                </td>
+                                                                <td style="border: none !important; padding: 2px; white-space: normal;">
+                                                                    <h:outputText value="#{metadata.two}" />
+                                                                </td>
+                                                            </tr>
+                                                        </h:panelGroup>
+                                                    </ui:repeat>
+                                                </table>
+                                            </td>
+
+                                            <!-- Alle Schritte Auflisten -->
+                                            <td>
+                                                <ui:include src="/uii/includes/ajaxPlusMinusButton.xhtml" />
+                                                <h:panelGroup rendered="#{item.panelAusgeklappt}">
+                                                    <div class="box box-small box-color box-bordered">
+                                                        <div class="box-title">
+                                                            <h3>
+                                                                <i class="fa fa-list"></i>
+                                                                #{msgs.details}
+                                                            </h3>
+                                                        </div>
+                                                        <div class="box-content nopadding">
+
+                                                            <x:dataTable
+                                                                styleClass="table table-hover table-bordered"
+                                                                id="prozessdetails"
+                                                                var="step"
+                                                                value="#{item.schritteList}">
+
+                                                                <h:column>
+                                                                    <f:facet name="header">
+                                                                        <h:outputText value="#{msgs.nr}" />
+                                                                    </f:facet>
+                                                                    <h:outputText
+                                                                        value="#{step.reihenfolge}"
+                                                                        styleClass="#{step.bearbeitungsstatusEnum == 'DEACTIVATED'?'font-light':''}" />
+                                                                </h:column>
+
+                                                                <h:column>
+                                                                    <f:facet name="header">
+                                                                        <h:outputText
+                                                                            value="#{msgs.titel}"
+                                                                            style="white-space: normal;" />
+                                                                    </f:facet>
+                                                                    <h:panelGroup rendered="#{step.typAutomatisch}">
+                                                                        <i
+                                                                            class="fa fa-cogs font-light margin-right-10"
+                                                                            title="#{msgs.automatischerSchritt}" />
+                                                                    </h:panelGroup>
+                                                                    <h:panelGroup rendered="#{not step.typAutomatisch}">
+                                                                        <i
+                                                                            class="fa fa-user-o font-light margin-right-10"
+                                                                            title="#{msgs.normalerSchritt}" />
+                                                                    </h:panelGroup>
+                                                                    <h:outputText
+                                                                        value="#{step.titelLokalisiert}"
+                                                                        title="#{step.titel}"
+                                                                        style="white-space: normal;"
+                                                                        styleClass="#{step.reihenfolge}_id #{step.bearbeitungsstatusEnum == 'DEACTIVATED'?'font-light':''}" />
+                                                                </h:column>
+
+                                                                <h:column>
+                                                                    <f:facet name="header">
+                                                                        <h:outputText value="#{msgs.status}" />
+                                                                    </f:facet>
+
+                                                                    <ul class="colors small13">
+                                                                        <h:panelGroup rendered="#{step.bearbeitungsstatusEnum == 'LOCKED'}">
+                                                                            <li
+                                                                                class="statusSmall #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-'):('')).concat(step.bearbeitungsstatusEnum.color)}"
+                                                                                title="#{msgs.statusGesperrt}"
+                                                                                rel="tooltip" />
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup rendered="#{step.bearbeitungsstatusEnum == 'OPEN'}">
+                                                                            <li
+                                                                                class="statusSmall #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-'):('')).concat(step.bearbeitungsstatusEnum.color)}"
+                                                                                title="#{msgs.statusOffen}"
+                                                                                rel="tooltip" />
+                                                                        </h:panelGroup>
+
+                                                                        <h:panelGroup rendered="#{step.bearbeitungsstatusEnum == 'DONE' and HelperForm.anonymized}">
+                                                                            <li
+                                                                                class="statusSmall #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-'):('')).concat(step.bearbeitungsstatusEnum.color)}"
+                                                                                rel="tooltip"
+                                                                                title="#{step.bearbeitungsstatusEnum.title} #{step.editTypeEnum.title}" />
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup rendered="#{step.bearbeitungsstatusEnum == 'INWORK' and HelperForm.anonymized}">
+                                                                            <li
+                                                                                class="statusSmall #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-'):('')).concat(step.bearbeitungsstatusEnum.color)}"
+                                                                                rel="tooltip"
+                                                                                title="#{step.bearbeitungsstatusEnum.title}: #{step.editTypeEnum.title}" />
+                                                                        </h:panelGroup>
+
+                                                                        <h:panelGroup rendered="#{step.bearbeitungsstatusEnum == 'DONE' and !HelperForm.anonymized}">
+                                                                            <li
+                                                                                class="statusSmall #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-'):('')).concat(step.bearbeitungsstatusEnum.color)}"
+                                                                                rel="tooltip"
+                                                                                title="#{step.bearbeitungsstatusEnum.title}: #{step.bearbeitungsbenutzer!=null and step.bearbeitungsbenutzer.id!=0?step.bearbeitungsbenutzer.nachVorname:''} (#{step.bearbeitungszeitpunkt !=null?step.bearbeitungszeitpunktAsFormattedString:''})  - #{step.editTypeEnum.title}" />
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup rendered="#{step.bearbeitungsstatusEnum == 'INWORK' and !HelperForm.anonymized}">
+                                                                            <li
+                                                                                class="statusSmall #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-'):('')).concat(step.bearbeitungsstatusEnum.color)}"
+                                                                                rel="tooltip"
+                                                                                title="#{step.bearbeitungsstatusEnum.title}: #{step.bearbeitungsbenutzer!=null and step.bearbeitungsbenutzer.id!=0?step.bearbeitungsbenutzer.nachVorname:''} (#{step.bearbeitungszeitpunkt !=null?step.bearbeitungszeitpunktAsFormattedString:''})  - #{step.editTypeEnum.title}" />
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup rendered="#{step.bearbeitungsstatusEnum == 'ERROR' and !HelperForm.anonymized}">
+                                                                            <li
+                                                                                class="statusSmall #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-'):('')).concat(step.bearbeitungsstatusEnum.color)}"
+                                                                                rel="tooltip"
+                                                                                title="#{step.bearbeitungsstatusEnum.title}: #{step.bearbeitungsbenutzer!=null and step.bearbeitungsbenutzer.id!=0?step.bearbeitungsbenutzer.nachVorname:''} (#{step.bearbeitungszeitpunkt !=null?step.bearbeitungszeitpunktAsFormattedString:''})  - #{step.editTypeEnum.title}" />
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup rendered="#{step.bearbeitungsstatusEnum == 'ERROR' and HelperForm.anonymized}">
+                                                                            <li
+                                                                                class="statusSmall #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-'):('')).concat(step.bearbeitungsstatusEnum.color)}"
+                                                                                rel="tooltip"
+                                                                                title="#{step.bearbeitungsstatusEnum.title}: #{step.editTypeEnum.title}" />
+                                                                        </h:panelGroup>
+
+                                                                        <h:panelGroup rendered="#{step.bearbeitungsstatusEnum == 'DEACTIVATED'}">
+                                                                            <li
+                                                                                class="statusSmall #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-'):('')).concat(step.bearbeitungsstatusEnum.color)}"
+                                                                                title="#{step.bearbeitungsstatusEnum.title}"
+                                                                                rel="tooltip" />
+                                                                        </h:panelGroup>
+
+                                                                        <h:panelGroup rendered="#{step.bearbeitungsstatusEnum == 'INFLIGHT'}">
+                                                                            <li
+                                                                                class="statusSmall #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-'):('')).concat(step.bearbeitungsstatusEnum.color)}"
+                                                                                title="#{msgs.statusInFlight}"
+                                                                                data-toggle="tooltip"></li>
+                                                                        </h:panelGroup>
+                                                                    </ul>
+                                                                    <h:outputText
+                                                                        value="#{step.bearbeitungsstatusEnum.title}"
+                                                                        rendered="#{LoginForm.myBenutzer.uiMode=='low_vision'}" />
+                                                                </h:column>
+
+                                                            </x:dataTable>
+
+                                                        </div>
+                                                    </div>
+
+                                                </h:panelGroup>
+                                            </td>
+
+                                            <!-- Vorgangsdatum -->
+                                            <td>
+                                                <h:outputText value="#{item.erstellungsdatumAsString}">
+                                                    <!-- <f:convertDateTime locale="#{SpracheForm.locale}" type="date" dateStyle="medium"/> -->
+                                                </h:outputText>
+                                            </td>
+
+                                            <!-- Status -->
+                                            <td>
+                                                <h:panelGroup
+                                                    rendered="#{item.fortschritt3 gt 0}"
+                                                    data-toggle="tooltip"
+                                                    styleClass="progress-bar #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-progressbar-status-done'):('progress-bar-success'))}"
+                                                    style="width: #{item.fortschritt3}%;line-height:15px;"
+                                                    pt:role="figure"
+                                                    pt:aria-label="#{item.fortschritt3}% #{msgs.statusAbgeschlossen}">
+                                                    <h:outputText value="&#160;" />
+                                                    <f:passThroughAttribute
+                                                        name="data-trigger"
+                                                        value="hover" />
+                                                    <f:passThroughAttribute
+                                                        name="data-container"
+                                                        value="body" />
+                                                    <f:passThroughAttribute
+                                                        name="data-toggle"
+                                                        value="popover" />
+                                                    <f:passThroughAttribute
+                                                        name="data-placement"
+                                                        value="top" />
+                                                    <f:passThroughAttribute
+                                                        name="data-html"
+                                                        value="true" />
+                                                    <f:passThroughAttribute
+                                                        name="data-content"
+                                                        value="&lt;b class='font-status-done'&gt;#{msgs.statusAbgeschlossen}:&lt;/b&gt;&lt;br/&gt; #{item.getStepsAsString(3, ', ')}" />
+                                                </h:panelGroup>
+
+                                                <h:panelGroup
+                                                    rendered="#{item.fortschritt2 gt 0}"
+                                                    data-toggle="tooltip"
+                                                    styleClass="progress-bar #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-progressbar-status-open'):('progress-bar-warning'))}"
+                                                    style="width: #{item.fortschritt2}%;line-height:15px;"
+                                                    pt:role="figure"
+                                                    pt:aria-label="#{item.fortschritt2}% #{msgs.statusOffen} / #{msgs.statusInBearbeitung}">
+                                                    <h:outputText value="&#160;" />
+                                                    <f:passThroughAttribute
+                                                        name="data-trigger"
+                                                        value="hover" />
+                                                    <f:passThroughAttribute
+                                                        name="data-container"
+                                                        value="body" />
+                                                    <f:passThroughAttribute
+                                                        name="data-toggle"
+                                                        value="popover" />
+                                                    <f:passThroughAttribute
+                                                        name="data-placement"
+                                                        value="top" />
+                                                    <f:passThroughAttribute
+                                                        name="data-html"
+                                                        value="true" />
+                                                    <f:passThroughAttribute
+                                                        name="data-content"
+                                                        value="&lt;b class='font-status-open'&gt;#{msgs.statusOffen} / #{msgs.statusInBearbeitung}:&lt;/b&gt;&lt;br/&gt; #{item.getStepsAsString(1, ', ')}#{item.getStepsAsString(1, ', ') ne '' and item.getStepsAsString(2, ', ') ne ''?', ':''} #{item.getStepsAsString(2, ', ')}" />
+                                                </h:panelGroup>
+
+                                                <h:panelGroup
+                                                    rendered="#{item.fortschrittError gt 0}"
+                                                    data-toggle="tooltip"
+                                                    styleClass="progress-bar #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-progressbar-status-error'):('progress-bar-danger progressbar-status-error'))} "
+                                                    style="width: #{item.fortschrittError}%;line-height:15px;"
+                                                    pt:role="figure"
+                                                    pt:aria-label="#{item.fortschrittError}% #{msgs.statusError}">
+                                                    <h:outputText value="&#160;" />
+                                                    <f:passThroughAttribute
+                                                        name="data-trigger"
+                                                        value="hover" />
+                                                    <f:passThroughAttribute
+                                                        name="data-container"
+                                                        value="body" />
+                                                    <f:passThroughAttribute
+                                                        name="data-toggle"
+                                                        value="popover" />
+                                                    <f:passThroughAttribute
+                                                        name="data-placement"
+                                                        value="top" />
+                                                    <f:passThroughAttribute
+                                                        name="data-html"
+                                                        value="true" />
+                                                    <f:passThroughAttribute
+                                                        name="data-content"
+                                                        value="&lt;b class='font-status-error'&gt;#{msgs.statusError}:&lt;/b&gt;&lt;br/&gt; #{item.getStepsAsString(4, ', ')}" />
+                                                </h:panelGroup>
+
+                                                <h:panelGroup
+                                                    rendered="#{item.fortschritt1 gt 0}"
+                                                    data-toggle="tooltip"
+                                                    styleClass="progress-bar #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-progressbar-status-locked'):('progress-bar-danger'))} "
+                                                    style="width: #{item.fortschritt1}%;line-height:15px;"
+                                                    pt:role="figure"
+                                                    pt:aria-label="#{item.fortschritt1}% #{msgs.statusGesperrt}">
+                                                    <h:outputText value="&#160;" />
+                                                    <f:passThroughAttribute
+                                                        name="data-trigger"
+                                                        value="hover" />
+                                                    <f:passThroughAttribute
+                                                        name="data-container"
+                                                        value="body" />
+                                                    <f:passThroughAttribute
+                                                        name="data-toggle"
+                                                        value="popover" />
+                                                    <f:passThroughAttribute
+                                                        name="data-placement"
+                                                        value="top" />
+                                                    <f:passThroughAttribute
+                                                        name="data-html"
+                                                        value="true" />
+                                                    <f:passThroughAttribute
+                                                        name="data-content"
+                                                        value="&lt;b class='font-status-locked'&gt;#{msgs.statusGesperrt}:&lt;/b&gt;&lt;br/&gt; #{item.getStepsAsString(0, ', ')}" />
+                                                </h:panelGroup>
+                                            </td>
+
+
+
+                                            <td>
+                                                <h:outputText value="#{item.sortHelperImages}" />
+                                            </td>
+
+                                            <!-- Buttons -->
+                                            <td class="width200">
+                                                <!-- Bearbeiten-Schaltknopf -->
+                                                <button
+                                                    jsf:action="#{DashboardForm.plugin.editProcess}"
+                                                    jsf:id="edit"
+                                                    aria-label="#{msgs.bearbeiten}"
+                                                    jsf:rendered="#{LoginForm.hasRole('Workflow_General_Details')}"
+                                                    jsf:rel="tooltip"
+                                                    onclick="preventDoubleSubmit(this);"
+                                                    title="#{msgs.prozessBearbeiten}"
+                                                    class="btn button-schaltknopf">
+                                                    <i class="fa fa-pencil" />
+                                                    <f:passThroughAttribute
+                                                        name="data-toggle"
+                                                        value="tooltip" />
+                                                    <x:updateActionListener
+                                                        property="#{DashboardForm.plugin.myProzess}"
+                                                        value="#{item}" />
+                                                    <x:updateActionListener
+                                                        property="#{DashboardForm.plugin.modusBearbeiten}"
+                                                        value="" />
+                                                </button>
+
+
+
+                                                <!-- Metadaten-Schaltknopf - Read only -->
+                                                <h:commandLink
+                                                    action="#{Metadaten.XMLlesen}"
+                                                    id="action14"
+                                                    rel="tooltip"
+                                                    title="#{msgs.metadatenBearbeiten}"
+                                                    onclick="preventDoubleSubmit(this); sessionStorage.removeItem('columnWidths');"
+                                                    rendered="#{(!LoginForm.hasRole('Task_Mets_Pagination') and !LoginForm.hasRole('Task_Mets_Structure') and !LoginForm.hasRole('Task_Mets_Metadata') and !LoginForm.hasRole('Task_Mets_Files')) and item.benutzerGesperrt == null}">
+                                                    <i class="btn fa fa-book" />
+                                                    <f:passThroughAttribute
+                                                        name="data-toggle"
+                                                        value="tooltip" />
+                                                    <f:param
+                                                        name="nurLesen"
+                                                        value="true" />
+                                                    <f:param
+                                                        name="ProzesseID"
+                                                        value="#{item.id}" />
+                                                    <f:param
+                                                        name="BenutzerID"
+                                                        value="#{LoginForm.myBenutzer.id}" />
+                                                    <f:param
+                                                        name="zurueck"
+                                                        value="process_all" />
+                                                </h:commandLink>
+
+                                                <!-- Metadaten-Schaltknopf - Allow writing -->
+                                                <h:commandLink
+                                                    action="#{Metadaten.XMLlesen}"
+                                                    id="action15"
+                                                    rel="tooltip"
+                                                    title="#{msgs.metadatenBearbeiten}"
+                                                    pt:aria-label="#{msgs.metadatenBearbeiten}"
+                                                    onclick="preventDoubleSubmit(this);  sessionStorage.removeItem('columnWidths');"
+                                                    rendered="#{(LoginForm.hasRole('Task_Mets_Pagination') or LoginForm.hasRole('Task_Mets_Structure') or LoginForm.hasRole('Task_Mets_Metadata') or LoginForm.hasRole('Task_Mets_Files')) and !item.temporaryMetadataFiles}">
+                                                    <i class="btn fa fa-book " />
+                                                    <f:passThroughAttribute
+                                                        name="data-toggle"
+                                                        value="tooltip" />
+                                                    <f:param
+                                                        name="ProzesseID"
+                                                        value="#{item.id}" />
+                                                    <f:param
+                                                        name="BenutzerID"
+                                                        value="#{LoginForm.myBenutzer.id}" />
+                                                    <f:param
+                                                        name="zurueck"
+                                                        value="process_all" />
+                                                    <c:if test="#{LoginForm.hasRole('Task_Mets_Files')}">
+                                                        <f:setPropertyActionListener
+                                                            value="File"
+                                                            target="#{Metadaten.modusAnsicht}" />
+                                                    </c:if>
+                                                    <c:if test="#{LoginForm.hasRole('Task_Mets_Metadata')}">
+                                                        <f:setPropertyActionListener
+                                                            value="Metadaten"
+                                                            target="#{Metadaten.modusAnsicht}" />
+                                                    </c:if>
+                                                    <c:if test="#{LoginForm.hasRole('Task_Mets_Structure')}">
+                                                        <f:setPropertyActionListener
+                                                            value="Strukturdaten"
+                                                            target="#{Metadaten.modusAnsicht}" />
+                                                    </c:if>
+                                                    <c:if test="#{LoginForm.hasRole('Task_Mets_Pagination')}">
+                                                        <f:setPropertyActionListener
+                                                            value="Paginierung"
+                                                            target="#{Metadaten.modusAnsicht}" />
+                                                    </c:if>
+                                                    <f:setPropertyActionListener
+                                                        value="#{null}"
+                                                        target="#{NavigationForm.uiStatus.mets_toc1}" />
+                                                    <f:setPropertyActionListener
+                                                        value="#{null}"
+                                                        target="#{NavigationForm.uiStatus.mets_toc2}" />
+                                                    <f:setPropertyActionListener
+                                                        value="#{null}"
+                                                        target="#{NavigationForm.uiStatus.mets_toc3}" />
+                                                    <f:setPropertyActionListener
+                                                        value="#{null}"
+                                                        target="#{NavigationForm.uiStatus.mets_toc4}" />
+                                                    <f:setPropertyActionListener
+                                                        value="#{null}"
+                                                        target="#{NavigationForm.uiStatus.mets_toc5}" />
+                                                </h:commandLink>
+
+                                                <!--  modal rendern  -->
+                                                <h:panelGroup rendered="#{(LoginForm.hasRole('Task_Mets_Pagination') or LoginForm.hasRole('Task_Mets_Structure') or LoginForm.hasRole('Task_Mets_Metadata') or LoginForm.hasRole('Task_Mets_Files')) and item.temporaryMetadataFiles}">
+                                                    <a
+                                                        class="text_head"
+                                                        rel="tooltip"
+                                                        title="#{msgs.metadatenBearbeiten}"
+                                                        href="#"
+                                                        data-toggle="modal"
+                                                        data-target="#myModal-#{item.id}">
+                                                        <i class="btn fa fa-book " />
+                                                    </a>
+                                                </h:panelGroup>
+                                                <div
+                                                    class="modal fade"
+                                                    id="myModal-#{item.id}"
+                                                    tabindex="-1"
+                                                    role="dialog"
+                                                    pt:aria-label="myModalLabel">
+                                                    <div
+                                                        class="modal-dialog"
+                                                        role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+
+                                                                <a
+                                                                    href="#"
+                                                                    class="btn btn-blue pull-right"
+                                                                    title="#{msgs.cancel}"
+                                                                    data-dismiss="modal">
+                                                                    <i class="fa fa-times"></i>
+                                                                </a>
+                                                                <h4
+                                                                    class="modal-title"
+                                                                    id="#{msgs.metseditorOpen}-#{item.id}">
+                                                                    <h:outputText value="#{msgs.metseditorOpen}" />
+                                                                </h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <h:outputText value="#{msgs.metseditorTemporaryDataExplanation}" />
+                                                            </div>
+                                                            <div class="modal-footer">
+
+                                                                <h:commandLink
+                                                                    onclick="sessionStorage.removeItem('columnWidths');"
+                                                                    action="#{Metadaten.XMLlesen}"
+                                                                    id="action15a"
+                                                                    title="#{msgs.discard}"
+                                                                    rel="tooltip"
+                                                                    styleClass="btn btn-lightred pull-left">
+                                                                    <i class="fa fa-trash-o margin-right-10"></i>
+                                                                    <h:outputText value="#{msgs.discard}" />
+                                                                    <f:passThroughAttribute
+                                                                        name="data-toggle"
+                                                                        value="tooltip" />
+                                                                    <f:param
+                                                                        name="ProzesseID"
+                                                                        value="#{item.id}" />
+                                                                    <f:param
+                                                                        name="BenutzerID"
+                                                                        value="#{LoginForm.myBenutzer.id}" />
+                                                                    <f:param
+                                                                        name="zurueck"
+                                                                        value="process_all" />
+                                                                    <f:param
+                                                                        name="discardChanges"
+                                                                        value="true" />
+                                                                    <f:setPropertyActionListener
+                                                                        value="#{null}"
+                                                                        target="#{NavigationForm.uiStatus.mets_toc1}" />
+                                                                    <f:setPropertyActionListener
+                                                                        value="#{null}"
+                                                                        target="#{NavigationForm.uiStatus.mets_toc2}" />
+                                                                    <f:setPropertyActionListener
+                                                                        value="#{null}"
+                                                                        target="#{NavigationForm.uiStatus.mets_toc3}" />
+                                                                    <f:setPropertyActionListener
+                                                                        value="#{null}"
+                                                                        target="#{NavigationForm.uiStatus.mets_toc4}" />
+                                                                    <f:setPropertyActionListener
+                                                                        value="#{null}"
+                                                                        target="#{NavigationForm.uiStatus.mets_toc5}" />
+                                                                </h:commandLink>
+
+                                                                <h:commandLink
+                                                                    onclick="sessionStorage.removeItem('columnWidths');"
+                                                                    action="#{Metadaten.XMLlesen}"
+                                                                    id="action15b"
+                                                                    title="#{msgs.overwrite}"
+                                                                    rel="tooltip"
+                                                                    styleClass="btn btn-green">
+                                                                    <i class="fa fa-floppy-o margin-right-10"></i>
+                                                                    <h:outputText value="#{msgs.overwrite}" />
+                                                                    <f:passThroughAttribute
+                                                                        name="data-toggle"
+                                                                        value="tooltip" />
+                                                                    <f:param
+                                                                        name="ProzesseID"
+                                                                        value="#{item.id}" />
+                                                                    <f:param
+                                                                        name="BenutzerID"
+                                                                        value="#{LoginForm.myBenutzer.id}" />
+                                                                    <f:param
+                                                                        name="zurueck"
+                                                                        value="process_all" />
+                                                                    <f:param
+                                                                        name="overwriteChanges"
+                                                                        value="true" />
+                                                                    <f:setPropertyActionListener
+                                                                        value="#{null}"
+                                                                        target="#{NavigationForm.uiStatus.mets_toc1}" />
+                                                                    <f:setPropertyActionListener
+                                                                        value="#{null}"
+                                                                        target="#{NavigationForm.uiStatus.mets_toc2}" />
+                                                                    <f:setPropertyActionListener
+                                                                        value="#{null}"
+                                                                        target="#{NavigationForm.uiStatus.mets_toc3}" />
+                                                                    <f:setPropertyActionListener
+                                                                        value="#{null}"
+                                                                        target="#{NavigationForm.uiStatus.mets_toc4}" />
+                                                                    <f:setPropertyActionListener
+                                                                        value="#{null}"
+                                                                        target="#{NavigationForm.uiStatus.mets_toc5}" />
+                                                                </h:commandLink>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </table>
+
+                                <div
+                                    class="dataTables_info"
+                                    style="float: left;"></div>
+                                <div class="dataTables_paginate">
+                                    <!-- paginator -->
+                                    <intranda:tablePaginator
+                                        paginator="#{DashboardForm.plugin.paginator}"
+                                        id="navigator" />
+                                    <!-- /paginator -->
+                                </div>
+                            </h:form>
+
+                        </div>
+                    </div>
                 </div>
-
-
-            </ui:repeat>
-
-
-
-
-        </h:form>
+            </div>
+        </div>
 
 
         <h:form>
+
+
+
             <div class="submit">
                 <ul class="statuslist">
                     <li>
