@@ -84,49 +84,89 @@
                                                 value="#{msgs.metadata}"
                                                 sortable="false" />
 
-        <th scope="col" role="columnheader" class="tableColumnOverflow maxWidth300"
-            aria-sort="#{DashboardForm.plugin.sortField== 'titelDesc' ? 'descending' : DashboardForm.plugin.sortField== 'titelAsc' ? 'ascending' :'none'}">
-            <button class="button-link"
-                style="width: 100%; text-align: left;"
-                jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
-                aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'titelDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'titelAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
-                <h:outputText value="#{msgs.prozessTitel}" />
-                <span
-                    class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'titelDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'titelAsc' ?'fa-sort-asc':'fa-sort'}"></span>
-                <f:setPropertyActionListener
-                    target="#{DashboardForm.plugin.sortField}"
-                    value="#{DashboardForm.plugin.sortField== 'titelAsc' ? 'titelDesc' : 'titelAsc' }" />
-                <f:ajax render="@form" />
-            </button>
-        </th>
-                                                 
-                                            
-                        
-                              
-                                            <!-- Vorgangsdatum -->
-                                            <intranda:columnheader
-                                                addClass="tableColumnOverflow maxwidth200"
-                                                name="vorgangsdatum"
-                                                form="#{ProzessverwaltungForm}"
-                                                value="#{msgs.vorgangsdatum}"
-                                                ajaxRender=":myform" />
+                                            <th
+                                                scope="col"
+                                                role="columnheader"
+                                                class="tableColumnOverflow maxWidth300"
+                                                aria-sort="#{DashboardForm.plugin.sortField== 'titelDesc' ? 'descending' : DashboardForm.plugin.sortField== 'titelAsc' ? 'ascending' :'none'}">
+                                                <button
+                                                    class="button-link"
+                                                    style="width: 100%; text-align: left;"
+                                                    jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
+                                                    aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'titelDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'titelAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                                    <h:outputText value="#{msgs.prozessTitel}" />
+                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'titelDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'titelAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                    <f:setPropertyActionListener
+                                                        target="#{DashboardForm.plugin.sortField}"
+                                                        value="#{DashboardForm.plugin.sortField== 'titelAsc' ? 'titelDesc' : 'titelAsc' }" />
+                                                    <f:ajax render="@form" />
+                                                </button>
+                                            </th>
+
+
+                                            <th
+                                                scope="col"
+                                                role="columnheader"
+                                                class="tableColumnOverflow maxwidth200"
+                                                aria-sort="#{DashboardForm.plugin.sortField== 'creationDateDesc' ? 'descending' : DashboardForm.plugin.sortField== 'creationDateAsc' ? 'ascending' :'none'}">
+                                                <button
+                                                    class="button-link"
+                                                    style="width: 100%; text-align: left;"
+                                                    jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
+                                                    aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'creationDateDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'creationDateAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                                    <h:outputText value="#{msgs.vorgangsdatum}" />
+                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'creationDateDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'creationDateAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                    <f:setPropertyActionListener
+                                                        target="#{DashboardForm.plugin.sortField}"
+                                                        value="#{DashboardForm.plugin.sortField== 'creationDateAsc' ? 'creationDateDesc' : 'creationDateAsc' }" />
+                                                    <f:ajax render="@form" />
+                                                </button>
+                                            </th>
+
+
+
+
                                             <!-- Status -->
-                                            <intranda:columnheader
-                                                addClass="tableColumnOverflow width200"
-                                                name="fortschritt"
-                                                form="#{ProzessverwaltungForm}"
-                                                value="#{msgs.status}"
-                                                ajaxRender=":myform" />
-
-
+                                            <th
+                                                scope="col"
+                                                role="columnheader"
+                                                class="tableColumnOverflow width200"
+                                                aria-sort="#{DashboardForm.plugin.sortField== 'statusDesc' ? 'descending' : DashboardForm.plugin.sortField== 'statusAsc' ? 'ascending' :'none'}">
+                                                <button
+                                                    class="button-link"
+                                                    style="width: 100%; text-align: left;"
+                                                    jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
+                                                    aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'statusDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'statusAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                                    <h:outputText value="#{msgs.vorgangsdatum}" />
+                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'statusDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'statusAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                    <f:setPropertyActionListener
+                                                        target="#{DashboardForm.plugin.sortField}"
+                                                        value="#{DashboardForm.plugin.sortField== 'statusAsc' ? 'statusDesc' : 'statusAsc' }" />
+                                                    <f:ajax render="@form" />
+                                                </button>
+                                            </th>
 
                                             <!-- number of images -->
-                                            <intranda:columnheader
-                                                value="#{msgs.NumberOfImages}"
-                                                addClass="tableColumnOverflow maxWidth120"
-                                                name="numberOfImages"
-                                                form="#{ProzessverwaltungForm}"
-                                                ajaxRender=":myform" />
+                                            <th
+                                                scope="col"
+                                                role="columnheader"
+                                                class=""
+                                                aria-sort="#{DashboardForm.plugin.sortField== 'imagesDesc' ? 'descending' : DashboardForm.plugin.sortField== 'imagesAsc' ? 'ascending' :'none'}">
+                                                <button
+                                                    class="button-link"
+                                                    style="width: 100%; text-align: left;"
+                                                    jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
+                                                    aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'imagesDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'imagesAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                                    <h:outputText value="#{msgs.NumberOfImages}" />
+                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'imagesDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'imagesAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                    <f:setPropertyActionListener
+                                                        target="#{DashboardForm.plugin.sortField}"
+                                                        value="#{DashboardForm.plugin.sortField== 'imagesAsc' ? 'imagesDesc' : 'imagesAsc' }" />
+                                                    <f:ajax render="@form" />
+                                                </button>
+                                            </th>
+
+
                                             <!-- Buttons -->
                                             <intranda:columnheader
                                                 addClass="width200"

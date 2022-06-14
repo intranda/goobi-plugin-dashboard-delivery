@@ -922,6 +922,24 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "titelDesc":
                 value = "titel desc";
                 break;
+            case "creationDateAsc":
+                value = "erstellungsdatum asc";
+                break;
+            case "creationDateDesc":
+                value = "erstellungsdatum desc";
+                break;
+            case "statusAsc":
+                value = "sortHelperStatus";
+                break;
+            case "statusDesc":
+                value = "sortHelperStatus desc";
+                break;
+            case "imagesAsc":
+                value = "sortHelperImages";
+                break;
+            case "imagesDesc":
+                value = "sortHelperImages desc";
+                break;
         }
         return value;
     }
