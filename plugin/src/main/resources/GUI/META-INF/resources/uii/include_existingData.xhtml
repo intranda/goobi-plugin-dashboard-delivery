@@ -48,19 +48,7 @@
 
                                 <h:form id="searchform">
 
-                                    <div class="col-md-1">
-                                        <div
-                                            class="dataTables_length"
-                                            style="margin-bottom: 10px;">
-                                            <button
-                                                class="expandbutton font-black"
-                                                jsf:action="#{DashboardForm.plugin.generateFilterWithIdentfiers}"
-                                                title="#{msgs.process_generateFilterQueryForHits}">
-                                                <i class="btn fa fa-filter margin-right-5" />
-                                                <h:outputText value="#{msgs.treffer}: #{DashboardForm.plugin.paginator.totalResults}" />
-                                            </button>
-                                        </div>
-                                    </div>
+
 
                                     <!--                                             <div class="col-md-11"> -->
                                     <!--                                                 <x:aliasBeansScope> -->
@@ -80,8 +68,6 @@
                             </div>
                             <h:form id="myform">
 
-
-
                                 <!-- +++++++++++++++++  Display as table ++++++++++++++++++++++++ -->
                                 <table
                                     role="grid"
@@ -97,15 +83,26 @@
                                                 addClass="tableColumnOverflow maxWidth300"
                                                 value="#{msgs.metadata}"
                                                 sortable="false" />
-                                            <!-- Alle Schritte Auflisten -->
-                                            <intranda:columnheader
-                                                addClass="tableColumnOverflow maxWidth300"
-                                                name="titel"
-                                                form="#{ProzessverwaltungForm}"
-                                                value="#{msgs.prozessTitel}"
-                                                rendered="true"
-                                                ajaxRender=":myform"
-                                                id="ajaxcolumn" />
+
+        <th scope="col" role="columnheader" class="tableColumnOverflow maxWidth300"
+            aria-sort="#{DashboardForm.plugin.sortField== 'titelDesc' ? 'descending' : DashboardForm.plugin.sortField== 'titelAsc' ? 'ascending' :'none'}">
+            <button class="button-link"
+                style="width: 100%; text-align: left;"
+                jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
+                aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'titelDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'titelAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                <h:outputText value="#{msgs.prozessTitel}" />
+                <span
+                    class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'titelDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'titelAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                <f:setPropertyActionListener
+                    target="#{DashboardForm.plugin.sortField}"
+                    value="#{DashboardForm.plugin.sortField== 'titelAsc' ? 'titelDesc' : 'titelAsc' }" />
+                <f:ajax render="@form" />
+            </button>
+        </th>
+                                                 
+                                            
+                        
+                              
                                             <!-- Vorgangsdatum -->
                                             <intranda:columnheader
                                                 addClass="tableColumnOverflow maxwidth200"
@@ -436,30 +433,6 @@
 
                                             <!-- Buttons -->
                                             <td class="width200">
-                                                <!-- Bearbeiten-Schaltknopf -->
-                                                <button
-                                                    jsf:action="#{DashboardForm.plugin.editProcess}"
-                                                    jsf:id="edit"
-                                                    aria-label="#{msgs.bearbeiten}"
-                                                    jsf:rendered="#{LoginForm.hasRole('Workflow_General_Details')}"
-                                                    jsf:rel="tooltip"
-                                                    onclick="preventDoubleSubmit(this);"
-                                                    title="#{msgs.prozessBearbeiten}"
-                                                    class="btn button-schaltknopf">
-                                                    <i class="fa fa-pencil" />
-                                                    <f:passThroughAttribute
-                                                        name="data-toggle"
-                                                        value="tooltip" />
-                                                    <x:updateActionListener
-                                                        property="#{DashboardForm.plugin.myProzess}"
-                                                        value="#{item}" />
-                                                    <x:updateActionListener
-                                                        property="#{DashboardForm.plugin.modusBearbeiten}"
-                                                        value="" />
-                                                </button>
-
-
-
                                                 <!-- Metadaten-Schaltknopf - Read only -->
                                                 <h:commandLink
                                                     action="#{Metadaten.XMLlesen}"
@@ -483,7 +456,7 @@
                                                         value="#{LoginForm.myBenutzer.id}" />
                                                     <f:param
                                                         name="zurueck"
-                                                        value="process_all" />
+                                                        value="plugin_dashboard_delivery.xhtml" />
                                                 </h:commandLink>
 
                                                 <!-- Metadaten-Schaltknopf - Allow writing -->
@@ -507,7 +480,8 @@
                                                         value="#{LoginForm.myBenutzer.id}" />
                                                     <f:param
                                                         name="zurueck"
-                                                        value="process_all" />
+                                                        value="plugin_dashboard_delivery.xhtml" />
+
                                                     <c:if test="#{LoginForm.hasRole('Task_Mets_Files')}">
                                                         <f:setPropertyActionListener
                                                             value="File"
@@ -607,7 +581,7 @@
                                                                         value="#{LoginForm.myBenutzer.id}" />
                                                                     <f:param
                                                                         name="zurueck"
-                                                                        value="process_all" />
+                                                                        value="plugin_dashboard_delivery.xhtml" />
                                                                     <f:param
                                                                         name="discardChanges"
                                                                         value="true" />
@@ -672,10 +646,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-
-
-
                                             </td>
                                         </tr>
                                     </ui:repeat>

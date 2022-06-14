@@ -130,6 +130,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     @Getter
     protected ProcessPaginator paginator;
+    @Getter
+    @Setter
+    private String sortField = "erstellungsdatum desc";
 
     public DeliveryDashboardPlugin() {
         try {
@@ -900,12 +903,27 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         sql.append("'");
         sql.append(institution.getShortName());
         sql.append("')) ");
+        // limit result to specific fields
+        //  sql.append("AND (prozesse.ProzesseID IN (SELECT DISTINCT processid FROM metadata WHERE metadata.name LIKE  '%TitleDocMain%' AND MATCH (value) AGAINST ('\"+*Titel* ' IN BOOLEAN MODE)))");
 
         sql.append("AND prozesse.istTemplate = false ");
 
-        paginator = new ProcessPaginator("erstellungsdatum desc", sql.toString(), m);
+        paginator = new ProcessPaginator(getOrder(), sql.toString(), m);
         // generate list with all existing processes for current institution
         // paginator?
+    }
+
+    private String getOrder() {
+        String value = "erstellungsdatum desc";
+        switch (sortField) {
+            case "titelAsc":
+                value = "titel asc";
+                break;
+            case "titelDesc":
+                value = "titel desc";
+                break;
+        }
+        return value;
     }
 
 }
