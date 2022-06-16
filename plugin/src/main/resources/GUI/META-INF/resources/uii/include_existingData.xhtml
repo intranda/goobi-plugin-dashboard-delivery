@@ -49,20 +49,32 @@
                                 <h:form id="searchform">
 
 
+                <h:selectOneMenu
+                    id="searchoption_select"
+                    styleClass="form-control"
+                    value="#{DashboardForm.plugin.selectedField}"
+                    pt:aria-label="searchfield">
+                    <f:selectItem
+                        itemValue=""
+                        itemLabel="#{msgs.anyField}" />
+                    <f:selectItems value="#{DashboardForm.plugin.metadataFields}" />
+                </h:selectOneMenu>
 
-                                    <!--                                             <div class="col-md-11"> -->
-                                    <!--                                                 <x:aliasBeansScope> -->
-                                    <!--                                                     <x:aliasBean -->
-                                    <!--                                                         alias="#{Form}" -->
-                                    <!--                                                         value="#{ProzessverwaltungForm}" /> -->
-                                    <!--                                                     <x:aliasBean -->
-                                    <!--                                                         alias="#{label}" -->
-                                    <!--                                                         value="#{msgs.filterProcesses}" /> -->
+ <x:inputText
+                    id="searchvalue_input"
+                    pt:aria-label="searchvalue"
+                    styleClass="form-control"
+                    value="#{DashboardForm.plugin.searchValue}">
+                </x:inputText>
 
-                                    <!--                                                 </x:aliasBeansScope> -->
+                        <button
+                            jsf:id="newSearch"
+                            class="btn btn-primary-400"
+                            title="#{msgs.plugin_dashboard_search}"
+                            jsf:action="#{DashboardForm.plugin.search}">
+                            <h:outputText value="#{msgs.plugin_dashboard_search}" />
+                        </button>
 
-                                    <!--                                                 <ui:include src="includes/process/list_filterAndDisplay.xhtml" /> -->
-                                    <!--                                             </div> -->
 
                                 </h:form>
                             </div>

@@ -134,6 +134,15 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     @Setter
     private String sortField = "erstellungsdatum desc";
 
+    @Getter
+    private List<SelectItem> metadataFields = new ArrayList<>();
+    @Getter
+    @Setter
+    private String selectedField;
+    @Getter
+    @Setter
+    private String searchValue;
+
     public DeliveryDashboardPlugin() {
         try {
             temporaryFolder = Files.createTempDirectory("delivery");
@@ -143,10 +152,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     private void readConfiguration() {
+
         XMLConfiguration config = ConfigPlugins.getPluginConfig(title);
         config.setExpressionEngine(new XPathExpressionEngine());
         configuredGroups.clear();
-
         vocabularyUrl = config.getString("/vocabularyServerUrl");
 
         monographicDocType = config.getString("/doctypes/monographic", "Monograph");
@@ -217,6 +226,38 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
 
                 grp.getFields().add(mf);
+
+                switch (mf.getDisplayType()) {
+                    case "person":
+                    case "corporate":
+                    case "picklist":
+                        for (SelectItem s : mf.getSelectList()) {
+                            boolean match = false;
+                            for (SelectItem si : metadataFields) {
+                                if (si.getValue().equals(s.getValue())) {
+                                    match = true;
+                                    break;
+                                }
+                            }
+                            if (!match) {
+                                metadataFields.add(new SelectItem(s.getValue(), s.getLabel()));
+                            }
+                        }
+
+                    case "journaltitles":
+                        break;
+                    default:
+                        boolean match = false;
+                        for (SelectItem si : metadataFields) {
+                            if (si.getValue().equals(mf.getRulesetName())) {
+                                match = true;
+                                break;
+                            }
+                        }
+                        if (!match) {
+                            metadataFields.add(new SelectItem(mf.getRulesetName(), mf.getLabel()));
+                        }
+                }
             }
         }
     }
@@ -893,6 +934,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     public void getExistingDataForInstitution() {
+        readConfiguration(); // populate dropdown list
+
         User user = Helper.getCurrentUser();
         Institution institution = user.getInstitution();
 
@@ -909,8 +952,35 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         sql.append("AND prozesse.istTemplate = false ");
 
         paginator = new ProcessPaginator(getOrder(), sql.toString(), m);
-        // generate list with all existing processes for current institution
-        // paginator?
+    }
+
+    public void search() {
+        if (StringUtils.isBlank(searchValue)) {
+            getExistingDataForInstitution();
+            return;
+        }
+
+        User user = Helper.getCurrentUser();
+        Institution institution = user.getInstitution();
+        ProcessManager m = new ProcessManager();
+        StringBuilder sql = new StringBuilder();
+        sql.append("(prozesse.ProzesseID in (select prozesseID from prozesseeigenschaften where prozesseeigenschaften.Titel =");
+        sql.append("'Institution' AND prozesseeigenschaften.Wert =");
+        sql.append("'");
+        sql.append(institution.getShortName());
+        sql.append("')) ");
+
+        if (StringUtils.isBlank(selectedField)) {
+            sql.append("AND (prozesse.ProzesseID IN (SELECT DISTINCT processid FROM metadata WHERE MATCH (value) AGAINST ('\"+*" + searchValue
+                    + "* ' IN BOOLEAN MODE)))");
+        } else {
+            sql.append("AND (prozesse.ProzesseID IN (SELECT DISTINCT processid FROM metadata WHERE metadata.name =  '" + selectedField
+                    + "' AND value LIKE '%" + searchValue + "%' ))");
+        }
+
+        sql.append("AND prozesse.istTemplate = false ");
+
+        paginator = new ProcessPaginator(getOrder(), sql.toString(), m);
     }
 
     private String getOrder() {
