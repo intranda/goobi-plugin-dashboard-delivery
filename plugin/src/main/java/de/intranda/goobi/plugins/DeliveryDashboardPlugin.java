@@ -574,7 +574,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         createProperties(process, acccountName, institutionName);
 
         // TODO send success mail, start any automatic tasks
-
+        navigation = "main";
     }
 
     private Fileformat createFileformat(Prefs prefs, String identifier) {
@@ -819,6 +819,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         createProperties(process, acccountName, institutionName);
 
         // TODO send mail to zlb staff
+
+        navigation = "main";
     }
 
     public void createJournalIssue() {
