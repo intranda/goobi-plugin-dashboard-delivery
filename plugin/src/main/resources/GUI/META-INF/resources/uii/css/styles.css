@@ -1,0 +1,147 @@
+.flow > * + * {
+    margin-top: 3.2rem;
+}
+
+.common-region {
+    border: 0;
+}
+
+#content {
+    min-height: calc(100vh - var(--height-footer-and-nav));
+    padding: 0 16rem;
+    font-size: var(--fs-400);
+}
+
+.user.pull-right {
+    display: none;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    hyphens: auto;
+    word-wrap: anywhere;
+    font-size: var(--fs-400);
+    text-align: center;
+    padding: 6.4rem;
+    background-color: var(--clr-neutral-400);
+}
+
+.item__icons svg {
+    margin: 0 .4rem;
+    width: 3.2rem;
+    height: 3.2rem;
+    fill: var(--clr-primary-400);
+}
+
+.text-important {
+    color: var(--clr-primary-400);
+    font-size: 2.2rem;
+}
+
+.submit {
+    display: flex;
+    justify-content: center;
+}
+
+.statuslist {
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+
+.statuslist li {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.statuslist li:not(:last-child) {
+  margin-right: 8px;
+}
+
+/* Upload form */
+#uploadForm {
+    display: initial;
+    background-color: var(--clr-neutral-400);
+    /*! text-align: center; */
+    padding: 6.4rem;
+    border-radius: var(--border-radius);
+    border: 1px dashed var(--clr-neutral-600);
+    display: flex;
+    flex-direction: column;
+}
+
+#uploadForm .form__icons {
+    margin-top: 0;
+    
+}
+#uploadForm svg {
+    width: 4.8rem;
+    height: 4.8rem;
+    fill: var(--clr-primary-400);
+}
+
+.form__msg-or {
+    text-transform: uppercase;
+    position: relative;
+}
+
+.form__msg-or::before,
+.form__msg-or::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    width: 8.8rem;
+    height: 2px;
+    background-color: var(--clr-text-body);
+    border-radius: 8px;
+}
+
+.form__msg-or::before {
+    transform: translateX(-120%)
+}
+
+.form__msg-or::after {
+    transform: translateX(20%)
+}
+
+.form__actions {
+    display: flex;
+    gap: .8rem;
+}
+
+/* Very specific selectors => overriding styles from index.scss */
+.form__actions input.form-control-lg,
+.form__actions .btn[type="submit"] {
+    margin: 0;
+    height: initial;
+    font-size: var(--fs-600);
+}
+
+.form__actions .btn[type="submit"] {
+    background-color: transparent;
+    color: var(--clr-primary-400);
+    border-color: var(--clr-neutral-300);
+}
+
+.form__actions .btn[type="submit"]:hover {
+    background-color: #dde0e3;
+}
+
+@media (max-width: 750px) {
+    .common-region {
+        --grid-tc: 100%;
+    }
+    
+    #content {
+        padding: 0;
+    }
+    
+    .form__msg-or::before,
+    .form__msg-or::after {
+        display: none;
+    }
+}

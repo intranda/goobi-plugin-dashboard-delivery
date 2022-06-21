@@ -19,19 +19,21 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='titleSelection'}">
             <h:form>
-                <div class="area">
+                <div class="area common-region">
 
                     <!-- create new title -->
-                    <div class="item">
-                        <h:outputText
-                            styleClass="header"
-                            value="#{msgs.plugin_dashboard_deliverNewJournalTitleHeader}" />
-                        <br />
-                        <h:outputText value="#{msgs.plugin_dashboard_deliverNewJournalTitle}" />
-                        <br />
+                    <div class="item flow">
+
+						<div class="item__icons">
+							<ui:include src="/uii/includes/icon-file.xhtml" />
+						</div>
+
+						<h2 class="item__heading">#{msgs.plugin_dashboard_deliverNewJournalTitleHeader}</h2>
+						<p class="item__text">#{msgs.plugin_dashboard_deliverNewJournalTitle}</p>
+
                         <button
                             jsf:id="newTitle"
-                            class="btn btn-primary-400"
+                            class="item__cta btn btn-primary-400"
                             title="#{msgs.plugin_dashboard_deliverNewJournalTitleButton}"
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_deliverNewJournalTitleButton}" />
@@ -46,16 +48,18 @@
 
                     <!-- add issue to existing title -->
 
-                    <div class="item">
-                        <h:outputText
-                            styleClass="header"
-                            value="#{msgs.plugin_dashboard_deliverNewJournalIssueHeader}" />
-                        <br />
-                        <h:outputText value="#{msgs.plugin_dashboard_deliverNewIssueTitle}" />
-                        <br />
+                    <div class="item flow">
+
+						<div class="item__icons">
+							<ui:include src="/uii/includes/icon-files.xhtml" />
+						</div>
+
+						<h2 class="item__heading">#{msgs.plugin_dashboard_deliverNewJournalIssueHeader}</h2>
+						<p class="item__text">#{msgs.plugin_dashboard_deliverNewIssueTitle}</p>
+
                         <button
                             jsf:id="newIssue"
-                            class="btn btn-primary-400"
+                            class="item__cta btn btn-primary-400"
                             title="#{msgs.plugin_dashboard_deliverNewIssueTitleButton}"
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_deliverNewIssueTitleButton}" />
@@ -290,13 +294,13 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main'}">
             <h:form>
-                <div class="submit">
+             <div class="submit">
                     <ul class="statuslist">
                         <li>
                             <button
                                 jsf:action="#{DashboardForm.plugin.previousPage}"
                                 jsf:id="backToMain"
-                                class="float-left btn btn-primary font-size-s">
+                                class="btn btn-blank">
                                 <h:outputText value="#{msgs.back}" />
                                 <f:ajax
                                     render="main-area"
@@ -304,6 +308,8 @@
                             </button>
 
                         </li>
+
+
                         <!-- 
                         <li>
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">

@@ -17,6 +17,14 @@
 
     </composite:interface>
 
+    <ui:define name="content">
+
+	<!-- Custom styles -->
+	<link
+		type="text/css"
+		rel="stylesheet"
+		href="#{HelperForm.applicationWebsiteUrl}/uii/css/styles.css" />
+
     <!-- breadcrumb area -->
     <ui:define name="breadcrumb">
         <intranda:breadcrumb
@@ -28,96 +36,39 @@
     </ui:define>
 
 
-    <ui:define name="content">
-
-        <style>
-.area {
-    display: grid;
-    grid-template-columns: 20% 20% 20%;
-    grid-column-gap: 50px;
-    justify-content: space-evenly;
-    grid-row-gap: 20px;
-}
-
-.item {
-    width: 100%;
-    height: 200px;
-    background: #eee;
-}
-
-.header {
-    color: #6e1769;
-}
-
-.statuslist {
-    list-style: none;
-}
-
-.statuslist li {
-    float: left;
-    margin: 10px;
-}
-
-.status.active {
-    color: yellow;
-}
-
-.status.inactive {
-    color: grey;
-}
-
-.status.finished {
-    color: green;
-}
-
-.layout {
-    grid-template-columns: 45% 45%;
-}
-
-.grid-row {
-    grid-column-start: span 2;
-}
-
-.persongrid {
-    display: grid;
-    gap: var(- -gap);
-    grid-template-columns: 30% 30% 30%;
-}
-
-.corporategrid {
-    display: grid;
-    gap: var(- -gap);
-    grid-template-columns: 45% 45%;
-}
-
-.layout {
-    display: grid;
-    grid-gap: var(- -gap);
-}
-</style>
 
         <h:panelGroup
             layout="block"
-            id="main-area">
+            id="main-area"
+            class="deliveryPlugin flow"
+            >
             <!-- main area, select document type -->
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='main'}">
-                <h:outputFormat value="#{msgs['plugin_dashboard_deliveryWellcomeMessage']}">
-                    <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
-                </h:outputFormat>
+
+				<div class="text-important">
+					<h:outputFormat value="#{msgs['plugin_dashboard_deliveryWellcomeMessage']}">
+						<f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
+					</h:outputFormat>
+				</div>
+
                 <h:form>
-                    <div class="area">
+                    <div class="common-region">
 
                         <!-- Journals -->
-                        <div class="item">
-                            <h:outputText
-                                styleClass="header"
-                                value="#{msgs.plugin_dashboard_deliverJournalsHeader}" />
-                            <br />
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverJournals}" />
-                            <br />
+                        <div class="item flow">
+
+							<div class="item__icons">
+								<ui:include src="/uii/includes/icon-book.xhtml" />
+								<ui:include src="/uii/includes/icon-book.xhtml" />
+								<ui:include src="/uii/includes/icon-book.xhtml" />
+                        	</div>
+
+							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverJournalsHeader}</h2>
+							<p class="item__text">#{msgs.plugin_dashboard_deliverJournals}</p>
+
                             <button
                                 jsf:id="journals"
-                                class="btn btn-primary-400"
+                                class="item__cta btn btn-primary-400"
                                 title="#{msgs.plugin_dashboard_deliverJournalsButton}">
                                 <h:outputText value="#{msgs.plugin_dashboard_deliverJournalsButton}" />
                                 <f:setPropertyActionListener
@@ -133,16 +84,18 @@
                         </div>
 
                         <!-- Monographs -->
-                        <div class="item">
-                            <h:outputText
-                                styleClass="header"
-                                value="#{msgs.plugin_dashboard_deliverMonographHeader}" />
-                            <br />
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverMonograph}" />
-                            <br />
+                        <div class="item flow">
+
+							<div class="item__icons">
+								<ui:include src="/uii/includes/icon-book.xhtml" />
+                        	</div>
+                        
+							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverMonographHeader}</h2>
+							<p class="item__text">#{msgs.plugin_dashboard_deliverMonograph}</p>
+
                             <button
                                 jsf:id="monograph"
-                                class="btn btn-primary-400"
+                                class="item__cta btn btn-primary-400"
                                 title="#{msgs.plugin_dashboard_deliverMonographButton}"
                                 jsf:action="#{DashboardForm.plugin.startNewImport}">
                                 <h:outputText value="#{msgs.plugin_dashboard_deliverMonographButton}" />
@@ -160,14 +113,15 @@
 
 
                         <!-- Help -->
-                        <div class="item">
-                            <h:outputText
-                                styleClass="header"
-                                value="#{msgs.plugin_dashboard_deliverHelpHeader}" />
-                            <br />
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverHelp}" />
-                            <br />
-                            <button class="btn btn-primary-400">
+                        <div class="item flow">
+							<div class="item__icons">
+								<ui:include src="/uii/includes/icon-mortarboard.xhtml" />
+							</div>
+
+							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverHelpHeader}</h2>
+							<p class="item__text">#{msgs.plugin_dashboard_deliverHelp}</p>
+
+                            <button class="item__cta btn btn-primary-400">
                                 <h:outputText value="#{msgs.plugin_dashboard_deliverHelpButton}" />
                             </button>
 
@@ -175,16 +129,17 @@
 
 
                         <!-- edit user data -->
-                        <div class="item">
-                            <h:outputText
-                                styleClass="header"
-                                value="#{msgs.plugin_dashboard_deliverShowDataHeader}" />
-                            <br />
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverShowData}" />
-                            <br />
+                        <div class="item flow">
+							<div class="item__icons">
+								<ui:include src="/uii/includes/icon-file-text.xhtml" />
+							</div>
+							
+							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverShowDataHeader}</h2>
+							<p class="item__text">#{msgs.plugin_dashboard_deliverShowData}</p>
+
                             <button
                                 jsf:id="userData"
-                                class="btn btn-primary-400"
+                                class="item__cta btn btn-primary-400"
                                 title="#{msgs.plugin_dashboard_deliverShowDataButton}"
                                 jsf:action="#{DashboardForm.plugin.readUserConfiguration}">
                                 <h:outputText value="#{msgs.plugin_dashboard_deliverShowDataButton}" />
@@ -198,16 +153,17 @@
                         </div>
 
                         <!-- show existing deliveries -->
-                        <div class="item">
-                            <h:outputText
-                                styleClass="header"
-                                value="#{msgs.plugin_dashboard_deliverShowExistingDataHeader}" />
-                            <br />
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverShowExistingData}" />
-                            <br />
+                        <div class="item flow">
+							<div class="item__icons">
+								<ui:include src="/uii/includes/icon-file-text.xhtml" />
+							</div>
+
+							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverShowExistingDataHeader}</h2>
+							<p class="item__text">#{msgs.plugin_dashboard_deliverShowExistingData}</p>
+
                             <button
                                 jsf:id="existingData"
-                                class="btn btn-primary-400"
+                                class="item__cta btn btn-primary-400"
                                 title="#{msgs.plugin_dashboard_deliverShowExistingDataButton}"
                                 jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}">
                                 <h:outputText value="#{msgs.plugin_dashboard_deliverShowExistingDataButton}" />
@@ -226,18 +182,40 @@
 
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='upload'}">
+            	
+            	<h2>#{msgs.plugin_dashboard_uploadFormHeader}</h2>
 
                 <h:form
                     prependId="false"
                     id="uploadForm"
+                    class="form flow"
                     enctype="multipart/form-data">
+
+					<div class="form__icons">
+						<ui:include src="/uii/includes/icon-file-image.xhtml" />
+					</div>
+
+					<p class="form__msg">#{msgs.plugin_dashboard_uploadFormMessage}</p>
+
+					<div class="form__msg-or">
+						#{msgs.plugin_dashboard_or}
+					</div>
+
+					<div class="form__actions">
+					
                     <h:inputFile
                         id="file"
+                    	styleClass="form-control form-control-lg"
                         value="#{DashboardForm.plugin.file}"
                         name="file" />
                     <h:commandButton
                         id="submit"
-                        value="submit" />
+                        value="submit" 
+                        styleClass="btn btn-primary-400"
+                        />
+					</div>
+
+
                 </h:form>
 
                 <!-- TODO input field for download url -->
