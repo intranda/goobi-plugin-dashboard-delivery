@@ -18,6 +18,15 @@
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata'}">
+
+            <h1 class="page__heading">
+                <span>Main Heading Placeholder</span>
+
+                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
+
             <h:form>
                 <div class="area common-region common-region--no-borders">
 
