@@ -2,10 +2,6 @@
     margin-top: 3.2rem;
 }
 
-.common-region {
-    border: 0;
-}
-
 #content {
     min-height: calc(100vh - var(--height-footer-and-nav));
     padding: 0 16rem;

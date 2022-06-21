@@ -18,18 +18,40 @@
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='titleSelection'}">
+
+                <!-- breadcrumb area -->
+                <ui:define name="breadcrumb">
+                    <intranda:breadcrumb
+                        id="index"
+                        label="#{DashboardForm.plugin==null?msgs.startseite:msgs.dashboard}"
+                        action="external_index"
+                        navId="a0"
+                        noSeparator="#{true}" />
+                </ui:define>
+
+
+                <h1 class="page__heading">
+                  <h:outputFormat value="Main Heading Placeholder">
+                    <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
+                  </h:outputFormat>
+
+                    <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                      <ui:include src="/uii/includes/icon-help.xhtml" />
+                    </button>
+                </h1>
+
             <h:form>
-                <div class="area common-region">
+                <div class="area common-region common-region--no-borders">
 
                     <!-- create new title -->
                     <div class="item flow">
 
-						<div class="item__icons">
-							<ui:include src="/uii/includes/icon-file.xhtml" />
-						</div>
+                    <div class="item__icons">
+                      <ui:include src="/uii/includes/icon-file.xhtml" />
+                    </div>
 
-						<h2 class="item__heading">#{msgs.plugin_dashboard_deliverNewJournalTitleHeader}</h2>
-						<p class="item__text">#{msgs.plugin_dashboard_deliverNewJournalTitle}</p>
+                    <h2 class="item__heading">#{msgs.plugin_dashboard_deliverNewJournalTitleHeader}</h2>
+                    <p class="item__text">#{msgs.plugin_dashboard_deliverNewJournalTitle}</p>
 
                         <button
                             jsf:id="newTitle"
@@ -310,7 +332,7 @@
                         </li>
 
 
-                        <!-- 
+                        <!--
                         <li>
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />

@@ -45,14 +45,19 @@
             <!-- main area, select document type -->
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='main'}">
 
-				<div class="text-important">
-					<h:outputFormat value="#{msgs['plugin_dashboard_deliveryWellcomeMessage']}">
-						<f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
-					</h:outputFormat>
-				</div>
+                <h1 class="page__heading">
+                  <h:outputFormat value="#{msgs['plugin_dashboard_deliveryWellcomeMessage']}">
+                    <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
+                  </h:outputFormat>
+
+                    <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                      <ui:include src="/uii/includes/icon-help.xhtml" />
+                    </button>
+                </h1>
+
 
                 <h:form>
-                    <div class="common-region">
+                    <div class="common-region common-region--no-borders">
 
                         <!-- Journals -->
                         <div class="item flow">
@@ -61,7 +66,7 @@
 								<ui:include src="/uii/includes/icon-book.xhtml" />
 								<ui:include src="/uii/includes/icon-book.xhtml" />
 								<ui:include src="/uii/includes/icon-book.xhtml" />
-                        	</div>
+                </div>
 
 							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverJournalsHeader}</h2>
 							<p class="item__text">#{msgs.plugin_dashboard_deliverJournals}</p>
@@ -89,7 +94,7 @@
 							<div class="item__icons">
 								<ui:include src="/uii/includes/icon-book.xhtml" />
                         	</div>
-                        
+
 							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverMonographHeader}</h2>
 							<p class="item__text">#{msgs.plugin_dashboard_deliverMonograph}</p>
 
@@ -133,7 +138,7 @@
 							<div class="item__icons">
 								<ui:include src="/uii/includes/icon-file-text.xhtml" />
 							</div>
-							
+
 							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverShowDataHeader}</h2>
 							<p class="item__text">#{msgs.plugin_dashboard_deliverShowData}</p>
 
@@ -182,7 +187,7 @@
 
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='upload'}">
-            	
+
             	<h2>#{msgs.plugin_dashboard_uploadFormHeader}</h2>
 
                 <h:form
@@ -202,7 +207,7 @@
 					</div>
 
 					<div class="form__actions">
-					
+
                     <h:inputFile
                         id="file"
                     	styleClass="form-control form-control-lg"
@@ -210,7 +215,7 @@
                         name="file" />
                     <h:commandButton
                         id="submit"
-                        value="submit" 
+                        value="submit"
                         styleClass="btn btn-primary-400"
                         />
 					</div>
@@ -225,32 +230,24 @@
             <ui:fragment
                 id="monographs"
                 rendered="#{DashboardForm.plugin.documentType == 'monograph'}">
-                <div class="container">
                     <ui:include src="include_monographs.xhtml" />
-                </div>
             </ui:fragment>
 
 
             <ui:fragment
                 id="journals"
                 rendered="#{DashboardForm.plugin.documentType == 'journal'}">
-                <div class="container">
                     <ui:include src="include_journals.xhtml" />
-                </div>
             </ui:fragment>
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata' or DashboardForm.plugin.navigation=='user' or DashboardForm.plugin.navigation=='institution'or DashboardForm.plugin.navigation=='contact'}">
-                <div class="container">
                     <ui:include src="include_userdata.xhtml" />
-                </div>
             </ui:fragment>
 
             <ui:fragment
                 id="data"
                 rendered="#{DashboardForm.plugin.navigation=='existingData'}">
-                <div class="container">
                     <ui:include src="include_existingData.xhtml" />
-                </div>
             </ui:fragment>
 
         </h:panelGroup>

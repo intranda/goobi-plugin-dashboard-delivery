@@ -19,19 +19,21 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata'}">
             <h:form>
-                <div class="area">
+                <div class="area common-region common-region--no-borders">
 
                     <!-- user data -->
-                    <div class="item">
-                        <h:outputText
-                            styleClass="header"
-                            value="#{msgs.plugin_dashboard_deliverUserData}" />
-                        <br />
-                        <h:outputText value="#{msgs.plugin_dashboard_deliverUserDataTitle}" />
-                        <br />
+                    <div class="item flow">
+
+                        <div class="item__icons">
+                            <ui:include src="/uii/includes/icon-user.xhtml" />
+                        </div>
+
+                        <h2 class="item__heading">#{msgs.plugin_dashboard_deliverUserData}</h2>
+                        <p class="item__text">#{msgs.plugin_dashboard_deliverUserDataTitle}</p>
+
                         <button
                             jsf:id="editUserData"
-                            class="btn btn-primary-400"
+                            class="item__cta btn btn-primary-400"
                             title="#{msgs.plugin_dashboard_deliverUserDataButton}"
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_deliverUserDataButton}" />
@@ -45,16 +47,18 @@
                     </div>
 
                     <!-- institution data -->
-                    <div class="item">
-                        <h:outputText
-                            styleClass="header"
-                            value="#{msgs.plugin_dashboard_deliverInstitutionData}" />
-                        <br />
-                        <h:outputText value="#{msgs.plugin_dashboard_deliverInstitutionDataTitle}" />
-                        <br />
+                    <div class="item flow">
+
+                        <div class="item__icons">
+                            <ui:include src="/uii/includes/icon-institution.xhtml" />
+                        </div>
+
+                        <h2 class="item__heading">#{msgs.plugin_dashboard_deliverInstitutionData}</h2>
+                        <p class="item__text">#{msgs.plugin_dashboard_deliverInstitutionDataTitle}</p>
+
                         <button
                             jsf:id="editInstitution"
-                            class="btn btn-primary-400"
+                            class="item__cta btn btn-primary-400"
                             title="#{msgs.plugin_dashboard_deliverInstitutionDataButton}"
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_deliverInstitutionDataButton}" />
@@ -68,16 +72,17 @@
                     </div>
 
                     <!-- contact person data -->
-                    <div class="item">
-                        <h:outputText
-                            styleClass="header"
-                            value="#{msgs.plugin_dashboard_deliverContactPersonData}" />
-                        <br />
-                        <h:outputText value="#{msgs.plugin_dashboard_deliverContactPersonDataTitle}" />
-                        <br />
+                    <div class="item flow">
+                        <div class="item__icons">
+                            <ui:include src="/uii/includes/icon-contact-person.xhtml" />
+                        </div>
+
+                        <h2 class="item__heading">#{msgs.plugin_dashboard_deliverContactPersonData}</h2>
+                        <p class="item__text">#{msgs.plugin_dashboard_deliverContactPersonDataTitle}</p>
+
                         <button
                             jsf:id="editContact"
-                            class="btn btn-primary-400"
+                            class="item__cta btn btn-primary-400"
                             title="#{msgs.plugin_dashboard_deliverContactPersonDataButton}"
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_deliverContactPersonDataButton}" />
@@ -95,10 +100,20 @@
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
-            <h:form styleClass="form-validate layout">
-                <h2>
+
+            <h1 class="page__heading">
+                <h:outputText value="Main Heading" />
+
+                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
+
+            <h:form styleClass="form-validate common-region">
+                <h2 class="grid-full-width">
                     <h:outputText value="#{DashboardForm.plugin.userData.label}" />
                 </h2>
+
                 <ui:repeat
                     var="field"
                     value="#{DashboardForm.plugin.userData.fields}"
@@ -125,7 +140,7 @@
                 <button
                     jsf:action="#{DashboardForm.plugin.saveUserData}"
                     jsf:id="saveUserData"
-                    class="float-left btn btn-primary font-size-s">
+                    class="btn btn-primary-400 grid-full-width ms-auto">
                     <h:outputText value="#{msgs.save}" />
                     <f:ajax
                         render="main-area"
@@ -139,8 +154,8 @@
         </ui:fragment>
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
-            <h:form styleClass="form-validate layout">
-                <h2>
+            <h:form styleClass="form-validate common-region">
+                <h2 class="grid-full-width">
                     <h:outputText value="#{DashboardForm.plugin.institutionData.label}" />
                 </h2>
                 <ui:repeat
@@ -168,7 +183,7 @@
                 <button
                     jsf:action="#{DashboardForm.plugin.saveInstitutionData}"
                     jsf:id="saveInstitutionData"
-                    class="float-left btn btn-primary font-size-s">
+                    class="btn btn-primary-400 grid-full-width ms-auto">
                     <h:outputText value="#{msgs.save}" />
                     <f:ajax
                         render="main-area"
@@ -182,8 +197,8 @@
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
-            <h:form styleClass="form-validate layout">
-                <h2>
+            <h:form styleClass="form-validate common-region">
+                <h2 class="grid-full-width">
                     <h:outputText value="#{DashboardForm.plugin.contactData.label}" />
                 </h2>
                 <ui:repeat
@@ -191,6 +206,13 @@
                     value="#{DashboardForm.plugin.contactData.fields}"
                     varStatus="status">
                     <h:panelGroup id="grp">
+
+                        <zlb:label
+                            labelFor="accountName"
+                            labelText="#{msgs.login_new_account_accountName}"
+                            labelHelpText="Lorem ipsum dolor sit amet, consetetur sadipscing elitr"
+                            labelRequired="#{field.required}" />
+
                         <zlb:field
                             identifier="field_#{status.index}"
                             labelText="#{field.label}"
@@ -211,7 +233,7 @@
                 <button
                     jsf:action="#{DashboardForm.plugin.saveContactData}"
                     jsf:id="saveContactData"
-                    class="float-left btn btn-primary font-size-s">
+                    class="btn btn-primary-400 grid-full-width ms-auto">
                     <h:outputText value="#{msgs.save}" />
                     <f:ajax
                         render="main-area"
@@ -224,7 +246,7 @@
         </ui:fragment>
 
 
-        
+
             <h:form>
                 <div class="submit">
                     <ul class="statuslist">
@@ -232,7 +254,7 @@
                             <button
                                 jsf:action="#{DashboardForm.plugin.previousPage}"
                                 jsf:id="backToMain"
-                                class="float-left btn btn-primary font-size-s">
+                                class="float-left btn btn-blank font-size-s">
                                 <h:outputText value="#{msgs.back}" />
                                 <f:ajax
                                     render="main-area"
