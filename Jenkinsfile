@@ -11,8 +11,8 @@ pipeline {
     buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '15', daysToKeepStr: '90', numToKeepStr: '')
   }
 
-
-
+  
+  
   stages {
     stage('prepare') {
       steps {
@@ -27,7 +27,7 @@ pipeline {
       }
     }
   }
-
+  
   post {
     success {
       archiveArtifacts artifacts: '**/target/*.jar, */plugin_*.xml, plugin_*.xml', fingerprint: true, onlyIfSuccessful: true

@@ -48,39 +48,37 @@
 
                                 <h:form id="searchform">
 
-                                    <div class="col-md-1">
-                                        <div
-                                            class="dataTables_length"
-                                            style="margin-bottom: 10px;">
-                                            <button
-                                                class="expandbutton font-black"
-                                                jsf:action="#{DashboardForm.plugin.generateFilterWithIdentfiers}"
-                                                title="#{msgs.process_generateFilterQueryForHits}">
-                                                <i class="btn fa fa-filter margin-right-5" />
-                                                <h:outputText value="#{msgs.treffer}: #{DashboardForm.plugin.paginator.totalResults}" />
-                                            </button>
-                                        </div>
-                                    </div>
 
-                                    <!--                                             <div class="col-md-11"> -->
-                                    <!--                                                 <x:aliasBeansScope> -->
-                                    <!--                                                     <x:aliasBean -->
-                                    <!--                                                         alias="#{Form}" -->
-                                    <!--                                                         value="#{ProzessverwaltungForm}" /> -->
-                                    <!--                                                     <x:aliasBean -->
-                                    <!--                                                         alias="#{label}" -->
-                                    <!--                                                         value="#{msgs.filterProcesses}" /> -->
+                <h:selectOneMenu
+                    id="searchoption_select"
+                    styleClass="form-control"
+                    value="#{DashboardForm.plugin.selectedField}"
+                    pt:aria-label="searchfield">
+                    <f:selectItem
+                        itemValue=""
+                        itemLabel="#{msgs.anyField}" />
+                    <f:selectItems value="#{DashboardForm.plugin.metadataFields}" />
+                </h:selectOneMenu>
 
-                                    <!--                                                 </x:aliasBeansScope> -->
+ <x:inputText
+                    id="searchvalue_input"
+                    pt:aria-label="searchvalue"
+                    styleClass="form-control"
+                    value="#{DashboardForm.plugin.searchValue}">
+                </x:inputText>
 
-                                    <!--                                                 <ui:include src="includes/process/list_filterAndDisplay.xhtml" /> -->
-                                    <!--                                             </div> -->
+                        <button
+                            jsf:id="newSearch"
+                            class="btn btn-primary-400"
+                            title="#{msgs.plugin_dashboard_search}"
+                            jsf:action="#{DashboardForm.plugin.search}">
+                            <h:outputText value="#{msgs.plugin_dashboard_search}" />
+                        </button>
+
 
                                 </h:form>
                             </div>
                             <h:form id="myform">
-
-
 
                                 <!-- +++++++++++++++++  Display as table ++++++++++++++++++++++++ -->
                                 <table
@@ -97,39 +95,90 @@
                                                 addClass="tableColumnOverflow maxWidth300"
                                                 value="#{msgs.metadata}"
                                                 sortable="false" />
-                                            <!-- Alle Schritte Auflisten -->
-                                            <intranda:columnheader
-                                                addClass="tableColumnOverflow maxWidth300"
-                                                name="titel"
-                                                form="#{ProzessverwaltungForm}"
-                                                value="#{msgs.prozessTitel}"
-                                                rendered="true"
-                                                ajaxRender=":myform"
-                                                id="ajaxcolumn" />
-                                            <!-- Vorgangsdatum -->
-                                            <intranda:columnheader
-                                                addClass="tableColumnOverflow maxwidth200"
-                                                name="vorgangsdatum"
-                                                form="#{ProzessverwaltungForm}"
-                                                value="#{msgs.vorgangsdatum}"
-                                                ajaxRender=":myform" />
+
+                                            <th
+                                                scope="col"
+                                                role="columnheader"
+                                                class="tableColumnOverflow maxWidth300"
+                                                aria-sort="#{DashboardForm.plugin.sortField== 'titelDesc' ? 'descending' : DashboardForm.plugin.sortField== 'titelAsc' ? 'ascending' :'none'}">
+                                                <button
+                                                    class="button-link"
+                                                    style="width: 100%; text-align: left;"
+                                                    jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
+                                                    aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'titelDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'titelAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                                    <h:outputText value="#{msgs.prozessTitel}" />
+                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'titelDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'titelAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                    <f:setPropertyActionListener
+                                                        target="#{DashboardForm.plugin.sortField}"
+                                                        value="#{DashboardForm.plugin.sortField== 'titelAsc' ? 'titelDesc' : 'titelAsc' }" />
+                                                    <f:ajax render="@form" />
+                                                </button>
+                                            </th>
+
+
+                                            <th
+                                                scope="col"
+                                                role="columnheader"
+                                                class="tableColumnOverflow maxwidth200"
+                                                aria-sort="#{DashboardForm.plugin.sortField== 'creationDateDesc' ? 'descending' : DashboardForm.plugin.sortField== 'creationDateAsc' ? 'ascending' :'none'}">
+                                                <button
+                                                    class="button-link"
+                                                    style="width: 100%; text-align: left;"
+                                                    jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
+                                                    aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'creationDateDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'creationDateAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                                    <h:outputText value="#{msgs.vorgangsdatum}" />
+                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'creationDateDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'creationDateAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                    <f:setPropertyActionListener
+                                                        target="#{DashboardForm.plugin.sortField}"
+                                                        value="#{DashboardForm.plugin.sortField== 'creationDateAsc' ? 'creationDateDesc' : 'creationDateAsc' }" />
+                                                    <f:ajax render="@form" />
+                                                </button>
+                                            </th>
+
+
+
+
                                             <!-- Status -->
-                                            <intranda:columnheader
-                                                addClass="tableColumnOverflow width200"
-                                                name="fortschritt"
-                                                form="#{ProzessverwaltungForm}"
-                                                value="#{msgs.status}"
-                                                ajaxRender=":myform" />
-
-
+                                            <th
+                                                scope="col"
+                                                role="columnheader"
+                                                class="tableColumnOverflow width200"
+                                                aria-sort="#{DashboardForm.plugin.sortField== 'statusDesc' ? 'descending' : DashboardForm.plugin.sortField== 'statusAsc' ? 'ascending' :'none'}">
+                                                <button
+                                                    class="button-link"
+                                                    style="width: 100%; text-align: left;"
+                                                    jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
+                                                    aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'statusDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'statusAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                                    <h:outputText value="#{msgs.vorgangsdatum}" />
+                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'statusDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'statusAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                    <f:setPropertyActionListener
+                                                        target="#{DashboardForm.plugin.sortField}"
+                                                        value="#{DashboardForm.plugin.sortField== 'statusAsc' ? 'statusDesc' : 'statusAsc' }" />
+                                                    <f:ajax render="@form" />
+                                                </button>
+                                            </th>
 
                                             <!-- number of images -->
-                                            <intranda:columnheader
-                                                value="#{msgs.NumberOfImages}"
-                                                addClass="tableColumnOverflow maxWidth120"
-                                                name="numberOfImages"
-                                                form="#{ProzessverwaltungForm}"
-                                                ajaxRender=":myform" />
+                                            <th
+                                                scope="col"
+                                                role="columnheader"
+                                                class=""
+                                                aria-sort="#{DashboardForm.plugin.sortField== 'imagesDesc' ? 'descending' : DashboardForm.plugin.sortField== 'imagesAsc' ? 'ascending' :'none'}">
+                                                <button
+                                                    class="button-link"
+                                                    style="width: 100%; text-align: left;"
+                                                    jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
+                                                    aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'imagesDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'imagesAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                                    <h:outputText value="#{msgs.NumberOfImages}" />
+                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'imagesDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'imagesAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                    <f:setPropertyActionListener
+                                                        target="#{DashboardForm.plugin.sortField}"
+                                                        value="#{DashboardForm.plugin.sortField== 'imagesAsc' ? 'imagesDesc' : 'imagesAsc' }" />
+                                                    <f:ajax render="@form" />
+                                                </button>
+                                            </th>
+
+
                                             <!-- Buttons -->
                                             <intranda:columnheader
                                                 addClass="width200"
@@ -436,30 +485,6 @@
 
                                             <!-- Buttons -->
                                             <td class="width200">
-                                                <!-- Bearbeiten-Schaltknopf -->
-                                                <button
-                                                    jsf:action="#{DashboardForm.plugin.editProcess}"
-                                                    jsf:id="edit"
-                                                    aria-label="#{msgs.bearbeiten}"
-                                                    jsf:rendered="#{LoginForm.hasRole('Workflow_General_Details')}"
-                                                    jsf:rel="tooltip"
-                                                    onclick="preventDoubleSubmit(this);"
-                                                    title="#{msgs.prozessBearbeiten}"
-                                                    class="btn button-schaltknopf">
-                                                    <i class="fa fa-pencil" />
-                                                    <f:passThroughAttribute
-                                                        name="data-toggle"
-                                                        value="tooltip" />
-                                                    <x:updateActionListener
-                                                        property="#{DashboardForm.plugin.myProzess}"
-                                                        value="#{item}" />
-                                                    <x:updateActionListener
-                                                        property="#{DashboardForm.plugin.modusBearbeiten}"
-                                                        value="" />
-                                                </button>
-
-
-
                                                 <!-- Metadaten-Schaltknopf - Read only -->
                                                 <h:commandLink
                                                     action="#{Metadaten.XMLlesen}"
@@ -483,7 +508,7 @@
                                                         value="#{LoginForm.myBenutzer.id}" />
                                                     <f:param
                                                         name="zurueck"
-                                                        value="process_all" />
+                                                        value="plugin_dashboard_delivery.xhtml" />
                                                 </h:commandLink>
 
                                                 <!-- Metadaten-Schaltknopf - Allow writing -->
@@ -507,7 +532,8 @@
                                                         value="#{LoginForm.myBenutzer.id}" />
                                                     <f:param
                                                         name="zurueck"
-                                                        value="process_all" />
+                                                        value="plugin_dashboard_delivery.xhtml" />
+
                                                     <c:if test="#{LoginForm.hasRole('Task_Mets_Files')}">
                                                         <f:setPropertyActionListener
                                                             value="File"
@@ -607,7 +633,7 @@
                                                                         value="#{LoginForm.myBenutzer.id}" />
                                                                     <f:param
                                                                         name="zurueck"
-                                                                        value="process_all" />
+                                                                        value="plugin_dashboard_delivery.xhtml" />
                                                                     <f:param
                                                                         name="discardChanges"
                                                                         value="true" />
@@ -672,10 +698,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-
-
-
                                             </td>
                                         </tr>
                                     </ui:repeat>

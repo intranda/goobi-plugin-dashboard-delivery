@@ -10,15 +10,14 @@ import de.sub.goobi.helper.exceptions.DAOException;
 import de.sub.goobi.persistence.managers.IManager;
 import lombok.extern.log4j.Log4j2;
 
-
 @Log4j2
 public class ProcessPaginator extends DatabasePaginator {
 
     private static final long serialVersionUID = -7766654082744275319L;
 
     public ProcessPaginator(String order, String filter, IManager manager) {
-        super(order, filter , manager, "");
-        institution=null;
+        super(order, filter, manager, "");
+        institution = null;
         pageSize = 10;
         try {
             totalResults = manager.getHitSize(order, filter, null);
@@ -26,19 +25,7 @@ public class ProcessPaginator extends DatabasePaginator {
         } catch (DAOException e) {
             log.error("Failed to count results", e);
         }
-
-
     }
-
-    @Override
-    public int getLastPageNumber() {
-        int ret = Double.valueOf(Math.floor(getTotalResults() / pageSize)).intValue();
-        if (getTotalResults() % pageSize == 0) {
-            ret--;
-        }
-        return ret;
-    }
-
 
     @Override
     public void load() {
@@ -72,4 +59,3 @@ public class ProcessPaginator extends DatabasePaginator {
     }
 
 }
-
