@@ -57,7 +57,7 @@
 
 
                 <h:form>
-                    <div class="common-region common-region--no-borders">
+                    <div class="common-region common-region--no-borders common-region--three-cols">
 
                         <!-- Journals -->
                         <div class="item flow">
@@ -195,7 +195,7 @@
 					  <ui:include src="/uii/includes/icon-help.xhtml" />
 					</button>
 				</h1>
-            	
+
 
                 <h:form
                     prependId="false"
@@ -237,24 +237,32 @@
             <ui:fragment
                 id="monographs"
                 rendered="#{DashboardForm.plugin.documentType == 'monograph'}">
+                 <div class="container">
                     <ui:include src="include_monographs.xhtml" />
+                  </div>
             </ui:fragment>
 
 
             <ui:fragment
                 id="journals"
                 rendered="#{DashboardForm.plugin.documentType == 'journal'}">
+                 <div class="container">
                     <ui:include src="include_journals.xhtml" />
+                  </div>
             </ui:fragment>
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata' or DashboardForm.plugin.navigation=='user' or DashboardForm.plugin.navigation=='institution'or DashboardForm.plugin.navigation=='contact'}">
+                 <div class="container">
                     <ui:include src="include_userdata.xhtml" />
+                  </div>
             </ui:fragment>
 
             <ui:fragment
                 id="data"
                 rendered="#{DashboardForm.plugin.navigation=='existingData'}">
+                 <div class="container">
                     <ui:include src="include_existingData.xhtml" />
+                  </div>
             </ui:fragment>
 
         </h:panelGroup>
