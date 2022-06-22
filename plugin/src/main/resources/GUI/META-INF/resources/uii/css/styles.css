@@ -129,6 +129,12 @@
     background-color: #dde0e3;
 }
 
+/* Views */
+
+.monograph__overview .form-control {
+  min-height: 38px;
+}
+
 @media (max-width: 750px) {
     .common-region {
         --grid-tc: 100%;

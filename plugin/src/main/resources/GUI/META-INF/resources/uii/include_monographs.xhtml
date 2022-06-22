@@ -18,13 +18,23 @@
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='data1'}">
-            <h:form styleClass="form-validate layout">
+
+            <h1 class="page__heading">
+                #{msgs.plugin_dashboard_deliverMonographHeader}
+
+                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
+
+            <h:form styleClass="form-validate">
 
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
                     <ui:fragment rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
-                        <h2>
+                    <div class="common-region">
+                        <h2 class="grid-full-width">
                             <h:outputText value="#{group.label}" />
                         </h2>
 
@@ -101,6 +111,7 @@
                                     render=":grp" />
                             </ui:fragment>
                         </ui:repeat>
+                    </div>
                     </ui:fragment>
                 </ui:repeat>
 
@@ -111,13 +122,25 @@
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='data2'}">
-            <h:form styleClass="form-validate layout">
+
+            <h1 class="page__heading">
+                #{msgs.plugin_dashboard_deliverMonographHeader}
+
+                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
+
+            <h:form styleClass="form-validate">
 
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
                     <ui:fragment rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
-                        <h2>
+
+                    <div class="common-region">
+
+                        <h2 class="grid-full-width">
                             <h:outputText value="#{group.label}" />
                         </h2>
 
@@ -194,6 +217,7 @@
                                     render=":grp" />
                             </ui:fragment>
                         </ui:repeat>
+                    </div>
                     </ui:fragment>
                 </ui:repeat>
 
@@ -203,13 +227,24 @@
         </ui:fragment>
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='data3'}">
-            <h:form styleClass="form-validate layout">
+
+            <h1 class="page__heading">
+                #{msgs.plugin_dashboard_deliverMonographHeader}
+
+                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
+
+            <h:form styleClass="form-validate">
 
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
                     <ui:fragment rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
-                        <h2>
+                    <div class="common-region">
+
+                        <h2 class="grid-full-width">
                             <h:outputText value="#{group.label}" />
                         </h2>
 
@@ -285,18 +320,32 @@
                                     displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                     render=":grp" />
                             </ui:fragment>
+
                         </ui:repeat>
+                            </div>
                     </ui:fragment>
                 </ui:repeat>
             </h:form>
         </ui:fragment>
+
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='overview'}">
-            <h:form styleClass="form-validate layout">
+
+            <h1 class="page__heading">
+                #{msgs.plugin_dashboard_deliverMonographHeader}
+
+                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
+
+            <h:form styleClass="form-validate monograph__overview">
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
                     <ui:fragment rendered="#{group.documentType == DashboardForm.plugin.documentType}">
-                        <h2>
+                    <div class="common-region">
+
+                        <h2 class="grid-full-width">
                             <h:outputText value="#{group.label}" />
                         </h2>
 
@@ -353,6 +402,7 @@
                                 </ui:fragment>
                             </h:panelGroup>
                         </ui:repeat>
+                    </div>
                     </ui:fragment>
                 </ui:repeat>
             </h:form>
@@ -374,7 +424,7 @@ creation finished text, button to go back to main screen
                             <button
                                 jsf:action="#{DashboardForm.plugin.previousPage}"
                                 jsf:id="backToMain"
-                                class="float-left btn btn-primary font-size-s">
+                                class="btn btn-blank">
                                 <h:outputText value="#{msgs.back}" />
                                 <f:ajax
                                     render="main-area"
@@ -419,7 +469,7 @@ creation finished text, button to go back to main screen
                             <button
                                 jsf:action="#{DashboardForm.plugin.nextPage}"
                                 jsf:id="nextStep"
-                                class="float-left btn btn-primary font-size-s">
+                                class="btn btn-primary-400">
                                 <h:outputText value="#{msgs.next}" />
                                 <f:ajax
                                     render="main-area"

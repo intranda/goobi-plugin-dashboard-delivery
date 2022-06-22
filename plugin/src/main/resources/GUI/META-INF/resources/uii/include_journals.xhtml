@@ -31,9 +31,7 @@
 
 
                 <h1 class="page__heading">
-                  <h:outputFormat value="Main Heading Placeholder">
-                    <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
-                  </h:outputFormat>
+                    #{msgs.plugin_dashboard_deliverJournalsHeader}
 
                     <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
                       <ui:include src="/uii/includes/icon-help.xhtml" />
@@ -53,31 +51,32 @@
                     <h2 class="item__heading">#{msgs.plugin_dashboard_deliverNewJournalTitleHeader}</h2>
                     <p class="item__text">#{msgs.plugin_dashboard_deliverNewJournalTitle}</p>
 
-                        <button
-                            jsf:id="newTitle"
-                            class="item__cta btn btn-primary-400"
-                            title="#{msgs.plugin_dashboard_deliverNewJournalTitleButton}"
-                            jsf:action="#{DashboardForm.plugin.startNewImport}">
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverNewJournalTitleButton}" />
-                            <f:setPropertyActionListener
-                                value="newTitle"
-                                target="#{DashboardForm.plugin.navigation}" />
-                            <f:ajax
-                                render="main-area"
-                                execute="@this" />
-                        </button>
+                    <button
+                        jsf:id="newTitle"
+                        class="item__cta btn btn-primary-400"
+                        title="#{msgs.plugin_dashboard_deliverNewJournalTitleButton}"
+                        jsf:action="#{DashboardForm.plugin.startNewImport}">
+                        <h:outputText value="#{msgs.plugin_dashboard_deliverNewJournalTitleButton}" />
+                        <f:setPropertyActionListener
+                            value="newTitle"
+                            target="#{DashboardForm.plugin.navigation}" />
+                        <f:ajax
+                            render="main-area"
+                            execute="@this" />
+                    </button>
+
                     </div>
 
                     <!-- add issue to existing title -->
 
                     <div class="item flow">
 
-						<div class="item__icons">
-							<ui:include src="/uii/includes/icon-files.xhtml" />
-						</div>
+                        <div class="item__icons">
+                          <ui:include src="/uii/includes/icon-files.xhtml" />
+                        </div>
 
-						<h2 class="item__heading">#{msgs.plugin_dashboard_deliverNewJournalIssueHeader}</h2>
-						<p class="item__text">#{msgs.plugin_dashboard_deliverNewIssueTitle}</p>
+                        <h2 class="item__heading">#{msgs.plugin_dashboard_deliverNewJournalIssueHeader}</h2>
+                        <p class="item__text">#{msgs.plugin_dashboard_deliverNewIssueTitle}</p>
 
                         <button
                             jsf:id="newIssue"
@@ -99,13 +98,23 @@
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newTitle'}">
-            <h:form styleClass="form-validate layout">
+
+            <h1 class="page__heading">
+                #{msgs.plugin_dashboard_deliverNewJournalTitleHeader}
+
+                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
+
+            <h:form styleClass="form-validate d-grid">
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
                     <!--                         group.pageName=='data1' and  -->
                     <ui:fragment rendered="#{group.documentType == 'journal'}">
-                        <h2>
+                    <div class="common-region">
+                        <h2 class="grid-full-width">
                             <h:outputText value="#{group.label}" />
                         </h2>
 
@@ -183,16 +192,18 @@
 
                                 </ui:fragment>
 
+
                             </h:panelGroup>
 
                         </ui:repeat>
+                    </div>
                     </ui:fragment>
                 </ui:repeat>
 
                 <button
                     jsf:action="#{DashboardForm.plugin.createJournalTitle}"
                     jsf:id="nextStep"
-                    class="float-left btn btn-primary font-size-s">
+                    class="btn btn-primary-400 grid-full-width ms-auto">
                     <h:outputText value="#{msgs.next}" />
                     <f:ajax
                         render="main-area"
@@ -210,24 +221,34 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
 
+            <h1 class="page__heading">
+                #{msgs.plugin_dashboard_deliverNewJournalIssueHeader}
+
+                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
+
             <!-- TODO add file upload area -->
 
-            <h:form styleClass="form-validate layout">
+            <h:form styleClass="form-validate d-grid">
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
                     <!--                         group.pageName=='data1' and  -->
                     <ui:fragment rendered="#{group.documentType == 'issue'}">
-                        <h2>
+                    <div class="common-region">
+                        <h2 class="grid-full-width">
                             <h:outputText value="#{group.label}" />
                         </h2>
 
-                        <h:panelGroup id="grp">
 
                             <ui:repeat
                                 var="field"
                                 value="#{group.fields}"
                                 varStatus="status">
+                                <h:panelGroup id="grp">
+
                                 <ui:fragment rendered="#{field.displayType == 'person'}">
                                     <zlb:person
                                         identifier="field_#{status.index}"
@@ -296,14 +317,16 @@
                                         render=":grp" />
                                 </ui:fragment>
 
+                                </h:panelGroup>
                             </ui:repeat>
-                        </h:panelGroup>
+
+                    </div>
                     </ui:fragment>
                 </ui:repeat>
                 <button
                     jsf:action="#{DashboardForm.plugin.createJournalIssue}"
                     jsf:id="createIssue"
-                    class="float-left btn btn-primary font-size-s">
+                    class="btn btn-primary-400 ms-auto">
                     <h:outputText value="#{msgs.next}" />
                     <f:ajax
                         render="main-area"
