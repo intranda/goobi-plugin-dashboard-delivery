@@ -201,6 +201,26 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 mf.setValidationErrorText(field.getString("@validationErrorText"));
                 mf.setHelpMessage(field.getString("@helpMessage"));
 
+                String replaceWith = field.getString("@replaceWith");
+                if (StringUtils.isNotBlank(replaceWith)) {
+                    User user = Helper.getCurrentUser();
+                    if (user != null) {
+                        Institution inst = user.getInstitution();
+                        if (replaceWith.startsWith("institution")) {
+                            String val = inst.getAdditionalData().get(replaceWith);
+                            if (!"false".equals(val)) {
+                                mf.setValue(val);
+                            }
+                        } else {
+                            String val = user.getAdditionalData().get(replaceWith);
+                            if (!"false".equals(val)) {
+                                mf.setValue(val);
+                            }
+                        }
+                    }
+                }
+                // TODO institution-accesscondition from user.getInst
+
                 switch (mf.getDisplayType()) {
                     case "dropdown":
                     case "picklist":
@@ -1027,7 +1047,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "authorAsc":
                 value = "md2.value";
                 break;
-
 
             case "publicationYearDesc":
                 value = "md3.value desc";
