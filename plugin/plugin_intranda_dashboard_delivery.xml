@@ -24,7 +24,7 @@
         <journal>Standard</journal>
     </processtemplates>
 
-
+    <vocabularyServerUrl>https://example.com/vocabulary/records/</vocabularyServerUrl>
 
     <!-- metadata fields for monographic items -->
 
