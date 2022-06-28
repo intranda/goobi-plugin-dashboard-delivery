@@ -24,9 +24,34 @@
         <journal>Standard</journal>
     </processtemplates>
 
-    <vocabularyServerUrl>https://example.com/vocabulary/records/</vocabularyServerUrl>
 
+    <vocabularyServerUrl>https://example.com/vocabulary/records/</vocabularyServerUrl>
     <!-- metadata fields for monographic items -->
+
+
+<!--
+
+group: contains a list of fields, grouped together
+- attribute label contains the name of the group
+- attribute documentType determines for which document type it is displayed
+- pageName definies on which page the group gets displayed, possible values are data1, data2, data3 for monogrpahs
+-->
+
+<!--
+field: individual input field
+- label: contains the display name of the field
+- rulesetName: name of the metadata field in the ruleset
+- displayType: different input types: person, corporate, picklist, input
+- metadataLevel: anchor or child (without function) 
+- cardinality: 1 = exact one, ? 0 or one, * any, + at least one
+- marcMainTag: marc main tag, without function
+- marcSubTag: marc sub tag, without function
+- validationExpression: regular expression to configure a validation
+- validationErrorText: text to display when validation fails
+- helpMessage: usefull message to display on screen
+- replaceWith: get content from user data
+-->
+
 
     <group label="Titelinformationen" pageName="data1" documentType="monograph">
         <field rulesetName="TitleDocMain" label="Titel" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Die Angabe ist ein Pflichtfeld" helpMessage="Tragen Sie hier den Titel ein."></field>
@@ -36,17 +61,21 @@
     <group label="Verantwortliche: Personen und Körperschaften" pageName="data1" documentType="monograph">
 
         <field rulesetName="Author" label="Autor*in, beteiligte Person" displayType="person" metadataLevel="anchor" cardinality="*" marcMainTag="100" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <!--
             <selectfield value="Author" label="Autor" />
             <selectfield value="Artist" label="Künstler" />
             <selectfield value="Translator" label="Übersetzer" />
-            <!-- <vocabulary name="PersonRoleTerms" displayField="Bezeichnung" importField="Metadatum" /> -->
+ -->
+            <vocabulary name="PersonRoleTerms" displayField="Bezeichnung" importField="Metadatum" />
         </field>
 
         <field rulesetName="Author" label="Beteiligte Organisation" displayType="corporate" metadataLevel="anchor" cardinality="*" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <!--
             <selectfield value="CorporateAuthor" label="Autor" />
             <selectfield value="CorporateArtist" label="Künstler" />
             <selectfield value="CorporateContributor" label="Mitwirkende Körperschaft" />
-            <!-- <vocabulary name="CorporateRoleTerms" displayField="Bezeichnung" importField="Metadatum" /> -->
+        -->
+            <vocabulary name="CorporateRoleTerms" displayField="Bezeichnung" importField="Metadatum" />
         </field>
     </group>
 
@@ -95,7 +124,7 @@
 
 
     <group label="Zugriffs- und Rechteinformation" pageName="data3" documentType="monograph">
-        <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
             <selectfield value="CC0" label="CC0" />
             <selectfield value="CC-BY" label="CC-BY" />
         </field>
@@ -125,11 +154,12 @@
     <group label="Verantwortliche:  Körperschaften" pageName="data1" documentType="journal">
 
         <field rulesetName="Author" label="Beteiligte Organisation" displayType="corporate" metadataLevel="anchor" cardinality="*" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+            <!--
             <selectfield value="CorporateAuthor" label="Autor" />
             <selectfield value="CorporateArtist" label="Künstler" />
             <selectfield value="CorporateContributor" label="Mitwirkende Körperschaft" />
-            <!--             <vocabulary name="CorporateRoleTerms" displayField="Bezeichnung" importField="Metadatum" />
-             -->
+        -->
+            <vocabulary name="CorporateRoleTerms" displayField="Bezeichnung" importField="Metadatum" />
         </field>
     </group>
 
@@ -166,7 +196,7 @@
     </group>
 
     <group label="Zugriffs- und Rechteinformation" pageName="data2" documentType="journal">
-        <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
             <selectfield value="CC0" label="CC0" />
             <selectfield value="CC-BY" label="CC-BY" />
         </field>
@@ -199,14 +229,13 @@
 
 
     <group label="Beziehungen zu anderen Ressourcen" pageName="data2" documentType="issue">
-        <!-- TODO list all valid titles of the current customer/institution -->
-        <field rulesetName="" label="Zeitschriftentitel" displayType="journaltitles" metadataLevel="child" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
-        </field>
+        <!-- list all valid titles of the current customer/institution -->
+        <field rulesetName="" label="Zeitschriftentitel" displayType="journaltitles" metadataLevel="child" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
     </group>
 
-    <!-- TODO default values are taken from journal title values -->
+    <!-- default values are taken from journal title values -->
     <group label="Zugriffs- und Rechteinformation" pageName="data2" documentType="issue">
-        <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
             <selectfield value="CC0" label="CC0" />
             <selectfield value="CC-BY" label="CC-BY" />
         </field>
