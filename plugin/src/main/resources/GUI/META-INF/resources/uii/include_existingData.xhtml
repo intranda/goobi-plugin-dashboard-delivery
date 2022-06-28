@@ -48,33 +48,31 @@
 
                                 <h:form id="searchform">
 
+                                    <h:selectOneMenu
+                                        id="searchoption_select"
+                                        styleClass=""
+                                        value="#{DashboardForm.plugin.selectedField}"
+                                        pt:aria-label="searchfield">
+                                        <f:selectItem
+                                            itemValue=""
+                                            itemLabel="#{msgs.anyField}" />
+                                        <f:selectItems value="#{DashboardForm.plugin.metadataFields}" />
+                                    </h:selectOneMenu>
 
-                <h:selectOneMenu
-                    id="searchoption_select"
-                    styleClass="form-control"
-                    value="#{DashboardForm.plugin.selectedField}"
-                    pt:aria-label="searchfield">
-                    <f:selectItem
-                        itemValue=""
-                        itemLabel="#{msgs.anyField}" />
-                    <f:selectItems value="#{DashboardForm.plugin.metadataFields}" />
-                </h:selectOneMenu>
+                                    <x:inputText
+                                        id="searchvalue_input"
+                                        pt:aria-label="searchvalue"
+                                        styleClass=""
+                                        value="#{DashboardForm.plugin.searchValue}">
+                                    </x:inputText>
 
- <x:inputText
-                    id="searchvalue_input"
-                    pt:aria-label="searchvalue"
-                    styleClass="form-control"
-                    value="#{DashboardForm.plugin.searchValue}">
-                </x:inputText>
-
-                        <button
-                            jsf:id="newSearch"
-                            class="btn btn-primary-400"
-                            title="#{msgs.plugin_dashboard_search}"
-                            jsf:action="#{DashboardForm.plugin.search}">
-                            <h:outputText value="#{msgs.plugin_dashboard_search}" />
-                        </button>
-
+                                    <button
+                                        jsf:id="newSearch"
+                                        class="btn btn-primary-400"
+                                        title="#{msgs.search}"
+                                        jsf:action="#{DashboardForm.plugin.search}">
+                                        <h:outputText value="#{msgs.search}" />
+                                    </button>
 
                                 </h:form>
                             </div>
@@ -135,45 +133,62 @@
                                                 </button>
                                             </th>
 
-
-
-
-                                            <!-- Status -->
+                                            <!-- TitleDocMain -->
                                             <th
                                                 scope="col"
                                                 role="columnheader"
-                                                class="tableColumnOverflow width200"
-                                                aria-sort="#{DashboardForm.plugin.sortField== 'statusDesc' ? 'descending' : DashboardForm.plugin.sortField== 'statusAsc' ? 'ascending' :'none'}">
+                                                class="tableColumnOverflow maxwidth200"
+                                                aria-sort="#{DashboardForm.plugin.sortField== 'mainTitleDesc' ? 'descending' : DashboardForm.plugin.sortField== 'mainTitleAsc' ? 'ascending' :'none'}">
                                                 <button
                                                     class="button-link"
                                                     style="width: 100%; text-align: left;"
                                                     jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
-                                                    aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'statusDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'statusAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
-                                                    <h:outputText value="#{msgs.vorgangsdatum}" />
-                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'statusDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'statusAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                    aria-label="#{msgs.defaultSortField} #{msgs.mainTitle} #{DashboardForm.plugin.sortField== 'mainTitleDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'mainTitleAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                                    <h:outputText value="#{msgs.haupttitel}" />
+                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'mainTitleDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'mainTitleAsc' ?'fa-sort-asc':'fa-sort'}"></span>
                                                     <f:setPropertyActionListener
                                                         target="#{DashboardForm.plugin.sortField}"
-                                                        value="#{DashboardForm.plugin.sortField== 'statusAsc' ? 'statusDesc' : 'statusAsc' }" />
+                                                        value="#{DashboardForm.plugin.sortField== 'mainTitleAsc' ? 'mainTitleDesc' : 'mainTitleAsc' }" />
                                                     <f:ajax render="@form" />
                                                 </button>
                                             </th>
 
-                                            <!-- number of images -->
+
+                                            <!-- Author -->
                                             <th
                                                 scope="col"
                                                 role="columnheader"
-                                                class=""
-                                                aria-sort="#{DashboardForm.plugin.sortField== 'imagesDesc' ? 'descending' : DashboardForm.plugin.sortField== 'imagesAsc' ? 'ascending' :'none'}">
+                                                class="tableColumnOverflow maxwidth200"
+                                                aria-sort="#{DashboardForm.plugin.sortField== 'authorDesc' ? 'descending' : DashboardForm.plugin.sortField== 'authorAsc' ? 'ascending' :'none'}">
                                                 <button
                                                     class="button-link"
                                                     style="width: 100%; text-align: left;"
                                                     jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
-                                                    aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'imagesDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'imagesAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
-                                                    <h:outputText value="#{msgs.NumberOfImages}" />
-                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'imagesDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'imagesAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                    aria-label="#{msgs.defaultSortField} #{msgs.author} #{DashboardForm.plugin.sortField== 'authorDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'authorAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                                    <h:outputText value="#{msgs.author}" />
+                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'authorDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'authorAsc' ?'fa-sort-asc':'fa-sort'}"></span>
                                                     <f:setPropertyActionListener
                                                         target="#{DashboardForm.plugin.sortField}"
-                                                        value="#{DashboardForm.plugin.sortField== 'imagesAsc' ? 'imagesDesc' : 'imagesAsc' }" />
+                                                        value="#{DashboardForm.plugin.sortField== 'authorAsc' ? 'authorDesc' : 'authorAsc' }" />
+                                                    <f:ajax render="@form" />
+                                                </button>
+                                            </th>
+                                            <!-- PublicationYear -->
+                                            <th
+                                                scope="col"
+                                                role="columnheader"
+                                                class="tableColumnOverflow maxwidth200"
+                                                aria-sort="#{DashboardForm.plugin.sortField== 'publicationYearDesc' ? 'descending' : DashboardForm.plugin.sortField== 'publicationYearAsc' ? 'ascending' :'none'}">
+                                                <button
+                                                    class="button-link"
+                                                    style="width: 100%; text-align: left;"
+                                                    jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
+                                                    aria-label="#{msgs.defaultSortField} #{msgs.publicationYear} #{DashboardForm.plugin.sortField== 'publicationYearDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'publicationYearAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                                    <h:outputText value="#{msgs.publicationYear}" />
+                                                    <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'publicationYearDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'publicationYearAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                    <f:setPropertyActionListener
+                                                        target="#{DashboardForm.plugin.sortField}"
+                                                        value="#{DashboardForm.plugin.sortField== 'publicationYearAsc' ? 'publicationYearDesc' : 'publicationYearAsc' }" />
                                                     <f:ajax render="@form" />
                                                 </button>
                                             </th>
@@ -200,13 +215,8 @@
                                                         value="#{item.metadataList}"
                                                         varStatus="metadatastatus"
                                                         id="metadatalist">
-                                                        <h:panelGroup rendered="#{metadata.one == 'TitleDocMain'
-                                                                             or metadata.one == 'Author'
-                                                                             or metadata.one == 'PlaceOfPublication'
-                                                                             or metadata.one == 'PublicationYear'
-                                                                             or metadata.one == 'PublisherName'
-                                                                             or metadata.one == 'CatalogIDDigital'
-                                                                             or metadata.one == 'shelfmarksource'}">
+                                                        <h:panelGroup rendered="#{metadata.one != 'DocStruct' and metadata.one != 'index.Titel'}">
+                                                       
                                                             <tr>
                                                                 <td style="border: none !important; padding: 2px; vertical-align: top;">
                                                                     <h:outputText value="#{msgs['process_grid_'.concat(metadata.one)]}:" />
@@ -220,7 +230,7 @@
                                                 </table>
                                             </td>
 
-                                            <!-- Alle Schritte Auflisten -->
+                                            <!-- Vorgangsdatum -->
                                             <td>
                                                 <ui:include src="/uii/includes/ajaxPlusMinusButton.xhtml" />
                                                 <h:panelGroup rendered="#{item.panelAusgeklappt}">
@@ -355,133 +365,43 @@
                                                 </h:panelGroup>
                                             </td>
 
-                                            <!-- Vorgangsdatum -->
+                                            <!-- creation date -->
                                             <td>
                                                 <h:outputText value="#{item.erstellungsdatumAsString}">
                                                     <!-- <f:convertDateTime locale="#{SpracheForm.locale}" type="date" dateStyle="medium"/> -->
                                                 </h:outputText>
                                             </td>
-
-                                            <!-- Status -->
+                                            <!-- main title -->
                                             <td>
-                                                <h:panelGroup
-                                                    rendered="#{item.fortschritt3 gt 0}"
-                                                    data-toggle="tooltip"
-                                                    styleClass="progress-bar #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-progressbar-status-done'):('progress-bar-success'))}"
-                                                    style="width: #{item.fortschritt3}%;line-height:15px;"
-                                                    pt:role="figure"
-                                                    pt:aria-label="#{item.fortschritt3}% #{msgs.statusAbgeschlossen}">
-                                                    <h:outputText value="&#160;" />
-                                                    <f:passThroughAttribute
-                                                        name="data-trigger"
-                                                        value="hover" />
-                                                    <f:passThroughAttribute
-                                                        name="data-container"
-                                                        value="body" />
-                                                    <f:passThroughAttribute
-                                                        name="data-toggle"
-                                                        value="popover" />
-                                                    <f:passThroughAttribute
-                                                        name="data-placement"
-                                                        value="top" />
-                                                    <f:passThroughAttribute
-                                                        name="data-html"
-                                                        value="true" />
-                                                    <f:passThroughAttribute
-                                                        name="data-content"
-                                                        value="&lt;b class='font-status-done'&gt;#{msgs.statusAbgeschlossen}:&lt;/b&gt;&lt;br/&gt; #{item.getStepsAsString(3, ', ')}" />
-                                                </h:panelGroup>
-
-                                                <h:panelGroup
-                                                    rendered="#{item.fortschritt2 gt 0}"
-                                                    data-toggle="tooltip"
-                                                    styleClass="progress-bar #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-progressbar-status-open'):('progress-bar-warning'))}"
-                                                    style="width: #{item.fortschritt2}%;line-height:15px;"
-                                                    pt:role="figure"
-                                                    pt:aria-label="#{item.fortschritt2}% #{msgs.statusOffen} / #{msgs.statusInBearbeitung}">
-                                                    <h:outputText value="&#160;" />
-                                                    <f:passThroughAttribute
-                                                        name="data-trigger"
-                                                        value="hover" />
-                                                    <f:passThroughAttribute
-                                                        name="data-container"
-                                                        value="body" />
-                                                    <f:passThroughAttribute
-                                                        name="data-toggle"
-                                                        value="popover" />
-                                                    <f:passThroughAttribute
-                                                        name="data-placement"
-                                                        value="top" />
-                                                    <f:passThroughAttribute
-                                                        name="data-html"
-                                                        value="true" />
-                                                    <f:passThroughAttribute
-                                                        name="data-content"
-                                                        value="&lt;b class='font-status-open'&gt;#{msgs.statusOffen} / #{msgs.statusInBearbeitung}:&lt;/b&gt;&lt;br/&gt; #{item.getStepsAsString(1, ', ')}#{item.getStepsAsString(1, ', ') ne '' and item.getStepsAsString(2, ', ') ne ''?', ':''} #{item.getStepsAsString(2, ', ')}" />
-                                                </h:panelGroup>
-
-                                                <h:panelGroup
-                                                    rendered="#{item.fortschrittError gt 0}"
-                                                    data-toggle="tooltip"
-                                                    styleClass="progress-bar #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-progressbar-status-error'):('progress-bar-danger progressbar-status-error'))} "
-                                                    style="width: #{item.fortschrittError}%;line-height:15px;"
-                                                    pt:role="figure"
-                                                    pt:aria-label="#{item.fortschrittError}% #{msgs.statusError}">
-                                                    <h:outputText value="&#160;" />
-                                                    <f:passThroughAttribute
-                                                        name="data-trigger"
-                                                        value="hover" />
-                                                    <f:passThroughAttribute
-                                                        name="data-container"
-                                                        value="body" />
-                                                    <f:passThroughAttribute
-                                                        name="data-toggle"
-                                                        value="popover" />
-                                                    <f:passThroughAttribute
-                                                        name="data-placement"
-                                                        value="top" />
-                                                    <f:passThroughAttribute
-                                                        name="data-html"
-                                                        value="true" />
-                                                    <f:passThroughAttribute
-                                                        name="data-content"
-                                                        value="&lt;b class='font-status-error'&gt;#{msgs.statusError}:&lt;/b&gt;&lt;br/&gt; #{item.getStepsAsString(4, ', ')}" />
-                                                </h:panelGroup>
-
-                                                <h:panelGroup
-                                                    rendered="#{item.fortschritt1 gt 0}"
-                                                    data-toggle="tooltip"
-                                                    styleClass="progress-bar #{(LoginForm.myBenutzer.uiMode=='low_vision'?('easy-read-progressbar-status-locked'):('progress-bar-danger'))} "
-                                                    style="width: #{item.fortschritt1}%;line-height:15px;"
-                                                    pt:role="figure"
-                                                    pt:aria-label="#{item.fortschritt1}% #{msgs.statusGesperrt}">
-                                                    <h:outputText value="&#160;" />
-                                                    <f:passThroughAttribute
-                                                        name="data-trigger"
-                                                        value="hover" />
-                                                    <f:passThroughAttribute
-                                                        name="data-container"
-                                                        value="body" />
-                                                    <f:passThroughAttribute
-                                                        name="data-toggle"
-                                                        value="popover" />
-                                                    <f:passThroughAttribute
-                                                        name="data-placement"
-                                                        value="top" />
-                                                    <f:passThroughAttribute
-                                                        name="data-html"
-                                                        value="true" />
-                                                    <f:passThroughAttribute
-                                                        name="data-content"
-                                                        value="&lt;b class='font-status-locked'&gt;#{msgs.statusGesperrt}:&lt;/b&gt;&lt;br/&gt; #{item.getStepsAsString(0, ', ')}" />
-                                                </h:panelGroup>
+                                                <ui:repeat
+                                                    var="metadata"
+                                                    value="#{item.metadataList}">
+                                                    <h:panelGroup rendered="#{metadata.one == 'TitleDocMain'}">
+                                                        <h:outputText value="#{metadata.two}" />
+                                                    </h:panelGroup>
+                                                </ui:repeat>
+                                            </td>
+                                            <!-- author -->
+                                            <td>
+                                                <ui:repeat
+                                                    var="metadata"
+                                                    value="#{item.metadataList}">
+                                                    <h:panelGroup rendered="#{metadata.one == 'Author'}">
+                                                        <h:outputText value="#{metadata.two}" />
+                                                    </h:panelGroup>
+                                                </ui:repeat>
+                                            </td>
+                                            <!-- publication year -->
+                                            <td>
+                                                <ui:repeat
+                                                    var="metadata"
+                                                    value="#{item.metadataList}">
+                                                    <h:panelGroup rendered="#{metadata.one == 'PublicationYear'}">
+                                                        <h:outputText value="#{metadata.two}" />
+                                                    </h:panelGroup>
+                                                </ui:repeat>
                                             </td>
 
-
-
-                                            <td>
-                                                <h:outputText value="#{item.sortHelperImages}" />
-                                            </td>
 
                                             <!-- Buttons -->
                                             <td class="width200">

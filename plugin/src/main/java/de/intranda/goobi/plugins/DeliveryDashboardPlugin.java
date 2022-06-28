@@ -35,6 +35,7 @@ import org.goobi.vocabulary.VocabRecord;
 
 import de.intranda.goobi.plugins.utils.FieldGrouping;
 import de.intranda.goobi.plugins.utils.MetadataField;
+import de.intranda.goobi.plugins.utils.ProcessMetadataManager;
 import de.intranda.goobi.plugins.utils.ProcessPaginator;
 import de.sub.goobi.config.ConfigPlugins;
 import de.sub.goobi.helper.BeanHelper;
@@ -941,7 +942,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         User user = Helper.getCurrentUser();
         Institution institution = user.getInstitution();
 
-        ProcessManager m = new ProcessManager();
+        ProcessMetadataManager m = new ProcessMetadataManager();
         StringBuilder sql = new StringBuilder();
         sql.append("(prozesse.ProzesseID in (select prozesseID from prozesseeigenschaften where prozesseeigenschaften.Titel =");
         sql.append("'Institution' AND prozesseeigenschaften.Wert =");
@@ -964,7 +965,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
         User user = Helper.getCurrentUser();
         Institution institution = user.getInstitution();
-        ProcessManager m = new ProcessManager();
+        ProcessMetadataManager m = new ProcessMetadataManager();
         StringBuilder sql = new StringBuilder();
         sql.append("(prozesse.ProzesseID in (select prozesseID from prozesseeigenschaften where prozesseeigenschaften.Titel =");
         sql.append("'Institution' AND prozesseeigenschaften.Wert =");
@@ -1012,6 +1013,29 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "imagesDesc":
                 value = "sortHelperImages desc";
                 break;
+                // TODO
+            case "mainTitleDesc":
+                value = "md1.value desc";
+                break;
+            case "mainTitleAsc":
+                value = "md1.value";
+                break;
+
+            case "authorDesc":
+                value = "md2.value desc";
+                break;
+            case "authorAsc":
+                value = "md2.value";
+                break;
+
+
+            case "publicationYearDesc":
+                value = "md3.value desc";
+                break;
+            case "publicationYearAsc":
+                value = "md3.value";
+                break;
+
         }
         return value;
     }
