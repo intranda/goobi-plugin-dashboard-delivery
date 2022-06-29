@@ -16,16 +16,50 @@
 
     <composite:implementation>
 
-
+        <!-- Main Headings for individual views -->
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata'}">
-
             <h1 class="page__heading">
-                <span>Main Heading Placeholder</span>
+                <span>#{msgs.plugin_dashboard_deliverUserData}</span>
 
                 <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
                   <ui:include src="/uii/includes/icon-help.xhtml" />
                 </button>
             </h1>
+          </ui:fragment>
+
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
+            <h1 class="page__heading">
+                <span>#{msgs.plugin_dashboard_deliverInstitutionData}</span>
+
+                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
+            <h1 class="page__heading">
+                <span>#{msgs.plugin_dashboard_deliverInstitutionData}</span>
+
+                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
+            <h1 class="page__heading">
+                <span>#{msgs.plugin_dashboard_deliverContactPersonData}</span>
+
+                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
+        </ui:fragment>
+
+
+        <!-- User options => pannel view -->
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata'}">
 
             <h:form>
                 <div class="common-region common-region--no-borders common-region--three-cols">
@@ -110,13 +144,6 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
 
-            <h1 class="page__heading">
-                <h:outputText value="Main Heading" />
-
-                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
-                  <ui:include src="/uii/includes/icon-help.xhtml" />
-                </button>
-            </h1>
 
             <h:form styleClass="form-validate common-region">
                 <h2 class="grid-full-width">
@@ -216,11 +243,13 @@
                     varStatus="status">
                     <h:panelGroup id="grp">
 
+                    <!--
                         <zlb:label
                             labelFor="accountName"
                             labelText="#{msgs.login_new_account_accountName}"
                             labelHelpText="Lorem ipsum dolor sit amet, consetetur sadipscing elitr"
                             labelRequired="#{field.required}" />
+                    -->
 
                         <zlb:field
                             identifier="field_#{status.index}"
