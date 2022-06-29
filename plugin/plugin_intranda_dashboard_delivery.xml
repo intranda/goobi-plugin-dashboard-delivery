@@ -126,11 +126,19 @@ field: individual input field
     <group label="Zugriffs- und Rechteinformation" pageName="data3" documentType="monograph">
         <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
             <selectfield value="CC0" label="CC0" />
-            <selectfield value="CC-BY" label="CC-BY" />
+            <selectfield value="CC BY" label="CC BY" />
+            <selectfield value="CC BY-SA" label="CC BY-SA" />
+            <selectfield value="CC BY-ND" label="CC BY-ND" />
+            <selectfield value="CC BY-NC" label="CC BY-NC" />
+            <selectfield value="CC BY-NC-SA" label="CC BY-NC-SA" />
+            <selectfield value="CC BY-NC-ND" label="CC BY-NC-ND" />
         </field>
         <field rulesetName="AccessCondition" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
-            <selectfield value="Open Access" label="Open Access" />
-            <selectfield value="Zugangsbeschränkt" label="Zugangsbeschränkt" />
+            <selectfield value="gesperrt" label="gesperrt" />
+            <selectfield value="gesperrt, Zugriff nur nach Antrag" label="gesperrt, Zugriff nur nach Antrag" />
+            <selectfield value="beschränkt" label="beschränkt" />
+            <selectfield value="teil-beschränkt" label="teil-beschränkt" />
+            <selectfield value="unbeschränkt" label="unbeschränkt" />
         </field>
         <field rulesetName="URL" label="Adresse der Originalveröffentlichung (URL)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
     </group>
@@ -138,8 +146,11 @@ field: individual input field
     <group label="Anmerkungen" pageName="data3" documentType="monograph">
         <field rulesetName="Remarks" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
         <field rulesetName="AccessCondition" label="Angabe zur freiwilligen Selbstkontrolle" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
-            <selectfield value="...." label="...." />
-            <selectfield value="..." label="..." />
+            <selectfield value="Ohne Altersbeschränkung" label="Ohne Altersbeschränkung" />
+            <selectfield value="Freigegeben ab sechs Jahren" label="Freigegeben ab sechs Jahren" />
+            <selectfield value="Freigegeben ab zwölf Jahren" label="Freigegeben ab zwölf Jahren" />
+            <selectfield value="Freigegeben ab sechzehn Jahren" label="Freigegeben ab sechzehn Jahren" />
+            <selectfield value="Freigegeben ab achtzehn Jahren" label="Freigegeben ab achtzehn Jahren" />
         </field>
     </group>
 
@@ -198,10 +209,20 @@ field: individual input field
     <group label="Zugriffs- und Rechteinformation" pageName="data2" documentType="journal">
         <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
             <selectfield value="CC0" label="CC0" />
-            <selectfield value="CC-BY" label="CC-BY" />
+            <selectfield value="CC BY" label="CC BY" />
+            <selectfield value="CC BY-SA" label="CC BY-SA" />
+            <selectfield value="CC BY-ND" label="CC BY-ND" />
+            <selectfield value="CC BY-NC" label="CC BY-NC" />
+            <selectfield value="CC BY-NC-SA" label="CC BY-NC-SA" />
+            <selectfield value="CC BY-NC-ND" label="CC BY-NC-ND" />
         </field>
         <field rulesetName="AccessCondition" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
-            <selectfield value="Open Access" label="Open Access" />
+            <selectfield value="gesperrt" label="gesperrt" />
+            <selectfield value="gesperrt, Zugriff nur nach Antrag" label="gesperrt, Zugriff nur nach Antrag" />
+            <selectfield value="beschränkt" label="beschränkt" />
+            <selectfield value="teil-beschränkt" label="teil-beschränkt" />
+            <selectfield value="unbeschränkt" label="unbeschränkt" />
+            <selectfield value="" label="" />
             <selectfield value="Zugangsbeschränkt" label="Zugangsbeschränkt" />
         </field>
         <field rulesetName="URL" label="Adresse der Originalveröffentlichung (URL)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
@@ -236,12 +257,21 @@ field: individual input field
     <!-- default values are taken from journal title values -->
     <group label="Zugriffs- und Rechteinformation" pageName="data2" documentType="issue">
         <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
+            <selectfield value="Rechte vorbehalten" label="Rechte vorbehalten" />
             <selectfield value="CC0" label="CC0" />
-            <selectfield value="CC-BY" label="CC-BY" />
+            <selectfield value="CC BY" label="CC BY" />
+            <selectfield value="CC BY-SA" label="CC BY-SA" />
+            <selectfield value="CC BY-ND" label="CC BY-ND" />
+            <selectfield value="CC BY-NC" label="CC BY-NC" />
+            <selectfield value="CC BY-NC-SA" label="CC BY-NC-SA" />
+            <selectfield value="CC BY-NC-ND" label="CC BY-NC-ND" />
         </field>
         <field rulesetName="AccessCondition" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
-            <selectfield value="Open Access" label="Open Access" />
-            <selectfield value="Zugangsbeschränkt" label="Zugangsbeschränkt" />
+            <selectfield value="gesperrt" label="gesperrt" />
+            <selectfield value="gesperrt, Zugriff nur nach Antrag" label="gesperrt, Zugriff nur nach Antrag" />
+            <selectfield value="beschränkt" label="beschränkt" />
+            <selectfield value="teil-beschränkt" label="teil-beschränkt" />
+            <selectfield value="unbeschränkt" label="unbeschränkt" />
         </field>
         <field rulesetName="URL" label="Adresse der Originalveröffentlichung (URL)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
     </group>

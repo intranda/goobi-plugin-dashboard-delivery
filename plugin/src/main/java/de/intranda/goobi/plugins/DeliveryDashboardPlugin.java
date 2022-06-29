@@ -219,7 +219,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                         }
                     }
                 }
-                // TODO institution-accesscondition from user.getInst
 
                 switch (mf.getDisplayType()) {
                     case "dropdown":
@@ -600,6 +599,39 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     private Fileformat createFileformat(Prefs prefs, String identifier) {
 
+        /* TODO: generate metadata
+
+Herkunft der Metadaten:
+Default-Wert: [abzustimmen mit dem VSZ]
+
+Katalogisierungslevel:
+Default-Wert: [abzustimmen mit dem VSZ]
+
+Umfang: Maschinelle Erzeugung des Inhalts aus der Dateiprüfung beim Datei-Upload
+
+IMD-Typen: Default-Werte: Inhaltstyp = Text; Medientyp = Computermedien; Datenträgertyp = Online-Ressource
+
+Vorlageinformation: Default-Wert: „born digital“ Für E-Publikationen: born-digital (vs. „reformatted digital“ für Retrodigitalisate)
+
+Ressourcentyp: Default-Wert: „Text“
+
+Gattung: Maschinelle Erzeugung:
+- Webformular Monographie  Buch
+- Webformular Zeitschriftentitel  Zeitschrift
+- Webformular Ausgabe  Ausgabe
+
+BandNr-Sortierung:
+Maschinelle Erzeugung auf der Basis von BandHeft-NummerJahr.
+Beispiel: „202112000“ für BandHeft-NummerJahr: [2|2021| ]
+Wichtig für die korrekte Sortierung in der Datenanzeige, z.B. für die Digitale Landesbibliothek Berlin
+
+
+
+Verlagsort 3.4.2 Default-Wert für jeden Abliefernden
+Verlag bzw. Verleger 3.4.3 Default-Wert für jeden Abliefernden
+Dateiformat und Datei­-größe 3.6.2 Maschinelle Erzeugung des Inhalts aus der Dateiprüfung beim Datei-Upload
+
+         */
         Fileformat fileformat = null;
         try {
             fileformat = new MetsMods(prefs);
@@ -1033,7 +1065,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "imagesDesc":
                 value = "sortHelperImages desc";
                 break;
-                // TODO
             case "mainTitleDesc":
                 value = "md1.value desc";
                 break;
