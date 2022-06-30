@@ -55,7 +55,7 @@ field: individual input field
 
     <group label="Titelinformationen" pageName="data1" documentType="monograph">
         <field rulesetName="TitleDocMain" label="Titel" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Die Angabe ist ein Pflichtfeld" helpMessage="Tragen Sie hier den Titel ein."></field>
-        <field rulesetName="TitleDocSub" label="Untertitel" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="b" validationExpression="" validationErrorText="" helpMessage="Hilfetext für Untertitel"></field>
+        <field rulesetName="TitleDocSub1" label="Untertitel" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="b" validationExpression="" validationErrorText="" helpMessage="Hilfetext für Untertitel"></field>
     </group>
 
     <group label="Verantwortliche: Personen und Körperschaften" pageName="data1" documentType="monograph">
@@ -80,7 +80,7 @@ field: individual input field
     </group>
 
     <group label="Angaben zur Entstehung" pageName="data1" documentType="monograph">
-        <field rulesetName="EditionStatement" label="Auflage, Stand oder Version" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+        <field rulesetName="Edition" label="Auflage, Stand oder Version" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
         <field rulesetName="PublicationYear" label="Erscheinungsjahr" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d{4}" validationErrorText="Geben Sie eiene vierstellige Jahreszahl ein" helpMessage="Tragen Sie hier das Jahr ein."></field>
     </group>
 
@@ -99,20 +99,20 @@ field: individual input field
             <selectfield value="URN" label="URN" />
             <selectfield value="Handle" label="Handle" />
             <selectfield value="UPC" label="UPC" />
-            <selectfield value="GTIN/EAN" label="GTIN/EAN" />
-            <selectfield value="Best.-Nr." label="Best.-Nr." />
-            <selectfield value="Eindeutige Identifikation (beliebige Angabe)" label="Eindeutige Identifikation (beliebige Angabe)" />
+            <selectfield value="EAN" label="GTIN/EAN" />
+            <selectfield value="OrderNumber" label="Best.-Nr." />
+            <selectfield value="Identifikation" label="Eindeutige Identifikation (beliebige Angabe)" />
             <selectfield value="keine" label="keine" />
         </field>
     </group>
 
     <group label="Beziehungen zu anderen Ressourcen" pageName="data2" documentType="monograph">
-        <field rulesetName="SeriesTitle" label="Titel der Reihe" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
-        <field rulesetName="SeriesOrder" label="Zählung des Bandes" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+        <field rulesetName="TitleUnterreihe" label="Titel der Reihe" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+        <field rulesetName="TitlePartNumber" label="Zählung des Bandes" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
     </group>
 
     <group label="Beschreibung des Inhalts" pageName="data2" documentType="monograph">
-        <field rulesetName="Classification" label="Sachgruppe/Thema" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="DDC" label="Sachgruppe/Thema" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
             <selectfield value="Wert1" label="Wert1" />
             <selectfield value="Wert2" label="Wert2" />
             <selectfield value="Wert3" label="Wert3" />
@@ -133,7 +133,7 @@ field: individual input field
             <selectfield value="CC BY-NC-SA" label="CC BY-NC-SA" />
             <selectfield value="CC BY-NC-ND" label="CC BY-NC-ND" />
         </field>
-        <field rulesetName="AccessCondition" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="Copyright" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
             <selectfield value="gesperrt" label="gesperrt" />
             <selectfield value="gesperrt, Zugriff nur nach Antrag" label="gesperrt, Zugriff nur nach Antrag" />
             <selectfield value="beschränkt" label="beschränkt" />
@@ -144,8 +144,8 @@ field: individual input field
     </group>
 
     <group label="Anmerkungen" pageName="data3" documentType="monograph">
-        <field rulesetName="Remarks" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
-        <field rulesetName="AccessCondition" label="Angabe zur freiwilligen Selbstkontrolle" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="InternalNote" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
+        <field rulesetName="FSK" label="Angabe zur freiwilligen Selbstkontrolle" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
             <selectfield value="Ohne Altersbeschränkung" label="Ohne Altersbeschränkung" />
             <selectfield value="Freigegeben ab sechs Jahren" label="Freigegeben ab sechs Jahren" />
             <selectfield value="Freigegeben ab zwölf Jahren" label="Freigegeben ab zwölf Jahren" />
@@ -159,7 +159,7 @@ field: individual input field
 
     <group label="Titelinformationen" pageName="data1" documentType="journal">
         <field rulesetName="TitleDocMain" label="Titel" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Die Angabe ist ein Pflichtfeld" helpMessage="Tragen Sie hier den Titel ein."></field>
-        <field rulesetName="TitleDocSub" label="Untertitel" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="b" validationExpression="" validationErrorText="" helpMessage="Hilfetext für Untertitel"></field>
+        <field rulesetName="TitleDocSub1" label="Untertitel" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="b" validationExpression="" validationErrorText="" helpMessage="Hilfetext für Untertitel"></field>
     </group>
 
     <group label="Verantwortliche:  Körperschaften" pageName="data1" documentType="journal">
@@ -192,14 +192,14 @@ field: individual input field
             <selectfield value="DOI" label="DOI" />
             <selectfield value="URN" label="URN" />
             <selectfield value="Handle" label="Handle" />
-            <selectfield value="Eindeutige Identifikation (beliebige Angabe)" label="Eindeutige Identifikation (beliebige Angabe)" />
+            <selectfield value="Identifikation" label="Eindeutige Identifikation (beliebige Angabe)" />
             <selectfield value="keine" label="keine" />
         </field>
     </group>
 
 
     <group label="Beschreibung des Inhalts" pageName="data2" documentType="journal">
-        <field rulesetName="Classification" label="Sachgruppe/Thema" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="DDC" label="Sachgruppe/Thema" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
             <selectfield value="Wert1" label="Wert1" />
             <selectfield value="Wert2" label="Wert2" />
             <selectfield value="Wert3" label="Wert3" />
@@ -216,7 +216,7 @@ field: individual input field
             <selectfield value="CC BY-NC-SA" label="CC BY-NC-SA" />
             <selectfield value="CC BY-NC-ND" label="CC BY-NC-ND" />
         </field>
-        <field rulesetName="AccessCondition" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="Copyright" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
             <selectfield value="gesperrt" label="gesperrt" />
             <selectfield value="gesperrt, Zugriff nur nach Antrag" label="gesperrt, Zugriff nur nach Antrag" />
             <selectfield value="beschränkt" label="beschränkt" />
@@ -229,7 +229,7 @@ field: individual input field
     </group>
 
     <group label="Anmerkungen" pageName="data2" documentType="journal">
-        <field rulesetName="Remarks" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
+        <field rulesetName="InternalNote" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
     </group>
 
 
@@ -266,7 +266,7 @@ field: individual input field
             <selectfield value="CC BY-NC-SA" label="CC BY-NC-SA" />
             <selectfield value="CC BY-NC-ND" label="CC BY-NC-ND" />
         </field>
-        <field rulesetName="AccessCondition" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="Copyright" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
             <selectfield value="gesperrt" label="gesperrt" />
             <selectfield value="gesperrt, Zugriff nur nach Antrag" label="gesperrt, Zugriff nur nach Antrag" />
             <selectfield value="beschränkt" label="beschränkt" />
@@ -277,7 +277,7 @@ field: individual input field
     </group>
 
     <group label="Anmerkungen" pageName="data2" documentType="issue">
-        <field rulesetName="Remarks" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
+        <field rulesetName="InternalNote" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
     </group>
 
 
