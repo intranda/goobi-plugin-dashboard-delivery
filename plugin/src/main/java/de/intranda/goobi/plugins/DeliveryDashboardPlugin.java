@@ -600,38 +600,24 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     private Fileformat createFileformat(Prefs prefs, String identifier) {
 
         /* TODO: generate metadata
+        Herkunft der Metadaten: Default-Wert: [abzustimmen mit dem VSZ]
+        Haupttitel: Bestimmte und unbestimmte Artikel am Anfang des Haupttitels werden bei der Sortierung in allen Deklinationsformen und Sprachen übergangen und müssen dafür für die „Nicht-Sortierung“ ausgezeichnet werden (siehe dazu Anhang 5.1).
+        Verlagsort: Übernahme aus Registrierungsdaten des Abliefernden
+        Verlag bzw. Verleger: Übernahme aus Registrierungsdaten des Abliefernden
+        Umfang: Angabe des Umfangs unkörperlicher digitaler Medienwerke ist immer Online-Ressource. Sofern eine Seitenzählung vorhanden ist, kann dieser zusätzlich in runden Klammern angegeben werden (Beispiel: Online-Ressource (72 Seiten).
+        Dateiformat und Dateigröße: Dateiformat und –größe der  zu beschreibenden Ressource.
+        IMD-Typen: Inhaltstyp, Medientyp, Datenträgertyp: kontrolliertes Vokabular; Werte für unkörperliche digitale Medienwerke: I = Text, M = Computermedien; D = Online-Ressource.
+        Maßnahmen für die Bestandssicherung: Default-Werte (siehe Anlage 5.6)
 
-Herkunft der Metadaten:
-Default-Wert: [abzustimmen mit dem VSZ]
-
-Katalogisierungslevel:
-Default-Wert: [abzustimmen mit dem VSZ]
-
-Umfang: Maschinelle Erzeugung des Inhalts aus der Dateiprüfung beim Datei-Upload
-
-IMD-Typen: Default-Werte: Inhaltstyp = Text; Medientyp = Computermedien; Datenträgertyp = Online-Ressource
-
-Vorlageinformation: Default-Wert: „born digital“ Für E-Publikationen: born-digital (vs. „reformatted digital“ für Retrodigitalisate)
-
-Ressourcentyp: Default-Wert: „Text“
-
-Gattung: Maschinelle Erzeugung:
-- Webformular Monographie  Buch
-- Webformular Zeitschriftentitel  Zeitschrift
-- Webformular Ausgabe  Ausgabe
-
-BandNr-Sortierung:
-Maschinelle Erzeugung auf der Basis von BandHeft-NummerJahr.
-Beispiel: „202112000“ für BandHeft-NummerJahr: [2|2021| ]
-Wichtig für die korrekte Sortierung in der Datenanzeige, z.B. für die Digitale Landesbibliothek Berlin
-
-
-
-Verlagsort 3.4.2 Default-Wert für jeden Abliefernden
-Verlag bzw. Verleger 3.4.3 Default-Wert für jeden Abliefernden
-Dateiformat und Datei­-größe 3.6.2 Maschinelle Erzeugung des Inhalts aus der Dateiprüfung beim Datei-Upload
+        Vorlageinformation: Default-Wert: „born digital“ Für E-Publikationen: born-digital (vs. „reformatted digital“ für Retrodigitalisate)
+        Ressourcentyp: Default-Wert: „Text“
+        BandNr-Sortierung:
+        Maschinelle Erzeugung auf der Basis von BandHeft-NummerJahr.
+        Beispiel: „202112000“ für BandHeft-NummerJahr: [2|2021| ]
+        Wichtig für die korrekte Sortierung in der Datenanzeige, z.B. für die Digitale Landesbibliothek Berlin
 
          */
+
         Fileformat fileformat = null;
         try {
             fileformat = new MetsMods(prefs);
@@ -651,23 +637,32 @@ Dateiformat und Datei­-größe 3.6.2 Maschinelle Erzeugung des Inhalts aus der 
             } catch (MetadataTypeNotAllowedException e) {
             }
 
+            Metadata genre = new Metadata(prefs.getMetadataTypeByName("ModsGenre"));
             if (documentType.equals("monograph")) {
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(monographicDocType));
                 dd.setLogicalDocStruct(docstruct);
-                //                Metadata md = createIdentifierMetadata(prefs);
                 docstruct.addMetadata(md);
+
+                genre.setValue("Buch");
+                docstruct.addMetadata(genre);
+
             } else if (documentType.equals("journal") && navigation.equals("newTitle")) {
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(zdbTitleDocType));
                 dd.setLogicalDocStruct(docstruct);
-                //                Metadata md = createIdentifierMetadata(prefs);
                 docstruct.addMetadata(md);
+
+                genre.setValue("Zeitschrift");
+                docstruct.addMetadata(genre);
+
             } else if (documentType.equals("journal") && navigation.equals("newIssue")) {
                 anchor = dd.createDocStruct(prefs.getDocStrctTypeByName(journalDocType));
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(issueDocType));
                 dd.setLogicalDocStruct(anchor);
                 anchor.addChild(docstruct);
-                //                Metadata md = createIdentifierMetadata(prefs);
                 docstruct.addMetadata(md);
+
+                genre.setValue("Ausgabe");
+                docstruct.addMetadata(genre);
 
                 for (FieldGrouping fg : configuredGroups) {
                     if (fg.getDocumentType().equals("issue")) {
@@ -730,6 +725,51 @@ Dateiformat und Datei­-größe 3.6.2 Maschinelle Erzeugung des Inhalts aus der 
                     importMetadata(prefs, docstruct, fg);
                 }
             }
+
+            Metadata responsibility = new Metadata(prefs.getMetadataTypeByName("NoteStatementOfResponsibility"));
+
+            // first get authors
+            Map<String, String> data = new HashMap<>();
+            if (docstruct.getAllPersons() != null) {
+                for (Person p : docstruct.getAllPersons()) {
+                    String existing = data.get(p.getType().getLanguage("de"));
+                    if (existing != null) {
+                        existing += ", ";
+                    } else {
+                        existing = "";
+                        data.put(p.getType().getLanguage("de"), existing);
+                    }
+                    existing += p.getFirstname() + " " + p.getLastname();
+                }
+            }
+
+            if (docstruct.getAllCorporates() != null) {
+                for (Corporate c : docstruct.getAllCorporates()) {
+                    String existing = data.get(c.getType().getLanguage("de"));
+                    if (existing != null) {
+                        existing += ", ";
+                    } else {
+                        existing = "";
+                        data.put(c.getType().getLanguage("de"), existing);
+                    }
+                    existing += c.getMainName();
+                }
+            }
+
+            StringBuilder sb = new StringBuilder();
+            // first author
+            sb.append(data.get("Autor"));
+            // then add other types
+            for (String type : data.keySet()) {
+                if (!type.equals("Autor")) {
+                    if (sb.length()> 1) {
+                        sb.append(" ; ");
+                    }
+                    sb.append(type + " " + data.get(type));
+                }
+            }
+            responsibility.setValue(sb.toString());
+            docstruct.addMetadata(responsibility);
 
         } catch (UGHException e) {
             log.error(e);
