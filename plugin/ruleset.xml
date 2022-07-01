@@ -6,6 +6,41 @@ Changelog:
 - PublicationYearNormed hinzugefuegt
 -->
 <Preferences>
+
+  <MetadataType>
+    <Name>ContentType</Name>
+    <language name="de">Inhaltstyp</language>
+    <language name="en">Content type</language>
+  </MetadataType>
+  <MetadataType>
+    <Name>MediaType</Name>
+    <language name="de">Medientyp</language>
+    <language name="en">Media type</language>
+  </MetadataType>
+  <MetadataType>
+    <Name>DataMediumType</Name>
+    <language name="de">Datenträgertyp</language>
+    <language name="en">Data medium type</language>
+  </MetadataType>
+
+
+  <MetadataType>
+    <Name>ActionNote</Name>
+    <language name="de">Maßname</language>
+    <language name="en">Action note</language>
+  </MetadataType>
+  <MetadataType>
+    <Name>LegalBasis</Name>
+    <language name="de">Kontext/Rechtsgrundlage</language>
+    <language name="en">Legal basis</language>
+  </MetadataType>
+  <MetadataType>
+    <Name>ISIL</Name>
+    <language name="de">Bibliothek (ISIL)</language>
+    <language name="en">ISIL</language>
+  </MetadataType>
+
+
   <MetadataType>
     <Name>_representative</Name>
     <language name="de">representative</language>
@@ -364,7 +399,7 @@ Changelog:
   </MetadataType>
   <MetadataType>
     <Name>PublicationRun</Name>
-    <language name="de">Erscheinungsverlauf</language>
+    <language name="de">Nummerierung der Erstausgabe</language>
   </MetadataType>
   <MetadataType>
     <Name>PublicationStart</Name>
@@ -1367,6 +1402,13 @@ Changelog:
     <metadata DefaultDisplay="true" num="*">InternalNote</metadata>
     <metadata DefaultDisplay="true" num="1m">FSK</metadata>
 
+    <metadata num="1o">ContentType</metadata>
+    <metadata num="1o">MediaType</metadata>
+    <metadata num="1o">DataMediumType</metadata>
+
+    <metadata num="1o">ActionNote</metadata>
+    <metadata num="1o">LegalBasis</metadata>
+    <metadata num="1o">ISIL</metadata>
 
     <metadata num="*">BearbHrsg</metadata>
     <metadata num="*">Artist</metadata>
@@ -1940,6 +1982,12 @@ Changelog:
     <!-- Anmerkungen -->
     <metadata DefaultDisplay="true" num="*">InternalNote</metadata>
 
+    <metadata num="1o">ContentType</metadata>
+    <metadata num="1o">MediaType</metadata>
+    <metadata num="1o">DataMediumType</metadata>
+    <metadata num="1o">ActionNote</metadata>
+    <metadata num="1o">LegalBasis</metadata>
+    <metadata num="1o">ISIL</metadata>
 
     <!-- Personen und Koerperschaften -->
     <metadata num="*">Author</metadata>
@@ -2003,11 +2051,11 @@ Changelog:
     <!-- Erscheinungsverlauf -->
 
     <!-- Ausgabe -->
-    <metadata DefaultDisplay="true" num="1o">Edition</metadata>
+    <metadata num="1o">Edition</metadata>
 
-    <metadata DefaultDisplay="true" num="1m">DigitalOrigin</metadata>
+    <metadata num="1m">DigitalOrigin</metadata>
     <!-- Anmerkungen / Fußnoten -->
-    <metadata DefaultDisplay="true" num="*">Note</metadata>
+    <metadata num="*">Note</metadata>
     <metadata num="*">NoteLanguage</metadata>
     <metadata num="*">NoteContent</metadata>
     <metadata num="*">NoteThesis</metadata>
@@ -2121,7 +2169,12 @@ Changelog:
     <!-- Anmerkungen -->
     <metadata DefaultDisplay="true" num="*">InternalNote</metadata>
 
-
+    <metadata num="1o">ContentType</metadata>
+    <metadata num="1o">MediaType</metadata>
+    <metadata num="1o">DataMediumType</metadata>
+    <metadata num="1o">ActionNote</metadata>
+    <metadata num="1o">LegalBasis</metadata>
+    <metadata num="1o">ISIL</metadata>
     <!-- Personen und Koerperschaften -->
     <metadata num="*">Author</metadata>
     <metadata num="*">BearbHrsg</metadata>
@@ -2330,6 +2383,12 @@ Changelog:
     <!-- Anmerkungen -->
     <metadata DefaultDisplay="true" num="*">InternalNote</metadata>
 
+    <metadata num="1o">ContentType</metadata>
+    <metadata num="1o">MediaType</metadata>
+    <metadata num="1o">DataMediumType</metadata>
+    <metadata num="1o">ActionNote</metadata>
+    <metadata num="1o">LegalBasis</metadata>
+    <metadata num="1o">ISIL</metadata>
 
     <!-- Personen und Koerperschaften -->
     <metadata num="*">Author</metadata>

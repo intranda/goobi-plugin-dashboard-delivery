@@ -16,11 +16,11 @@
     </doctypes>
 
     <processtemplates>
-        <!-- process template for monogrpaphic items -->        
+        <!-- process template for monogrpaphic items -->
         <monograph>Standard</monograph>
         <!-- process template to register ZDB title data -->
         <zdbTitle>ZDB_template</zdbTitle>
-        <!-- process template for issues-->        
+        <!-- process template for issues-->
         <journal>Standard</journal>
     </processtemplates>
 
@@ -29,7 +29,7 @@
     <!-- metadata fields for monographic items -->
 
 
-<!--
+    <!--
 
 group: contains a list of fields, grouped together
 - attribute label contains the name of the group
@@ -37,7 +37,7 @@ group: contains a list of fields, grouped together
 - pageName definies on which page the group gets displayed, possible values are data1, data2, data3 for monogrpahs
 -->
 
-<!--
+    <!--
 field: individual input field
 - label: contains the display name of the field
 - rulesetName: name of the metadata field in the ruleset
@@ -125,6 +125,7 @@ field: individual input field
 
     <group label="Zugriffs- und Rechteinformation" pageName="data3" documentType="monograph">
         <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
+            <selectfield value="Rechte vorbehalten" label="Rechte vorbehalten" />
             <selectfield value="CC0" label="CC0" />
             <selectfield value="CC BY" label="CC BY" />
             <selectfield value="CC BY-SA" label="CC BY-SA" />
@@ -187,7 +188,7 @@ field: individual input field
     </group>
 
     <group label="Ident-Nummern" pageName="data1" documentType="journal">
-        <field rulesetName="CatalogIDDigital" label="Ident-Nummer" displayType="picklist" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="CatalogIDDigital" label="Ident-Nummer" displayType="picklist" metadataLevel="anchor" cardinality="*" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
             <selectfield value="ISSN" label="ISSN" />
             <selectfield value="DOI" label="DOI" />
             <selectfield value="URN" label="URN" />
@@ -208,6 +209,7 @@ field: individual input field
 
     <group label="Zugriffs- und Rechteinformation" pageName="data2" documentType="journal">
         <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
+            <selectfield value="Rechte vorbehalten" label="Rechte vorbehalten" />
             <selectfield value="CC0" label="CC0" />
             <selectfield value="CC BY" label="CC BY" />
             <selectfield value="CC BY-SA" label="CC BY-SA" />
@@ -222,8 +224,6 @@ field: individual input field
             <selectfield value="beschränkt" label="beschränkt" />
             <selectfield value="teil-beschränkt" label="teil-beschränkt" />
             <selectfield value="unbeschränkt" label="unbeschränkt" />
-            <selectfield value="" label="" />
-            <selectfield value="Zugangsbeschränkt" label="Zugangsbeschränkt" />
         </field>
         <field rulesetName="URL" label="Adresse der Originalveröffentlichung (URL)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
     </group>
@@ -279,6 +279,24 @@ field: individual input field
     <group label="Anmerkungen" pageName="data2" documentType="issue">
         <field rulesetName="InternalNote" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
     </group>
+
+
+    <additionalMetadata>
+        <field rulesetName="PublisherName" defaultValue="" replaceWith="institution" />
+        <field rulesetName="PlaceOfPublication" defaultValue="" replaceWith="institution-city" />
+        <field rulesetName="ContentType" defaultValue="Text" replaceWith="" />
+        <field rulesetName="MediaType" defaultValue="Computermedien" replaceWith="" />
+        <field rulesetName="DataMediumType" defaultValue="Online-Ressource" replaceWith="" />
+
+
+        <field rulesetName="ActionNote" defaultValue="Archivierung/Langzeitarchivierung geplant" replaceWith="" />
+        <field rulesetName="LegalBasis" defaultValue="PEBE" replaceWith="" />
+        <field rulesetName="ISIL" defaultValue="DE-109" replaceWith="" />
+        <field rulesetName="DigitalOrigin" defaultValue="born-digital" replaceWith="" />
+        <field rulesetName="TypeOfResource" defaultValue="Text" replaceWith="" />
+
+
+    </additionalMetadata>
 
 
 </config_plugin>

@@ -115,6 +115,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     @Getter
     private List<FieldGrouping> configuredGroups = new ArrayList<>();
 
+    private List<MetadataField> additionalMetadata = new ArrayList<>();
+
     private static final String configurationName = "intranda_administration_deliveryManagement";
 
     @Getter
@@ -157,6 +159,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         XMLConfiguration config = ConfigPlugins.getPluginConfig(title);
         config.setExpressionEngine(new XPathExpressionEngine());
         configuredGroups.clear();
+        additionalMetadata.clear();
         vocabularyUrl = config.getString("/vocabularyServerUrl");
 
         monographicDocType = config.getString("/doctypes/monographic", "Monograph");
@@ -170,6 +173,37 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         zdbProcessTemplateName = config.getString("/processtemplates/zdbTitle");
 
         List<HierarchicalConfiguration> groups = config.configurationsAt("/group");
+
+        List<HierarchicalConfiguration> additional = config.configurationsAt("/additionalMetadata/field");
+        for (HierarchicalConfiguration field : additional) {
+            MetadataField mf = new MetadataField();
+            additionalMetadata.add(mf);
+            mf.setRulesetName(field.getString("@rulesetName"));
+            String replaceWith = field.getString("@replaceWith");
+            if (StringUtils.isNotBlank(replaceWith)) {
+                User user = Helper.getCurrentUser();
+                if (user != null) {
+                    Institution inst = user.getInstitution();
+                    if (replaceWith.equals("institution")) {
+                        mf.setValue(inst.getLongName());
+                    } else if (replaceWith.startsWith("institution")) {
+                        String val = inst.getAdditionalData().get(replaceWith);
+                        if (!"false".equals(val)) {
+                            mf.setValue(val);
+                        }
+                    } else {
+                        String val = user.getAdditionalData().get(replaceWith);
+                        if (!"false".equals(val)) {
+                            mf.setValue(val);
+                        }
+                    }
+                }
+            }
+            String defaultValue = field.getString("@defaultValue");
+            if (StringUtils.isNotBlank(defaultValue)) {
+                mf.setValue(defaultValue);
+            }
+        }
 
         for (HierarchicalConfiguration group : groups) {
             String groupLabel = group.getString("@label");
@@ -600,17 +634,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     private Fileformat createFileformat(Prefs prefs, String identifier) {
 
         /* TODO: generate metadata
-        Herkunft der Metadaten: Default-Wert: [abzustimmen mit dem VSZ]
+        Herkunft der Metadaten: Default-Wert: [abzustimmen mit dem VSZ] (marc leader)
         Haupttitel: Bestimmte und unbestimmte Artikel am Anfang des Haupttitels werden bei der Sortierung in allen Deklinationsformen und Sprachen übergangen und müssen dafür für die „Nicht-Sortierung“ ausgezeichnet werden (siehe dazu Anhang 5.1).
-        Verlagsort: Übernahme aus Registrierungsdaten des Abliefernden
-        Verlag bzw. Verleger: Übernahme aus Registrierungsdaten des Abliefernden
+
         Umfang: Angabe des Umfangs unkörperlicher digitaler Medienwerke ist immer Online-Ressource. Sofern eine Seitenzählung vorhanden ist, kann dieser zusätzlich in runden Klammern angegeben werden (Beispiel: Online-Ressource (72 Seiten).
         Dateiformat und Dateigröße: Dateiformat und –größe der  zu beschreibenden Ressource.
-        IMD-Typen: Inhaltstyp, Medientyp, Datenträgertyp: kontrolliertes Vokabular; Werte für unkörperliche digitale Medienwerke: I = Text, M = Computermedien; D = Online-Ressource.
-        Maßnahmen für die Bestandssicherung: Default-Werte (siehe Anlage 5.6)
 
-        Vorlageinformation: Default-Wert: „born digital“ Für E-Publikationen: born-digital (vs. „reformatted digital“ für Retrodigitalisate)
-        Ressourcentyp: Default-Wert: „Text“
         BandNr-Sortierung:
         Maschinelle Erzeugung auf der Basis von BandHeft-NummerJahr.
         Beispiel: „202112000“ für BandHeft-NummerJahr: [2|2021| ]
@@ -733,7 +762,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             if (docstruct.getAllPersons() != null) {
                 for (Person p : docstruct.getAllPersons()) {
                     String existing = data.get(p.getType().getLanguage("de"));
-                    if (existing != null) {
+                    if (StringUtils.isNotBlank(existing)) {
                         existing += ", ";
                     } else {
                         existing = "";
@@ -746,23 +775,26 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             if (docstruct.getAllCorporates() != null) {
                 for (Corporate c : docstruct.getAllCorporates()) {
                     String existing = data.get(c.getType().getLanguage("de"));
-                    if (existing != null) {
+                    if (StringUtils.isNotBlank(existing)) {
                         existing += ", ";
                     } else {
                         existing = "";
-                        data.put(c.getType().getLanguage("de"), existing);
                     }
                     existing += c.getMainName();
+                    data.put(c.getType().getLanguage("de"), existing);
                 }
             }
 
             StringBuilder sb = new StringBuilder();
             // first author
-            sb.append(data.get("Autor"));
+            String aut = data.get("Autor");
+            if (aut != null) {
+                sb.append(aut);
+            }
             // then add other types
             for (String type : data.keySet()) {
                 if (!type.equals("Autor")) {
-                    if (sb.length()> 1) {
+                    if (sb.length() > 1) {
                         sb.append(" ; ");
                     }
                     sb.append(type + " " + data.get(type));
@@ -770,6 +802,13 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             }
             responsibility.setValue(sb.toString());
             docstruct.addMetadata(responsibility);
+
+            for (MetadataField f: additionalMetadata) {
+                Metadata meta = new Metadata(prefs.getMetadataTypeByName(f.getRulesetName()));
+                meta.setValue(f.getValue());
+                docstruct.addMetadata(meta);
+            }
+
 
         } catch (UGHException e) {
             log.error(e);
