@@ -640,11 +640,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         Umfang: Angabe des Umfangs unkörperlicher digitaler Medienwerke ist immer Online-Ressource. Sofern eine Seitenzählung vorhanden ist, kann dieser zusätzlich in runden Klammern angegeben werden (Beispiel: Online-Ressource (72 Seiten).
         Dateiformat und Dateigröße: Dateiformat und –größe der  zu beschreibenden Ressource.
 
-        BandNr-Sortierung:
-        Maschinelle Erzeugung auf der Basis von BandHeft-NummerJahr.
-        Beispiel: „202112000“ für BandHeft-NummerJahr: [2|2021| ]
-        Wichtig für die korrekte Sortierung in der Datenanzeige, z.B. für die Digitale Landesbibliothek Berlin
-
          */
 
         Fileformat fileformat = null;
@@ -803,12 +798,57 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             responsibility.setValue(sb.toString());
             docstruct.addMetadata(responsibility);
 
-            for (MetadataField f: additionalMetadata) {
+            for (MetadataField f : additionalMetadata) {
                 Metadata meta = new Metadata(prefs.getMetadataTypeByName(f.getRulesetName()));
                 meta.setValue(f.getValue());
                 docstruct.addMetadata(meta);
             }
 
+            if (docstruct.getType().getName().equals(issueDocType)) {
+                String publicationYear = "", year = "", volume = "";
+
+                for (Metadata meta : docstruct.getAllMetadata()) {
+                    switch (meta.getType().getName()) {
+                        case "PublicationYear":
+                            publicationYear = meta.getValue();
+                            break;
+                        case "CurrentNo": // Jahrgang
+                            year = meta.getValue();
+                            break;
+                        case "VolumeNo": // Bandnummer
+                            volume = meta.getValue();
+                            break;
+
+                        default:
+                            break;
+
+                    }
+                }
+                String order = "";
+
+                if (StringUtils.isBlank(year) && StringUtils.isBlank(volume)) {
+                    order = publicationYear + "00000";
+                }
+
+                if (StringUtils.isNotBlank(year)) {
+                    order += year;
+                }
+                if (StringUtils.isNotBlank(volume)) {
+                    if (volume.length() > 1) {
+                        order += volume;
+                    } else {
+                        order += "0" + volume;
+                    }
+                }
+
+                while (order.length() < 9) {
+                    order += "0";
+                }
+                Metadata sorting = new Metadata(prefs.getMetadataTypeByName("CurrentNoSorting"));
+                sorting.setValue(order);
+                docstruct.addMetadata(sorting);
+
+            }
 
         } catch (UGHException e) {
             log.error(e);
