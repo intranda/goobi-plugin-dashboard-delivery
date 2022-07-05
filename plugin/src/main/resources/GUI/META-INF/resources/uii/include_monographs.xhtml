@@ -432,35 +432,35 @@ creation finished text, button to go back to main screen
                             </button>
 
                         </li>
-                        <li>
+                        <li class="#{DashboardForm.plugin.navigation=='upload'?'active':'finished'}">
 
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
                             </h:panelGroup>
                         </li>
-                        <li>
+                        <li class="#{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
                             </h:panelGroup>
                         </li>
-                        <li>
+                        <li class="#{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_data2}" />
                             </h:panelGroup>
                         </li>
 
-                        <li>
+                        <li class="#{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_data3}" />
                             </h:panelGroup>
                         </li>
-                        <li>
+                        <li class="#{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_overview}" />
                             </h:panelGroup>
 
                         </li>
-                        <li>
+                        <li class="#{DashboardForm.plugin.navigation=='finish' ? 'active': 'inactive'}">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='finish' ? 'active': 'inactive'}">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_finish}" />
                             </h:panelGroup>
