@@ -168,7 +168,7 @@
                             booleanValue="#{field.booleanValue}"
                             subValue="#{field.value2}"
                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                            render=":grp" />
+                            render="@form" />
                     </h:panelGroup>
                 </ui:repeat>
 
@@ -198,7 +198,7 @@
                     var="field"
                     value="#{DashboardForm.plugin.institutionData.fields}"
                     varStatus="status">
-                    <h:panelGroup id="grp">
+                    <h:panelGroup id="grp">                    
                         <zlb:field
                             identifier="field_#{status.index}"
                             labelText="#{field.label}"
@@ -212,7 +212,7 @@
                             booleanValue="#{field.booleanValue}"
                             subValue="#{field.value2}"
                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                            render=":grp" />
+                            render="@form" />
                     </h:panelGroup>
                 </ui:repeat>
 
@@ -242,15 +242,6 @@
                     value="#{DashboardForm.plugin.contactData.fields}"
                     varStatus="status">
                     <h:panelGroup id="grp">
-
-                    <!--
-                        <zlb:label
-                            labelFor="accountName"
-                            labelText="#{msgs.login_new_account_accountName}"
-                            labelHelpText="Lorem ipsum dolor sit amet, consetetur sadipscing elitr"
-                            labelRequired="#{field.required}" />
-                    -->
-
                         <zlb:field
                             identifier="field_#{status.index}"
                             labelText="#{field.label}"
@@ -264,7 +255,7 @@
                             booleanValue="#{field.booleanValue}"
                             subValue="#{field.value2}"
                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                            render=":grp" />
+                            render="@form" />
                     </h:panelGroup>
                 </ui:repeat>
 
