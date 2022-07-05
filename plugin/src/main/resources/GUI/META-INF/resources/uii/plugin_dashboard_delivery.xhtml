@@ -59,128 +59,129 @@
                 <h:form>
                     <div class="common-region common-region--no-borders common-region--three-cols">
 
+                      <!-- Monographs -->
+                      <div class="item flow">
+
+                        <div class="item__icons">
+                          <ui:include src="/uii/includes/icon-book.xhtml" />
+                        </div>
+
+                          <h2 class="item__heading">#{msgs.plugin_dashboard_deliverMonographHeader}</h2>
+                          <p class="item__text">#{msgs.plugin_dashboard_deliverMonograph}</p>
+
+                          <button
+                              jsf:id="monograph"
+                              class="item__cta btn btn-primary-400"
+                              title="#{msgs.plugin_dashboard_deliverMonographButton}"
+                              jsf:action="#{DashboardForm.plugin.startNewImport}">
+                              <h:outputText value="#{msgs.plugin_dashboard_deliverMonographButton}" />
+                              <f:setPropertyActionListener
+                                  value="upload"
+                                  target="#{DashboardForm.plugin.navigation}" />
+                              <f:setPropertyActionListener
+                                  value="monograph"
+                                  target="#{DashboardForm.plugin.documentType}" />
+                              <f:ajax
+                                  render="main-area"
+                                  execute="@this" />
+                          </button>
+                        </div> <!-- end item -->
+
                         <!-- Journals -->
                         <div class="item flow">
 
-							<div class="item__icons">
-								<ui:include src="/uii/includes/icon-book.xhtml" />
-								<ui:include src="/uii/includes/icon-book.xhtml" />
-								<ui:include src="/uii/includes/icon-book.xhtml" />
-                </div>
+                          <div class="item__icons">
+                            <ui:include src="/uii/includes/icon-book.xhtml" />
+                            <ui:include src="/uii/includes/icon-book.xhtml" />
+                            <ui:include src="/uii/includes/icon-book.xhtml" />
+                          </div>
 
-							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverJournalsHeader}</h2>
-							<p class="item__text">#{msgs.plugin_dashboard_deliverJournals}</p>
+                          <h2 class="item__heading">#{msgs.plugin_dashboard_deliverJournalsHeader}</h2>
+                          <p class="item__text">#{msgs.plugin_dashboard_deliverJournals}</p>
 
-                            <button
-                                jsf:id="journals"
-                                class="item__cta btn btn-primary-400"
-                                title="#{msgs.plugin_dashboard_deliverJournalsButton}">
-                                <h:outputText value="#{msgs.plugin_dashboard_deliverJournalsButton}" />
-                                <f:setPropertyActionListener
-                                    value="titleSelection"
-                                    target="#{DashboardForm.plugin.navigation}" />
-                                <f:setPropertyActionListener
-                                    value="journal"
-                                    target="#{DashboardForm.plugin.documentType}" />
-                                <f:ajax
-                                    render="main-area"
-                                    execute="@this" />
-                            </button>
-                        </div>
+                          <button
+                              jsf:id="journals"
+                              class="item__cta btn btn-primary-400"
+                              title="#{msgs.plugin_dashboard_deliverJournalsButton}">
+                              <h:outputText value="#{msgs.plugin_dashboard_deliverJournalsButton}" />
+                              <f:setPropertyActionListener
+                                  value="titleSelection"
+                                  target="#{DashboardForm.plugin.navigation}" />
+                              <f:setPropertyActionListener
+                                  value="journal"
+                                  target="#{DashboardForm.plugin.documentType}" />
+                              <f:ajax
+                                  render="main-area"
+                                  execute="@this" />
+                          </button>
+                        </div> <!-- end item -->
 
-                        <!-- Monographs -->
+                        <!-- show existing deliveries -->
                         <div class="item flow">
+                          <div class="item__icons">
+                            <ui:include src="/uii/includes/icon-file-text.xhtml" />
+                          </div>
 
-							<div class="item__icons">
-								<ui:include src="/uii/includes/icon-book.xhtml" />
-                        	</div>
+                          <h2 class="item__heading">#{msgs.plugin_dashboard_deliverShowExistingDataHeader}</h2>
+                          <p class="item__text">#{msgs.plugin_dashboard_deliverShowExistingData}</p>
 
-							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverMonographHeader}</h2>
-							<p class="item__text">#{msgs.plugin_dashboard_deliverMonograph}</p>
-
-                            <button
-                                jsf:id="monograph"
-                                class="item__cta btn btn-primary-400"
-                                title="#{msgs.plugin_dashboard_deliverMonographButton}"
-                                jsf:action="#{DashboardForm.plugin.startNewImport}">
-                                <h:outputText value="#{msgs.plugin_dashboard_deliverMonographButton}" />
-                                <f:setPropertyActionListener
-                                    value="upload"
-                                    target="#{DashboardForm.plugin.navigation}" />
-                                <f:setPropertyActionListener
-                                    value="monograph"
-                                    target="#{DashboardForm.plugin.documentType}" />
-                                <f:ajax
-                                    render="main-area"
-                                    execute="@this" />
-                            </button>
-                        </div>
+                          <button
+                              jsf:id="existingData"
+                              class="item__cta btn btn-primary-400"
+                              title="#{msgs.plugin_dashboard_deliverShowExistingDataButton}"
+                              jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}">
+                              <h:outputText value="#{msgs.plugin_dashboard_deliverShowExistingDataButton}" />
+                              <f:setPropertyActionListener
+                                  value="existingData"
+                                  target="#{DashboardForm.plugin.navigation}" />
+                              <f:ajax
+                                  render="main-area"
+                                  execute="@this" />
+                          </button>
+                        </div> <!-- end item -->
 
 
                         <!-- Help -->
                         <div class="item flow">
-							<div class="item__icons">
-								<ui:include src="/uii/includes/icon-mortarboard.xhtml" />
-							</div>
+                          <div class="item__icons">
+                            <ui:include src="/uii/includes/icon-mortarboard.xhtml" />
+                          </div>
 
-							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverHelpHeader}</h2>
-							<p class="item__text">#{msgs.plugin_dashboard_deliverHelp}</p>
+                          <h2 class="item__heading">#{msgs.plugin_dashboard_deliverHelpHeader}</h2>
+                          <p class="item__text">#{msgs.plugin_dashboard_deliverHelp}</p>
 
-                            <button class="item__cta btn btn-primary-400">
-                                <h:outputText value="#{msgs.plugin_dashboard_deliverHelpButton}" />
-                            </button>
+                          <button class="item__cta btn btn-primary-400">
+                              <h:outputText value="#{msgs.plugin_dashboard_deliverHelpButton}" />
+                          </button>
 
-                        </div>
+                        </div> <!-- end item -->
 
 
                         <!-- edit user data -->
                         <div class="item flow">
-							<div class="item__icons">
-								<ui:include src="/uii/includes/icon-file-text.xhtml" />
-							</div>
+                          <div class="item__icons">
+                            <ui:include src="/uii/includes/icon-file-text.xhtml" />
+                          </div>
 
-							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverShowDataHeader}</h2>
-							<p class="item__text">#{msgs.plugin_dashboard_deliverShowData}</p>
+                          <h2 class="item__heading">#{msgs.plugin_dashboard_deliverShowDataHeader}</h2>
+                          <p class="item__text">#{msgs.plugin_dashboard_deliverShowData}</p>
 
-                            <button
-                                jsf:id="userData"
-                                class="item__cta btn btn-primary-400"
-                                title="#{msgs.plugin_dashboard_deliverShowDataButton}"
-                                jsf:action="#{DashboardForm.plugin.readUserConfiguration}">
-                                <h:outputText value="#{msgs.plugin_dashboard_deliverShowDataButton}" />
-                                <f:setPropertyActionListener
-                                    value="userdata"
-                                    target="#{DashboardForm.plugin.navigation}" />
-                                <f:ajax
-                                    render="main-area"
-                                    execute="@this" />
-                            </button>
-                        </div>
+                          <button
+                              jsf:id="userData"
+                              class="item__cta btn btn-primary-400"
+                              title="#{msgs.plugin_dashboard_deliverShowDataButton}"
+                              jsf:action="#{DashboardForm.plugin.readUserConfiguration}">
+                              <h:outputText value="#{msgs.plugin_dashboard_deliverShowDataButton}" />
+                              <f:setPropertyActionListener
+                                  value="userdata"
+                                  target="#{DashboardForm.plugin.navigation}" />
+                              <f:ajax
+                                  render="main-area"
+                                  execute="@this" />
+                          </button>
+                        </div> <!-- end item -->
 
-                        <!-- show existing deliveries -->
-                        <div class="item flow">
-							<div class="item__icons">
-								<ui:include src="/uii/includes/icon-file-text.xhtml" />
-							</div>
-
-							<h2 class="item__heading">#{msgs.plugin_dashboard_deliverShowExistingDataHeader}</h2>
-							<p class="item__text">#{msgs.plugin_dashboard_deliverShowExistingData}</p>
-
-                            <button
-                                jsf:id="existingData"
-                                class="item__cta btn btn-primary-400"
-                                title="#{msgs.plugin_dashboard_deliverShowExistingDataButton}"
-                                jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}">
-                                <h:outputText value="#{msgs.plugin_dashboard_deliverShowExistingDataButton}" />
-                                <f:setPropertyActionListener
-                                    value="existingData"
-                                    target="#{DashboardForm.plugin.navigation}" />
-                                <f:ajax
-                                    render="main-area"
-                                    execute="@this" />
-                            </button>
-                        </div>
-                    </div>
+                    </div> <!-- end common-region -->
 
                 </h:form>
             </ui:fragment>
