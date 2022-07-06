@@ -107,7 +107,7 @@
                 </button>
             </h1>
 
-            <h:form styleClass="form-validate d-grid">
+            <h:form styleClass="journal__data form-validate d-grid">
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
@@ -231,7 +231,7 @@
 
             <!-- TODO add file upload area -->
 
-            <h:form styleClass="form-validate d-grid">
+            <h:form styleClass="journal__data form-validate d-grid">
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
@@ -340,9 +340,7 @@
         <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main'}">
             <h:form>
              <div class="submit">
-                        <script>
-                            console.log('#{DashboardForm.plugin.navigation}')
-                        </script>
+
                     <ul class="statuslist">
                         <li>
                             <button
@@ -356,6 +354,7 @@
                             </button>
                         </li>
 
+                        <!--
                         <li class="#{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
@@ -399,6 +398,7 @@
                                     execute="@this" />
                             </button>
                         </li>
+                        -->
                     </ul>
                 </div>
 
