@@ -243,7 +243,7 @@ field: individual input field
 
     <group label="Angaben zur Entstehung" pageName="data1" documentType="issue">
         <field rulesetName="PublicationYear" label="Erscheinungsdatum" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d{4,8}" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
-        <field rulesetName="CurrentNoSorting" label="Bandnummer" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d+" validationErrorText="Nur Ziffern" helpMessage="Tragen Sie hier das Jahr ein."></field>
+        <field rulesetName="VolumeNo" label="Bandnummer" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d+" validationErrorText="Nur Ziffern" helpMessage="Tragen Sie hier das Jahr ein."></field>
         <field rulesetName="CurrentNo" label="Jahrgang" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Geben Sie eiene vierstellige Jahreszahl ein" helpMessage="Label."></field>
         <field rulesetName="PartNumber" label="Heftnummer" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Unklar wozu das dienen soll"></field>
     </group>
