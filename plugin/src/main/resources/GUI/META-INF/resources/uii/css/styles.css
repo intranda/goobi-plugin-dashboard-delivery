@@ -6,6 +6,7 @@
     min-height: calc(100vh - var(--height-footer-and-nav));
     padding: 0 16rem;
     font-size: var(--fs-400);
+    margin-bottom: 4.8rem;
 }
 
 .user.pull-right {
@@ -131,8 +132,23 @@
 
 /* Views */
 
+/* Monographs */
 .monograph__overview .form-control {
   min-height: 38px;
+}
+
+/* Journals */
+.journal__data {
+  position: relative;
+}
+
+.journal__data ~ form .statuslist {
+  margin: 0;
+}
+.journal__data ~ form button {
+  position: absolute;
+  bottom: 0;
+  left:0;
 }
 
 @media (max-width: 750px) {
