@@ -33,24 +33,16 @@
                                 </script>
 
 
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="box box-color box-bordered">
-                    <div class="box-title">
-                        <h2>
-                            <i class="fa fa-tasks"></i>
-                            <h:outputText value="#{myPageTitle}" />
-                        </h2>
-                    </div>
-                    <div class="box-content nopadding">
-                        <div class="dataTables_wrapper">
+              <h1 class="page__heading">#{msgs.plugin_dashboard_deliverShowExistingDataHeader}</h1>
+                <div class="row">
+                        <div class="dataTables_wrapper flow">
                             <div class="row">
 
                                 <h:form id="searchform">
 
                                     <h:selectOneMenu
                                         id="searchoption_select"
-                                        styleClass=""
+                                        styleClass="form-select"
                                         value="#{DashboardForm.plugin.selectedField}"
                                         pt:aria-label="searchfield">
                                         <f:selectItem
@@ -62,7 +54,7 @@
                                     <x:inputText
                                         id="searchvalue_input"
                                         pt:aria-label="searchvalue"
-                                        styleClass=""
+                                        styleClass="form-control"
                                         value="#{DashboardForm.plugin.searchValue}">
                                     </x:inputText>
 
@@ -216,9 +208,9 @@
                                                         varStatus="metadatastatus"
                                                         id="metadatalist">
                                                         <h:panelGroup rendered="#{metadata.one != 'DocStruct' and metadata.one != 'index.Titel'}">
-                                                       
+
                                                             <tr>
-                                                                <td style="border: none !important; padding: 2px; vertical-align: top;">
+                                                                <td class="fw-bold" style="border: none !important; padding: 2px; vertical-align: top;">
                                                                     <h:outputText value="#{msgs['process_grid_'.concat(metadata.one)]}:" />
                                                                 </td>
                                                                 <td style="border: none !important; padding: 2px; white-space: normal;">
@@ -614,6 +606,7 @@
                                                                         value="#{null}"
                                                                         target="#{NavigationForm.uiStatus.mets_toc5}" />
                                                                 </h:commandLink>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -635,9 +628,6 @@
                                 </div>
                             </h:form>
 
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -652,7 +642,7 @@
                         <button
                             jsf:action="#{DashboardForm.plugin.previousPage}"
                             jsf:id="backToMain"
-                            class="float-left btn btn-primary font-size-s">
+                            class="btn btn-blank">
                             <h:outputText value="#{msgs.back}" />
                             <f:ajax
                                 render="main-area"

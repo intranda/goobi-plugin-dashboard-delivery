@@ -112,6 +112,22 @@
     gap: .8rem;
 }
 
+/* Some forms have a submit button inside the form
+.btn-inside helps to display them outside of the form for coherence */
+#main-area .container {
+  position: relative;
+}
+
+.btn-inside .btn-primary-400 {
+  position: absolute;
+  bottom: 0;
+  right: 8px;
+}
+
+.btn-inside ~ form .statuslist {
+  margin: 0;
+}
+
 /* Very specific selectors => overriding styles from index.scss */
 .form__actions input.form-control-lg,
 .form__actions .btn[type="submit"] {
@@ -130,6 +146,26 @@
     background-color: #dde0e3;
 }
 
+.form-check-wrapper tr {
+  display: flex;
+gap: 8px;
+flex-direction: column;
+}
+
+.form-check-wrapper td {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-check {
+  display: flex;
+}
+
+.form-check .zlb-label {
+	margin-bottom: .8rem;
+}
+  
 /* Views */
 
 /* Monographs */
@@ -164,4 +200,47 @@
     .form__msg-or::after {
         display: none;
     }
+}
+
+
+
+#searchform {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+  
+}
+
+#searchform select {
+  flex: 0 1 25%;
+}
+
+#searchform input {
+  flex: 0 1 25%;
+}
+
+table i.fa { 
+  color: var(--clr-primary-400);
+  padding-right: 8px;
+}
+
+table button {
+  display: flex;
+  align-items: center;
+  overflow-wrap: break-word;
+  background: transparent;
+  border: 0;
+}
+
+table button > .fa-angle-right {
+  margin-right: 8px;
+}
+
+table button span { 
+  margin-left: 8px;
+  color: var(--clr-primary-400);
+}
+
+.form-select {
+  font-size: var(--fs-400);
 }

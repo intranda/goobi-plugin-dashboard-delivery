@@ -145,7 +145,7 @@
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
 
 
-            <h:form styleClass="form-validate common-region">
+            <h:form styleClass="form-validate common-region btn-inside">
                 <h2 class="grid-full-width">
                     <h:outputText value="#{DashboardForm.plugin.userData.label}" />
                 </h2>
@@ -190,7 +190,7 @@
         </ui:fragment>
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
-            <h:form styleClass="form-validate common-region">
+            <h:form styleClass="form-validate common-region btn-inside">
                 <h2 class="grid-full-width">
                     <h:outputText value="#{DashboardForm.plugin.institutionData.label}" />
                 </h2>
@@ -198,7 +198,7 @@
                     var="field"
                     value="#{DashboardForm.plugin.institutionData.fields}"
                     varStatus="status">
-                    <h:panelGroup id="grp">                    
+                    <h:panelGroup id="grp">
                         <zlb:field
                             identifier="field_#{status.index}"
                             labelText="#{field.label}"
@@ -233,7 +233,7 @@
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
-            <h:form styleClass="form-validate common-region">
+            <h:form styleClass="form-validate common-region btn-inside">
                 <h2 class="grid-full-width">
                     <h:outputText value="#{DashboardForm.plugin.contactData.label}" />
                 </h2>
