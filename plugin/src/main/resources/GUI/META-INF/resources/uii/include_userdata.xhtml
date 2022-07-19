@@ -166,6 +166,7 @@
                             errorMessageText="#{field.validationErrorText}"
                             selectItems="#{field.selectList}"
                             booleanValue="#{field.booleanValue}"
+                            fieldRequired="#{field.required}"
                             subValue="#{field.value2}"
                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                             render="@form" />
@@ -176,7 +177,7 @@
                 <button
                     jsf:action="#{DashboardForm.plugin.saveUserData}"
                     jsf:id="saveUserData"
-                    class="btn btn-primary-400 grid-full-width ms-auto">
+                    class="btn btn-success grid-full-width ms-auto">
                     <h:outputText value="#{msgs.save}" />
                     <f:ajax
                         render="main-area"
@@ -206,6 +207,7 @@
                             required="#{field.required}"
                             value="#{field.value}"
                             fieldType="#{field.displayType}"
+                            fieldRequired="#{field.required}"
                             propertyValid="#{field.valid}"
                             errorMessageText="#{field.validationErrorText}"
                             selectItems="#{field.selectList}"
@@ -219,7 +221,7 @@
                 <button
                     jsf:action="#{DashboardForm.plugin.saveInstitutionData}"
                     jsf:id="saveInstitutionData"
-                    class="btn btn-primary-400 grid-full-width ms-auto">
+                    class="btn btn-success grid-full-width ms-auto">
                     <h:outputText value="#{msgs.save}" />
                     <f:ajax
                         render="main-area"
@@ -249,6 +251,7 @@
                             required="#{field.required}"
                             value="#{field.value}"
                             fieldType="#{field.displayType}"
+                            fieldRequired="#{field.required}"
                             propertyValid="#{field.valid}"
                             errorMessageText="#{field.validationErrorText}"
                             selectItems="#{field.selectList}"
@@ -262,7 +265,7 @@
                 <button
                     jsf:action="#{DashboardForm.plugin.saveContactData}"
                     jsf:id="saveContactData"
-                    class="btn btn-primary-400 grid-full-width ms-auto">
+                    class="btn btn-success grid-full-width ms-auto">
                     <h:outputText value="#{msgs.save}" />
                     <f:ajax
                         render="main-area"

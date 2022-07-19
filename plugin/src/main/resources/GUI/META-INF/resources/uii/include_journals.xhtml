@@ -137,6 +137,7 @@
                                         selectItems="#{field.selectList}"
                                         subClass="persongrid"
                                         fieldName="#{field.label}"
+                                        fieldRequired="#{field.required}"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp" />
                                 </ui:fragment>
@@ -151,6 +152,7 @@
                                         role="#{field.role}"
                                         propertyValid="#{field.valid}"
                                         errorMessageText="#{field.validationErrorText}"
+                                        fieldRequired="#{field.required}"
                                         selectItems="#{field.selectList}"
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
@@ -168,6 +170,7 @@
                                         propertyValid="#{field.valid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         selectItems="#{field.selectList}"
+                                        fieldRequired="#{field.required}"
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp" />
@@ -185,6 +188,7 @@
                                         propertyValid="#{field.valid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         selectItems="#{field.selectList}"
+                                        fieldRequired="#{field.required}"
                                         booleanValue="#{field.booleanValue}"
                                         subValue="#{field.value2}"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
@@ -203,7 +207,7 @@
                 <button
                     jsf:action="#{DashboardForm.plugin.createJournalTitle}"
                     jsf:id="nextStep"
-                    class="btn btn-primary-400 grid-full-width ms-auto">
+                    class="btn btn-success grid-full-width ms-auto">
                     <h:outputText value="#{msgs.next}" />
                     <f:ajax
                         render="main-area"
@@ -263,6 +267,7 @@
                                         selectItems="#{field.selectList}"
                                         subClass="persongrid"
                                         fieldName="#{field.label}"
+                                        fieldRequired="#{field.required}"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp" />
                                 </ui:fragment>
@@ -278,6 +283,7 @@
                                         propertyValid="#{field.valid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         selectItems="#{field.selectList}"
+                                        fieldRequired="#{field.required}"
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp" />
@@ -294,6 +300,7 @@
                                         propertyValid="#{field.valid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         selectItems="#{field.selectList}"
+                                        fieldRequired="#{field.required}"
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp" />
@@ -308,6 +315,7 @@
                                         required="#{field.required}"
                                         value="#{field.value}"
                                         fieldType="#{field.displayType}"
+                                        fieldRequired="#{field.required}"
                                         propertyValid="#{field.valid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         selectItems="#{field.selectList}"
@@ -326,7 +334,7 @@
                 <button
                     jsf:action="#{DashboardForm.plugin.createJournalIssue}"
                     jsf:id="createIssue"
-                    class="btn btn-primary-400 ms-auto">
+                    class="btn btn-success ms-auto">
                     <h:outputText value="#{msgs.next}" />
                     <f:ajax
                         render="main-area"
