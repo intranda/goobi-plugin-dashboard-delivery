@@ -51,7 +51,7 @@
                     <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
                   </h:outputFormat>
 
-                    <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                    <button type="button" aria-label="#{msgs.plugin_dashboard_pageHelp}" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
                       <ui:include src="/uii/includes/icon-help.xhtml" />
                     </button>
                 </h1>
@@ -191,9 +191,9 @@
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='upload'}">
 
 				<h1 class="page__heading">
-					<span>#{msgs.plugin_dashboard_uploadFormHeader}</span>
+          <span>#{msgs.plugin_dashboard_deliverMonographHeader}</span>
 
-					<button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+					<button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
 					  <ui:include src="/uii/includes/icon-help.xhtml" />
 					</button>
 				</h1>
@@ -217,16 +217,19 @@
 
 					<div class="form__actions">
 
-                    <h:inputFile
-                        id="file"
-                    	styleClass="form-control form-control-lg"
-                        value="#{DashboardForm.plugin.file}"
-                        name="file" />
-                    <h:commandButton
-                        id="submit"
-                        value="submit"
-                        styleClass="btn btn-primary-400"
-                        />
+            <label for="file" class="sr-only">#{msgs.plugin_dashboard_uploadFormLabel}</label>
+            <h:inputFile
+                id="file"
+                styleClass="form-control form-control-lg"
+                value="#{DashboardForm.plugin.file}"
+                title="#{msgs.plugin_dashboard_ariaLabel_uploadForm}"
+                name="file" />
+
+            <h:commandButton
+                id="submit"
+                value="submit"
+                styleClass="btn btn-primary-400"
+                />
 					</div>
 
 
