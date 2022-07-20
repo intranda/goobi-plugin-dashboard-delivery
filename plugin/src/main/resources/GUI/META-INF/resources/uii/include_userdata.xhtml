@@ -19,9 +19,9 @@
         <!-- Main Headings for individual views -->
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_deliverUserData}</span>
+                <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span>
 
-                <button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                <button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
                   <ui:include src="/uii/includes/icon-help.xhtml" />
                 </button>
             </h1>
@@ -29,9 +29,9 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_deliverInstitutionData}</span>
+                <span>#{msgs.plugin_dashboard_delivery_deliverInstitutionData}</span>
 
-                <button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                <button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
                   <ui:include src="/uii/includes/icon-help.xhtml" />
                 </button>
             </h1>
@@ -39,9 +39,9 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_deliverInstitutionData}</span>
+                <span>#{msgs.plugin_dashboard_delivery_deliverInstitutionData}</span>
 
-                <button type="button" class="btn page__help"  aria-label="#{msgs.plugin_dashboard_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                <button type="button" class="btn page__help"  aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
                   <ui:include src="/uii/includes/icon-help.xhtml" />
                 </button>
             </h1>
@@ -49,9 +49,9 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_deliverContactPersonData}</span>
+                <span>#{msgs.plugin_dashboard_delivery_deliverContactPersonData}</span>
 
-                <button type="button" class="btn page__help"  aria-label="#{msgs.plugin_dashboard_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                <button type="button" class="btn page__help"  aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
                   <ui:include src="/uii/includes/icon-help.xhtml" />
                 </button>
             </h1>
@@ -71,15 +71,15 @@
                             <ui:include src="/uii/includes/icon-user.xhtml" />
                         </div>
 
-                        <h2 class="item__heading">#{msgs.plugin_dashboard_deliverUserData}</h2>
-                        <p class="item__text">#{msgs.plugin_dashboard_deliverUserDataTitle}</p>
+                        <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverUserData}</h2>
+                        <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverUserDataTitle}</p>
 
                         <button
                             jsf:id="editUserData"
                             class="item__cta btn btn-primary-400"
-                            title="#{msgs.plugin_dashboard_deliverUserDataButton}"
+                            title="#{msgs.plugin_dashboard_delivery_deliverUserDataButton}"
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverUserDataButton}" />
+                            <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverUserDataButton}" />
                             <f:setPropertyActionListener
                                 value="user"
                                 target="#{DashboardForm.plugin.navigation}" />
@@ -96,15 +96,15 @@
                             <ui:include src="/uii/includes/icon-institution.xhtml" />
                         </div>
 
-                        <h2 class="item__heading">#{msgs.plugin_dashboard_deliverInstitutionData}</h2>
-                        <p class="item__text">#{msgs.plugin_dashboard_deliverInstitutionDataTitle}</p>
+                        <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverInstitutionData}</h2>
+                        <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverInstitutionDataTitle}</p>
 
                         <button
                             jsf:id="editInstitution"
                             class="item__cta btn btn-primary-400"
-                            title="#{msgs.plugin_dashboard_deliverInstitutionDataButton}"
+                            title="#{msgs.plugin_dashboard_delivery_deliverInstitutionDataButton}"
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverInstitutionDataButton}" />
+                            <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverInstitutionDataButton}" />
                             <f:setPropertyActionListener
                                 value="institution"
                                 target="#{DashboardForm.plugin.navigation}" />
@@ -120,15 +120,15 @@
                             <ui:include src="/uii/includes/icon-contact-person.xhtml" />
                         </div>
 
-                        <h2 class="item__heading">#{msgs.plugin_dashboard_deliverContactPersonData}</h2>
-                        <p class="item__text">#{msgs.plugin_dashboard_deliverContactPersonDataTitle}</p>
+                        <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverContactPersonData}</h2>
+                        <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverContactPersonDataTitle}</p>
 
                         <button
                             jsf:id="editContact"
                             class="item__cta btn btn-primary-400"
-                            title="#{msgs.plugin_dashboard_deliverContactPersonDataButton}"
+                            title="#{msgs.plugin_dashboard_delivery_deliverContactPersonDataButton}"
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverContactPersonDataButton}" />
+                            <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverContactPersonDataButton}" />
                             <f:setPropertyActionListener
                                 value="contact"
                                 target="#{DashboardForm.plugin.navigation}" />
@@ -287,7 +287,7 @@
                                 jsf:action="#{DashboardForm.plugin.previousPage}"
                                 jsf:id="backToMain"
                                 class="float-left btn btn-blank font-size-s">
-                                <h:outputText value="#{msgs.back}" />
+                                <h:outputText value="#{msgs.plugin_rest_usercreation_back}" />
                                 <f:ajax
                                     render="main-area"
                                     execute="@this" />

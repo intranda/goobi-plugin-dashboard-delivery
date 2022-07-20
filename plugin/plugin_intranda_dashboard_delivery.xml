@@ -60,7 +60,7 @@ field: individual input field
 
     <group label="Verantwortliche: Personen und Körperschaften" pageName="data1" documentType="monograph">
 
-        <field rulesetName="Author" label="Autor*in, beteiligte Person" displayType="person" metadataLevel="anchor" cardinality="*" marcMainTag="100" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="Author" label="Autor:in, beteiligte Person" displayType="person" metadataLevel="anchor" cardinality="*" marcMainTag="100" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
             <!--
             <selectfield value="Author" label="Autor" />
             <selectfield value="Artist" label="Künstler" />
