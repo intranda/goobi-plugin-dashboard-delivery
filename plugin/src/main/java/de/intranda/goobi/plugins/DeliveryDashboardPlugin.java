@@ -56,8 +56,10 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 import ugh.dl.Corporate;
 import ugh.dl.DigitalDocument;
 import ugh.dl.DocStruct;
+import ugh.dl.DocStructType;
 import ugh.dl.Fileformat;
 import ugh.dl.Metadata;
+import ugh.dl.MetadataType;
 import ugh.dl.Person;
 import ugh.dl.Prefs;
 import ugh.exceptions.MetadataTypeNotAllowedException;
@@ -631,15 +633,35 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
         //  after creation, move uploaded files into process source folder
         try {
-            String sourceFolder = process.getSourceDirectory();
+            DocStructType pageType = prefs.getDocStrctTypeByName("page");
+            MetadataType physType = prefs.getMetadataTypeByName("physPageNumber");
+            MetadataType logType = prefs.getMetadataTypeByName("logicalPageNumber");
+            DigitalDocument dd = fileformat.getDigitalDocument();
+            DocStruct physical = dd.getPhysicalDocStruct();
+            DocStruct logical = dd.getLogicalDocStruct();
+            String sourceFolder = process.getImagesTifDirectory(false);
             Path destinationFolder = Paths.get(sourceFolder);
             if (!StorageProvider.getInstance().isFileExists(destinationFolder)) {
                 StorageProvider.getInstance().createDirectories(destinationFolder);
             }
+            int order = 1;
             for (Path uploadedFile : files) {
                 StorageProvider.getInstance().move(uploadedFile, Paths.get(destinationFolder.toString(), uploadedFile.getFileName().toString()));
+
+                DocStruct page = dd.createDocStruct(pageType);
+                Metadata phys = new Metadata(physType);
+                phys.setValue("" + order);
+                page.addMetadata(phys);
+                Metadata log = new Metadata(logType);
+                log.setValue("-");
+                page.addMetadata(log);
+                // add file name
+                page.setImageName(uploadedFile.getFileName().toString());
+                physical.addChild(page);
+                logical.addReferenceTo(page, "logical_physical");
+                order = order + 1;
             }
-        } catch (IOException | InterruptedException | SwapException | DAOException e) {
+        } catch (IOException | InterruptedException | SwapException | DAOException | UGHException e) {
             log.error(e);
         }
 
@@ -652,9 +674,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     private Fileformat createFileformat(Prefs prefs, String identifier) {
 
         /* TODO: generate metadata
-        Herkunft der Metadaten: Default-Wert: [abzustimmen mit dem VSZ] (marc leader)
-        Haupttitel: Bestimmte und unbestimmte Artikel am Anfang des Haupttitels werden bei der Sortierung in allen Deklinationsformen und Sprachen übergangen und müssen dafür für die „Nicht-Sortierung“ ausgezeichnet werden (siehe dazu Anhang 5.1).
-
         Umfang: Angabe des Umfangs unkörperlicher digitaler Medienwerke ist immer Online-Ressource. Sofern eine Seitenzählung vorhanden ist, kann dieser zusätzlich in runden Klammern angegeben werden (Beispiel: Online-Ressource (72 Seiten).
         Dateiformat und Dateigröße: Dateiformat und –größe der  zu beschreibenden Ressource.
 
