@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
@@ -50,8 +52,9 @@ public class MetadataField {
 
     private String vocabularyUrl;
 
-
     private String additionalType; // is not shown in UI, is used to store field name from user or institution objects
+
+    private boolean fieldValid = true;
 
     public void setBooleanValue(boolean val) {
         if (val) {
@@ -76,11 +79,8 @@ public class MetadataField {
             return false;
         }
 
-        if (StringUtils.isNotBlank(validationExpression) && StringUtils.isNotBlank(val)) {
-            if (!val.matches(validationExpression)) {
-                return false;
-            }
-
+        if (StringUtils.isNotBlank(validationExpression) && StringUtils.isNotBlank(val) && !val.matches(validationExpression)) {
+            return false;
         }
         return true;
     }
@@ -92,52 +92,50 @@ public class MetadataField {
 
         Vocabulary currentVocabulary = VocabularyManager.getVocabularyByTitle(vocabularyName);
         vocabularyUrl = DeliveryDashboardPlugin.vocabularyUrl + currentVocabulary.getId();
-        if (currentVocabulary != null) {
-            VocabularyManager.getAllRecords(currentVocabulary);
-            vocabList = currentVocabulary.getRecords();
-            Collections.sort(vocabList);
-            selectList = new ArrayList<>(vocabList.size());
-            if (currentVocabulary != null && currentVocabulary.getId() != null) {
-                for (VocabRecord vr : vocabList) {
-                    for (Field f : vr.getFields()) {
-                        if (StringUtils.isBlank(vocabularyDisplayField) && f.getDefinition().isMainEntry()) {
-                            selectList.add(new SelectItem(String.valueOf(vr.getId()), f.getValue()));
-                            break;
-                        } else if (f.getDefinition().getLabel().equals(vocabularyDisplayField)) {
-                            selectList.add(new SelectItem(String.valueOf(vr.getId()), f.getValue()));
-                            break;
-                        }
+        VocabularyManager.getAllRecords(currentVocabulary);
+        vocabList = currentVocabulary.getRecords();
+        Collections.sort(vocabList);
+        selectList = new ArrayList<>(vocabList.size());
+        if (currentVocabulary.getId() != null) {
+            for (VocabRecord vr : vocabList) {
+                for (Field f : vr.getFields()) {
+                    if (StringUtils.isBlank(vocabularyDisplayField) && f.getDefinition().isMainEntry()) {
+                        selectList.add(new SelectItem(String.valueOf(vr.getId()), f.getValue()));
+                        break;
+                    } else if (f.getDefinition().getLabel().equals(vocabularyDisplayField)) {
+                        selectList.add(new SelectItem(String.valueOf(vr.getId()), f.getValue()));
                     }
                 }
             }
         }
     }
 
-    public boolean isValid() {
+    public void validateField(FacesContext context, UIComponent comp, Object obj) {
+        String value = (String)obj;
+        fieldValid = true;
+
         // check field type, different validation for different types
         if ("person".equals(displayType)) {
             // if required, role and either firstname or lastname must be filled
             if (required) {
                 if (StringUtils.isBlank(role) || (StringUtils.isBlank(value) && StringUtils.isBlank(value2))) {
-                    return false;
+                    fieldValid = false;
                 }
                 // TODO if firstname or lastname is used, role must be set
             }
-            return true;
         } else if ("corporate".equals(displayType)) {
             // if required, role and name must be filled
             if (required) {
                 if (StringUtils.isBlank(role) || StringUtils.isBlank(value)) {
-                    return false;
+                    fieldValid = false;
                 }
                 // TODO if name is filled, role must be set
             }
-            return true;
         } else if ("picklist".equals(displayType)) {
             // if required, type and value must be selected
             if (required) {
                 if (StringUtils.isBlank(role) || StringUtils.isBlank(value)) {
-                    return false;
+                    fieldValid = false;
                 }
             }
             // different validation based on selected type
@@ -149,7 +147,7 @@ public class MetadataField {
 
                         if (value.length() > 17) {
                             // to many characters
-                            return false;
+                            fieldValid = false;
                         }
                         // ISBN-13: 978-3-86680-192-9
                         // ISBN-10: 3-86640-001-2
@@ -160,27 +158,27 @@ public class MetadataField {
                         if (!number.matches("[0-9]{10}|[0-9]{9}X|[0-9]{13}|[0-9]{12}X")) {
                             // invalid characters
                             validationErrorText = "Falsche Anzahl oder ungültige Zeichen, bitte ISBN-10 oder ISBN-13 angeben.";
-                            return false;
+                            fieldValid = false;
                         }
                         // check length, should be 10 or 13
                         // 10 -> isbn validation
                         if (number.length() == 10) {
                             if (!validateIdentifier(number)) {
                                 validationErrorText = "Ungültige ISBN-10 Nummer.";
-                                return false;
+                                fieldValid = false;
                             }
                         }
                         // 13 -> ean validation
                         if (number.length() == 13) {
                             if (!EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(number)) {
                                 validationErrorText = "Ungültige ISBN-13 Nummer.";
-                                return false;
+                                fieldValid = false;
                             }
                         }
                         // wrong number of digits
                         if (number.length() != 10 && number.length() != 13) {
                             validationErrorText = "Falsche Anzahl Zeichen, bitte ISBN-10 oder ISBN-13 angeben.";
-                            return false;
+                            fieldValid = false;
                         }
                         break;
 
@@ -195,11 +193,11 @@ public class MetadataField {
                         // Zeichenbegrenzung: max. 14 Zeichen, bei geringerer Stelligkeit werden vorangehende Leerstellen mit Nullen aufgefüllt
                         if (value.length() > 14) {
                             // to many characters
-                            return false;
+                            fieldValid = false;
                         }
                         if (!EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(value)) {
                             validationErrorText = "Kein gültiger GTIN/EAN Code.";
-                            return false;
+                            fieldValid = false;
                         }
 
                         if (value.length() < 14) {
@@ -219,16 +217,18 @@ public class MetadataField {
                         // Zeichenbegrenzung: 9 Zeichen
                         if (!value.matches("[0-9]{8}|[0-9]{7}X|[0-9]{4}\\-[0-9]{4}|[0-9]{4}\\-[0-9]{3}X")) {
                             // invalid characters
-                            return false;
+                            fieldValid = false;
                         }
 
                         if (!validateIdentifier(value)) {
                             // invalid characters
                             // valid examples: 0317-8471, 1050-124X
                             validationErrorText = "ISSN ist invalide. Bitte eine gültige ISSN in der Form XXXX-XXXX angeben.";
-                            return false;
+                            fieldValid = false;
                         }
                         break;
+                    default:
+                        // do nothing
                 }
             }
         }
@@ -237,17 +237,15 @@ public class MetadataField {
 
         if (value == null || StringUtils.isBlank(value)) {
             if (required) {
-                return false;
+                fieldValid = false;
             }
         }
 
         else if (StringUtils.isNotBlank(value) && StringUtils.isNotBlank(validationExpression)) {
             if (!value.matches(validationExpression)) {
-                return false;
+                fieldValid = false;
             }
         }
-
-        return true;
     }
 
     /*
@@ -281,7 +279,6 @@ public class MetadataField {
         }
         return mod == (value.charAt(l) == 'X' || value.charAt(l) == 'x' ? 10 : value.charAt(l) - '0');
     }
-
 
     public MetadataField cloneField() {
         MetadataField mf = new MetadataField();

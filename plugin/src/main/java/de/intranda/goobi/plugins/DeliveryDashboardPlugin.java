@@ -562,6 +562,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     public void nextPage() {
+        if (!validateCurrentField()) {
+            return;
+        }
         switch (navigation) {
             case "main":
                 navigation = "upload";
@@ -586,6 +589,21 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             default:
                 break;
         }
+    }
+
+    private boolean validateCurrentField() {
+        boolean valid = true;
+        for (FieldGrouping fg : configuredGroups) {
+            if (documentType.equals(fg.getDocumentType()) && navigation.equals(fg.getPageName())) {
+                for (MetadataField mf : fg.getFields()) {
+                    mf.validateField(null, null, mf.getValue());
+                    if (!mf.isFieldValid()) {
+                        valid = false;
+                    }
+                }
+            }
+        }
+        return valid;
     }
 
     private void createProcess(String templateName) {
@@ -678,7 +696,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 genre.setValue("Zeitschrift");
                 docstruct.addMetadata(genre);
 
-            } else if (documentType.equals("journal") && navigation.equals("newIssue")) {
+            } else if (documentType.equals("issue") && navigation.equals("newIssue")) {
                 anchor = dd.createDocStruct(prefs.getDocStrctTypeByName(journalDocType));
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(issueDocType));
                 dd.setLogicalDocStruct(anchor);
@@ -969,6 +987,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     public void createJournalTitle() {
 
+        if (!validateCurrentField()) {
+            return;
+        }
+
         String identifier = UUID.randomUUID().toString();
 
         User user = Helper.getCurrentUser();
@@ -996,6 +1018,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     public void createJournalIssue() {
+        if (!validateCurrentField()) {
+            return;
+        }
+
         createProcess(journalTemplateName);
     }
 

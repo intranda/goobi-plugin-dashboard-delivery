@@ -231,9 +231,6 @@
 
 
                 </h:form>
-
-                <!-- TODO input field for download url -->
-
             </ui:fragment>
 
             <ui:fragment
@@ -247,7 +244,7 @@
 
             <ui:fragment
                 id="journals"
-                rendered="#{DashboardForm.plugin.documentType == 'journal'}">
+                rendered="#{DashboardForm.plugin.documentType == 'journal' or DashboardForm.plugin.documentType == 'issue'}">
                  <div class="container">
                     <ui:include src="include_journals.xhtml" />
                   </div>

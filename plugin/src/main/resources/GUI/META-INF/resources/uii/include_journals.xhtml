@@ -87,6 +87,9 @@
                             <f:setPropertyActionListener
                                 value="newIssue"
                                 target="#{DashboardForm.plugin.navigation}" />
+                              <f:setPropertyActionListener
+                                  value="issue"
+                                  target="#{DashboardForm.plugin.documentType}" />                                
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
@@ -111,7 +114,6 @@
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
-                    <!--                         group.pageName=='data1' and  -->
                     <ui:fragment rendered="#{group.documentType == 'journal'}">
                     <div class="common-region">
                         <h2 class="grid-full-width">
@@ -132,7 +134,7 @@
                                         required="#{field.required}"
                                         secondValue="#{field.value2}"
                                         role="#{field.role}"
-                                        propertyValid="#{field.valid}"
+                                        propertyValid="#{field.fieldValid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         selectItems="#{field.selectList}"
                                         subClass="persongrid"
@@ -150,7 +152,7 @@
                                         value="#{field.value}"
                                         required="#{field.required}"
                                         role="#{field.role}"
-                                        propertyValid="#{field.valid}"
+                                        propertyValid="#{field.fieldValid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         fieldRequired="#{field.required}"
                                         selectItems="#{field.selectList}"
@@ -167,13 +169,13 @@
                                         value="#{field.value}"
                                         required="#{field.required}"
                                         role="#{field.role}"
-                                        propertyValid="#{field.valid}"
+                                        propertyValid="#{field.fieldValid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         selectItems="#{field.selectList}"
                                         fieldRequired="#{field.required}"
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        render=":grp" />
+                                        />
                                 </ui:fragment>
 
 
@@ -185,14 +187,14 @@
                                         required="#{field.required}"
                                         value="#{field.value}"
                                         fieldType="#{field.displayType}"
-                                        propertyValid="#{field.valid}"
+                                        propertyValid="#{field.fieldValid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         selectItems="#{field.selectList}"
                                         fieldRequired="#{field.required}"
                                         booleanValue="#{field.booleanValue}"
                                         subValue="#{field.value2}"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        render=":grp" />
+                                         />
 
                                 </ui:fragment>
 
@@ -239,7 +241,6 @@
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
-                    <!--                         group.pageName=='data1' and  -->
                     <ui:fragment rendered="#{group.documentType == 'issue'}">
                     <div class="common-region">
                         <h2 class="grid-full-width">
@@ -262,14 +263,14 @@
                                         required="#{field.required}"
                                         secondValue="#{field.value2}"
                                         role="#{field.role}"
-                                        propertyValid="#{field.valid}"
+                                        propertyValid="#{field.fieldValid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         selectItems="#{field.selectList}"
                                         subClass="persongrid"
                                         fieldName="#{field.label}"
                                         fieldRequired="#{field.required}"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        render=":grp" />
+                                         />
                                 </ui:fragment>
 
                                 <ui:fragment rendered="#{field.displayType == 'corporate'}">
@@ -280,13 +281,13 @@
                                         value="#{field.value}"
                                         required="#{field.required}"
                                         role="#{field.role}"
-                                        propertyValid="#{field.valid}"
+                                        propertyValid="#{field.fieldValid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         selectItems="#{field.selectList}"
                                         fieldRequired="#{field.required}"
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        render=":grp" />
+                                         />
                                 </ui:fragment>
 
                                 <ui:fragment rendered="#{field.displayType == 'picklist'}">
@@ -297,13 +298,13 @@
                                         value="#{field.value}"
                                         required="#{field.required}"
                                         role="#{field.role}"
-                                        propertyValid="#{field.valid}"
+                                        propertyValid="#{field.fieldValid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         selectItems="#{field.selectList}"
                                         fieldRequired="#{field.required}"
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        render=":grp" />
+                                        />
                                 </ui:fragment>
 
 
@@ -316,13 +317,13 @@
                                         value="#{field.value}"
                                         fieldType="#{field.displayType}"
                                         fieldRequired="#{field.required}"
-                                        propertyValid="#{field.valid}"
+                                        propertyValid="#{field.fieldValid}"
                                         errorMessageText="#{field.validationErrorText}"
                                         selectItems="#{field.selectList}"
                                         booleanValue="#{field.booleanValue}"
                                         subValue="#{field.value2}"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        render=":grp" />
+                                        />
                                 </ui:fragment>
 
                                 </h:panelGroup>
