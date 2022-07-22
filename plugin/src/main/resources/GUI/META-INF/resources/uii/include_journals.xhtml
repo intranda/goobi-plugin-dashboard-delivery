@@ -31,9 +31,9 @@
 
 
                 <h1 class="page__heading">
-                    #{msgs.plugin_dashboard_deliverJournalsHeader}
+                    #{msgs.plugin_dashboard_delivery_deliverJournalsHeader}
 
-                    <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                    <button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
                       <ui:include src="/uii/includes/icon-help.xhtml" />
                     </button>
                 </h1>
@@ -48,15 +48,15 @@
                       <ui:include src="/uii/includes/icon-file.xhtml" />
                     </div>
 
-                    <h2 class="item__heading">#{msgs.plugin_dashboard_deliverNewJournalTitleHeader}</h2>
-                    <p class="item__text">#{msgs.plugin_dashboard_deliverNewJournalTitle}</p>
+                    <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverNewJournalTitleHeader}</h2>
+                    <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverNewJournalTitle}</p>
 
                     <button
                         jsf:id="newTitle"
                         class="item__cta btn btn-primary-400"
-                        title="#{msgs.plugin_dashboard_deliverNewJournalTitleButton}"
+                        title="#{msgs.plugin_dashboard_delivery_deliverNewJournalTitleButton}"
                         jsf:action="#{DashboardForm.plugin.startNewImport}">
-                        <h:outputText value="#{msgs.plugin_dashboard_deliverNewJournalTitleButton}" />
+                        <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverNewJournalTitleButton}" />
                         <f:setPropertyActionListener
                             value="newTitle"
                             target="#{DashboardForm.plugin.navigation}" />
@@ -75,15 +75,15 @@
                           <ui:include src="/uii/includes/icon-files.xhtml" />
                         </div>
 
-                        <h2 class="item__heading">#{msgs.plugin_dashboard_deliverNewJournalIssueHeader}</h2>
-                        <p class="item__text">#{msgs.plugin_dashboard_deliverNewIssueTitle}</p>
+                        <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</h2>
+                        <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverNewIssueTitle}</p>
 
                         <button
                             jsf:id="newIssue"
                             class="item__cta btn btn-primary-400"
-                            title="#{msgs.plugin_dashboard_deliverNewIssueTitleButton}"
+                            title="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}"
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
-                            <h:outputText value="#{msgs.plugin_dashboard_deliverNewIssueTitleButton}" />
+                            <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}" />
                             <f:setPropertyActionListener
                                 value="newIssue"
                                 target="#{DashboardForm.plugin.navigation}" />
@@ -103,7 +103,7 @@
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newTitle'}">
 
             <h1 class="page__heading">
-                #{msgs.plugin_dashboard_deliverNewJournalTitleHeader}
+                #{msgs.plugin_dashboard_delivery_deliverNewJournalTitleHeader}
 
                 <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
                   <ui:include src="/uii/includes/icon-help.xhtml" />
@@ -210,7 +210,7 @@
                     jsf:action="#{DashboardForm.plugin.createJournalTitle}"
                     jsf:id="nextStep"
                     class="btn btn-success grid-full-width ms-auto">
-                    <h:outputText value="#{msgs.next}" />
+                    <h:outputText value="#{msgs.plugin_rest_usercreation_next}" />
                     <f:ajax
                         render="main-area"
                         execute="@this" />
@@ -228,7 +228,7 @@
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
 
             <h1 class="page__heading">
-                #{msgs.plugin_dashboard_deliverNewJournalIssueHeader}
+                #{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}
 
                 <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
                   <ui:include src="/uii/includes/icon-help.xhtml" />
@@ -336,7 +336,7 @@
                     jsf:action="#{DashboardForm.plugin.createJournalIssue}"
                     jsf:id="createIssue"
                     class="btn btn-success ms-auto">
-                    <h:outputText value="#{msgs.next}" />
+                    <h:outputText value="#{msgs.plugin_rest_usercreation_next}" />
                     <f:ajax
                         render="main-area"
                         execute="@this" />
@@ -356,7 +356,7 @@
                                 jsf:action="#{DashboardForm.plugin.previousPage}"
                                 jsf:id="backToMain"
                                 class="btn btn-blank">
-                                <h:outputText value="#{msgs.back}" />
+                                <h:outputText value="#{msgs.plugin_rest_usercreation_back}" />
                                 <f:ajax
                                     render="main-area"
                                     execute="@this" />
@@ -366,34 +366,34 @@
                         <!--
                         <li class="#{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_delivery_upload}" />
                             </h:panelGroup>
                         </li>
                         <li class="#{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_delivery_data1}" />
                             </h:panelGroup>
                         </li>
                         <li class="#{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_data2}" />
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_delivery_data2}" />
                             </h:panelGroup>
                         </li>
 
                         <li class="#{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_data3}" />
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_delivery_data3}" />
                             </h:panelGroup>
                         </li>
                         <li class="#{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_overview}" />
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_delivery_overview}" />
                             </h:panelGroup>
 
                         </li>
                         <li class="#{DashboardForm.plugin.navigation=='finish' ? 'active': 'inactive'}">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='finish' ? 'active': 'inactive'}">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_finish}" />
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_delivery_finish}" />
                             </h:panelGroup>
                         </li>
                         <li>

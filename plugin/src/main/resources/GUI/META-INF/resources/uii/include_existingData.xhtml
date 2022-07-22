@@ -33,7 +33,13 @@
                                 </script>
 
 
-              <h1 class="page__heading">#{msgs.plugin_dashboard_deliverShowExistingDataHeader}</h1>
+              <h1 class="page__heading">#{msgs.plugin_dashboard_delivery_deliverShowExistingDataHeader}
+
+                    <button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                      <ui:include src="/uii/includes/icon-help.xhtml" />
+                    </button>
+
+              </h1>
                 <div class="row">
                         <div class="dataTables_wrapper flow">
                             <div class="row">
@@ -47,7 +53,7 @@
                                         pt:aria-label="searchfield">
                                         <f:selectItem
                                             itemValue=""
-                                            itemLabel="#{msgs.anyField}" />
+                                            itemLabel="#{msgs.plugin_dashboard_delivery_anyField}" />
                                         <f:selectItems value="#{DashboardForm.plugin.metadataFields}" />
                                     </h:selectOneMenu>
 
@@ -211,7 +217,7 @@
 
                                                             <tr>
                                                                 <td class="fw-bold" style="border: none !important; padding: 2px; vertical-align: top;">
-                                                                    <h:outputText value="#{msgs['process_grid_'.concat(metadata.one)]}:" />
+                                                                    <h:outputText value="#{msgs['plugin_administration_deliveryManagement_process_grid_'.concat(metadata.one)]}:" />
                                                                 </td>
                                                                 <td style="border: none !important; padding: 2px; white-space: normal;">
                                                                     <h:outputText value="#{metadata.two}" />

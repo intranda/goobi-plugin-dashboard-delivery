@@ -47,11 +47,11 @@
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='main'}">
 
                 <h1 class="page__heading">
-                  <h:outputFormat value="#{msgs['plugin_dashboard_deliveryWellcomeMessage']}">
+                  <h:outputFormat value="#{msgs['plugin_dashboard_delivery_wellcomeMessage']}">
                     <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
                   </h:outputFormat>
 
-                    <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+                    <button type="button" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
                       <ui:include src="/uii/includes/icon-help.xhtml" />
                     </button>
                 </h1>
@@ -67,15 +67,15 @@
                           <ui:include src="/uii/includes/icon-book.xhtml" />
                         </div>
 
-                          <h2 class="item__heading">#{msgs.plugin_dashboard_deliverMonographHeader}</h2>
-                          <p class="item__text">#{msgs.plugin_dashboard_deliverMonograph}</p>
+                          <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</h2>
+                          <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverMonograph}</p>
 
                           <button
                               jsf:id="monograph"
                               class="item__cta btn btn-primary-400"
-                              title="#{msgs.plugin_dashboard_deliverMonographButton}"
+                              title="#{msgs.plugin_dashboard_delivery_deliverMonographButton}"
                               jsf:action="#{DashboardForm.plugin.startNewImport}">
-                              <h:outputText value="#{msgs.plugin_dashboard_deliverMonographButton}" />
+                              <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverMonographButton}" />
                               <f:setPropertyActionListener
                                   value="upload"
                                   target="#{DashboardForm.plugin.navigation}" />
@@ -97,14 +97,14 @@
                             <ui:include src="/uii/includes/icon-book.xhtml" />
                           </div>
 
-                          <h2 class="item__heading">#{msgs.plugin_dashboard_deliverJournalsHeader}</h2>
-                          <p class="item__text">#{msgs.plugin_dashboard_deliverJournals}</p>
+                          <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverJournalsHeader}</h2>
+                          <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverJournals}</p>
 
                           <button
                               jsf:id="journals"
                               class="item__cta btn btn-primary-400"
-                              title="#{msgs.plugin_dashboard_deliverJournalsButton}">
-                              <h:outputText value="#{msgs.plugin_dashboard_deliverJournalsButton}" />
+                              title="#{msgs.plugin_dashboard_delivery_deliverJournalsButton}">
+                              <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverJournalsButton}" />
                               <f:setPropertyActionListener
                                   value="titleSelection"
                                   target="#{DashboardForm.plugin.navigation}" />
@@ -123,15 +123,15 @@
                             <ui:include src="/uii/includes/icon-file-text.xhtml" />
                           </div>
 
-                          <h2 class="item__heading">#{msgs.plugin_dashboard_deliverShowExistingDataHeader}</h2>
-                          <p class="item__text">#{msgs.plugin_dashboard_deliverShowExistingData}</p>
+                          <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverShowExistingDataHeader}</h2>
+                          <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverShowExistingData}</p>
 
                           <button
                               jsf:id="existingData"
                               class="item__cta btn btn-primary-400"
-                              title="#{msgs.plugin_dashboard_deliverShowExistingDataButton}"
+                              title="#{msgs.plugin_dashboard_delivery_deliverShowExistingDataButton}"
                               jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}">
-                              <h:outputText value="#{msgs.plugin_dashboard_deliverShowExistingDataButton}" />
+                              <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverShowExistingDataButton}" />
                               <f:setPropertyActionListener
                                   value="existingData"
                                   target="#{DashboardForm.plugin.navigation}" />
@@ -148,11 +148,11 @@
                             <ui:include src="/uii/includes/icon-mortarboard.xhtml" />
                           </div>
 
-                          <h2 class="item__heading">#{msgs.plugin_dashboard_deliverHelpHeader}</h2>
-                          <p class="item__text">#{msgs.plugin_dashboard_deliverHelp}</p>
+                          <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverHelpHeader}</h2>
+                          <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverHelp}</p>
 
                           <button class="item__cta btn btn-primary-400">
-                              <h:outputText value="#{msgs.plugin_dashboard_deliverHelpButton}" />
+                              <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverHelpButton}" />
                           </button>
 
                         </div> <!-- end item -->
@@ -164,15 +164,15 @@
                             <ui:include src="/uii/includes/icon-file-text.xhtml" />
                           </div>
 
-                          <h2 class="item__heading">#{msgs.plugin_dashboard_deliverShowDataHeader}</h2>
-                          <p class="item__text">#{msgs.plugin_dashboard_deliverShowData}</p>
+                          <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverShowDataHeader}</h2>
+                          <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverShowData}</p>
 
                           <button
                               jsf:id="userData"
                               class="item__cta btn btn-primary-400"
-                              title="#{msgs.plugin_dashboard_deliverShowDataButton}"
+                              title="#{msgs.plugin_dashboard_delivery_deliverShowDataButton}"
                               jsf:action="#{DashboardForm.plugin.readUserConfiguration}">
-                              <h:outputText value="#{msgs.plugin_dashboard_deliverShowDataButton}" />
+                              <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverShowDataButton}" />
                               <f:setPropertyActionListener
                                   value="userdata"
                                   target="#{DashboardForm.plugin.navigation}" />
@@ -191,9 +191,9 @@
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='upload'}">
 
 				<h1 class="page__heading">
-					<span>#{msgs.plugin_dashboard_uploadFormHeader}</span>
+          <span>#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</span>
 
-					<button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
+					<button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
 					  <ui:include src="/uii/includes/icon-help.xhtml" />
 					</button>
 				</h1>
@@ -209,24 +209,27 @@
 						<ui:include src="/uii/includes/icon-file-image.xhtml" />
 					</div>
 
-					<p class="form__msg">#{msgs.plugin_dashboard_uploadFormMessage}</p>
+					<p class="form__msg">#{msgs.plugin_dashboard_delivery_uploadFormMessage}</p>
 
 					<div class="form__msg-or">
-						#{msgs.plugin_dashboard_or}
+						#{msgs.plugin_dashboard_delivery_or}
 					</div>
 
 					<div class="form__actions">
 
-                    <h:inputFile
-                        id="file"
-                    	styleClass="form-control form-control-lg"
-                        value="#{DashboardForm.plugin.file}"
-                        name="file" />
-                    <h:commandButton
-                        id="submit"
-                        value="submit"
-                        styleClass="btn btn-primary-400"
-                        />
+            <label for="file" class="sr-only">#{msgs.plugin_dashboard_delivery_uploadFormLabel}</label>
+            <h:inputFile
+                id="file"
+                styleClass="form-control form-control-lg"
+                value="#{DashboardForm.plugin.file}"
+                title="#{msgs.plugin_dashboard_delivery_ariaLabel_uploadForm}"
+                name="file" />
+
+            <h:commandButton
+                id="submit"
+                value="submit"
+                styleClass="btn btn-primary-400"
+                />
 					</div>
 
 
