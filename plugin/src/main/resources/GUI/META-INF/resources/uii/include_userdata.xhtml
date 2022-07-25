@@ -58,7 +58,7 @@
         </ui:fragment>
 
 
-        <!-- User options => pannel view -->
+        <!-- User options => panel view -->
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata'}">
 
             <h:form>
@@ -275,6 +275,16 @@
                         target="#{DashboardForm.plugin.navigation}" />
                 </button>
             </h:form>
+
+
+        </ui:fragment>
+
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation!='userdata'}">
+            <div class="info-required">
+                <h:outputText
+                    escape="false"
+                    value="#{msgs.plugin_rest_usercreation_requiredFields}" />
+            </div>
         </ui:fragment>
 
 
