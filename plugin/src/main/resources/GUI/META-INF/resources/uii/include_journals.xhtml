@@ -89,7 +89,7 @@
                                 target="#{DashboardForm.plugin.navigation}" />
                               <f:setPropertyActionListener
                                   value="issue"
-                                  target="#{DashboardForm.plugin.documentType}" />                                
+                                  target="#{DashboardForm.plugin.documentType}" />
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
@@ -332,6 +332,8 @@
                     </div>
                     </ui:fragment>
                 </ui:repeat>
+
+
                 <button
                     jsf:action="#{DashboardForm.plugin.createJournalIssue}"
                     jsf:id="createIssue"
@@ -343,10 +345,18 @@
                 </button>
             </h:form>
 
+
         </ui:fragment>
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main'}">
+
+            <div class="info-required">
+                <h:outputText
+                    escape="false"
+                    value="#{msgs.plugin_rest_usercreation_requiredFields}" />
+            </div>
+
             <h:form>
              <div class="submit">
 
