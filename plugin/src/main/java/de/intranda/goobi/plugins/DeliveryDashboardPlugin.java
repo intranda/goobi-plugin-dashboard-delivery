@@ -394,7 +394,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         MetadataField loginField = new MetadataField();
         loginField.setLabel(Helper.getTranslation("login_new_account_accountName"));
         loginField.setDisplayType("output");
-        loginField.setRequired(true);
+        loginField.setRequired(false);
         loginField.setCardinality("1");
         loginField.setAdditionalType("login");
         loginField.setValue(user.getLogin());
@@ -403,7 +403,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         MetadataField emailAddress = new MetadataField();
         emailAddress.setLabel(Helper.getTranslation("login_new_account_emailAddress"));
         emailAddress.setDisplayType("output");
-        emailAddress.setRequired(true);
+        emailAddress.setRequired(false);
         emailAddress.setCardinality("1");
         emailAddress.setAdditionalType("email");
         emailAddress.setValue(user.getEmail());
@@ -549,9 +549,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "titleSelection":
             case "existingData":
             case "upload":
+            case "issueupload":
                 navigation = "main";
                 documentType = "";
                 break;
+
             case "user":
             case "institution":
             case "contact":
@@ -595,6 +597,13 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                     return;
                 }
                 navigation = "data1";
+                break;
+            case "issueupload":
+                if (files.isEmpty()) {
+                    Helper.setFehlerMeldung(Helper.getTranslation("plugin_dashboard_delivery_noFileUploaded"));
+                    return;
+                }
+                navigation = "newIssue";
                 break;
             case "data1":
                 navigation = "data2";
