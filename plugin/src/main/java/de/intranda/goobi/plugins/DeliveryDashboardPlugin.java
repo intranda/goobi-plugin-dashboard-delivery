@@ -512,7 +512,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
             Report report = FileValidator.validateFile(destination, institution.getShortName());
 
-            if (report.getErrorMessage() != null) {
+            if (!report.isReachedTargetLevel() ) {
 
                 Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
 
@@ -590,6 +590,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 navigation = "upload";
                 break;
             case "upload":
+                if (files.isEmpty()) {
+                    Helper.setFehlerMeldung(Helper.getTranslation("plugin_dashboard_delivery_noFileUploaded"));
+                    return;
+                }
                 navigation = "data1";
                 break;
             case "data1":
@@ -657,14 +661,23 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             DigitalDocument dd = fileformat.getDigitalDocument();
             DocStruct physical = dd.getPhysicalDocStruct();
             DocStruct logical = dd.getLogicalDocStruct();
-            String sourceFolder = process.getImagesTifDirectory(false);
-            Path destinationFolder = Paths.get(sourceFolder);
+            String imageFolder = process.getImagesTifDirectory(false);
+            Path destinationFolder = Paths.get(imageFolder);
             if (!StorageProvider.getInstance().isFileExists(destinationFolder)) {
                 StorageProvider.getInstance().createDirectories(destinationFolder);
             }
             int order = 1;
+
+
+
             for (Path uploadedFile : files) {
                 StorageProvider.getInstance().move(uploadedFile, Paths.get(destinationFolder.toString(), uploadedFile.getFileName().toString()));
+
+                // delete validation files or import them?
+                Path testFolder = Paths.get(uploadedFile.toString().substring(0, uploadedFile.toString().lastIndexOf(".")));
+                if (StorageProvider.getInstance().isDirectory(testFolder)) {
+                    StorageProvider.getInstance().deleteDir(testFolder);
+                }
 
                 DocStruct page = dd.createDocStruct(pageType);
                 Metadata phys = new Metadata(physType);
@@ -673,6 +686,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 Metadata log = new Metadata(logType);
                 log.setValue("-");
                 page.addMetadata(log);
+
                 // add file name
                 page.setImageName(uploadedFile.getFileName().toString());
                 physical.addChild(page);
