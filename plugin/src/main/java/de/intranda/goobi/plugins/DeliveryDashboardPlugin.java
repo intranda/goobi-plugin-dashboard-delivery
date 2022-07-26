@@ -400,6 +400,15 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         loginField.setValue(user.getLogin());
         userData.getFields().add(loginField);
 
+        MetadataField emailAddress = new MetadataField();
+        emailAddress.setLabel(Helper.getTranslation("login_new_account_emailAddress"));
+        emailAddress.setDisplayType("output");
+        emailAddress.setRequired(true);
+        emailAddress.setCardinality("1");
+        emailAddress.setAdditionalType("email");
+        emailAddress.setValue(user.getEmail());
+        userData.getFields().add(emailAddress);
+
         MetadataField firstname = new MetadataField();
         firstname.setLabel(Helper.getTranslation("firstname"));
         firstname.setDisplayType("input");
@@ -417,15 +426,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         lastname.setAdditionalType("lastname");
         lastname.setValue(user.getNachname());
         userData.getFields().add(lastname);
-
-        MetadataField emailAddress = new MetadataField();
-        emailAddress.setLabel(Helper.getTranslation("login_new_account_emailAddress"));
-        emailAddress.setDisplayType("output");
-        emailAddress.setRequired(true);
-        emailAddress.setCardinality("1");
-        emailAddress.setAdditionalType("email");
-        emailAddress.setValue(user.getEmail());
-        userData.getFields().add(emailAddress);
     }
 
     private void getInstitutionData(Institution inst) {
