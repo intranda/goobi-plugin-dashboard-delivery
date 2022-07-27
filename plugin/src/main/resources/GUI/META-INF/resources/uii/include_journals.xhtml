@@ -19,24 +19,30 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='titleSelection'}">
 
-                <!-- breadcrumb area -->
-                <ui:define name="breadcrumb">
-                    <intranda:breadcrumb
-                        id="index"
-                        label="#{DashboardForm.plugin==null?msgs.startseite:msgs.dashboard}"
-                        action="external_index"
-                        navId="a0"
-                        noSeparator="#{true}" />
-                </ui:define>
+            <!-- breadcrumb area -->
+            <ui:define name="breadcrumb">
+                <intranda:breadcrumb
+                    id="index"
+                    label="#{DashboardForm.plugin==null?msgs.startseite:msgs.dashboard}"
+                    action="external_index"
+                    navId="a0"
+                    noSeparator="#{true}" />
+            </ui:define>
 
 
-                <h1 class="page__heading">
-                    #{msgs.plugin_dashboard_delivery_deliverJournalsHeader}
+            <h1 class="page__heading">
+                #{msgs.plugin_dashboard_delivery_deliverJournalsHeader}
 
-                    <button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
-                      <ui:include src="/uii/includes/icon-help.xhtml" />
-                    </button>
-                </h1>
+                <button
+                    type="button"
+                    class="btn page__help"
+                    aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                    data-bs-toggle="modal"
+                    data-bs-title="help title"
+                    data-bs-target="#pageHelpModal">
+                    <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
 
             <h:form>
                 <div class="common-region common-region--no-borders common-region--three-cols">
@@ -44,26 +50,26 @@
                     <!-- create new title -->
                     <div class="item flow">
 
-                    <div class="item__icons">
-                      <ui:include src="/uii/includes/icon-file.xhtml" />
-                    </div>
+                        <div class="item__icons">
+                            <ui:include src="/uii/includes/icon-file.xhtml" />
+                        </div>
 
-                    <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverNewJournalTitleHeader}</h2>
-                    <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverNewJournalTitle}</p>
+                        <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverNewJournalTitleHeader}</h2>
+                        <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverNewJournalTitle}</p>
 
-                    <button
-                        jsf:id="newTitle"
-                        class="item__cta btn btn-primary-400"
-                        title="#{msgs.plugin_dashboard_delivery_deliverNewJournalTitleButton}"
-                        jsf:action="#{DashboardForm.plugin.startNewImport}">
-                        <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverNewJournalTitleButton}" />
-                        <f:setPropertyActionListener
-                            value="newTitle"
-                            target="#{DashboardForm.plugin.navigation}" />
-                        <f:ajax
-                            render="main-area"
-                            execute="@this" />
-                    </button>
+                        <button
+                            jsf:id="newTitle"
+                            class="item__cta btn btn-primary-400"
+                            title="#{msgs.plugin_dashboard_delivery_deliverNewJournalTitleButton}"
+                            jsf:action="#{DashboardForm.plugin.startNewImport}">
+                            <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverNewJournalTitleButton}" />
+                            <f:setPropertyActionListener
+                                value="newTitle"
+                                target="#{DashboardForm.plugin.navigation}" />
+                            <f:ajax
+                                render="main-area"
+                                execute="@this" />
+                        </button>
 
                     </div>
 
@@ -72,7 +78,7 @@
                     <div class="item flow">
 
                         <div class="item__icons">
-                          <ui:include src="/uii/includes/icon-files.xhtml" />
+                            <ui:include src="/uii/includes/icon-files.xhtml" />
                         </div>
 
                         <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</h2>
@@ -85,11 +91,11 @@
                             jsf:action="#{DashboardForm.plugin.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}" />
                             <f:setPropertyActionListener
-                                value="newIssue"
+                                value="issueupload"
                                 target="#{DashboardForm.plugin.navigation}" />
-                              <f:setPropertyActionListener
-                                  value="issue"
-                                  target="#{DashboardForm.plugin.documentType}" />
+                            <f:setPropertyActionListener
+                                value="issue"
+                                target="#{DashboardForm.plugin.documentType}" />
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
@@ -100,13 +106,20 @@
         </ui:fragment>
 
 
+
+
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newTitle'}">
 
             <h1 class="page__heading">
                 #{msgs.plugin_dashboard_delivery_deliverNewJournalTitleHeader}
 
-                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
-                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                <button
+                    type="button"
+                    class="btn page__help"
+                    data-bs-toggle="modal"
+                    data-bs-title="help title"
+                    data-bs-target="#pageHelpModal">
+                    <ui:include src="/uii/includes/icon-help.xhtml" />
                 </button>
             </h1>
 
@@ -115,94 +128,92 @@
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
                     <ui:fragment rendered="#{group.documentType == 'journal'}">
-                    <div class="common-region">
-                        <h2 class="grid-full-width">
-                            <h:outputText value="#{group.label}" />
-                        </h2>
+                        <div class="common-region">
+                            <h2 class="grid-full-width">
+                                <h:outputText value="#{group.label}" />
+                            </h2>
 
-                        <ui:repeat
-                            var="field"
-                            value="#{group.fields}"
-                            varStatus="status">
-                            <h:panelGroup id="grp">
-                                <ui:fragment rendered="#{field.displayType == 'person'}">
-                                    <zlb:person
-                                        identifier="field_#{status.index}"
-                                        labelText="#{field.label}"
-                                        labelHelpText="{field.helpMessage}"
-                                        value="#{field.value}"
-                                        required="#{field.required}"
-                                        secondValue="#{field.value2}"
-                                        role="#{field.role}"
-                                        propertyValid="#{field.fieldValid}"
-                                        errorMessageText="#{field.validationErrorText}"
-                                        selectItems="#{field.selectList}"
-                                        subClass="persongrid"
-                                        fieldName="#{field.label}"
-                                        fieldRequired="#{field.required}"
-                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        render=":grp" />
-                                </ui:fragment>
+                            <ui:repeat
+                                var="field"
+                                value="#{group.fields}"
+                                varStatus="status">
+                                <h:panelGroup id="grp">
+                                    <ui:fragment rendered="#{field.displayType == 'person'}">
+                                        <zlb:person
+                                            identifier="field_#{status.index}"
+                                            labelText="#{field.label}"
+                                            labelHelpText="{field.helpMessage}"
+                                            value="#{field.value}"
+                                            required="#{field.required}"
+                                            secondValue="#{field.value2}"
+                                            role="#{field.role}"
+                                            propertyValid="#{field.fieldValid}"
+                                            errorMessageText="#{field.validationErrorText}"
+                                            selectItems="#{field.selectList}"
+                                            subClass="persongrid"
+                                            fieldName="#{field.label}"
+                                            fieldRequired="#{field.required}"
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            render=":grp" />
+                                    </ui:fragment>
 
-                                <ui:fragment rendered="#{field.displayType == 'corporate'}">
-                                    <zlb:corporate
-                                        identifier="field_#{status.index}"
-                                        labelText="#{field.label}"
-                                        labelHelpText="{field.helpMessage}"
-                                        value="#{field.value}"
-                                        required="#{field.required}"
-                                        role="#{field.role}"
-                                        propertyValid="#{field.fieldValid}"
-                                        errorMessageText="#{field.validationErrorText}"
-                                        fieldRequired="#{field.required}"
-                                        selectItems="#{field.selectList}"
-                                        subClass="corporategrid"
-                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        render=":grp" />
-                                </ui:fragment>
+                                    <ui:fragment rendered="#{field.displayType == 'corporate'}">
+                                        <zlb:corporate
+                                            identifier="field_#{status.index}"
+                                            labelText="#{field.label}"
+                                            labelHelpText="{field.helpMessage}"
+                                            value="#{field.value}"
+                                            required="#{field.required}"
+                                            role="#{field.role}"
+                                            propertyValid="#{field.fieldValid}"
+                                            errorMessageText="#{field.validationErrorText}"
+                                            fieldRequired="#{field.required}"
+                                            selectItems="#{field.selectList}"
+                                            subClass="corporategrid"
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            render=":grp" />
+                                    </ui:fragment>
 
-                                <ui:fragment rendered="#{field.displayType == 'picklist'}">
-                                    <zlb:picklist
-                                        identifier="field_#{status.index}"
-                                        labelText="#{field.label}"
-                                        labelHelpText="{field.helpMessage}"
-                                        value="#{field.value}"
-                                        required="#{field.required}"
-                                        role="#{field.role}"
-                                        propertyValid="#{field.fieldValid}"
-                                        errorMessageText="#{field.validationErrorText}"
-                                        selectItems="#{field.selectList}"
-                                        fieldRequired="#{field.required}"
-                                        subClass="corporategrid"
-                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        />
-                                </ui:fragment>
-
-
-                                <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
-                                    <zlb:field
-                                        identifier="field_#{status.index}"
-                                        labelText="#{field.label}"
-                                        labelHelpText="{field.helpMessage}"
-                                        required="#{field.required}"
-                                        value="#{field.value}"
-                                        fieldType="#{field.displayType}"
-                                        propertyValid="#{field.fieldValid}"
-                                        errorMessageText="#{field.validationErrorText}"
-                                        selectItems="#{field.selectList}"
-                                        fieldRequired="#{field.required}"
-                                        booleanValue="#{field.booleanValue}"
-                                        subValue="#{field.value2}"
-                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                         />
-
-                                </ui:fragment>
+                                    <ui:fragment rendered="#{field.displayType == 'picklist'}">
+                                        <zlb:picklist
+                                            identifier="field_#{status.index}"
+                                            labelText="#{field.label}"
+                                            labelHelpText="{field.helpMessage}"
+                                            value="#{field.value}"
+                                            required="#{field.required}"
+                                            role="#{field.role}"
+                                            propertyValid="#{field.fieldValid}"
+                                            errorMessageText="#{field.validationErrorText}"
+                                            selectItems="#{field.selectList}"
+                                            fieldRequired="#{field.required}"
+                                            subClass="corporategrid"
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}" />
+                                    </ui:fragment>
 
 
-                            </h:panelGroup>
+                                    <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
+                                        <zlb:field
+                                            identifier="field_#{status.index}"
+                                            labelText="#{field.label}"
+                                            labelHelpText="{field.helpMessage}"
+                                            required="#{field.required}"
+                                            value="#{field.value}"
+                                            fieldType="#{field.displayType}"
+                                            propertyValid="#{field.fieldValid}"
+                                            errorMessageText="#{field.validationErrorText}"
+                                            selectItems="#{field.selectList}"
+                                            fieldRequired="#{field.required}"
+                                            booleanValue="#{field.booleanValue}"
+                                            subValue="#{field.value2}"
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}" />
 
-                        </ui:repeat>
-                    </div>
+                                    </ui:fragment>
+
+
+                                </h:panelGroup>
+
+                            </ui:repeat>
+                        </div>
                     </ui:fragment>
                 </ui:repeat>
 
@@ -217,21 +228,74 @@
                 </button>
 
             </h:form>
-
-
-
-
-
         </ui:fragment>
 
+
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
+
+            <h1 class="page__heading">
+                <span>#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</span>
+
+                <button
+                    type="button"
+                    class="btn page__help"
+                    aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                    data-bs-toggle="modal"
+                    data-bs-title="help title"
+                    data-bs-target="#pageHelpModal">
+                    <ui:include src="/uii/includes/icon-help.xhtml" />
+                </button>
+            </h1>
+
+
+            <h:form
+                prependId="false"
+                id="issueUploadForm"
+                class="form flow"
+                enctype="multipart/form-data">
+
+                <div class="form__icons">
+                    <ui:include src="/uii/includes/icon-file-image.xhtml" />
+                </div>
+
+                <p class="form__msg">#{msgs.plugin_dashboard_delivery_uploadFormMessage}</p>
+
+                <div class="form__msg-or">#{msgs.plugin_dashboard_delivery_or}</div>
+
+                <div class="form__actions">
+
+                    <label
+                        for="issuefile"
+                        class="sr-only">#{msgs.plugin_dashboard_delivery_uploadFormLabel}</label>
+                    <h:inputFile
+                        id="issuefile"
+                        styleClass="form-control form-control-lg"
+                        value="#{DashboardForm.plugin.file}"
+                        title="#{msgs.plugin_dashboard_delivery_ariaLabel_uploadForm}"
+                        name="file" />
+
+                    <h:commandButton
+                        id="issuesubmit"
+                        value="submit"
+                        styleClass="btn btn-primary-400" />
+                </div>
+
+
+            </h:form>
+        </ui:fragment>
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
 
             <h1 class="page__heading">
                 #{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}
 
-                <button type="button" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
-                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                <button
+                    type="button"
+                    class="btn page__help"
+                    data-bs-toggle="modal"
+                    data-bs-title="help title"
+                    data-bs-target="#pageHelpModal">
+                    <ui:include src="/uii/includes/icon-help.xhtml" />
                 </button>
             </h1>
 
@@ -242,10 +306,10 @@
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
                     <ui:fragment rendered="#{group.documentType == 'issue'}">
-                    <div class="common-region">
-                        <h2 class="grid-full-width">
-                            <h:outputText value="#{group.label}" />
-                        </h2>
+                        <div class="common-region">
+                            <h2 class="grid-full-width">
+                                <h:outputText value="#{group.label}" />
+                            </h2>
 
 
                             <ui:repeat
@@ -254,82 +318,78 @@
                                 varStatus="status">
                                 <h:panelGroup id="grp">
 
-                                <ui:fragment rendered="#{field.displayType == 'person'}">
-                                    <zlb:person
-                                        identifier="field_#{status.index}"
-                                        labelText="#{field.label}"
-                                        labelHelpText="{field.helpMessage}"
-                                        value="#{field.value}"
-                                        required="#{field.required}"
-                                        secondValue="#{field.value2}"
-                                        role="#{field.role}"
-                                        propertyValid="#{field.fieldValid}"
-                                        errorMessageText="#{field.validationErrorText}"
-                                        selectItems="#{field.selectList}"
-                                        subClass="persongrid"
-                                        fieldName="#{field.label}"
-                                        fieldRequired="#{field.required}"
-                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                         />
-                                </ui:fragment>
+                                    <ui:fragment rendered="#{field.displayType == 'person'}">
+                                        <zlb:person
+                                            identifier="field_#{status.index}"
+                                            labelText="#{field.label}"
+                                            labelHelpText="{field.helpMessage}"
+                                            value="#{field.value}"
+                                            required="#{field.required}"
+                                            secondValue="#{field.value2}"
+                                            role="#{field.role}"
+                                            propertyValid="#{field.fieldValid}"
+                                            errorMessageText="#{field.validationErrorText}"
+                                            selectItems="#{field.selectList}"
+                                            subClass="persongrid"
+                                            fieldName="#{field.label}"
+                                            fieldRequired="#{field.required}"
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}" />
+                                    </ui:fragment>
 
-                                <ui:fragment rendered="#{field.displayType == 'corporate'}">
-                                    <zlb:corporate
-                                        identifier="field_#{status.index}"
-                                        labelText="#{field.label}"
-                                        labelHelpText="{field.helpMessage}"
-                                        value="#{field.value}"
-                                        required="#{field.required}"
-                                        role="#{field.role}"
-                                        propertyValid="#{field.fieldValid}"
-                                        errorMessageText="#{field.validationErrorText}"
-                                        selectItems="#{field.selectList}"
-                                        fieldRequired="#{field.required}"
-                                        subClass="corporategrid"
-                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                         />
-                                </ui:fragment>
+                                    <ui:fragment rendered="#{field.displayType == 'corporate'}">
+                                        <zlb:corporate
+                                            identifier="field_#{status.index}"
+                                            labelText="#{field.label}"
+                                            labelHelpText="{field.helpMessage}"
+                                            value="#{field.value}"
+                                            required="#{field.required}"
+                                            role="#{field.role}"
+                                            propertyValid="#{field.fieldValid}"
+                                            errorMessageText="#{field.validationErrorText}"
+                                            selectItems="#{field.selectList}"
+                                            fieldRequired="#{field.required}"
+                                            subClass="corporategrid"
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}" />
+                                    </ui:fragment>
 
-                                <ui:fragment rendered="#{field.displayType == 'picklist'}">
-                                    <zlb:picklist
-                                        identifier="field_#{status.index}"
-                                        labelText="#{field.label}"
-                                        labelHelpText="{field.helpMessage}"
-                                        value="#{field.value}"
-                                        required="#{field.required}"
-                                        role="#{field.role}"
-                                        propertyValid="#{field.fieldValid}"
-                                        errorMessageText="#{field.validationErrorText}"
-                                        selectItems="#{field.selectList}"
-                                        fieldRequired="#{field.required}"
-                                        subClass="corporategrid"
-                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        />
-                                </ui:fragment>
+                                    <ui:fragment rendered="#{field.displayType == 'picklist'}">
+                                        <zlb:picklist
+                                            identifier="field_#{status.index}"
+                                            labelText="#{field.label}"
+                                            labelHelpText="{field.helpMessage}"
+                                            value="#{field.value}"
+                                            required="#{field.required}"
+                                            role="#{field.role}"
+                                            propertyValid="#{field.fieldValid}"
+                                            errorMessageText="#{field.validationErrorText}"
+                                            selectItems="#{field.selectList}"
+                                            fieldRequired="#{field.required}"
+                                            subClass="corporategrid"
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}" />
+                                    </ui:fragment>
 
 
-                                <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
-                                    <zlb:field
-                                        identifier="field_#{status.index}"
-                                        labelText="#{field.label}"
-                                        labelHelpText="{field.helpMessage}"
-                                        required="#{field.required}"
-                                        value="#{field.value}"
-                                        fieldType="#{field.displayType}"
-                                        fieldRequired="#{field.required}"
-                                        propertyValid="#{field.fieldValid}"
-                                        errorMessageText="#{field.validationErrorText}"
-                                        selectItems="#{field.selectList}"
-                                        booleanValue="#{field.booleanValue}"
-                                        subValue="#{field.value2}"
-                                        displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        />
-                                </ui:fragment>
+                                    <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
+                                        <zlb:field
+                                            identifier="field_#{status.index}"
+                                            labelText="#{field.label}"
+                                            labelHelpText="{field.helpMessage}"
+                                            required="#{field.required}"
+                                            value="#{field.value}"
+                                            fieldType="#{field.displayType}"
+                                            fieldRequired="#{field.required}"
+                                            propertyValid="#{field.fieldValid}"
+                                            errorMessageText="#{field.validationErrorText}"
+                                            selectItems="#{field.selectList}"
+                                            booleanValue="#{field.booleanValue}"
+                                            subValue="#{field.value2}"
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}" />
+                                    </ui:fragment>
 
                                 </h:panelGroup>
                             </ui:repeat>
 
-                    </div>
+                        </div>
                     </ui:fragment>
                 </ui:repeat>
 
@@ -358,7 +418,7 @@
             </div>
 
             <h:form>
-             <div class="submit">
+                <div class="submit">
 
                     <ul class="statuslist">
                         <li>
@@ -372,58 +432,40 @@
                                     execute="@this" />
                             </button>
                         </li>
+                        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload' or DashboardForm.plugin.navigation=='newIssue'}">
 
-                        <!--
-                        <li class="#{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
-                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_delivery_upload}" />
-                            </h:panelGroup>
-                        </li>
-                        <li class="#{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
-                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_delivery_data1}" />
-                            </h:panelGroup>
-                        </li>
-                        <li class="#{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
-                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_delivery_data2}" />
-                            </h:panelGroup>
-                        </li>
-
-                        <li class="#{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
-                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_delivery_data3}" />
-                            </h:panelGroup>
-                        </li>
-                        <li class="#{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
-                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_delivery_overview}" />
-                            </h:panelGroup>
-
-                        </li>
-                        <li class="#{DashboardForm.plugin.navigation=='finish' ? 'active': 'inactive'}">
-                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='finish' ? 'active': 'inactive'}">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_delivery_finish}" />
-                            </h:panelGroup>
-                        </li>
-                        <li>
-                            <button
-                                jsf:action="#{DashboardForm.plugin.nextPage}"
-                                jsf:id="nextStep"
-                                class="btn btn-primary-400">
-                                <h:outputText value="#{msgs.next}" />
-                                <f:ajax
-                                    render="main-area"
-                                    execute="@this" />
-                            </button>
-                        </li>
-                        -->
+                            <li class="#{DashboardForm.plugin.navigation=='issueupload'?'active':'finished'} ">
+                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
+                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
+                                </h:panelGroup>
+                            </li>
+                            <li class="#{DashboardForm.plugin.navigation=='newIssue' ? 'active': DashboardForm.plugin.navigation=='issueupload' ? 'inactive': 'finished'}">
+                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
+                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
+                                </h:panelGroup>
+                            </li>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
+                            <li>
+                                <button
+                                    jsf:action="#{DashboardForm.plugin.nextPage}"
+                                    jsf:id="nextStep"
+                                    class="btn btn-success">
+                                    <h:outputText value="#{msgs.weiter}" />
+                                    <f:ajax
+                                        render="main-area globalMessage"
+                                        execute="@this" />
+                                </button>
+                            </li>
+                        </ui:fragment>
                     </ul>
                 </div>
 
             </h:form>
 
         </ui:fragment>
+
+
     </composite:implementation>
 
 </ui:composition>

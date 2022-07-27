@@ -27,9 +27,11 @@ import org.goobi.beans.Institution;
 import org.goobi.beans.Process;
 import org.goobi.beans.Processproperty;
 import org.goobi.beans.User;
+import org.goobi.files.FileValidator;
 import org.goobi.production.enums.PluginGuiType;
 import org.goobi.production.enums.PluginType;
 import org.goobi.production.plugin.interfaces.IDashboardPlugin;
+import org.goobi.reporting.Report;
 import org.goobi.vocabulary.Field;
 import org.goobi.vocabulary.VocabRecord;
 
@@ -96,9 +98,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     @Getter
     private PluginGuiType pluginGuiType = PluginGuiType.FULL;
 
-    @Getter
-    @Setter
-    private String downloadUrl;
+    //    @Getter
+    //    @Setter
+    //    private String downloadUrl;
 
     // upload a file
     private Part file;
@@ -392,11 +394,20 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         MetadataField loginField = new MetadataField();
         loginField.setLabel(Helper.getTranslation("login_new_account_accountName"));
         loginField.setDisplayType("output");
-        loginField.setRequired(true);
+        loginField.setRequired(false);
         loginField.setCardinality("1");
         loginField.setAdditionalType("login");
         loginField.setValue(user.getLogin());
         userData.getFields().add(loginField);
+
+        MetadataField emailAddress = new MetadataField();
+        emailAddress.setLabel(Helper.getTranslation("login_new_account_emailAddress"));
+        emailAddress.setDisplayType("output");
+        emailAddress.setRequired(false);
+        emailAddress.setCardinality("1");
+        emailAddress.setAdditionalType("email");
+        emailAddress.setValue(user.getEmail());
+        userData.getFields().add(emailAddress);
 
         MetadataField firstname = new MetadataField();
         firstname.setLabel(Helper.getTranslation("firstname"));
@@ -415,15 +426,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         lastname.setAdditionalType("lastname");
         lastname.setValue(user.getNachname());
         userData.getFields().add(lastname);
-
-        MetadataField emailAddress = new MetadataField();
-        emailAddress.setLabel(Helper.getTranslation("login_new_account_emailAddress"));
-        emailAddress.setDisplayType("output");
-        emailAddress.setRequired(true);
-        emailAddress.setCardinality("1");
-        emailAddress.setAdditionalType("email");
-        emailAddress.setValue(user.getEmail());
-        userData.getFields().add(emailAddress);
     }
 
     private void getInstitutionData(Institution inst) {
@@ -498,16 +500,35 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
         String fileName = file.getSubmittedFileName();
 
+        // check filename, normalize name, no white space, slash, backshlash, check if it has a file extension
+        fileName = fileName.replaceAll("\\s", "_").replace("/", "").replace("\\", "");
+
+        User user = Helper.getCurrentUser();
+        Institution institution = user.getInstitution();
+
         try (InputStream in = file.getInputStream()) {
-            Path destination = Paths.get(temporaryFolder.toString(), fileName.replaceAll("\\W", "_"));
+            Path destination = Paths.get(temporaryFolder.toString(), fileName);
             Files.copy(in, destination);
+
+            Report report = FileValidator.validateFile(destination, institution.getShortName());
+
+            if (!report.isReachedTargetLevel() ) {
+
+                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
+
+                // delete validation files
+                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
+                StorageProvider.getInstance().deleteDir(testFolder);
+
+                // delete file
+                StorageProvider.getInstance().deleteFile(destination);
+
+                return;
+            }
             files.add(destination);
         } catch (IOException e) {
             log.error(e);
         }
-
-        // TODO validate files after upload, see 02-1-1_Upload-Pruefprozesse.docx
-
     }
 
     public Part getFile() {
@@ -527,9 +548,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "userdata":
             case "titleSelection":
             case "existingData":
+            case "upload":
+            case "issueupload":
                 navigation = "main";
                 documentType = "";
                 break;
+
             case "user":
             case "institution":
             case "contact":
@@ -538,10 +562,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "newIssue":
             case "newTitle":
                 navigation = "titleSelection";
-                break;
-            case "upload":
-                navigation = "main";
-                documentType = "";
                 break;
             case "data1":
                 navigation = "upload";
@@ -572,7 +592,18 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 navigation = "upload";
                 break;
             case "upload":
+                if (files.isEmpty()) {
+                    Helper.setFehlerMeldung(Helper.getTranslation("plugin_dashboard_delivery_noFileUploaded"));
+                    return;
+                }
                 navigation = "data1";
+                break;
+            case "issueupload":
+                if (files.isEmpty()) {
+                    Helper.setFehlerMeldung(Helper.getTranslation("plugin_dashboard_delivery_noFileUploaded"));
+                    return;
+                }
+                navigation = "newIssue";
                 break;
             case "data1":
                 navigation = "data2";
@@ -639,14 +670,23 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             DigitalDocument dd = fileformat.getDigitalDocument();
             DocStruct physical = dd.getPhysicalDocStruct();
             DocStruct logical = dd.getLogicalDocStruct();
-            String sourceFolder = process.getImagesTifDirectory(false);
-            Path destinationFolder = Paths.get(sourceFolder);
+            String imageFolder = process.getImagesTifDirectory(false);
+            Path destinationFolder = Paths.get(imageFolder);
             if (!StorageProvider.getInstance().isFileExists(destinationFolder)) {
                 StorageProvider.getInstance().createDirectories(destinationFolder);
             }
             int order = 1;
+
+
+
             for (Path uploadedFile : files) {
                 StorageProvider.getInstance().move(uploadedFile, Paths.get(destinationFolder.toString(), uploadedFile.getFileName().toString()));
+
+                // delete validation files or import them?
+                Path testFolder = Paths.get(uploadedFile.toString().substring(0, uploadedFile.toString().lastIndexOf(".")));
+                if (StorageProvider.getInstance().isDirectory(testFolder)) {
+                    StorageProvider.getInstance().deleteDir(testFolder);
+                }
 
                 DocStruct page = dd.createDocStruct(pageType);
                 Metadata phys = new Metadata(physType);
@@ -655,6 +695,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 Metadata log = new Metadata(logType);
                 log.setValue("-");
                 page.addMetadata(log);
+
                 // add file name
                 page.setImageName(uploadedFile.getFileName().toString());
                 physical.addChild(page);
@@ -1249,7 +1290,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "publicationYearAsc":
                 value = "md3.value";
                 break;
-
+            default:
+                // nothing
         }
         return value;
     }
