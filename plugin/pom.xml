@@ -38,8 +38,8 @@
 		</dependency>
 		<dependency>
 			<groupId>de.intranda.goobi.plugins.step</groupId>
-			<artifactId>pdf_validation-gui</artifactId>
-			<version>1.0.0</version>
+			<artifactId>file_validation-gui</artifactId>
+			<version>1.1.0-SNAPSHOT</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
