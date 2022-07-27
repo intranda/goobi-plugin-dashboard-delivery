@@ -29,7 +29,7 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_delivery_deliverInstitutionData}</span>
+                <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span>
 
                 <button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
                   <ui:include src="/uii/includes/icon-help.xhtml" />
@@ -146,9 +146,11 @@
 
 
             <h:form styleClass="form-validate common-region btn-inside">
+            <!--
                 <h2 class="grid-full-width">
                     <h:outputText value="#{DashboardForm.plugin.userData.label}" />
                 </h2>
+            -->
 
                 <ui:repeat
                     var="field"
@@ -192,9 +194,11 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
             <h:form styleClass="form-validate common-region btn-inside">
+            <!--
                 <h2 class="grid-full-width">
                     <h:outputText value="#{DashboardForm.plugin.institutionData.label}" />
                 </h2>
+            -->
                 <ui:repeat
                     var="field"
                     value="#{DashboardForm.plugin.institutionData.fields}"
@@ -236,9 +240,11 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
             <h:form styleClass="form-validate common-region btn-inside">
+            <!--
                 <h2 class="grid-full-width">
                     <h:outputText value="#{DashboardForm.plugin.contactData.label}" />
                 </h2>
+            -->
                 <ui:repeat
                     var="field"
                     value="#{DashboardForm.plugin.contactData.fields}"
