@@ -409,14 +409,18 @@
         </ui:fragment>
 
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main'}">
+        <!-- Required Message -->
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main' and DashboardForm.plugin.navigation!='issueupload'}">
 
             <div class="info-required">
                 <h:outputText
                     escape="false"
                     value="#{msgs.plugin_rest_usercreation_requiredFields}" />
             </div>
+        </ui:fragment>
 
+        <!-- Status list -->
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main'}">
             <h:form>
                 <div class="submit">
 
