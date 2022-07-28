@@ -79,7 +79,7 @@ public class MetadataField {
             return false;
         }
 
-        if (StringUtils.isNotBlank(validationExpression) && StringUtils.isNotBlank(val) && !val.matches(validationExpression)) {
+        if (StringUtils.isNotBlank(validationExpression) && StringUtils.isNotBlank(val) && !val.matches(validationExpression)) {//NOSONAR
             return false;
         }
         return true;
@@ -111,41 +111,42 @@ public class MetadataField {
     }
 
     public void validateField(FacesContext context, UIComponent comp, Object obj) {
-        String value = (String)obj;
+        if (obj instanceof Boolean) {
+            return;
+        }
+
+        String testValue = (String) obj;
         fieldValid = true;
 
         // check field type, different validation for different types
         if ("person".equals(displayType)) {
             // if required, role and either firstname or lastname must be filled
-            if (required) {
-                if (StringUtils.isBlank(role) || (StringUtils.isBlank(value) && StringUtils.isBlank(value2))) {
-                    fieldValid = false;
-                }
+            if (required&&StringUtils.isBlank(role) || (StringUtils.isBlank(testValue) && StringUtils.isBlank(value2))) {
+                fieldValid = false;
+
                 // TODO if firstname or lastname is used, role must be set
             }
         } else if ("corporate".equals(displayType)) {
             // if required, role and name must be filled
-            if (required) {
-                if (StringUtils.isBlank(role) || StringUtils.isBlank(value)) {
-                    fieldValid = false;
-                }
+            if (required && StringUtils.isBlank(role) || StringUtils.isBlank(testValue)) {
+                fieldValid = false;
                 // TODO if name is filled, role must be set
             }
         } else if ("picklist".equals(displayType)) {
             // if required, type and value must be selected
             if (required) {
-                if (StringUtils.isBlank(role) || StringUtils.isBlank(value)) {
+                if (StringUtils.isBlank(role) || StringUtils.isBlank(testValue)) {
                     fieldValid = false;
                 }
             }
             // different validation based on selected type
-            if (StringUtils.isNotBlank(role) && StringUtils.isNotBlank(value)) {
+            if (StringUtils.isNotBlank(role) && StringUtils.isNotBlank(testValue)) {
                 switch (role) {
                     case "ISBN":
                         //  zulässige Zeichen: Ziffern, Bindestriche und X
                         //  Zeichenbegrenzung: max. 17 Zeichen
 
-                        if (value.length() > 17) {
+                        if (testValue.length() > 17) {
                             // to many characters
                             fieldValid = false;
                         }
@@ -153,7 +154,7 @@ public class MetadataField {
                         // ISBN-10: 3-86640-001-2
 
                         // remove hyphens
-                        String number = value.replace("-", "");
+                        String number = testValue.replace("-", "");
                         // must be numeric or numeric + X
                         if (!number.matches("[0-9]{10}|[0-9]{9}X|[0-9]{13}|[0-9]{12}X")) {
                             // invalid characters
@@ -162,19 +163,17 @@ public class MetadataField {
                         }
                         // check length, should be 10 or 13
                         // 10 -> isbn validation
-                        if (number.length() == 10) {
-                            if (!validateIdentifier(number)) {
-                                validationErrorText = "Ungültige ISBN-10 Nummer.";
-                                fieldValid = false;
-                            }
+                        if (number.length() == 10 && !validateIdentifier(number)) {
+                            validationErrorText = "Ungültige ISBN-10 Nummer.";
+                            fieldValid = false;
+
                         }
                         // 13 -> ean validation
-                        if (number.length() == 13) {
-                            if (!EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(number)) {
-                                validationErrorText = "Ungültige ISBN-13 Nummer.";
-                                fieldValid = false;
-                            }
+                        if (number.length() == 13 && !EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(number)) {
+                            validationErrorText = "Ungültige ISBN-13 Nummer.";
+                            fieldValid = false;
                         }
+
                         // wrong number of digits
                         if (number.length() != 10 && number.length() != 13) {
                             validationErrorText = "Falsche Anzahl Zeichen, bitte ISBN-10 oder ISBN-13 angeben.";
@@ -191,36 +190,36 @@ public class MetadataField {
 
                         // zulässige Zeichen: Ziffern
                         // Zeichenbegrenzung: max. 14 Zeichen, bei geringerer Stelligkeit werden vorangehende Leerstellen mit Nullen aufgefüllt
-                        if (value.length() > 14) {
+                        if (testValue.length() > 14) {
                             // to many characters
                             fieldValid = false;
                         }
-                        if (!EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(value)) {
+                        if (!EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(testValue)) {
                             validationErrorText = "Kein gültiger GTIN/EAN Code.";
                             fieldValid = false;
                         }
 
-                        if (value.length() < 14) {
+                        if (testValue.length() < 14) {
                             // fill string with leading 000
                             StringBuilder sb = new StringBuilder();
-                            for (int i = 0; i < 14 - value.length(); i++) {
+                            for (int i = 0; i < 14 - testValue.length(); i++) {
                                 sb.append("0");
                             }
-                            sb.append(value);
+                            sb.append(testValue);
 
-                            value = sb.toString();
+                            testValue = sb.toString();
                         }
                         break;
 
                     case "ISSN":
                         // zulässige Zeichen: Ziffern, Bindestriche und X
                         // Zeichenbegrenzung: 9 Zeichen
-                        if (!value.matches("[0-9]{8}|[0-9]{7}X|[0-9]{4}\\-[0-9]{4}|[0-9]{4}\\-[0-9]{3}X")) {
+                        if (!testValue.matches("[0-9]{8}|[0-9]{7}X|[0-9]{4}\\-[0-9]{4}|[0-9]{4}\\-[0-9]{3}X")) { //NOSONAR
                             // invalid characters
                             fieldValid = false;
                         }
 
-                        if (!validateIdentifier(value)) {
+                        if (!validateIdentifier(testValue)) {
                             // invalid characters
                             // valid examples: 0317-8471, 1050-124X
                             validationErrorText = "ISSN ist invalide. Bitte eine gültige ISSN in der Form XXXX-XXXX angeben.";
@@ -235,16 +234,14 @@ public class MetadataField {
 
         //  simple field validation
 
-        if (value == null || StringUtils.isBlank(value)) {
+        if (testValue == null || StringUtils.isBlank(testValue)) {
             if (required) {
                 fieldValid = false;
             }
         }
 
-        else if (StringUtils.isNotBlank(value) && StringUtils.isNotBlank(validationExpression)) {
-            if (!value.matches(validationExpression)) {
-                fieldValid = false;
-            }
+        else if (StringUtils.isNotBlank(testValue) && StringUtils.isNotBlank(validationExpression) && !testValue.matches(validationExpression)) {
+            fieldValid = false;
         }
     }
 

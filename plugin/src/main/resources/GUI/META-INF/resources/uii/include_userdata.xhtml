@@ -170,12 +170,6 @@
 
 
             <h:form styleClass="form-validate common-region btn-inside">
-                <!--
-                <h2 class="grid-full-width">
-                    <h:outputText value="#{DashboardForm.plugin.userData.label}" />
-                </h2>
-            -->
-
                 <ui:repeat
                     var="field"
                     value="#{DashboardForm.plugin.userData.fields}"
@@ -259,34 +253,63 @@
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
-            <h:form styleClass="form-validate common-region btn-inside">
-                <ui:repeat
-                    var="field"
-                    value="#{DashboardForm.plugin.contactData.fields}"
-                    varStatus="status">
-                    <h:panelGroup id="grp">
-                        <zlb:field
-                            identifier="field_#{status.index}"
-                            labelText="#{field.label}"
-                            labelHelpText="{field.helpMessage}"
-                            required="#{field.required}"
-                            value="#{field.value}"
-                            fieldType="#{field.displayType}"
-                            fieldRequired="#{field.required}"
-                            propertyValid="#{field.fieldValid}"
-                            errorMessageText="#{field.validationErrorText}"
-                            selectItems="#{field.selectList}"
-                            booleanValue="#{field.booleanValue}"
-                            subValue="#{field.value2}"
-                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                            render="@form" />
-                    </h:panelGroup>
-                </ui:repeat>
 
+            <h:form styleClass="form-validate btn-inside">
+                <span class="common-region">
+                    <ui:repeat
+                        var="field"
+                        value="#{DashboardForm.plugin.contactData.fields}"
+                        varStatus="status">
+                        <h:panelGroup id="grp">
+                            <zlb:field
+                                identifier="field_#{status.index}"
+                                labelText="#{field.label}"
+                                labelHelpText="{field.helpMessage}"
+                                required="#{field.required}"
+                                value="#{field.value}"
+                                fieldType="#{field.displayType}"
+                                fieldRequired="#{field.required}"
+                                propertyValid="#{field.fieldValid}"
+                                errorMessageText="#{field.validationErrorText}"
+                                selectItems="#{field.selectList}"
+                                booleanValue="#{field.booleanValue}"
+                                subValue="#{field.value2}"
+                                displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                render="@form" />
+                        </h:panelGroup>
+                    </ui:repeat>
+                </span>
+                <ui:fragment rendered="#{!DashboardForm.plugin.contact2Data.fields.isEmpty()}">
+                    <span class="common-region">
+                        <ui:repeat
+                            var="field"
+                            value="#{DashboardForm.plugin.contact2Data.fields}"
+                            varStatus="status">
+                            <h:panelGroup id="grp">
+                                <zlb:field
+                                    identifier="field_#{status.index}"
+                                    labelText="#{field.label}"
+                                    labelHelpText="{field.helpMessage}"
+                                    required="#{field.required}"
+                                    value="#{field.value}"
+                                    fieldType="#{field.displayType}"
+                                    fieldRequired="#{field.required}"
+                                    propertyValid="#{field.fieldValid}"
+                                    errorMessageText="#{field.validationErrorText}"
+                                    selectItems="#{field.selectList}"
+                                    booleanValue="#{field.booleanValue}"
+                                    subValue="#{field.value2}"
+                                    displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                    render="@form" />
+                            </h:panelGroup>
+                        </ui:repeat>
+                    </span>
+                </ui:fragment>
                 <button
                     jsf:action="#{DashboardForm.plugin.saveContactData}"
                     jsf:id="saveContactData"
-                    class="btn btn-success grid-full-width ms-auto">
+                    class="btn btn-success grid-full-width ms-auto"
+                    style="float:right;">
                     <h:outputText value="#{msgs.save}" />
                     <f:ajax
                         render="main-area"

@@ -65,14 +65,17 @@ import ugh.dl.MetadataType;
 import ugh.dl.Person;
 import ugh.dl.Prefs;
 import ugh.exceptions.MetadataTypeNotAllowedException;
+import ugh.exceptions.PreferencesException;
+import ugh.exceptions.ReadException;
 import ugh.exceptions.UGHException;
+import ugh.exceptions.WriteException;
 import ugh.fileformats.mets.MetsMods;
 
 @PluginImplementation
 @Log4j2
 public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
-    public static String vocabularyUrl;
+    public static String vocabularyUrl; //NOSONAR
 
     @Getter
     private String title = "intranda_dashboard_delivery";
@@ -81,7 +84,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     private PluginType type = PluginType.Dashboard;
 
     @Getter
-    private String guiPath = "/uii/plugin_dashboard_delivery.xhtml";
+    private String guiPath = "/uii/plugin_dashboard_delivery.xhtml"; //NOSONAR
 
     @Getter
     @Setter
@@ -97,10 +100,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     @Getter
     private PluginGuiType pluginGuiType = PluginGuiType.FULL;
-
-    //    @Getter
-    //    @Setter
-    //    private String downloadUrl;
 
     // upload a file
     private Part file;
@@ -121,15 +120,17 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     private List<MetadataField> additionalMetadata = new ArrayList<>();
 
-    private static final String configurationName = "intranda_administration_deliveryManagement";
+    private static final String CONFIGURATION_NAME = "intranda_administration_deliveryManagement";
 
     @Getter
-    private FieldGrouping userData;;
+    private FieldGrouping userData;
     @Getter
     private FieldGrouping institutionData;
     @Getter
     private FieldGrouping contactData;
 
+    @Getter
+    private FieldGrouping contact2Data;
     @Getter
     private List<Path> files = new ArrayList<>();
 
@@ -139,7 +140,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     protected ProcessPaginator paginator;
     @Getter
     @Setter
-    private String sortField = "erstellungsdatum desc";
+    private String sortField = "erstellungsdatum desc"; //NOSONAR
 
     @Getter
     private List<SelectItem> metadataFields = new ArrayList<>();
@@ -164,7 +165,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         config.setExpressionEngine(new XPathExpressionEngine());
         configuredGroups.clear();
         additionalMetadata.clear();
-        vocabularyUrl = config.getString("/vocabularyServerUrl");
+        vocabularyUrl = config.getString("/vocabularyServerUrl"); //NOSONAR
 
         monographicDocType = config.getString("/doctypes/monographic", "Monograph");
         zdbTitleDocType = config.getString("/doctypes/zdbRecordType", "ZdbTitle");
@@ -188,11 +189,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 User user = Helper.getCurrentUser();
                 if (user != null) {
                     Institution inst = user.getInstitution();
-                    if (replaceWith.equals("institution")) {
+                    if (replaceWith.equals("institution")) { //NOSONAR
                         mf.setValue(inst.getLongName());
                     } else if (replaceWith.startsWith("institution")) {
                         String val = inst.getAdditionalData().get(replaceWith);
-                        if (!"false".equals(val)) {
+                        if (!"false".equals(val)) { //NOSONAR
                             mf.setValue(val);
                         }
                     } else {
@@ -210,7 +211,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         }
 
         for (HierarchicalConfiguration group : groups) {
-            String groupLabel = group.getString("@label");
+            String groupLabel = group.getString("@label"); //NOSONAR
             String groupPageName = group.getString("@pageName");
             String groupDocumentType = group.getString("@documentType");
 
@@ -225,7 +226,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 MetadataField mf = new MetadataField();
                 mf.setRulesetName(field.getString("@rulesetName"));
                 mf.setLabel(field.getString("@label"));
-                mf.setDisplayType(field.getString("@displayType", "input"));
+                mf.setDisplayType(field.getString("@displayType", "input")); //NOSONAR
                 mf.setMetadataLevel(("@metadataLevel"));
                 String cardinality = field.getString("@cardinality", "*");
                 mf.setCardinality(cardinality);
@@ -260,7 +261,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
                 switch (mf.getDisplayType()) {
                     case "dropdown":
-                    case "picklist":
+                    case "picklist": //NOSONAR
                         List<HierarchicalConfiguration> valueList = field.configurationsAt("/selectfield");
                         for (HierarchicalConfiguration v : valueList) {
                             SelectItem si = new SelectItem(v.getString("@value"), v.getString("@label"));
@@ -268,15 +269,15 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                         }
 
                         break;
-                    case "corporate":
-                    case "person":
+                    case "corporate": //NOSONAR
+                    case "person": //NOSONAR
                     case "vocabulary":
                         String vocabularyName = field.getString("/vocabulary/@name");
                         String displayField = field.getString("/vocabulary/@displayField", null);
                         String importField = field.getString("/vocabulary/@importField", null);
                         mf.setVocabulary(vocabularyName, displayField, importField);
                         break;
-                    case "journaltitles":
+                    case "journaltitles": //NOSONAR
                         mf.setSelectList(generateListOfJournalTitles());
                         break;
                     default:
@@ -288,7 +289,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 switch (mf.getDisplayType()) {
                     case "person":
                     case "corporate":
-                    case "picklist":
+                    case "picklist": //NOSONAR
                         for (SelectItem s : mf.getSelectList()) {
                             boolean match = false;
                             for (SelectItem si : metadataFields) {
@@ -324,7 +325,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         User user = Helper.getCurrentUser();
         if (user != null) {
             Institution inst = user.getInstitution();
-            XMLConfiguration conf = ConfigPlugins.getPluginConfig(configurationName);
+            XMLConfiguration conf = ConfigPlugins.getPluginConfig(CONFIGURATION_NAME);
             conf.setExpressionEngine(new XPathExpressionEngine());
 
             List<HierarchicalConfiguration> fields = conf.configurationsAt("/fields/field");
@@ -344,12 +345,16 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             getInstitutionData(inst);
 
             contactData = new FieldGrouping();
-            contactData.setDocumentType("contact");
+            contactData.setDocumentType("contact"); //NOSONAR
             contactData.setLabel("Contact");
+
+            contact2Data = new FieldGrouping();
+            contact2Data.setDocumentType("contact2"); //NOSONAR
+            contact2Data.setLabel("Contact");
 
             for (HierarchicalConfiguration hc : fields) {
 
-                String type = hc.getString("@type");
+                String currentType = hc.getString("@type");
 
                 String fieldType = hc.getString("@fieldType", "input");
                 String label = hc.getString("@label");
@@ -376,10 +381,13 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                         mf.getSelectList().add(si);
                     }
                 }
-                if ("institution".equals(type) && name.startsWith("contact")) {
+                if ("institution".equals(currentType) && name.startsWith("contact2")) {
+                    contact2Data.getFields().add(mf);
+                    mf.setValue(inst.getAdditionalData().get(name));
+                } else if ("institution".equals(currentType) && name.startsWith("contact")) {
                     contactData.getFields().add(mf);
                     mf.setValue(inst.getAdditionalData().get(name));
-                } else if ("institution".equals(type)) {
+                } else if ("institution".equals(currentType)) {
                     institutionData.getFields().add(mf);
                     mf.setValue(inst.getAdditionalData().get(name));
                 } else {
@@ -388,12 +396,22 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
             }
         }
+        boolean secondContact = false;
+        for ( MetadataField mf : contact2Data.getFields()) {
+            if (StringUtils.isNotBlank(mf.getValue())) {
+                secondContact=true;
+                break;
+            }
+        }
+        if (!secondContact) {
+            contact2Data=new FieldGrouping();
+        }
     }
 
     private void getUserData(User user) {
         MetadataField loginField = new MetadataField();
         loginField.setLabel(Helper.getTranslation("login_new_account_accountName"));
-        loginField.setDisplayType("output");
+        loginField.setDisplayType("output");//NOSONAR
         loginField.setRequired(false);
         loginField.setCardinality("1");
         loginField.setAdditionalType("login");
@@ -410,7 +428,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         userData.getFields().add(emailAddress);
 
         MetadataField firstname = new MetadataField();
-        firstname.setLabel(Helper.getTranslation("firstname"));
+        firstname.setLabel(Helper.getTranslation("firstname"));//NOSONAR
         firstname.setDisplayType("input");
         firstname.setRequired(true);
         firstname.setCardinality("1");
@@ -419,7 +437,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         userData.getFields().add(firstname);
 
         MetadataField lastname = new MetadataField();
-        lastname.setLabel(Helper.getTranslation("lastname"));
+        lastname.setLabel(Helper.getTranslation("lastname"));//NOSONAR
         lastname.setDisplayType("input");
         lastname.setRequired(true);
         lastname.setCardinality("1");
@@ -488,7 +506,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         for (MetadataField mf : contactData.getFields()) {
             institution.getAdditionalData().put(mf.getRulesetName(), mf.getValue());
         }
-
+        for (MetadataField mf : contact2Data.getFields()) {
+            institution.getAdditionalData().put(mf.getRulesetName(), mf.getValue());
+        }
         InstitutionManager.saveInstitution(institution);
     }
 
@@ -512,7 +532,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
             Report report = FileValidator.validateFile(destination, institution.getShortName());
 
-            if (!report.isReachedTargetLevel() ) {
+            if (!report.isReachedTargetLevel()) {
 
                 Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
 
@@ -548,7 +568,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "userdata":
             case "titleSelection":
             case "existingData":
-            case "upload":
+            case "upload"://NOSONAR
             case "issueupload":
                 navigation = "main";
                 documentType = "";
@@ -559,20 +579,20 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "contact":
                 navigation = "userdata";
                 break;
-            case "newIssue":
+            case "newIssue"://NOSONAR
             case "newTitle":
                 navigation = "titleSelection";
                 break;
-            case "data1":
+            case "data1"://NOSONAR
                 navigation = "upload";
                 break;
-            case "data2":
+            case "data2"://NOSONAR
                 navigation = "data1";
                 break;
-            case "data3":
+            case "data3"://NOSONAR
                 navigation = "data2";
                 break;
-            case "overview":
+            case "overview"://NOSONAR
                 navigation = "data3";
                 break;
             case "finish":
@@ -677,8 +697,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             }
             int order = 1;
 
-
-
             for (Path uploadedFile : files) {
                 StorageProvider.getInstance().move(uploadedFile, Paths.get(destinationFolder.toString(), uploadedFile.getFileName().toString()));
 
@@ -713,12 +731,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     private Fileformat createFileformat(Prefs prefs, String identifier) {
-
-        /* TODO: generate metadata
-        Umfang: Angabe des Umfangs unkörperlicher digitaler Medienwerke ist immer Online-Ressource. Sofern eine Seitenzählung vorhanden ist, kann dieser zusätzlich in runden Klammern angegeben werden (Beispiel: Online-Ressource (72 Seiten).
-        Dateiformat und Dateigröße: Dateiformat und –größe der  zu beschreibenden Ressource.
-
-         */
 
         Fileformat fileformat = null;
         try {
@@ -773,48 +785,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                                 String processid = mf.getValue();
                                 // load metadata
                                 Process otherProc = ProcessManager.getProcessById(Integer.parseInt(processid));
-                                try {
-                                    Fileformat other = otherProc.readMetadataFile();
-                                    // copy metadata to anchor
-                                    DocStruct templateDocstruct = other.getDigitalDocument().getLogicalDocStruct();
-                                    if (templateDocstruct.getAllMetadata() != null) {
-                                        for (Metadata templateMetadata : templateDocstruct.getAllMetadata()) {
-                                            try {
-                                                Metadata clone = new Metadata(templateMetadata.getType());
-                                                clone.setValue(templateMetadata.getValue());
-                                                anchor.addMetadata(clone);
-                                            } catch (Exception e) {
-                                                log.trace(e);
-                                            }
-                                        }
-                                    }
-                                    if (templateDocstruct.getAllPersons() != null) {
-                                        for (Person templatePerson : templateDocstruct.getAllPersons()) {
-                                            try {
-                                                Person clone = new Person(templatePerson.getType());
-                                                clone.setFirstname(templatePerson.getFirstname());
-                                                clone.setLastname(templatePerson.getLastname());
-                                                anchor.addPerson(clone);
-                                            } catch (Exception e) {
-                                                log.trace(e);
-                                            }
-                                        }
-                                    }
-                                    if (templateDocstruct.getAllCorporates() != null) {
-                                        for (Corporate templateCorporate : templateDocstruct.getAllCorporates()) {
-                                            try {
-                                                Corporate clone = new Corporate(templateCorporate.getType());
-                                                clone.setMainName(templateCorporate.getMainName());
-                                                anchor.addCorporate(clone);
-                                            } catch (Exception e) {
-                                                log.trace(e);
-                                            }
-                                        }
-                                    }
-
-                                } catch (IOException | InterruptedException | SwapException | DAOException e) {
-                                    log.error(e);
-                                }
+                                writeAnchorData(anchor, otherProc);
 
                             }
                         }
@@ -841,7 +812,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                         existing = "";
                         data.put(p.getType().getLanguage("de"), existing);
                     }
-                    existing += p.getFirstname() + " " + p.getLastname();
+                    existing = existing + p.getFirstname() + " " + p.getLastname(); //NOSONAR
                 }
             }
 
@@ -865,7 +836,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 sb.append(aut);
             }
             // then add other types
-            for (String type : data.keySet()) {
+            for (String type : data.keySet()) { //NOSONAR
                 if (!type.equals("Autor")) {
                     if (sb.length() > 1) {
                         sb.append(" ; ");
@@ -883,7 +854,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             }
 
             if (docstruct.getType().getName().equals(issueDocType)) {
-                String publicationYear = "", year = "", volume = "";
+                String publicationYear = "";
+                String year = "";
+                String volume = "";
 
                 for (Metadata meta : docstruct.getAllMetadata()) {
                     switch (meta.getType().getName()) {
@@ -920,18 +893,67 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
 
                 while (order.length() < 9) {
-                    order += "0";
+                    order += "0"; //NOSONAR
                 }
                 Metadata sorting = new Metadata(prefs.getMetadataTypeByName("CurrentNoSorting"));
                 sorting.setValue(order);
                 docstruct.addMetadata(sorting);
 
             }
+            /* TODO: generate metadata
+            Umfang: Angabe des Umfangs unkörperlicher digitaler Medienwerke ist immer Online-Ressource. Sofern eine Seitenzählung vorhanden ist, kann dieser zusätzlich in runden Klammern angegeben werden (Beispiel: Online-Ressource (72 Seiten).
+            Dateiformat und Dateigröße: Dateiformat und –größe der  zu beschreibenden Ressource.
 
+             */
         } catch (UGHException e) {
             log.error(e);
         }
         return fileformat;
+    }
+
+    private void writeAnchorData(DocStruct anchor, Process otherProc) throws ReadException, PreferencesException, WriteException {
+        try {
+            Fileformat other = otherProc.readMetadataFile();
+            // copy metadata to anchor
+            DocStruct templateDocstruct = other.getDigitalDocument().getLogicalDocStruct();
+            if (templateDocstruct.getAllMetadata() != null) {
+                for (Metadata templateMetadata : templateDocstruct.getAllMetadata()) {
+                    try {
+                        Metadata clone = new Metadata(templateMetadata.getType());
+                        clone.setValue(templateMetadata.getValue());
+                        anchor.addMetadata(clone);
+                    } catch (Exception e) {
+                        log.trace(e);
+                    }
+                }
+            }
+            if (templateDocstruct.getAllPersons() != null) {
+                for (Person templatePerson : templateDocstruct.getAllPersons()) {
+                    try {
+                        Person clone = new Person(templatePerson.getType());
+                        clone.setFirstname(templatePerson.getFirstname());
+                        clone.setLastname(templatePerson.getLastname());
+                        anchor.addPerson(clone);
+                    } catch (Exception e) {
+                        log.trace(e);
+                    }
+                }
+            }
+            if (templateDocstruct.getAllCorporates() != null) {
+                for (Corporate templateCorporate : templateDocstruct.getAllCorporates()) {
+                    try {
+                        Corporate clone = new Corporate(templateCorporate.getType());
+                        clone.setMainName(templateCorporate.getMainName());
+                        anchor.addCorporate(clone);
+                    } catch (Exception e) {
+                        log.trace(e);
+                    }
+                }
+            }
+
+        } catch (IOException | InterruptedException | SwapException | DAOException e) {
+            log.error(e);
+        }
     }
 
     private void importMetadata(Prefs prefs, DocStruct docstruct, FieldGrouping fg) {
@@ -992,16 +1014,16 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         String answer = null;
         for (VocabRecord rec : mf.getVocabList()) {
             if (field.equals(String.valueOf(rec.getId()))) {
-                for (Field f : rec.getFields()) {
+                for (Field f : rec.getFields()) { //NOSONAR
                     if (StringUtils.isNotBlank(mf.getVocabularyImportField()) && f.getLabel().equals(mf.getVocabularyImportField())) {
                         answer = f.getValue();
                         break;
                     } else if (StringUtils.isBlank(mf.getVocabularyImportField()) && StringUtils.isNotBlank(mf.getVocabularyDisplayField())
-                            && f.getLabel().equals(mf.getVocabularyDisplayField())) {
+                            && f.getLabel().equals(mf.getVocabularyDisplayField())) { //NOSONAR
                         answer = f.getValue();
                         break;
                     } else if (StringUtils.isBlank(mf.getVocabularyImportField()) && StringUtils.isBlank(mf.getVocabularyDisplayField())
-                            && f.getDefinition().isMainEntry()) {
+                            && f.getDefinition().isMainEntry()) { //NOSONAR
                         answer = f.getValue();
                         break;
                     }
@@ -1131,9 +1153,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             }
         }
         if (results != null) {
-            for (Integer processid : results.keySet()) {
-                String title = results.get(processid).get("TitleDocMain");
-                SelectItem item = new SelectItem(processid, title);
+            for (Integer processid : results.keySet()) { //NOSONAR
+                SelectItem item = new SelectItem(processid, results.get(processid).get("TitleDocMain"));
                 availableTitles.add(item);
             }
         }
@@ -1141,7 +1162,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         return availableTitles;
     }
 
-    public static ResultSetHandler<Map<Integer, Map<String, String>>> resultSetToMapHandler =
+    public static final ResultSetHandler<Map<Integer, Map<String, String>>> resultSetToMapHandler =
             new ResultSetHandler<Map<Integer, Map<String, String>>>() {
 
         @Override
@@ -1162,9 +1183,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                     metadataMap.put(metadataName, metadataValue);
                 }
             } finally {
-                if (rs != null) {
-                    rs.close();
-                }
+                rs.close();
             }
             return answer;
         }
@@ -1206,8 +1225,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         sql.append("'");
         sql.append(institution.getShortName());
         sql.append("')) ");
-        // limit result to specific fields
-        //  sql.append("AND (prozesse.ProzesseID IN (SELECT DISTINCT processid FROM metadata WHERE metadata.name LIKE  '%TitleDocMain%' AND MATCH (value) AGAINST ('\"+*Titel* ' IN BOOLEAN MODE)))");
 
         sql.append("AND prozesse.istTemplate = false ");
 
