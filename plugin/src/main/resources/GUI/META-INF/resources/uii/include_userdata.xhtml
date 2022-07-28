@@ -21,18 +21,30 @@
             <h1 class="page__heading">
                 <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span>
 
-                <button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
-                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                <button
+                    type="button"
+                    class="btn page__help"
+                    aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                    data-bs-toggle="modal"
+                    data-bs-title="help title"
+                    data-bs-target="#pageHelpModal">
+                    <ui:include src="/uii/includes/icon-help.xhtml" />
                 </button>
             </h1>
-          </ui:fragment>
+        </ui:fragment>
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
             <h1 class="page__heading">
                 <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span>
 
-                <button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
-                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                <button
+                    type="button"
+                    class="btn page__help"
+                    aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                    data-bs-toggle="modal"
+                    data-bs-title="help title"
+                    data-bs-target="#pageHelpModal">
+                    <ui:include src="/uii/includes/icon-help.xhtml" />
                 </button>
             </h1>
         </ui:fragment>
@@ -41,8 +53,14 @@
             <h1 class="page__heading">
                 <span>#{msgs.plugin_dashboard_delivery_deliverInstitutionData}</span>
 
-                <button type="button" class="btn page__help"  aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
-                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                <button
+                    type="button"
+                    class="btn page__help"
+                    aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                    data-bs-toggle="modal"
+                    data-bs-title="help title"
+                    data-bs-target="#pageHelpModal">
+                    <ui:include src="/uii/includes/icon-help.xhtml" />
                 </button>
             </h1>
         </ui:fragment>
@@ -51,8 +69,14 @@
             <h1 class="page__heading">
                 <span>#{msgs.plugin_dashboard_delivery_deliverContactPersonData}</span>
 
-                <button type="button" class="btn page__help"  aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
-                  <ui:include src="/uii/includes/icon-help.xhtml" />
+                <button
+                    type="button"
+                    class="btn page__help"
+                    aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                    data-bs-toggle="modal"
+                    data-bs-title="help title"
+                    data-bs-target="#pageHelpModal">
+                    <ui:include src="/uii/includes/icon-help.xhtml" />
                 </button>
             </h1>
         </ui:fragment>
@@ -146,7 +170,7 @@
 
 
             <h:form styleClass="form-validate common-region btn-inside">
-            <!--
+                <!--
                 <h2 class="grid-full-width">
                     <h:outputText value="#{DashboardForm.plugin.userData.label}" />
                 </h2>
@@ -194,11 +218,7 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
             <h:form styleClass="form-validate common-region btn-inside">
-            <!--
-                <h2 class="grid-full-width">
-                    <h:outputText value="#{DashboardForm.plugin.institutionData.label}" />
-                </h2>
-            -->
+
                 <ui:repeat
                     var="field"
                     value="#{DashboardForm.plugin.institutionData.fields}"
@@ -240,11 +260,6 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
             <h:form styleClass="form-validate common-region btn-inside">
-            <!--
-                <h2 class="grid-full-width">
-                    <h:outputText value="#{DashboardForm.plugin.contactData.label}" />
-                </h2>
-            -->
                 <ui:repeat
                     var="field"
                     value="#{DashboardForm.plugin.contactData.fields}"
@@ -295,25 +310,20 @@
 
 
 
-            <h:form>
-                <div class="submit">
-                    <ul class="statuslist">
-                        <li>
-                            <button
-                                jsf:action="#{DashboardForm.plugin.previousPage}"
-                                jsf:id="backToMain"
-                                class="float-left btn btn-blank font-size-s">
-                                <h:outputText value="#{msgs.plugin_rest_usercreation_back}" />
-                                <f:ajax
-                                    render="main-area"
-                                    execute="@this" />
-                            </button>
+        <h:form>
+            <div>
+                <button
+                    jsf:action="#{DashboardForm.plugin.previousPage}"
+                    jsf:id="backToMain"
+                    class="float-left btn btn-blank font-size-s">
+                    <h:outputText value="#{msgs.plugin_rest_usercreation_back}" />
+                    <f:ajax
+                        render="main-area"
+                        execute="@this" />
+                </button>
+            </div>
 
-                        </li>
-                    </ul>
-                </div>
-
-            </h:form>
+        </h:form>
 
     </composite:implementation>
 
