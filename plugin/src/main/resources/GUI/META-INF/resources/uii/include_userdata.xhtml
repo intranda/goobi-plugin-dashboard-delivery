@@ -217,7 +217,7 @@
                     var="field"
                     value="#{DashboardForm.plugin.institutionData.fields}"
                     varStatus="status">
-                    <h:panelGroup id="grp">
+                    <h:panelGroup id="grp" styleClass="#{status.index == 1 ? 'column-start':''}">
                         <zlb:field
                             identifier="field_#{status.index}"
                             labelText="#{field.label}"

@@ -447,14 +447,14 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     private void getInstitutionData(Institution inst) {
-        MetadataField shortName = new MetadataField();
-        shortName.setLabel(Helper.getTranslation("institution_shortName"));
-        shortName.setDisplayType("output");
-        shortName.setRequired(false);
-        shortName.setCardinality("1");
-        shortName.setAdditionalType("shortName");
-        shortName.setValue(inst.getShortName());
-        institutionData.getFields().add(shortName);
+        //        MetadataField shortName = new MetadataField();
+        //        shortName.setLabel(Helper.getTranslation("institution_shortName"));
+        //        shortName.setDisplayType("output");
+        //        shortName.setRequired(false);
+        //        shortName.setCardinality("1");
+        //        shortName.setAdditionalType("shortName");
+        //        shortName.setValue(inst.getShortName());
+        //        institutionData.getFields().add(shortName);
 
         MetadataField longName = new MetadataField();
         longName.setLabel(Helper.getTranslation("institution_longName"));
