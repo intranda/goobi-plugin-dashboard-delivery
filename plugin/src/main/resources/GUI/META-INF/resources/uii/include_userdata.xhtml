@@ -165,96 +165,72 @@
             </h:form>
         </ui:fragment>
 
+        <h:form styleClass="form-validate btn-inside">
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
 
-
-            <h:form styleClass="form-validate common-region btn-inside">
-                <ui:repeat
-                    var="field"
-                    value="#{DashboardForm.plugin.userData.fields}"
-                    varStatus="status">
-                    <h:panelGroup id="grp">
-                        <zlb:field
-                            identifier="field_#{status.index}"
-                            labelText="#{field.label}"
-                            labelHelpText="{field.helpMessage}"
-                            required="#{field.required}"
-                            value="#{field.value}"
-                            fieldType="#{field.displayType}"
-                            propertyValid="#{field.fieldValid}"
-                            errorMessageText="#{field.validationErrorText}"
-                            selectItems="#{field.selectList}"
-                            booleanValue="#{field.booleanValue}"
-                            fieldRequired="#{field.required}"
-                            subValue="#{field.value2}"
-                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                            render="@form" />
-                    </h:panelGroup>
-                </ui:repeat>
-
-
-                <button
-                    jsf:action="#{DashboardForm.plugin.saveUserData}"
-                    jsf:id="saveUserData"
-                    class="btn btn-success grid-full-width ms-auto">
-                    <h:outputText value="#{msgs.save}" />
-                    <f:ajax
-                        render="main-area"
-                        execute="@this" />
-
-                    <f:setPropertyActionListener
-                        value="userdata"
-                        target="#{DashboardForm.plugin.navigation}" />
-                </button>
-            </h:form>
-        </ui:fragment>
-
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
-            <h:form styleClass="form-validate common-region btn-inside">
-
-                <ui:repeat
-                    var="field"
-                    value="#{DashboardForm.plugin.institutionData.fields}"
-                    varStatus="status">
-                    <h:panelGroup id="grp" styleClass="#{status.index == 1 ? 'column-start':''}">
-                        <zlb:field
-                            identifier="field_#{status.index}"
-                            labelText="#{field.label}"
-                            labelHelpText="{field.helpMessage}"
-                            required="#{field.required}"
-                            value="#{field.value}"
-                            fieldType="#{field.displayType}"
-                            fieldRequired="#{field.required}"
-                            propertyValid="#{field.fieldValid}"
-                            errorMessageText="#{field.validationErrorText}"
-                            selectItems="#{field.selectList}"
-                            booleanValue="#{field.booleanValue}"
-                            subValue="#{field.value2}"
-                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                            render="@form" />
-                    </h:panelGroup>
-                </ui:repeat>
-
-                <button
-                    jsf:action="#{DashboardForm.plugin.saveInstitutionData}"
-                    jsf:id="saveInstitutionData"
-                    class="btn btn-success grid-full-width ms-auto">
-                    <h:outputText value="#{msgs.save}" />
-                    <f:ajax
-                        render="main-area"
-                        execute="@this" />
-                    <f:setPropertyActionListener
-                        value="userdata"
-                        target="#{DashboardForm.plugin.navigation}" />
-                </button>
-            </h:form>
-        </ui:fragment>
+                <span class="common-region">
+                    <ui:repeat
+                        var="field"
+                        value="#{DashboardForm.plugin.userData.fields}"
+                        varStatus="status">
+                        <h:panelGroup id="grp">
+                            <zlb:field
+                                identifier="field_#{status.index}"
+                                labelText="#{field.label}"
+                                labelHelpText="{field.helpMessage}"
+                                required="#{field.required}"
+                                value="#{field.value}"
+                                fieldType="#{field.displayType}"
+                                propertyValid="#{field.fieldValid}"
+                                errorMessageText="#{field.validationErrorText}"
+                                selectItems="#{field.selectList}"
+                                booleanValue="#{field.booleanValue}"
+                                fieldRequired="#{field.required}"
+                                subValue="#{field.value2}"
+                                displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                render="@form" />
+                        </h:panelGroup>
+                    </ui:repeat>
 
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
 
-            <h:form styleClass="form-validate btn-inside">
+                </span>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
+                <span class="common-region">
+                    <ui:repeat
+                        var="field"
+                        value="#{DashboardForm.plugin.institutionData.fields}"
+                        varStatus="status">
+                        <h:panelGroup
+                            id="grp"
+                            styleClass="#{status.index == 1 ? 'column-start':''}">
+                            <zlb:field
+                                identifier="field_#{status.index}"
+                                labelText="#{field.label}"
+                                labelHelpText="{field.helpMessage}"
+                                required="#{field.required}"
+                                value="#{field.value}"
+                                fieldType="#{field.displayType}"
+                                fieldRequired="#{field.required}"
+                                propertyValid="#{field.fieldValid}"
+                                errorMessageText="#{field.validationErrorText}"
+                                selectItems="#{field.selectList}"
+                                booleanValue="#{field.booleanValue}"
+                                subValue="#{field.value2}"
+                                displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                render="@form" />
+                        </h:panelGroup>
+                    </ui:repeat>
+                </span>
+
+            </ui:fragment>
+
+
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
+
                 <span class="common-region">
                     <ui:repeat
                         var="field"
@@ -305,37 +281,19 @@
                         </ui:repeat>
                     </span>
                 </ui:fragment>
-                <button
-                    jsf:action="#{DashboardForm.plugin.saveContactData}"
-                    jsf:id="saveContactData"
-                    class="btn btn-success grid-full-width ms-auto"
-                    style="float:right;">
-                    <h:outputText value="#{msgs.save}" />
-                    <f:ajax
-                        render="main-area"
-                        execute="@this" />
-                    <f:setPropertyActionListener
-                        value="userdata"
-                        target="#{DashboardForm.plugin.navigation}" />
-                </button>
-            </h:form>
+            </ui:fragment>
 
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation!='userdata'}">
+                <div class="info-required">
+                    <h:outputText
+                        escape="false"
+                        value="#{msgs.plugin_rest_usercreation_requiredFields}" />
+                </div>
+            </ui:fragment>
 
-        </ui:fragment>
-
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation!='userdata'}">
-            <div class="info-required">
-                <h:outputText
-                    escape="false"
-                    value="#{msgs.plugin_rest_usercreation_requiredFields}" />
-            </div>
-        </ui:fragment>
-
-
-
-        <h:form>
             <div>
                 <button
+                    jsf:immediate="true"
                     jsf:action="#{DashboardForm.plugin.previousPage}"
                     jsf:id="backToMain"
                     class="float-left btn btn-blank font-size-s">
@@ -344,6 +302,56 @@
                         render="main-area"
                         execute="@this" />
                 </button>
+
+                <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
+                    <button
+                        jsf:action="#{DashboardForm.plugin.saveUserData}"
+                        jsf:id="saveUserData"
+                        class="btn btn-success grid-full-width ms-auto"
+                        style="float: right;">
+                        <h:outputText value="#{msgs.save}" />
+                        <f:ajax
+                            render="main-area"
+                            execute="@this" />
+
+                        <f:setPropertyActionListener
+                            value="userdata"
+                            target="#{DashboardForm.plugin.navigation}" />
+                    </button>
+                </ui:fragment>
+
+                <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
+                    <button
+                        jsf:action="#{DashboardForm.plugin.saveInstitutionData}"
+                        jsf:id="saveInstitutionData"
+                        class="btn btn-success grid-full-width ms-auto"
+                        style="float: right;">
+                        <h:outputText value="#{msgs.save}" />
+                        <f:ajax
+                            render="main-area"
+                            execute="@this" />
+                        <f:setPropertyActionListener
+                            value="userdata"
+                            target="#{DashboardForm.plugin.navigation}" />
+                    </button>
+                </ui:fragment>
+
+                <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
+                    <button
+                        jsf:action="#{DashboardForm.plugin.saveContactData}"
+                        jsf:id="saveContactData"
+                        class="btn btn-success grid-full-width ms-auto"
+                        style="float: right;">
+                        <h:outputText value="#{msgs.save}" />
+                        <f:ajax
+                            render="main-area"
+                            execute="@this" />
+                        <f:setPropertyActionListener
+                            value="userdata"
+                            target="#{DashboardForm.plugin.navigation}" />
+                    </button>
+
+                </ui:fragment>
             </div>
 
         </h:form>
