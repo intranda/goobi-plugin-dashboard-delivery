@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.goobi.beans.Institution;
 import org.goobi.beans.Process;
 import org.goobi.beans.Processproperty;
+import org.goobi.beans.Step;
 import org.goobi.beans.User;
 import org.goobi.files.FileValidator;
 import org.goobi.production.enums.PluginGuiType;
@@ -42,6 +43,7 @@ import de.intranda.goobi.plugins.utils.ProcessPaginator;
 import de.sub.goobi.config.ConfigPlugins;
 import de.sub.goobi.helper.BeanHelper;
 import de.sub.goobi.helper.Helper;
+import de.sub.goobi.helper.ScriptThreadWithoutHibernate;
 import de.sub.goobi.helper.StorageProvider;
 import de.sub.goobi.helper.enums.PropertyType;
 import de.sub.goobi.helper.exceptions.DAOException;
@@ -717,7 +719,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
         createProperties(process, acccountName, institutionName);
 
-        // TODO send success mail, start any automatic tasks
+
+        Step step = process.getAktuellerSchritt();
+        if (step != null && step.isTypAutomatisch()) {
+            new  ScriptThreadWithoutHibernate(step).startOrPutToQueue();
+        }
         navigation = "main";
     }
 

@@ -107,23 +107,26 @@
 
 
 
+        <h:form
+            prependId="false"
+            class=" journal__data form-validate d-grid"
+            enctype="multipart/form-data">
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newTitle'}">
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newTitle'}">
 
-            <h1 class="page__heading">
-                #{msgs.plugin_dashboard_delivery_deliverNewJournalTitleHeader}
+                <h1 class="page__heading">
+                    #{msgs.plugin_dashboard_delivery_deliverNewJournalTitleHeader}
 
-                <button
-                    type="button"
-                    class="btn page__help"
-                    data-bs-toggle="modal"
-                    data-bs-title="help title"
-                    data-bs-target="#pageHelpModal">
-                    <ui:include src="/uii/includes/icon-help.xhtml" />
-                </button>
-            </h1>
+                    <button
+                        type="button"
+                        class="btn page__help"
+                        data-bs-toggle="modal"
+                        data-bs-title="help title"
+                        data-bs-target="#pageHelpModal">
+                        <ui:include src="/uii/includes/icon-help.xhtml" />
+                    </button>
+                </h1>
 
-            <h:form styleClass="journal__data form-validate d-grid">
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
@@ -217,91 +220,76 @@
                     </ui:fragment>
                 </ui:repeat>
 
-                <button
-                    jsf:action="#{DashboardForm.plugin.createJournalTitle}"
-                    jsf:id="nextStep"
-                    class="btn btn-success grid-full-width ms-auto">
-                    <h:outputText value="#{msgs.plugin_rest_usercreation_next}" />
-                    <f:ajax
-                        render="main-area"
-                        execute="@this" />
-                </button>
 
-            </h:form>
-        </ui:fragment>
+            </ui:fragment>
 
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
+                <h1 class="page__heading">
+                    <span>#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</span>
 
-            <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</span>
-
-                <button
-                    type="button"
-                    class="btn page__help"
-                    aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
-                    data-bs-toggle="modal"
-                    data-bs-title="help title"
-                    data-bs-target="#pageHelpModal">
-                    <ui:include src="/uii/includes/icon-help.xhtml" />
-                </button>
-            </h1>
+                    <button
+                        type="button"
+                        class="btn page__help"
+                        aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                        data-bs-toggle="modal"
+                        data-bs-title="help title"
+                        data-bs-target="#pageHelpModal">
+                        <ui:include src="/uii/includes/icon-help.xhtml" />
+                    </button>
+                </h1>
 
 
-            <h:form
-                prependId="false"
-                id="issueUploadForm"
-                class="form flow"
-                enctype="multipart/form-data">
+                <div
+                    id="issueUploadForm"
+                    class="form flow">
 
-                <div class="form__icons">
-                    <ui:include src="/uii/includes/icon-file-image.xhtml" />
+                    <div class="form__icons">
+                        <ui:include src="/uii/includes/icon-file-image.xhtml" />
+                    </div>
+
+                    <p class="form__msg">#{msgs.plugin_dashboard_delivery_uploadFormMessage}</p>
+
+                    <div class="form__msg-or">#{msgs.plugin_dashboard_delivery_or}</div>
+
+                    <div class="form__actions">
+
+                        <label
+                            for="issuefile"
+                            class="sr-only">#{msgs.plugin_dashboard_delivery_uploadFormLabel}</label>
+                        <h:inputFile
+                            id="issuefile"
+                            styleClass="form-control form-control-lg"
+                            value="#{DashboardForm.plugin.file}"
+                            title="#{msgs.plugin_dashboard_delivery_ariaLabel_uploadForm}"
+                            name="file" />
+
+                        <h:commandButton
+                            id="issuesubmit"
+                            value="submit"
+                            styleClass="btn btn-primary-400" />
+                    </div>
                 </div>
 
-                <p class="form__msg">#{msgs.plugin_dashboard_delivery_uploadFormMessage}</p>
+            </ui:fragment>
 
-                <div class="form__msg-or">#{msgs.plugin_dashboard_delivery_or}</div>
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
 
-                <div class="form__actions">
+                <h1 class="page__heading">
+                    #{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}
 
-                    <label
-                        for="issuefile"
-                        class="sr-only">#{msgs.plugin_dashboard_delivery_uploadFormLabel}</label>
-                    <h:inputFile
-                        id="issuefile"
-                        styleClass="form-control form-control-lg"
-                        value="#{DashboardForm.plugin.file}"
-                        title="#{msgs.plugin_dashboard_delivery_ariaLabel_uploadForm}"
-                        name="file" />
-
-                    <h:commandButton
-                        id="issuesubmit"
-                        value="submit"
-                        styleClass="btn btn-primary-400" />
-                </div>
+                    <button
+                        type="button"
+                        class="btn page__help"
+                        data-bs-toggle="modal"
+                        data-bs-title="help title"
+                        data-bs-target="#pageHelpModal">
+                        <ui:include src="/uii/includes/icon-help.xhtml" />
+                    </button>
+                </h1>
 
 
-            </h:form>
-        </ui:fragment>
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
-
-            <h1 class="page__heading">
-                #{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}
-
-                <button
-                    type="button"
-                    class="btn page__help"
-                    data-bs-toggle="modal"
-                    data-bs-title="help title"
-                    data-bs-target="#pageHelpModal">
-                    <ui:include src="/uii/includes/icon-help.xhtml" />
-                </button>
-            </h1>
-
-            <!-- TODO add file upload area -->
-
-            <h:form styleClass="journal__data form-validate d-grid">
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
@@ -394,34 +382,25 @@
                 </ui:repeat>
 
 
-                <button
-                    jsf:action="#{DashboardForm.plugin.createJournalIssue}"
-                    jsf:id="createIssue"
-                    class="btn btn-success ms-auto">
-                    <h:outputText value="#{msgs.plugin_rest_usercreation_next}" />
-                    <f:ajax
-                        render="main-area"
-                        execute="@this" />
-                </button>
-            </h:form>
 
 
-        </ui:fragment>
+
+            </ui:fragment>
 
 
-        <!-- Required Message -->
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main' and DashboardForm.plugin.navigation!='issueupload' and DashboardForm.plugin.navigation!='titleSelection'}">
+            <!-- Required Message -->
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main' and DashboardForm.plugin.navigation!='issueupload' and DashboardForm.plugin.navigation!='titleSelection'}">
 
-            <div class="info-required">
-                <h:outputText
-                    escape="false"
-                    value="#{msgs.plugin_rest_usercreation_requiredFields}" />
-            </div>
-        </ui:fragment>
+                <div class="info-required">
+                    <h:outputText
+                        escape="false"
+                        value="#{msgs.plugin_rest_usercreation_requiredFields}" />
+                </div>
+            </ui:fragment>
 
-        <!-- Status list -->
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main' }">
-            <h:form>
+            <!-- Status list -->
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main' }">
+
                 <div class="submit">
 
                     <button
@@ -450,22 +429,48 @@
                     </ul>
 
                     <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
-                    <button
-                        jsf:action="#{DashboardForm.plugin.nextPage}"
-                        jsf:id="nextStep"
-                        class="btn btn-success">
-                        <h:outputText value="#{msgs.weiter}" />
-                        <f:ajax
-                            render="main-area globalMessage"
-                            execute="@this" />
-                    </button>
+                        <button
+                            jsf:action="#{DashboardForm.plugin.nextPage}"
+                            jsf:id="nextStep"
+                            class="btn btn-success">
+                            <h:outputText value="#{msgs.weiter}" />
+                            <f:ajax
+                                render="main-area globalMessage"
+                                execute="@this" />
+                        </button>
+                    </ui:fragment>
+                    <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newTitle'}">
+
+
+                        <button
+                            jsf:action="#{DashboardForm.plugin.createJournalTitle}"
+                            jsf:id="createJournalTitle"
+                            class="btn btn-success grid-full-width ms-auto">
+                            <h:outputText value="#{msgs.save}" />
+                            <f:ajax
+                                render="main-area"
+                                execute="@this" />
+                        </button>
+                    </ui:fragment>
+                    <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
+
+                        <button
+                            jsf:action="#{DashboardForm.plugin.createJournalIssue}"
+                            jsf:id="createIssue"
+                            class="btn btn-success ms-auto">
+                            <h:outputText value="#{msgs.save}" />
+                            <f:ajax
+                                render="main-area"
+                                execute="@this" />
+                        </button>
+
                     </ui:fragment>
 
                 </div>
 
-            </h:form>
 
-        </ui:fragment>
+            </ui:fragment>
+        </h:form>
 
 
     </composite:implementation>
