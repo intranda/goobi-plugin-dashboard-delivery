@@ -71,17 +71,26 @@ public class MetadataField {
     public boolean validateValue() {
 
         String val = value;
+
+        if (displayType.equals("combo") && getBooleanValue() && StringUtils.isBlank(value2)) {
+            fieldValid = false;
+            return false;
+        }
+
         if (StringUtils.isNotBlank(value2)) {
             val = value2;
         }
 
         if (required && StringUtils.isBlank(val)) {
+            fieldValid = false;
             return false;
         }
 
         if (StringUtils.isNotBlank(validationExpression) && StringUtils.isNotBlank(val) && !val.matches(validationExpression)) {//NOSONAR
+            fieldValid = false;
             return false;
         }
+        fieldValid = true;
         return true;
     }
 
@@ -118,10 +127,15 @@ public class MetadataField {
         String testValue = (String) obj;
         fieldValid = true;
 
+        if (displayType.equals("combo")) {
+            fieldValid = false;
+            return;
+        }
+
         // check field type, different validation for different types
         if ("person".equals(displayType)) {
             // if required, role and either firstname or lastname must be filled
-            if (required&&StringUtils.isBlank(role) || (StringUtils.isBlank(testValue) && StringUtils.isBlank(value2))) {
+            if (required && StringUtils.isBlank(role) || (StringUtils.isBlank(testValue) && StringUtils.isBlank(value2))) {
                 fieldValid = false;
 
                 // TODO if firstname or lastname is used, role must be set
@@ -234,7 +248,7 @@ public class MetadataField {
 
         //  simple field validation
 
-        if (testValue == null || StringUtils.isBlank(testValue)) {
+        if (StringUtils.isBlank(testValue)) {
             if (required) {
                 fieldValid = false;
             }

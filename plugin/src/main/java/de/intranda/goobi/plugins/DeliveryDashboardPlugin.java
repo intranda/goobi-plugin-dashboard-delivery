@@ -249,7 +249,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                         Institution inst = user.getInstitution();
                         if (replaceWith.startsWith("institution")) {
                             String val = inst.getAdditionalData().get(replaceWith);
-                            if (!"false".equals(val)) {
+                            if (!"false".equals(val) && mf.getDisplayType().equals("combo")) {
+                                mf.setBooleanValue(true);
+                                if (!"true".equals(val)) {
+                                    mf.setValue2(val);
+                                }
+                            } else {
                                 mf.setValue(val);
                             }
                         } else {
@@ -321,6 +326,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
             }
         }
+
     }
 
     public void readUserConfiguration() {
@@ -385,28 +391,33 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
                 if ("institution".equals(currentType) && name.startsWith("contact2")) {
                     contact2Data.getFields().add(mf);
-                    mf.setValue(inst.getAdditionalData().get(name));
                 } else if ("institution".equals(currentType) && name.startsWith("contact")) {
                     contactData.getFields().add(mf);
-                    mf.setValue(inst.getAdditionalData().get(name));
                 } else if ("institution".equals(currentType)) {
                     institutionData.getFields().add(mf);
-                    mf.setValue(inst.getAdditionalData().get(name));
                 } else {
                     userData.getFields().add(mf);
-                    mf.setValue(user.getAdditionalData().get(name));
+                }
+                String val = inst.getAdditionalData().get(name);
+                if (!"false".equals(val) && mf.getDisplayType().equals("combo")) {
+                    mf.setBooleanValue(true);
+                    if (!"true".equals(val)) {
+                        mf.setValue2(val);
+                    }
+                } else {
+                    mf.setValue(val);
                 }
             }
         }
         boolean secondContact = false;
-        for ( MetadataField mf : contact2Data.getFields()) {
+        for (MetadataField mf : contact2Data.getFields()) {
             if (StringUtils.isNotBlank(mf.getValue())) {
-                secondContact=true;
+                secondContact = true;
                 break;
             }
         }
         if (!secondContact) {
-            contact2Data=new FieldGrouping();
+            contact2Data = new FieldGrouping();
         }
     }
 
@@ -479,7 +490,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     public void saveInstitutionData() {
         User user = Helper.getCurrentUser();
         Institution institution = user.getInstitution();
+        boolean fieldsValid = true;
         for (MetadataField mf : institutionData.getFields()) {
+            if (!mf.validateValue()) {
+                fieldsValid = false;
+            }
             if (StringUtils.isNotBlank(mf.getAdditionalType())) {
                 if ("shortName".equals(mf.getAdditionalType())) {
                     institution.setShortName(mf.getValue());
@@ -487,10 +502,20 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                     institution.setLongName(mf.getValue());
                 }
             } else {
-                institution.getAdditionalData().put(mf.getRulesetName(), mf.getValue());
+                if (mf.getDisplayType().equals("combo") && mf.getBooleanValue()) {
+                    institution.getAdditionalData().put(mf.getRulesetName(), mf.getValue2());
+                } else {
+                    institution.getAdditionalData().put(mf.getRulesetName(), mf.getValue());
+                }
             }
         }
-        InstitutionManager.saveInstitution(institution);
+        if (fieldsValid) {
+
+            InstitutionManager.saveInstitution(institution);
+        } else {
+            navigation = "institution";
+        }
+
     }
 
     public void saveContactData() {
@@ -719,10 +744,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
         createProperties(process, acccountName, institutionName);
 
-
         Step step = process.getAktuellerSchritt();
         if (step != null && step.isTypAutomatisch()) {
-            new  ScriptThreadWithoutHibernate(step).startOrPutToQueue();
+            new ScriptThreadWithoutHibernate(step).startOrPutToQueue();
         }
         navigation = "main";
     }
