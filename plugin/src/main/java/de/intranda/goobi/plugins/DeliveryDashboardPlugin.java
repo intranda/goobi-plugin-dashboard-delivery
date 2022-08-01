@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -715,7 +717,16 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             }
             int order = 1;
 
+            long totalFileSize = 0l;
+            String fileFormat = "";
             for (Path uploadedFile : files) {
+
+                if (uploadedFile.getFileName().toString().toLowerCase().endsWith(".pdf")) {
+                    fileFormat = "PDF";
+                } else {
+                    fileFormat = "EPUB";
+                }
+                totalFileSize += Files.size(uploadedFile);
                 StorageProvider.getInstance().move(uploadedFile, Paths.get(destinationFolder.toString(), uploadedFile.getFileName().toString()));
 
                 // delete validation files or import them?
@@ -737,6 +748,16 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 physical.addChild(page);
                 logical.addReferenceTo(page, "logical_physical");
                 order = order + 1;
+            }
+            if (StringUtils.isNotBlank(fileFormat)) {
+                Metadata format = new Metadata(prefs.getMetadataTypeByName("FileFormat"));
+                format.setValue(fileFormat);
+                logical.addMetadata(format);
+            }
+            if (totalFileSize > 0) {
+                Metadata fileSize = new Metadata(prefs.getMetadataTypeByName("FileSize"));
+                fileSize.setValue(humanReadableByteCountSI(totalFileSize));
+                logical.addMetadata(fileSize);
             }
         } catch (IOException | InterruptedException | SwapException | DAOException | UGHException e) {
             log.error(e);
@@ -919,13 +940,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 Metadata sorting = new Metadata(prefs.getMetadataTypeByName("CurrentNoSorting"));
                 sorting.setValue(order);
                 docstruct.addMetadata(sorting);
-
             }
-            /* TODO: generate metadata
-            Umfang: Angabe des Umfangs unkörperlicher digitaler Medienwerke ist immer Online-Ressource. Sofern eine Seitenzählung vorhanden ist, kann dieser zusätzlich in runden Klammern angegeben werden (Beispiel: Online-Ressource (72 Seiten).
-            Dateiformat und Dateigröße: Dateiformat und –größe der  zu beschreibenden Ressource.
+            Metadata physicalDescriptionExtent = new Metadata(prefs.getMetadataTypeByName("physicalDescriptionExtent"));
+            physicalDescriptionExtent.setValue("Online-Ressource");
+            docstruct.addMetadata(physicalDescriptionExtent);
 
-             */
         } catch (UGHException e) {
             log.error(e);
         }
@@ -1332,6 +1351,18 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 // nothing
         }
         return value;
+    }
+
+    private static String humanReadableByteCountSI(long bytes) {
+        if (-1000 < bytes && bytes < 1000) {
+            return bytes + " B";
+        }
+        CharacterIterator ci = new StringCharacterIterator("kMGTPE");
+        while (bytes <= -999_950 || bytes >= 999_950) {
+            bytes /= 1000;
+            ci.next();
+        }
+        return String.format("%.1f %cB", bytes / 1000.0, ci.current());
     }
 
 }

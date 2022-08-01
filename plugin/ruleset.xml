@@ -23,6 +23,16 @@ Changelog:
     <language name="en">Data medium type</language>
   </MetadataType>
 
+  <MetadataType>
+    <Name>FileFormat</Name>
+    <language name="de">Dateiformat</language>
+    <language name="en">FileFormat</language>
+  </MetadataType>
+  <MetadataType>
+    <Name>FileSize</Name>
+    <language name="de">Dateigröße</language>
+    <language name="en">FileSize</language>
+  </MetadataType>
 
   <MetadataType>
     <Name>ActionNote</Name>
@@ -542,7 +552,7 @@ Changelog:
   </MetadataType>
   <!-- <MetadataType>
     <Name>InternalNote_Todesjahr</Name>
-    <language name="de">Todesjahr zuletzt gestorbeneR Autor:in</language>
+    <language name="de">Todesjahr zuletzt gestorbeneR Autor*in</language>
     <language name="en">Year of Death of most recently passed Author</language>
     </MetadataType>
     -->
@@ -960,6 +970,11 @@ Changelog:
     <Name>CurrentNo</Name>
     <language name="de">BandHeft-NummerJahr</language>
     <language name="en">Item number</language>
+  </MetadataType>
+  <MetadataType>
+    <Name>VolumeNo</Name>
+    <language name="de">Bandnummer</language>
+    <language name="en">Volume number</language>
   </MetadataType>
   <MetadataType>
     <Name>CurrentNoSorting</Name>
@@ -1407,6 +1422,10 @@ Changelog:
     <metadata num="1o">DataMediumType</metadata>
 
     <metadata num="1o">ActionNote</metadata>
+
+    <metadata num="1o">FileFormat</metadata>
+    <metadata num="1o">FileSize</metadata>
+
     <metadata num="1o">LegalBasis</metadata>
     <metadata num="1o">ISIL</metadata>
 
@@ -1423,6 +1442,7 @@ Changelog:
     <metadata num="*">WriterCorporate</metadata>
     <!-- vorher default sichtbar -->
     <metadata num="*">ContributorCorporate</metadata>
+    <metadata num="1o">CatalogIDDigital_DS</metadata>
     <!-- vorher default sichtbar -->
     <!--    <metadata num="*">SponsorCorporate</metadata>
 	   
@@ -1986,6 +2006,8 @@ Changelog:
     <metadata num="1o">MediaType</metadata>
     <metadata num="1o">DataMediumType</metadata>
     <metadata num="1o">ActionNote</metadata>
+    <metadata num="1o">FileFormat</metadata>
+    <metadata num="1o">FileSize</metadata>
     <metadata num="1o">LegalBasis</metadata>
     <metadata num="1o">ISIL</metadata>
 
@@ -2021,7 +2043,7 @@ Changelog:
     <!-- temporaer -->
     <metadata num="1o">PublicationYear</metadata>
     <metadata num="1o">PublicationYearISO</metadata>
-
+    <metadata num="1o">CatalogIDDigital_DS</metadata>
     <metadata num="*">physicalDescriptionExtent</metadata>
     <metadata num="1o">SizeSourcePrint</metadata>
     <!-- Feld-Metadaten -->
@@ -2173,6 +2195,8 @@ Changelog:
     <metadata num="1o">MediaType</metadata>
     <metadata num="1o">DataMediumType</metadata>
     <metadata num="1o">ActionNote</metadata>
+    <metadata num="1o">FileFormat</metadata>
+    <metadata num="1o">FileSize</metadata>
     <metadata num="1o">LegalBasis</metadata>
     <metadata num="1o">ISIL</metadata>
     <!-- Personen und Koerperschaften -->
@@ -2204,7 +2228,7 @@ Changelog:
     <!-- temporaer -->
     <metadata num="1o">PublicationYear</metadata>
     <metadata num="1o">PublicationYearISO</metadata>
-
+    <metadata num="1o">CatalogIDDigital_DS</metadata>
     <metadata num="*">physicalDescriptionExtent</metadata>
     <metadata num="1o">SizeSourcePrint</metadata>
     <!-- Feld-Metadaten -->
@@ -2373,6 +2397,7 @@ Changelog:
     <!-- Angaben zur Entstehung -->
     <metadata DefaultDisplay="true" num="1m">PublicationYear</metadata>
     <metadata DefaultDisplay="true" num="1m">CurrentNo</metadata>
+    <metadata DefaultDisplay="true" num="1m">VolumeNo</metadata>
     <metadata DefaultDisplay="true" num="1m">CurrentNoSorting</metadata>
     <metadata DefaultDisplay="true" num="1o">PartNumber</metadata>
 
@@ -2387,9 +2412,11 @@ Changelog:
     <metadata num="1o">MediaType</metadata>
     <metadata num="1o">DataMediumType</metadata>
     <metadata num="1o">ActionNote</metadata>
+    <metadata num="1o">FileFormat</metadata>
+    <metadata num="1o">FileSize</metadata>
     <metadata num="1o">LegalBasis</metadata>
     <metadata num="1o">ISIL</metadata>
-
+    <metadata num="1o">CatalogIDDigital_DS</metadata>
     <!-- Personen und Koerperschaften -->
     <metadata num="*">Author</metadata>
     <metadata num="*">BearbHrsg</metadata>
