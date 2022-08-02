@@ -759,7 +759,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 fileSize.setValue(humanReadableByteCountSI(totalFileSize));
                 logical.addMetadata(fileSize);
             }
-        } catch (IOException | InterruptedException | SwapException | DAOException | UGHException e) {
+        } catch (IOException | SwapException | UGHException e) {
             log.error(e);
         }
 
@@ -991,7 +991,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
             }
 
-        } catch (IOException | InterruptedException | SwapException | DAOException e) {
+        } catch (IOException | SwapException e) {
             log.error(e);
         }
     }
