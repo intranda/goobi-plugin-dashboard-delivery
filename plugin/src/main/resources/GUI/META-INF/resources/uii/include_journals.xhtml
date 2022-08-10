@@ -435,15 +435,15 @@
                     <button
                         jsf:action="#{DashboardForm.plugin.previousPage}"
                         jsf:id="backToMain"
-                        class="btn btn-blank">
+                        class="btn btn-blank me-auto">
                         <h:outputText value="#{msgs.plugin_rest_usercreation_back}" />
                         <f:ajax
                             render="main-area"
                             execute="@this" />
                     </button>
-                    <ul class="statuslist">
                         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload' or DashboardForm.plugin.navigation=='newIssue'}">
 
+                        <ul class="statuslist">
                             <li class="#{DashboardForm.plugin.navigation=='issueupload'?'active':'finished'} ">
                                 <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
                                     <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
@@ -454,8 +454,8 @@
                                     <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
                                 </h:panelGroup>
                             </li>
+                            </ul>
                         </ui:fragment>
-                    </ul>
 
                     <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
                         <button
