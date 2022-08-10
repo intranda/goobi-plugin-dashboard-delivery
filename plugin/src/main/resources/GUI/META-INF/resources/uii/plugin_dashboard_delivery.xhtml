@@ -43,6 +43,11 @@
             id="main-area"
             class="deliveryPlugin flow"
             >
+
+
+            <ui:include src="includes/helpModalsDD.xhtml" />
+
+
             <!-- main area, select document type -->
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='main'}">
 
@@ -268,5 +273,9 @@
             </ui:fragment>
 
         </h:panelGroup>
+
+
     </ui:define>
+
+
 </ui:composition>
