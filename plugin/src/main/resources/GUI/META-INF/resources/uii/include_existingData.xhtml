@@ -18,20 +18,26 @@
     <composite:implementation>
 
         <script type="text/javascript">
-                                    function switchExpanded( id ) {
-                                        console.log( "called by: " + id );
-                                        var x = document.getElementById( id ).getAttribute( "aria-expanded" );
-                                        console.log( x )
-                                        if ( x == "true" ) {
-                                            x = "false"
-                                        }
-                                        else {
-                                            x = "true"
-                                        }
-                                        document.getElementById( id ).setAttribute( "aria-expanded", x );
-                                    }
-                                </script>
+            function switchExpanded( id ) {
+                console.log( "called by: " + id );
+                var x = document.getElementById( id ).getAttribute( "aria-expanded" );
+                console.log( x )
+                if ( x == "true" ) {
+                    x = "false"
+                }
+                else {
+                    x = "true"
+                }
+                document.getElementById( id ).setAttribute( "aria-expanded", x );
+            }
+        </script>
 
+        <ui:include src="includes/helpModalsDD.xhtml">
+            <ui:param name="header" value="plugin_dashboard_delivery_existingData_helpHeader" />
+            <ui:param name="body1" value="plugin_dashboard_delivery_existingData_helpBody1" />
+            <ui:param name="body2" value="plugin_dashboard_delivery_existingData_helpBody2" />
+            <ui:param name="img" value="plugin_dashboard_delivery_existingData_helpImg" />
+        </ui:include>
 
         <h1 class="page__heading">
             #{msgs.plugin_dashboard_delivery_deliverShowExistingDataHeader}

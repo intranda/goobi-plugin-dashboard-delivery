@@ -85,6 +85,14 @@
         <!-- User options => panel view -->
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata'}">
 
+
+          <ui:include src="includes/helpModalsDD.xhtml">
+              <ui:param name="header" value="plugin_dashboard_delivery_userdata_options_helpHeader" />
+              <ui:param name="body1" value="plugin_dashboard_delivery_userdata_options_helpBody1" />
+              <ui:param name="body2" value="plugin_dashboard_delivery_userdata_options_helpBody2" />
+              <ui:param name="img" value="plugin_dashboard_delivery_userdata_options_helpImg" />
+          </ui:include>
+
             <h:form>
                 <div class="common-region common-region--no-borders common-region--three-cols">
 
@@ -169,6 +177,13 @@
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
 
+              <ui:include src="includes/helpModalsDD.xhtml">
+                  <ui:param name="header" value="plugin_dashboard_delivery_userdata_user_helpHeader" />
+                  <ui:param name="body1" value="plugin_dashboard_delivery_userdata_user_helpBody1" />
+                  <ui:param name="body2" value="plugin_dashboard_delivery_userdata_user_helpBody2" />
+                  <ui:param name="img" value="plugin_dashboard_delivery_userdata_user_helpImg" />
+              </ui:include>
+
                 <span class="common-region">
                     <ui:repeat
                         var="field"
@@ -199,12 +214,20 @@
             </ui:fragment>
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
+
+              <ui:include src="includes/helpModalsDD.xhtml">
+                  <ui:param name="header" value="plugin_dashboard_delivery_userdata_institution_helpHeader" />
+                  <ui:param name="body1" value="plugin_dashboard_delivery_userdata_institution_helpBody1" />
+                  <ui:param name="body2" value="plugin_dashboard_delivery_userdata_institution_helpBody2" />
+                  <ui:param name="img" value="plugin_dashboard_delivery_userdata_institution_helpImg" />
+              </ui:include>
+
                 <span class="common-region">
                     <ui:repeat
                         var="field"
                         value="#{DashboardForm.plugin.institutionData.fields}"
                         varStatus="status">
-                        
+
                         <h:panelGroup
                             id="grp"
                             styleClass="#{status.index == 1 ? 'column-start':''}">
@@ -231,6 +254,13 @@
 
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
+
+              <ui:include src="includes/helpModalsDD.xhtml">
+                  <ui:param name="header" value="plugin_dashboard_delivery_userdata_contact_helpHeader" />
+                  <ui:param name="body1" value="plugin_dashboard_delivery_userdata_contact_helpBody1" />
+                  <ui:param name="body2" value="plugin_dashboard_delivery_userdata_contact_helpBody2" />
+                  <ui:param name="img" value="plugin_dashboard_delivery_userdata_contact_helpImg" />
+              </ui:include>
 
                 <span class="common-region">
                     <ui:repeat

@@ -1,0 +1,48 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:x="http://myfaces.apache.org/tomahawk"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:zlb="http://xmlns.jcp.org/jsf/composite/composites"
+    >
+
+    <composite:interface>
+    </composite:interface>
+
+    <composite:implementation>
+
+
+    <!--
+    MAKE IT SO:
+
+    <ui:include src="includes/helpModalsDD.xhtml">
+        <ui:param name="header" value="plugin_dashboard_delivery_monograph_upload_helpHeader" />
+        <ui:param name="body1" value="plugin_dashboard_delivery_monograph_upload_helpBody1" />
+        <ui:param name="body2" value="plugin_dashboard_delivery_monograph_upload_helpBody2" />
+        <ui:param name="img" value="plugin_dashboard_delivery_monograph_upload_helpImg" />
+    </ui:include>
+    -->
+
+
+    <zlb:modal
+      modalId="pageHelpModal"
+      modalTitle="#{msgs[header]}">
+
+      <p class="page-help__body">#{msgs[body1]}</p>
+      <div class="page-help__img">
+          <h:outputText escape="false" value="#{msgs[img]}" />
+      </div>
+      <p class="page-help__body2">#{msgs[body2]}</p>
+
+    </zlb:modal>
+
+
+    </composite:implementation>
+
+
+</ui:composition>

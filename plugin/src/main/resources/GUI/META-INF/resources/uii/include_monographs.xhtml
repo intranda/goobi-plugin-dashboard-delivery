@@ -19,6 +19,13 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='data1'}">
 
+            <ui:include src="includes/helpModalsDD.xhtml">
+                <ui:param name="header" value="plugin_dashboard_delivery_monograph_data1_helpHeader" />
+                <ui:param name="body1" value="plugin_dashboard_delivery_monograph_data1_helpBody1" />
+                <ui:param name="body2" value="plugin_dashboard_delivery_monograph_data1_helpBody2" />
+                <ui:param name="img" value="plugin_dashboard_delivery_monograph_data1_helpImg" />
+            </ui:include>
+
             <h1 class="page__heading">
                 #{msgs.plugin_dashboard_delivery_deliverMonographHeader}
 
@@ -131,6 +138,13 @@
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='data2'}">
+
+            <ui:include src="includes/helpModalsDD.xhtml">
+                <ui:param name="header" value="plugin_dashboard_delivery_monograph_data2_helpHeader" />
+                <ui:param name="body1" value="plugin_dashboard_delivery_monograph_data2_helpBody1" />
+                <ui:param name="body2" value="plugin_dashboard_delivery_monograph_data2_helpBody2" />
+                <ui:param name="img" value="plugin_dashboard_delivery_monograph_data2_helpImg" />
+            </ui:include>
 
             <h1 class="page__heading">
                 #{msgs.plugin_dashboard_delivery_deliverMonographHeader}
@@ -249,6 +263,14 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='data3'}">
 
+
+            <ui:include src="includes/helpModalsDD.xhtml">
+                <ui:param name="header" value="plugin_dashboard_delivery_monograph_data3_helpHeader" />
+                <ui:param name="body1" value="plugin_dashboard_delivery_monograph_data3_helpBody1" />
+                <ui:param name="body2" value="plugin_dashboard_delivery_monograph_data3_helpBody2" />
+                <ui:param name="img" value="plugin_dashboard_delivery_monograph_data3_helpImg" />
+            </ui:include>
+
             <h1 class="page__heading">
                 #{msgs.plugin_dashboard_delivery_deliverMonographHeader}
 
@@ -362,6 +384,13 @@
         </ui:fragment>
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='overview'}">
+
+            <ui:include src="includes/helpModalsDD.xhtml">
+                <ui:param name="header" value="plugin_dashboard_delivery_monograph_overview_helpHeader" />
+                <ui:param name="body1" value="plugin_dashboard_delivery_monograph_overview_helpBody1" />
+                <ui:param name="body2" value="plugin_dashboard_delivery_monograph_overview_helpBody2" />
+                <ui:param name="img" value="plugin_dashboard_delivery_monograph_overview_helpImg" />
+            </ui:include>
 
             <h1 class="page__heading">
                 #{msgs.plugin_dashboard_delivery_deliverMonographHeader}

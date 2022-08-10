@@ -19,6 +19,13 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='titleSelection'}">
 
+            <ui:include src="includes/helpModalsDD.xhtml">
+                <ui:param name="header" value="plugin_dashboard_delivery_journals_new_helpHeader" />
+                <ui:param name="body1" value="plugin_dashboard_delivery_journals_new_helpBody1" />
+                <ui:param name="body2" value="plugin_dashboard_delivery_journals_new_helpBody2" />
+                <ui:param name="img" value="plugin_dashboard_delivery_journals_new_helpImg" />
+            </ui:include>
+
             <!-- breadcrumb area -->
             <ui:define name="breadcrumb">
                 <intranda:breadcrumb
@@ -113,6 +120,13 @@
             enctype="multipart/form-data">
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newTitle'}">
+
+                <ui:include src="includes/helpModalsDD.xhtml">
+                    <ui:param name="header" value="plugin_dashboard_delivery_journals_newTitle_helpHeader" />
+                    <ui:param name="body1" value="plugin_dashboard_delivery_journals_newTitle_helpBody1" />
+                    <ui:param name="body2" value="plugin_dashboard_delivery_journals_newTitle_helpBody2" />
+                    <ui:param name="img" value="plugin_dashboard_delivery_journals_newTitle_helpImg" />
+                </ui:include>
 
                 <h1 class="page__heading">
                     #{msgs.plugin_dashboard_delivery_deliverNewJournalTitleHeader}
@@ -225,6 +239,14 @@
 
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
+
+                <ui:include src="includes/helpModalsDD.xhtml">
+                    <ui:param name="header" value="plugin_dashboard_delivery_journals_issueupload_helpHeader" />
+                    <ui:param name="body1" value="plugin_dashboard_delivery_journals_issueupload_helpBody1" />
+                    <ui:param name="body2" value="plugin_dashboard_delivery_journals_issueupload_helpBody2" />
+                    <ui:param name="img" value="plugin_dashboard_delivery_journals_issueupload_helpImg" />
+                </ui:include>
+
                 <h1 class="page__heading">
                     <span>#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</span>
 
@@ -274,6 +296,13 @@
             </ui:fragment>
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
+
+                <ui:include src="includes/helpModalsDD.xhtml">
+                    <ui:param name="header" value="plugin_dashboard_delivery_journals_newIssue_helpHeader" />
+                    <ui:param name="body1" value="plugin_dashboard_delivery_journals_newIssue_helpBody1" />
+                    <ui:param name="body2" value="plugin_dashboard_delivery_journals_newIssue_helpBody2" />
+                    <ui:param name="img" value="plugin_dashboard_delivery_journals_newIssue_helpImg" />
+                </ui:include>
 
                 <h1 class="page__heading">
                     #{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}

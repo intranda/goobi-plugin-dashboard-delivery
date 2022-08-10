@@ -45,11 +45,16 @@
             >
 
 
-            <ui:include src="includes/helpModalsDD.xhtml" />
-
 
             <!-- main area, select document type -->
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='main'}">
+
+              <ui:include src="includes/helpModalsDD.xhtml">
+                  <ui:param name="header" value="plugin_dashboard_delivery_main_helpHeader" />
+                  <ui:param name="body1" value="plugin_dashboard_delivery_main_helpBody1" />
+                  <ui:param name="body2" value="plugin_dashboard_delivery_main_helpBody2" />
+                  <ui:param name="img" value="plugin_dashboard_delivery_main_helpImg" />
+              </ui:include>
 
                 <h1 class="page__heading">
                   <h:outputFormat value="#{msgs['plugin_dashboard_delivery_wellcomeMessage']}">
@@ -193,10 +198,17 @@
             </ui:fragment>
 
 
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='upload'}">
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='upload'}">
+
+        <ui:include src="includes/helpModalsDD.xhtml">
+            <ui:param name="header" value="plugin_dashboard_delivery_monograph_upload_helpHeader" />
+            <ui:param name="body1" value="plugin_dashboard_delivery_monograph_upload_helpBody1" />
+            <ui:param name="body2" value="plugin_dashboard_delivery_monograph_upload_helpBody2" />
+            <ui:param name="img" value="plugin_dashboard_delivery_monograph_upload_helpImg" />
+        </ui:include>
 
 				<h1 class="page__heading">
-                    <span>#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</span>
+          <span>#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</span>
 
 					<button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
 					  <ui:include src="/uii/includes/icon-help.xhtml" />
