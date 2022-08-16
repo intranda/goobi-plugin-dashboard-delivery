@@ -200,6 +200,7 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='upload'}">
 
+
         <ui:include src="includes/helpModalsDD.xhtml">
             <ui:param name="header" value="plugin_dashboard_delivery_monograph_upload_helpHeader" />
             <ui:param name="body1" value="plugin_dashboard_delivery_monograph_upload_helpBody1" />
@@ -216,23 +217,28 @@
 				</h1>
 
 
-                <h:form
-                    prependId="false"
-                    id="uploadForm"
-                    class="form flow"
-                    enctype="multipart/form-data">
 
-					<div class="form__icons">
-						<ui:include src="/uii/includes/icon-file-image.xhtml" />
-					</div>
+        <h:form
+            prependId="false"
+            id="uploadForm"
+            class="form flow"
+            enctype="multipart/form-data">
 
-					<p class="form__msg">#{msgs.plugin_dashboard_delivery_uploadFormMessage}</p>
+            <!-- Icons -->
+            <div class="form__icons">
+              <ui:include src="/uii/includes/icon-file-image.xhtml" />
+            </div>
+            <div class="form__icons d-none">
+              <ui:include src="/uii/includes/icon-file-upload.xhtml" />
+            </div>
 
-					<div class="form__msg-or">
-						#{msgs.plugin_dashboard_delivery_or}
-					</div>
+            <!-- Messages -->
+            <p class="form__msg">#{msgs.plugin_dashboard_delivery_uploadFormMessage}</p>
+            <div class="form__msg-or">
+              #{msgs.plugin_dashboard_delivery_or}
+            </div>
+            <p class="form__file-name d-none"></p>
 
-					<div class="form__actions">
 
             <label for="file" class="sr-only">#{msgs.plugin_dashboard_delivery_uploadFormLabel}</label>
             <h:inputFile
@@ -242,15 +248,31 @@
                 title="#{msgs.plugin_dashboard_delivery_ariaLabel_uploadForm}"
                 name="file" />
 
-            <h:commandButton
+					<div class="form__actions">
+
+            <button type="button" class="fake-btn fake-btn--browse btn btn-primary-400">#{msgs.plugin_dashboard_delivery_uploadFormBtn}</button>
+            <button type="button" class="fake-btn fake-btn--send btn btn-outline-secondary" disabled="disabled">#{msgs.plugin_dashboard_delivery_uploadFormSend}</button>
+
+
+          <h:commandButton
                 id="submit"
-                value="submit"
-                styleClass="btn btn-primary-400"
+                value="senden"
+                styleClass="btn btn-primary-400 d-none"
                 />
 					</div>
 
 
-                </h:form>
+        </h:form>
+
+          <!-- Frontend: handle submit of documents -->
+          <script
+            type="text/javascript"
+            src="#{HelperForm.applicationWebsiteUrl}uii/template/assets/js/fileUpload.js">
+          </script>
+          <script>
+            fileUpload.init({DSForm: '#file', DSSubmit: '#submit'})
+          </script>
+
             </ui:fragment>
 
             <ui:fragment
