@@ -292,6 +292,7 @@
 
                     <div class="form__actions">
                         <button type="button" class="fake-btn fake-btn--browse btn btn-primary-400">#{msgs.plugin_dashboard_delivery_uploadFormBtn}</button>
+                        <button type="button" aria-label="" class="btn btn-accent" data-bs-toggle="modal" data-bs-title="" data-bs-target="#modalUploadUrl">Upload URL</button>
                         <button type="button" class="fake-btn fake-btn--send btn btn-outline-secondary" disabled="disabled">#{msgs.plugin_dashboard_delivery_uploadFormSend}</button>
 
                         <h:commandButton
@@ -302,6 +303,7 @@
                     </div>
                 </div>
 
+
                   <!-- Frontend: handle submit of documents -->
                   <script
                     type="text/javascript"
@@ -310,7 +312,11 @@
                   <script>
                       fileUpload.init({DSForm: '#issuefile', DSSubmit: '#issuesubmit'})
                   </script>
-                    </ui:fragment>
+
+                <!-- URL upload -->
+                <zlb:urlUploadModal />
+
+            </ui:fragment>
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
 
