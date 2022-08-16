@@ -217,27 +217,27 @@
 				</h1>
 
 
+
         <h:form
             prependId="false"
             id="uploadForm"
             class="form flow"
             enctype="multipart/form-data">
 
+            <!-- Icons -->
             <div class="form__icons">
               <ui:include src="/uii/includes/icon-file-image.xhtml" />
             </div>
-
             <div class="form__icons d-none">
               <ui:include src="/uii/includes/icon-file-upload.xhtml" />
             </div>
 
+            <!-- Messages -->
             <p class="form__msg">#{msgs.plugin_dashboard_delivery_uploadFormMessage}</p>
-
-            <p class="form__file-name d-none"></p>
-
             <div class="form__msg-or">
               #{msgs.plugin_dashboard_delivery_or}
             </div>
+            <p class="form__file-name d-none"></p>
 
 
             <label for="file" class="sr-only">#{msgs.plugin_dashboard_delivery_uploadFormLabel}</label>
@@ -262,7 +262,7 @@
 					</div>
 
 
-                </h:form>
+        </h:form>
 
           <!-- Frontend: handle submit of documents -->
           <script
@@ -270,7 +270,7 @@
             src="#{HelperForm.applicationWebsiteUrl}uii/template/assets/js/fileUpload.js">
           </script>
           <script>
-            fileUpload.init()
+            fileUpload.init({DSForm: '#file', DSSubmit: '#submit'})
           </script>
 
             </ui:fragment>

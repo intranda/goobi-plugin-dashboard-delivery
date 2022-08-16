@@ -267,34 +267,50 @@
                     id="issueUploadForm"
                     class="form flow">
 
+                    <!-- Icons -->
                     <div class="form__icons">
                         <ui:include src="/uii/includes/icon-file-image.xhtml" />
                     </div>
+                    <div class="form__icons d-none">
+                      <ui:include src="/uii/includes/icon-file-upload.xhtml" />
+                    </div>
 
+                    <!-- Messages -->
                     <p class="form__msg">#{msgs.plugin_dashboard_delivery_uploadFormMessage}</p>
-
                     <div class="form__msg-or">#{msgs.plugin_dashboard_delivery_or}</div>
+                    <p class="form__file-name d-none"></p>
+
+                    <label
+                        for="issuefile"
+                        class="sr-only">#{msgs.plugin_dashboard_delivery_uploadFormLabel}</label>
+                    <h:inputFile
+                        id="issuefile"
+                        styleClass="form-control form-control-lg"
+                        value="#{DashboardForm.plugin.file}"
+                        title="#{msgs.plugin_dashboard_delivery_ariaLabel_uploadForm}"
+                        name="file" />
 
                     <div class="form__actions">
-
-                        <label
-                            for="issuefile"
-                            class="sr-only">#{msgs.plugin_dashboard_delivery_uploadFormLabel}</label>
-                        <h:inputFile
-                            id="issuefile"
-                            styleClass="form-control form-control-lg"
-                            value="#{DashboardForm.plugin.file}"
-                            title="#{msgs.plugin_dashboard_delivery_ariaLabel_uploadForm}"
-                            name="file" />
+                        <button type="button" class="fake-btn fake-btn--browse btn btn-primary-400">#{msgs.plugin_dashboard_delivery_uploadFormBtn}</button>
+                        <button type="button" class="fake-btn fake-btn--send btn btn-outline-secondary" disabled="disabled">#{msgs.plugin_dashboard_delivery_uploadFormSend}</button>
 
                         <h:commandButton
                             id="issuesubmit"
                             value="submit"
-                            styleClass="btn btn-primary-400" />
+                            styleClass="btn btn-primary-400 d-none"
+                            />
                     </div>
                 </div>
 
-            </ui:fragment>
+                  <!-- Frontend: handle submit of documents -->
+                  <script
+                    type="text/javascript"
+                    src="#{HelperForm.applicationWebsiteUrl}uii/template/assets/js/fileUpload.js">
+                  </script>
+                  <script>
+                      fileUpload.init({DSForm: '#issuefile', DSSubmit: '#issuesubmit'})
+                  </script>
+                    </ui:fragment>
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
 
