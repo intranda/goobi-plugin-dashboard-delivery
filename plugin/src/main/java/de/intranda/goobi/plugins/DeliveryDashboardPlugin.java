@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,6 +156,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     @Setter
     private String searchValue;
 
+    // metadata to display
+    @Getter
+    private List<String> metadataDisplayList= new ArrayList<>();
+
+
     public DeliveryDashboardPlugin() {
         try {
             temporaryFolder = Files.createTempDirectory("delivery");
@@ -169,6 +175,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         config.setExpressionEngine(new XPathExpressionEngine());
         configuredGroups.clear();
         additionalMetadata.clear();
+
+        metadataDisplayList = Arrays.asList(config.getStringArray("/metadata"));
+
+
+
         vocabularyUrl = config.getString("/vocabularyServerUrl"); //NOSONAR
 
         monographicDocType = config.getString("/doctypes/monographic", "Monograph");

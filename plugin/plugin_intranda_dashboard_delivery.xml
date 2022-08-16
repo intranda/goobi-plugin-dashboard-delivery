@@ -17,11 +17,11 @@
 
     <processtemplates>
         <!-- process template for monogrpaphic items -->
-        <monograph>Standard</monograph>
+        <monograph>Datenablieferung</monograph>
         <!-- process template to register ZDB title data -->
         <zdbTitle>ZDB_template</zdbTitle>
         <!-- process template for issues-->
-        <journal>Standard</journal>
+        <journal>Datenablieferung</journal>
     </processtemplates>
 
 
@@ -297,6 +297,36 @@ field: individual input field
 
 
     </additionalMetadata>
+
+
+
+    <!-- metadata to display in process list -->
+    <metadata>TitleDocMain</metadata>
+    <metadata>TitleDocSub1</metadata>
+    <metadata>PublicationYear</metadata>
+    <metadata>DocLanguage</metadata>
+    <metadata>OtherCorporate</metadata>
+    <metadata>Copyright</metadata>
+    <metadata>AccessLicense</metadata>
+    <metadata>Author</metadata>
+    <metadata>ActionNote</metadata>
+    <metadata>CatalogIDDigital</metadata>
+    <metadata>DDC</metadata>
+    <metadata>Edition</metadata>
+    <metadata>FSK</metadata>
+    <metadata>ISSN</metadata>
+    <metadata>ISBN</metadata>
+    <metadata>ISMN</metadata>
+    <metadata>UPC</metadata>
+    <metadata>EAN</metadata>
+    <metadata>OrderNumber</metadata>
+    <metadata>DOI</metadata>
+    <metadata>URN</metadata>
+    <metadata>Handle</metadata>
+    <metadata>Identifikation</metadata>
+    <metadata>NoteStatementOfResponsibility</metadata>
+    <metadata>PublisherCorporate</metadata>
+    <metadata>PublisherName</metadata>
 
 
 </config_plugin>

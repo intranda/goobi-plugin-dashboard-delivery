@@ -231,25 +231,23 @@
                                 <!-- Embedded Metadata -->
                                 <td>
                                     <table>
-                                        <ui:repeat
-                                            var="metadata"
-                                            value="#{item.metadataList}"
-                                            varStatus="metadatastatus"
-                                            id="metadatalist">
-                                            <h:panelGroup rendered="#{metadata.one != 'DocStruct' and metadata.one != 'index.Titel'}">
-
-                                                <tr>
-                                                    <td
-                                                        class="fw-bold"
-                                                        style="border: none !important; padding: 2px; vertical-align: top;">
-                                                        <h:outputText value="#{msgs['plugin_administration_deliveryManagement_process_grid_'.concat(metadata.one)]}:" />
-                                                    </td>
-                                                    <td style="border: none !important; padding: 2px; white-space: normal;">
-                                                        <h:outputText value="#{metadata.two}" />
-                                                    </td>
-                                                </tr>
-                                            </h:panelGroup>
-                                        </ui:repeat>
+                                    <ui:repeat
+                                        var="metadata"
+                                        value="#{DashboardForm.plugin.metadataDisplayList}"
+                                        varStatus="metadatastatus">
+                                        <ui:fragment rendered="#{item.getMetadataValue(metadata) != ''}">
+                                            <tr>
+                                                <td class="fw-bold" style="border: none !important; padding: 2px; vertical-align: top;">
+                                                    <h:outputText value="#{msgs['process_grid_'.concat(metadata)]}:" />
+                                                </td>
+                                                <td style="border: none !important; padding: 2px; white-space: normal;">
+                                                    <h:outputText value="#{item.getMetadataValue(metadata)}" />
+                                                </td>
+                                            </tr>
+                                        </ui:fragment>
+                                    </ui:repeat>
+                                    
+                                        
                                     </table>
                                 </td>
 
