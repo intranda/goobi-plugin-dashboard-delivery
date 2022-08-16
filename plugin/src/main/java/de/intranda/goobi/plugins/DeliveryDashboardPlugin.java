@@ -2,6 +2,7 @@ package de.intranda.goobi.plugins;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,6 +27,11 @@ import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.goobi.api.mail.SendMail;
 import org.goobi.beans.Institution;
 import org.goobi.beans.Process;
@@ -163,6 +169,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     // metadata to display
     @Getter
     private List<String> metadataDisplayList = new ArrayList<>();
+
+    @Getter
+    @Setter
+    private String downloadUrl;
 
     private String registrationMailRecipient;
     private String registrationMailSubject;
@@ -552,6 +562,42 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         InstitutionManager.saveInstitution(institution);
     }
 
+    public void downloadFile() {
+        if (StringUtils.isBlank(downloadUrl)) {
+            return;
+        }
+        String fileName = "";
+        try {
+            Path destination = Paths.get(temporaryFolder.toString(), fileName);
+
+            CloseableHttpClient httpclient = HttpClientBuilder.create().build();
+
+            OutputStream out = Files.newOutputStream(destination);
+            HttpGet method =  new HttpGet(downloadUrl);
+            //            byte[] response = httpclient.execute(method, HttpClientHelper.byteArrayResponseHandler);
+            //            if (response == null) {
+            //                log.error("Response stream is null");
+            //            }
+            //            InputStream     istr = new ByteArrayInputStream(response);
+
+
+            CloseableHttpResponse resp=  httpclient.execute(method);
+            Header[] header =   resp.getHeaders("Content-Disposition");
+
+
+            InputStream istr = resp.getEntity().getContent();
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = istr.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+        } catch (IOException e) {
+            log.error(e);
+        }
+
+    }
+
     public void save() {
         if (file == null) {
             // no file selected, abort
@@ -586,6 +632,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 return;
             }
             files.add(destination);
+            Helper.setMeldung("plugin_dashboard_delivery_info_uploadSuccessful");
         } catch (IOException e) {
             log.error(e);
         }
