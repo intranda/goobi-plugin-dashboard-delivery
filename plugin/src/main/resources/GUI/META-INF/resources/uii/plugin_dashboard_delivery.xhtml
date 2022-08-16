@@ -224,23 +224,12 @@
             class="form flow"
             enctype="multipart/form-data">
 
-            <!-- Icons -->
-            <div class="form__icons">
-              <ui:include src="/uii/includes/icon-file-image.xhtml" />
-            </div>
-            <div class="form__icons d-none">
-              <ui:include src="/uii/includes/icon-file-upload.xhtml" />
-            </div>
-
-            <!-- Messages -->
-            <p class="form__msg">#{msgs.plugin_dashboard_delivery_uploadFormMessage}</p>
-            <div class="form__msg-or">
-              #{msgs.plugin_dashboard_delivery_or}
-            </div>
-            <p class="form__file-name d-none"></p>
 
 
-            <label for="file" class="sr-only">#{msgs.plugin_dashboard_delivery_uploadFormLabel}</label>
+          <zlb:uploadFormIcons />
+          <zlb:uploadFormMessages />
+
+          <label for="file" class="sr-only">#{msgs.plugin_dashboard_delivery_uploadFormLabel}</label>
             <h:inputFile
                 id="file"
                 styleClass="form-control form-control-lg"
@@ -249,19 +238,14 @@
                 name="file" />
 
 					<div class="form__actions">
+            <zlb:uploadFormButtons />
 
-            <button type="button" class="fake-btn fake-btn--browse btn btn-primary-400">#{msgs.plugin_dashboard_delivery_uploadFormBtn}</button>
-            <button type="button" aria-label="" class="btn btn-accent" data-bs-toggle="modal" data-bs-title="" data-bs-target="#modalUploadUrl">Upload URL</button>
-            <button type="button" class="fake-btn fake-btn--send btn btn-outline-secondary" disabled="disabled">#{msgs.plugin_dashboard_delivery_uploadFormSend}</button>
-
-          <h:commandButton
+            <h:commandButton
                 id="submit"
                 value="senden"
                 styleClass="btn btn-primary-400 d-none"
                 />
 					</div>
-
-
         </h:form>
 
           <!-- Frontend: handle submit of documents -->
