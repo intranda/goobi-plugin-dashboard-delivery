@@ -26,6 +26,7 @@ import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.lang.StringUtils;
+import org.goobi.api.mail.SendMail;
 import org.goobi.beans.Institution;
 import org.goobi.beans.Process;
 import org.goobi.beans.Processproperty;
@@ -79,6 +80,9 @@ import ugh.fileformats.mets.MetsMods;
 @PluginImplementation
 @Log4j2
 public class DeliveryDashboardPlugin implements IDashboardPlugin {
+
+    private static final String NEWLINE = "<br />";
+    private static final String COLON = ": ";
 
     public static String vocabularyUrl; //NOSONAR
 
@@ -158,8 +162,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     // metadata to display
     @Getter
-    private List<String> metadataDisplayList= new ArrayList<>();
+    private List<String> metadataDisplayList = new ArrayList<>();
 
+    private String registrationMailRecipient;
+    private String registrationMailSubject;
+    private String registrationMailBody;
 
     public DeliveryDashboardPlugin() {
         try {
@@ -178,8 +185,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
         metadataDisplayList = Arrays.asList(config.getStringArray("/metadata"));
 
-
-
         vocabularyUrl = config.getString("/vocabularyServerUrl"); //NOSONAR
 
         monographicDocType = config.getString("/doctypes/monographic", "Monograph");
@@ -191,6 +196,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         monographTemplateName = config.getString("/processtemplates/monograph");
         journalTemplateName = config.getString("/processtemplates/journal");
         zdbProcessTemplateName = config.getString("/processtemplates/zdbTitle");
+
+        registrationMailRecipient = config.getString("/zdbTitle/recipient");
+        registrationMailSubject = config.getString("/zdbTitle/subject");
+        registrationMailBody = config.getString("/zdbTitle/body");
 
         List<HierarchicalConfiguration> groups = config.configurationsAt("/group");
 
@@ -1145,8 +1154,29 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
         createProperties(process, acccountName, institutionName);
 
-        // TODO send mail to zlb staff
+        if (StringUtils.isNotBlank(registrationMailRecipient) && StringUtils.isNotBlank(registrationMailBody)) {
+            String subject = Helper.getTranslation(registrationMailSubject);
+            String body = Helper.getTranslation(registrationMailBody);
 
+            StringBuilder sb = new StringBuilder();
+            sb.append(NEWLINE);
+            sb.append(NEWLINE);
+
+            try {
+                for (Metadata md : fileformat.getDigitalDocument().getLogicalDocStruct().getAllMetadata()) {
+
+                    sb.append(md.getType().getLanguage(Helper.getMetadataLanguage()));
+                    sb.append(COLON);
+                    sb.append(md.getValue());
+                    sb.append(NEWLINE);
+
+                }
+            } catch (PreferencesException e) {
+                log.error(e);
+            }
+
+            SendMail.getInstance().sendMailToUser(subject, body + NEWLINE + sb.toString(), registrationMailRecipient);
+        }
         navigation = "main";
     }
 

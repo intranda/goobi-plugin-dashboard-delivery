@@ -299,6 +299,12 @@ field: individual input field
     </additionalMetadata>
 
 
+    <zdbTitle>
+        <recipient>robert@intranda.com</recipient>
+        <subject>Neuer Zeitschriftentitel</subject>
+        <body>Es wurde ein neuer Zeitschriftentitel erstellt, bitte prüfen und ZDB ID eintragen.</body>
+    </zdbTitle>
+
 
     <!-- metadata to display in process list -->
     <metadata>TitleDocMain</metadata>
