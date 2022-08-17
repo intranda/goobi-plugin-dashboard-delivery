@@ -566,32 +566,94 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         if (StringUtils.isBlank(downloadUrl)) {
             return;
         }
-        String fileName = "";
+        User user = Helper.getCurrentUser();
+        Institution institution = user.getInstitution();
+
+        // some test files:
+        // https://mariadb.org/wp-content/uploads/2022/08/MariaDBServerKnowledgeBase.pdf
+        // https://filesamples.com/samples/ebook/epub/Around%20the%20World%20in%2028%20Languages.epub
+        // https://filesamples.com/samples/ebook/epub/sample1.epub
+
+        String fileName = null;
         try {
-            Path destination = Paths.get(temporaryFolder.toString(), fileName);
 
             CloseableHttpClient httpclient = HttpClientBuilder.create().build();
 
-            OutputStream out = Files.newOutputStream(destination);
-            HttpGet method =  new HttpGet(downloadUrl);
-            //            byte[] response = httpclient.execute(method, HttpClientHelper.byteArrayResponseHandler);
-            //            if (response == null) {
-            //                log.error("Response stream is null");
-            //            }
-            //            InputStream     istr = new ByteArrayInputStream(response);
+            HttpGet method = new HttpGet(downloadUrl);
 
+            CloseableHttpResponse resp = httpclient.execute(method);
 
-            CloseableHttpResponse resp=  httpclient.execute(method);
-            Header[] header =   resp.getHeaders("Content-Disposition");
+            String extension = null;
 
-
-            InputStream istr = resp.getEntity().getContent();
-            // Transfer bytes from in to out
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = istr.read(buf)) > 0) {
-                out.write(buf, 0, len);
+            // try to get filename from last url part
+            String possibleFileName = downloadUrl.substring(downloadUrl.lastIndexOf("/"));
+            if (possibleFileName.contains("?")) {
+                // remove parameter
+                possibleFileName = possibleFileName.substring(0, possibleFileName.indexOf("?"));
             }
+            if (possibleFileName.contains(".")) {
+                extension = possibleFileName.substring(possibleFileName.lastIndexOf(".") + 1);
+                fileName = possibleFileName;
+            }
+
+            // get Content-Type, check if application/pdf
+            if (StringUtils.isBlank(extension)) {
+                Header contentTypeHeader = resp.getEntity().getContentType();
+                if (contentTypeHeader != null) {
+                    if (contentTypeHeader.getValue().equalsIgnoreCase("application/pdf")) {
+                        extension = "pdf";
+                    } else if (contentTypeHeader.getValue().equalsIgnoreCase("application/epub+zip")) {
+                        extension = "epub";
+                    }
+                }
+            }
+            if (extension == null) {
+                Helper.setFehlerMeldung("plugin_dashboard_delivery_error_urlDownloadNotPossible");
+                return;
+            }
+
+            // check if filename was written as header param (field is missing in most cases)
+            if (fileName == null) {
+                Header[] hdrs = resp.getHeaders("Content-Disposition");
+                for (Header h : hdrs) {
+                    if (h.getValue().startsWith("filename")) {
+                        fileName = h.getValue().substring(9);
+                    }
+                }
+            }
+            // use counter, if filename cannot be detected
+            if (fileName == null) {
+                fileName = (files.size() + 1) + "." + extension;
+            }
+
+            Path destination = Paths.get(temporaryFolder.toString(), fileName);
+            try (OutputStream out = Files.newOutputStream(destination)) {
+                InputStream istr = resp.getEntity().getContent();
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = istr.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            }
+            Report report = FileValidator.validateFile(destination, institution.getShortName());
+
+            if (!report.isReachedTargetLevel()) {
+
+                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
+
+                // delete validation files
+                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
+                StorageProvider.getInstance().deleteDir(testFolder);
+
+                // delete file
+                StorageProvider.getInstance().deleteFile(destination);
+
+                return;
+            }
+            files.add(destination);
+            Helper.setMeldung("plugin_dashboard_delivery_info_uploadSuccessful");
+            downloadUrl="";
         } catch (IOException e) {
             log.error(e);
         }
