@@ -281,7 +281,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                         Institution inst = user.getInstitution();
                         if (replaceWith.startsWith("institution")) {
                             String val = inst.getAdditionalData().get(replaceWith);
-                            if (!"false".equals(val) && mf.getDisplayType().equals("combo")) {
+                            if (!"false".equals(val) && mf.getDisplayType().equals("combo")) { //NOSONAR
                                 mf.setBooleanValue(true);
                                 if (!"true".equals(val)) {
                                     mf.setValue2(val);
@@ -916,10 +916,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             dd.setPhysicalDocStruct(physical);
 
             Metadata md = null;
-            try {
+            try {//NOSONAR
                 md = new Metadata(prefs.getMetadataTypeByName("CatalogIDDigital"));
                 md.setValue(identifier);
             } catch (MetadataTypeNotAllowedException e) {
+                log.error(e);
             }
 
             Metadata genre = new Metadata(prefs.getMetadataTypeByName("ModsGenre"));
@@ -1087,41 +1088,53 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             DocStruct templateDocstruct = other.getDigitalDocument().getLogicalDocStruct();
             if (templateDocstruct.getAllMetadata() != null) {
                 for (Metadata templateMetadata : templateDocstruct.getAllMetadata()) {
-                    try {
-                        Metadata clone = new Metadata(templateMetadata.getType());
-                        clone.setValue(templateMetadata.getValue());
-                        anchor.addMetadata(clone);
-                    } catch (Exception e) {
-                        log.trace(e);
-                    }
+                    copyMetadata(anchor, templateMetadata);
                 }
             }
             if (templateDocstruct.getAllPersons() != null) {
                 for (Person templatePerson : templateDocstruct.getAllPersons()) {
-                    try {
-                        Person clone = new Person(templatePerson.getType());
-                        clone.setFirstname(templatePerson.getFirstname());
-                        clone.setLastname(templatePerson.getLastname());
-                        anchor.addPerson(clone);
-                    } catch (Exception e) {
-                        log.trace(e);
-                    }
+                    copyPerson(anchor, templatePerson);
                 }
             }
             if (templateDocstruct.getAllCorporates() != null) {
                 for (Corporate templateCorporate : templateDocstruct.getAllCorporates()) {
-                    try {
-                        Corporate clone = new Corporate(templateCorporate.getType());
-                        clone.setMainName(templateCorporate.getMainName());
-                        anchor.addCorporate(clone);
-                    } catch (Exception e) {
-                        log.trace(e);
-                    }
+                    copyCorporate(anchor, templateCorporate);
                 }
             }
 
         } catch (IOException | SwapException e) {
             log.error(e);
+        }
+    }
+
+    private void copyMetadata(DocStruct anchor, Metadata templateMetadata) {
+        try {
+            Metadata clone = new Metadata(templateMetadata.getType());
+            clone.setValue(templateMetadata.getValue());
+            anchor.addMetadata(clone);
+        } catch (Exception e) {
+            log.trace(e);
+        }
+    }
+
+    private void copyCorporate(DocStruct anchor, Corporate templateCorporate) {
+        try {
+            Corporate clone = new Corporate(templateCorporate.getType());
+            clone.setMainName(templateCorporate.getMainName());
+            anchor.addCorporate(clone);
+        } catch (Exception e) {
+            log.trace(e);
+        }
+    }
+
+    private void copyPerson(DocStruct anchor, Person templatePerson) {
+        try {
+            Person clone = new Person(templatePerson.getType());
+            clone.setFirstname(templatePerson.getFirstname());
+            clone.setLastname(templatePerson.getLastname());
+            anchor.addPerson(clone);
+        } catch (Exception e) {
+            log.trace(e);
         }
     }
 
