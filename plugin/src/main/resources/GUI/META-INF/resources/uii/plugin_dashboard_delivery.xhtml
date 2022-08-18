@@ -79,8 +79,8 @@
 
                           <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</h2>
                           <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverMonograph}</p>
-
                           <button
+                              jsf:disabled="#{DashboardForm.plugin.incompleteUserData}"
                               jsf:id="monograph"
                               class="item__cta btn btn-primary-400"
                               title="#{msgs.plugin_dashboard_delivery_deliverMonographButton}"
@@ -111,6 +111,7 @@
                           <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverJournals}</p>
 
                           <button
+                              jsf:disabled="#{DashboardForm.plugin.incompleteUserData}"
                               jsf:id="journals"
                               class="item__cta btn btn-primary-400"
                               title="#{msgs.plugin_dashboard_delivery_deliverJournalsButton}">

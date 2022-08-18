@@ -178,9 +178,13 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     private String registrationMailSubject;
     private String registrationMailBody;
 
+    @Getter
+    private boolean incompleteUserData = false;
+
     public DeliveryDashboardPlugin() {
         try {
             temporaryFolder = Files.createTempDirectory("delivery");
+            readUserConfiguration();
         } catch (IOException e) {
             log.error(e);
         }
@@ -362,6 +366,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     public void readUserConfiguration() {
+        incompleteUserData = false;
         User user = Helper.getCurrentUser();
         if (user != null) {
             Institution inst = user.getInstitution();
@@ -430,6 +435,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 } else {
                     userData.getFields().add(mf);
                 }
+
                 String val = inst.getAdditionalData().get(name);
                 if (!"false".equals(val) && mf.getDisplayType().equals("combo")) {
                     mf.setBooleanValue(true);
@@ -439,6 +445,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 } else {
                     mf.setValue(val);
                 }
+                if (required && StringUtils.isBlank(val) && !name.startsWith("contact2")) {
+                    incompleteUserData = true;
+                }
+
             }
         }
         boolean secondContact = false;
@@ -517,6 +527,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         } catch (DAOException e) {
             log.error(e);
         }
+        readUserConfiguration();
     }
 
     public void saveInstitutionData() {
@@ -653,7 +664,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             }
             files.add(destination);
             Helper.setMeldung("plugin_dashboard_delivery_info_uploadSuccessful");
-            downloadUrl="";
+            downloadUrl = "";
         } catch (IOException e) {
             log.error(e);
         }
