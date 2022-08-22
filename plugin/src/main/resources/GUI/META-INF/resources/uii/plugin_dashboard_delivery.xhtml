@@ -71,14 +71,26 @@
                     <div class="common-region common-region--no-borders common-region--three-cols">
 
                       <!-- Monographs -->
-                      <div class="item flow">
+                      <div class="item flow #{DashboardForm.plugin.incompleteUserData ? 'incomplete-user-data' : ''}">
 
                         <div class="item__icons">
                           <ui:include src="/uii/includes/icon-book.xhtml" />
                         </div>
 
                           <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</h2>
-                          <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverMonograph}</p>
+
+                          <p
+                            jsf:rendered="#{!DashboardForm.plugin.incompleteUserData}"
+                            class="item__text">#{msgs.plugin_dashboard_delivery_deliverMonograph}
+                          </p>
+
+                          <p
+                            jsf:rendered="#{DashboardForm.plugin.incompleteUserData}"
+                            class="item__text text-danger"
+                            >
+                            #{msgs.plugin_dashboard_delivery_info_incompleteUserData}
+                          </p>
+
                           <button
                               jsf:disabled="#{DashboardForm.plugin.incompleteUserData}"
                               jsf:id="monograph"
@@ -99,7 +111,8 @@
                         </div> <!-- end item -->
 
                         <!-- Journals -->
-                        <div class="item flow">
+
+                        <div class="item flow #{DashboardForm.plugin.incompleteUserData ? 'incomplete-user-data' : ''}">
 
                           <div class="item__icons">
                             <ui:include src="/uii/includes/icon-book.xhtml" />
@@ -108,7 +121,20 @@
                           </div>
 
                           <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverJournalsHeader}</h2>
-                          <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverJournals}</p>
+
+                            <p
+                              jsf:rendered="#{!DashboardForm.plugin.incompleteUserData}"
+                              class="item__text"
+                              >
+                              #{msgs.plugin_dashboard_delivery_deliverJournals}
+                            </p>
+
+                            <p
+                              jsf:rendered="#{DashboardForm.plugin.incompleteUserData}"
+                              class="item__text text-danger"
+                              >
+                              #{msgs.plugin_dashboard_delivery_info_incompleteUserData}
+                            </p>
 
                           <button
                               jsf:disabled="#{DashboardForm.plugin.incompleteUserData}"
