@@ -450,16 +450,16 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
 
             }
-        }
-        boolean secondContact = false;
-        for (MetadataField mf : contact2Data.getFields()) {
-            if (StringUtils.isNotBlank(mf.getValue())) {
-                secondContact = true;
-                break;
+            boolean secondContact = false;
+            for (MetadataField mf : contact2Data.getFields()) {
+                if (StringUtils.isNotBlank(mf.getValue())) {
+                    secondContact = true;
+                    break;
+                }
             }
-        }
-        if (!secondContact) {
-            contact2Data = new FieldGrouping();
+            if (!secondContact) {
+                contact2Data = new FieldGrouping();
+            }
         }
     }
 
