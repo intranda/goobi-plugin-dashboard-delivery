@@ -44,7 +44,7 @@
             class="deliveryPlugin flow"
             >
 
-
+<h:inputHidden id="focusField" value="#{DashboardForm.plugin.focusField}" />
 
             <!-- main area, select document type -->
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='main'}">
@@ -320,6 +320,39 @@
             </ui:fragment>
 
         </h:panelGroup>
+
+<script>
+
+function focusField (elem) {
+    document.getElementById("focusField" ).value =elem.id;
+}
+
+function updateFocus() {
+    var focus = $('#focusField').val();
+    const inp = document.getElementById(focus);
+    if (inp != null){
+    	inp.focus();            
+    }
+}
+
+
+jsf.ajax.addOnEvent( function( data ) {
+    var ajaxstatus = data.status; // Can be "begin", "complete" and "success"
+    var source = data.source;
+    switch ( ajaxstatus ) {
+        case "begin": // This is called right before ajax request is been sent.
+            break;
+        case "complete": // This is called right after ajax response is received.
+            break;
+        case "success": // This is called when ajax response is successfully processed.
+            // find element,set focus
+           updateFocus();
+            break;
+    }
+} ); 
+
+
+</script>
 
 
     </ui:define>

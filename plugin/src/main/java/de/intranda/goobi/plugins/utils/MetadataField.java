@@ -119,7 +119,7 @@ public class MetadataField {
         }
     }
 
-    public void validateField(FacesContext context, UIComponent comp, Object obj) {
+    public void validateField(FacesContext context, UIComponent comp, Object obj) { //NOSONAR
         if (obj instanceof Boolean) {
             return;
         }
@@ -137,21 +137,25 @@ public class MetadataField {
             // if required, role and either firstname or lastname must be filled
             if (required && StringUtils.isBlank(role) || (StringUtils.isBlank(testValue) && StringUtils.isBlank(value2))) {
                 fieldValid = false;
-
-                // TODO if firstname or lastname is used, role must be set
+            }
+            // if firstname or lastname is used, role must be set
+            if (StringUtils.isNotBlank(testValue) && StringUtils.isBlank(role)) {
+                fieldValid = false;
             }
         } else if ("corporate".equals(displayType)) {
             // if required, role and name must be filled
             if (required && StringUtils.isBlank(role) || StringUtils.isBlank(testValue)) {
                 fieldValid = false;
-                // TODO if name is filled, role must be set
+
+            }
+            // if name is filled, role must be set
+            if (StringUtils.isNotBlank(testValue) && StringUtils.isBlank(role)) {
+                fieldValid = false;
             }
         } else if ("picklist".equals(displayType)) {
             // if required, type and value must be selected
-            if (required) {
-                if (StringUtils.isBlank(role) || StringUtils.isBlank(testValue)) {
-                    fieldValid = false;
-                }
+            if (required && (StringUtils.isBlank(role) || StringUtils.isBlank(testValue))) {
+                fieldValid = false;
             }
             // different validation based on selected type
             if (StringUtils.isNotBlank(role) && StringUtils.isNotBlank(testValue)) {

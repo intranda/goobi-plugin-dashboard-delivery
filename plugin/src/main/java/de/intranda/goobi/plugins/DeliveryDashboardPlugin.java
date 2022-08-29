@@ -93,6 +93,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     public static String vocabularyUrl; //NOSONAR
 
     @Getter
+    @Setter
+    private String focusField;
+
+    @Getter
     private String title = "intranda_dashboard_delivery";
 
     @Getter

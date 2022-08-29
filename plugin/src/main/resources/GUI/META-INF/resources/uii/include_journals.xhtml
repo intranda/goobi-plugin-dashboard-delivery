@@ -188,7 +188,7 @@
                                             fieldName="#{field.label}"
                                             fieldRequired="#{field.required}"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                            render=":grp" />
+                                             />
                                     </ui:fragment>
 
                                     <ui:fragment rendered="#{field.displayType == 'corporate'}">
@@ -205,7 +205,7 @@
                                             selectItems="#{field.selectList}"
                                             subClass="corporategrid"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                            render=":grp" />
+                                            />
                                     </ui:fragment>
 
                                     <ui:fragment rendered="#{field.displayType == 'picklist'}">
@@ -549,23 +549,6 @@
         </h:form>
 
 
-        <script>
-jsf.ajax.addOnEvent( function( data ) {
-    var ajaxstatus = data.status; // Can be "begin", "complete" and "success"
-    var source = data.source;
-    switch ( ajaxstatus ) {
-        case "begin": // This is called right before ajax request is been sent.
-            break;
-        case "complete": // This is called right after ajax response is received.
-            break;
-        case "success": // This is called when ajax response is successfully processed.
-            // find element,set focus
-            console.log(source );
-            source.focus();
-            break;
-    }
-} );
-                                </script>
 
     </composite:implementation>
 
