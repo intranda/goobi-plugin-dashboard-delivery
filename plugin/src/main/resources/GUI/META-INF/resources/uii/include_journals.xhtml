@@ -20,10 +20,18 @@
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='titleSelection'}">
 
             <ui:include src="includes/helpModalsDD.xhtml">
-                <ui:param name="header" value="plugin_dashboard_delivery_journals_new_helpHeader" />
-                <ui:param name="body1" value="plugin_dashboard_delivery_journals_new_helpBody1" />
-                <ui:param name="body2" value="plugin_dashboard_delivery_journals_new_helpBody2" />
-                <ui:param name="img" value="plugin_dashboard_delivery_journals_new_helpImg" />
+                <ui:param
+                    name="header"
+                    value="plugin_dashboard_delivery_journals_new_helpHeader" />
+                <ui:param
+                    name="body1"
+                    value="plugin_dashboard_delivery_journals_new_helpBody1" />
+                <ui:param
+                    name="body2"
+                    value="plugin_dashboard_delivery_journals_new_helpBody2" />
+                <ui:param
+                    name="img"
+                    value="plugin_dashboard_delivery_journals_new_helpImg" />
             </ui:include>
 
             <!-- breadcrumb area -->
@@ -122,10 +130,18 @@
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newTitle'}">
 
                 <ui:include src="includes/helpModalsDD.xhtml">
-                    <ui:param name="header" value="plugin_dashboard_delivery_journals_newTitle_helpHeader" />
-                    <ui:param name="body1" value="plugin_dashboard_delivery_journals_newTitle_helpBody1" />
-                    <ui:param name="body2" value="plugin_dashboard_delivery_journals_newTitle_helpBody2" />
-                    <ui:param name="img" value="plugin_dashboard_delivery_journals_newTitle_helpImg" />
+                    <ui:param
+                        name="header"
+                        value="plugin_dashboard_delivery_journals_newTitle_helpHeader" />
+                    <ui:param
+                        name="body1"
+                        value="plugin_dashboard_delivery_journals_newTitle_helpBody1" />
+                    <ui:param
+                        name="body2"
+                        value="plugin_dashboard_delivery_journals_newTitle_helpBody2" />
+                    <ui:param
+                        name="img"
+                        value="plugin_dashboard_delivery_journals_newTitle_helpImg" />
                 </ui:include>
 
                 <h1 class="page__heading">
@@ -242,10 +258,18 @@
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
 
                 <ui:include src="includes/helpModalsDD.xhtml">
-                    <ui:param name="header" value="plugin_dashboard_delivery_journals_issueupload_helpHeader" />
-                    <ui:param name="body1" value="plugin_dashboard_delivery_journals_issueupload_helpBody1" />
-                    <ui:param name="body2" value="plugin_dashboard_delivery_journals_issueupload_helpBody2" />
-                    <ui:param name="img" value="plugin_dashboard_delivery_journals_issueupload_helpImg" />
+                    <ui:param
+                        name="header"
+                        value="plugin_dashboard_delivery_journals_issueupload_helpHeader" />
+                    <ui:param
+                        name="body1"
+                        value="plugin_dashboard_delivery_journals_issueupload_helpBody1" />
+                    <ui:param
+                        name="body2"
+                        value="plugin_dashboard_delivery_journals_issueupload_helpBody2" />
+                    <ui:param
+                        name="img"
+                        value="plugin_dashboard_delivery_journals_issueupload_helpImg" />
                 </ui:include>
 
                 <h1 class="page__heading">
@@ -267,8 +291,8 @@
                     id="issueUploadForm"
                     class="form flow">
 
-                  <zlb:uploadFormIcons />
-                  <zlb:uploadFormMessages />
+                    <zlb:uploadFormIcons />
+                    <zlb:uploadFormMessages />
 
                     <label
                         for="issuefile"
@@ -286,20 +310,23 @@
                         <h:commandButton
                             id="issuesubmit"
                             value="submit"
-                            styleClass="btn btn-primary-400 d-none"
-                            />
+                            styleClass="btn btn-primary-400 d-none" />
                     </div>
                 </div>
 
 
-                  <!-- Frontend: handle submit of documents -->
-                  <script
+                <!-- Frontend: handle submit of documents -->
+                <script
                     type="text/javascript"
                     src="#{HelperForm.applicationWebsiteUrl}uii/template/assets/js/fileUpload.js">
-                  </script>
-                  <script>
-                      fileUpload.init({DSForm: '#issuefile', DSSubmit: '#issuesubmit'})
-                  </script>
+                                                                    
+                                                                </script>
+                <script>
+                                                                    fileUpload.init( {
+                                                                        DSForm: '#issuefile',
+                                                                        DSSubmit: '#issuesubmit'
+                                                                    } )
+                                                                </script>
 
                 <!-- URL upload -->
                 <zlb:urlUploadModal />
@@ -309,10 +336,18 @@
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
 
                 <ui:include src="includes/helpModalsDD.xhtml">
-                    <ui:param name="header" value="plugin_dashboard_delivery_journals_newIssue_helpHeader" />
-                    <ui:param name="body1" value="plugin_dashboard_delivery_journals_newIssue_helpBody1" />
-                    <ui:param name="body2" value="plugin_dashboard_delivery_journals_newIssue_helpBody2" />
-                    <ui:param name="img" value="plugin_dashboard_delivery_journals_newIssue_helpImg" />
+                    <ui:param
+                        name="header"
+                        value="plugin_dashboard_delivery_journals_newIssue_helpHeader" />
+                    <ui:param
+                        name="body1"
+                        value="plugin_dashboard_delivery_journals_newIssue_helpBody1" />
+                    <ui:param
+                        name="body2"
+                        value="plugin_dashboard_delivery_journals_newIssue_helpBody2" />
+                    <ui:param
+                        name="img"
+                        value="plugin_dashboard_delivery_journals_newIssue_helpImg" />
                 </ui:include>
 
                 <h1 class="page__heading">
@@ -453,7 +488,7 @@
                             render="main-area"
                             execute="@this" />
                     </button>
-                        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload' or DashboardForm.plugin.navigation=='newIssue'}">
+                    <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload' or DashboardForm.plugin.navigation=='newIssue'}">
 
                         <ul class="statuslist">
                             <li class="#{DashboardForm.plugin.navigation=='issueupload'?'active':'finished'} ">
@@ -466,8 +501,8 @@
                                     <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
                                 </h:panelGroup>
                             </li>
-                            </ul>
-                        </ui:fragment>
+                        </ul>
+                    </ui:fragment>
 
                     <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
                         <button
@@ -513,6 +548,24 @@
             </ui:fragment>
         </h:form>
 
+
+        <script>
+jsf.ajax.addOnEvent( function( data ) {
+    var ajaxstatus = data.status; // Can be "begin", "complete" and "success"
+    var source = data.source;
+    switch ( ajaxstatus ) {
+        case "begin": // This is called right before ajax request is been sent.
+            break;
+        case "complete": // This is called right after ajax response is received.
+            break;
+        case "success": // This is called when ajax response is successfully processed.
+            // find element,set focus
+            console.log(source );
+            source.focus();
+            break;
+    }
+} );
+                                </script>
 
     </composite:implementation>
 
