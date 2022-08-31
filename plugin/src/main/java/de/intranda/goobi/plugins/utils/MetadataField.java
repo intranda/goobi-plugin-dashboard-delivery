@@ -135,123 +135,72 @@ public class MetadataField {
         // check field type, different validation for different types
         if ("person".equals(displayType)) {
             // if required, role and either firstname or lastname must be filled
-            if (required && StringUtils.isBlank(role) || (StringUtils.isBlank(testValue) && StringUtils.isBlank(value2))) {
+            if (required && StringUtils.isBlank(role)) {
                 fieldValid = false;
             }
             // if firstname or lastname is used, role must be set
-            if (StringUtils.isNotBlank(testValue) && StringUtils.isBlank(role)) {
-                fieldValid = false;
+            if (comp.getClientId().endsWith("firstname")) {
+                if (StringUtils.isBlank(role) && (StringUtils.isNotBlank(testValue) || StringUtils.isNotBlank(value2))) {
+                    // current value (firstname) or last name are not blank, role must be selected
+                    fieldValid = false;
+                }
+            } else if (comp.getClientId().endsWith("lastname")) {
+                if (StringUtils.isBlank(role) && (StringUtils.isNotBlank(testValue) || StringUtils.isNotBlank(value))) {
+                    // current value (lastname) or firstname are not blank, role must be selected
+                    fieldValid = false;
+                }
+            } else if (comp.getClientId().endsWith("select")) {
+                if ("null".equals(testValue)) {
+                    testValue = null;
+                }
+                if (StringUtils.isBlank(testValue) && (StringUtils.isNotBlank(value) || StringUtils.isNotBlank(value2))) {
+                    // current field is role, its blank, but firstname or lastname are filled
+                    fieldValid = false;
+                }
             }
         } else if ("corporate".equals(displayType)) {
-            // if required, role and name must be filled
-            if (required && StringUtils.isBlank(role) || StringUtils.isBlank(testValue)) {
-                fieldValid = false;
-
-            }
-            // if name is filled, role must be set
-            if (StringUtils.isNotBlank(testValue) && StringUtils.isBlank(role)) {
-                fieldValid = false;
+            // corporate name
+            if (comp.getClientId().endsWith("input")) {
+                // new corporate name is empty, but role is set
+                if (StringUtils.isNotBlank(testValue) && StringUtils.isBlank(role)) {
+                    fieldValid = false;
+                }
+                // corporate type
+                // if corporate name is set, role cannot be empty
+            } else if (comp.getClientId().endsWith("select")) {
+                if ("null".equals(testValue)) {
+                    testValue = null;
+                }
+                if (StringUtils.isNotBlank(testValue) && StringUtils.isBlank(value)) {
+                    fieldValid = false;
+                }
             }
         } else if ("picklist".equals(displayType)) {
-            // if required, type and value must be selected
-            if (required && (StringUtils.isBlank(role) || StringUtils.isBlank(testValue))) {
-                fieldValid = false;
-            }
-            // different validation based on selected type
-            if (StringUtils.isNotBlank(role) && StringUtils.isNotBlank(testValue)) {
-                switch (role) {
-                    case "ISBN":
-                        //  zulässige Zeichen: Ziffern, Bindestriche und X
-                        //  Zeichenbegrenzung: max. 17 Zeichen
-
-                        if (testValue.length() > 17) {
-                            // to many characters
-                            fieldValid = false;
-                        }
-                        // ISBN-13: 978-3-86680-192-9
-                        // ISBN-10: 3-86640-001-2
-
-                        // remove hyphens
-                        String number = testValue.replace("-", "");
-                        // must be numeric or numeric + X
-                        if (!number.matches("[0-9]{10}|[0-9]{9}X|[0-9]{13}|[0-9]{12}X")) {
-                            // invalid characters
-                            validationErrorText = "Falsche Anzahl oder ungültige Zeichen, bitte ISBN-10 oder ISBN-13 angeben.";
-                            fieldValid = false;
-                        }
-                        // check length, should be 10 or 13
-                        // 10 -> isbn validation
-                        if (number.length() == 10 && !validateIdentifier(number)) {
-                            validationErrorText = "Ungültige ISBN-10 Nummer.";
-                            fieldValid = false;
-
-                        }
-                        // 13 -> ean validation
-                        if (number.length() == 13 && !EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(number)) {
-                            validationErrorText = "Ungültige ISBN-13 Nummer.";
-                            fieldValid = false;
-                        }
-
-                        // wrong number of digits
-                        if (number.length() != 10 && number.length() != 13) {
-                            validationErrorText = "Falsche Anzahl Zeichen, bitte ISBN-10 oder ISBN-13 angeben.";
-                            fieldValid = false;
-                        }
-                        break;
-
-                    case "GTIN/EAN":
-                        // last character is used as checksum. Calculation is done with this algorithm: https://www.gs1.org/services/how-calculate-check-digit-manually
-                        // some valid codes:
-                        // GTIN-8: 12345670
-                        // EAN / GTIN-13: 4012345000009
-                        // GTIN-14: 94054321000019
-
-                        // zulässige Zeichen: Ziffern
-                        // Zeichenbegrenzung: max. 14 Zeichen, bei geringerer Stelligkeit werden vorangehende Leerstellen mit Nullen aufgefüllt
-                        if (testValue.length() > 14) {
-                            // to many characters
-                            fieldValid = false;
-                        }
-                        if (!EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(testValue)) {
-                            validationErrorText = "Kein gültiger GTIN/EAN Code.";
-                            fieldValid = false;
-                        }
-
-                        if (testValue.length() < 14) {
-                            // fill string with leading 000
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 0; i < 14 - testValue.length(); i++) {
-                                sb.append("0");
-                            }
-                            sb.append(testValue);
-
-                            testValue = sb.toString();
-                        }
-                        break;
-
-                    case "ISSN":
-                        // zulässige Zeichen: Ziffern, Bindestriche und X
-                        // Zeichenbegrenzung: 9 Zeichen
-                        if (!testValue.matches("[0-9]{8}|[0-9]{7}X|[0-9]{4}\\-[0-9]{4}|[0-9]{4}\\-[0-9]{3}X")) { //NOSONAR
-                            // invalid characters
-                            fieldValid = false;
-                        }
-
-                        if (!validateIdentifier(testValue)) {
-                            // invalid characters
-                            // valid examples: 0317-8471, 1050-124X
-                            validationErrorText = "ISSN ist invalide. Bitte eine gültige ISSN in der Form XXXX-XXXX angeben.";
-                            fieldValid = false;
-                        }
-                        break;
-                    default:
-                        // do nothing
+            if (comp.getClientId().endsWith("select")) {
+                if ("null".equals(testValue)) {
+                    testValue = null;
+                }
+                if (StringUtils.isBlank(testValue) && StringUtils.isNotBlank(value)) {
+                    fieldValid = false;
+                } else if (StringUtils.isNotBlank(testValue) && StringUtils.isBlank(value)) {
+                    fieldValid = false;
+                } else if (StringUtils.isNotBlank(testValue) && StringUtils.isNotBlank(value)) {
+                    // different validation based on selected type
+                    validateContent(testValue, value);
+                }
+            } else if (comp.getClientId().endsWith("input")) {
+                if (StringUtils.isBlank(testValue) && (!"null".equals(role) && StringUtils.isNotBlank(role))) {
+                    fieldValid = false;
+                } else if (StringUtils.isNotBlank(testValue) && ("null".equals(role) || StringUtils.isBlank(role))) {
+                    fieldValid = false;
+                } else if (StringUtils.isNotBlank(testValue) && (!"null".equals(role) && StringUtils.isNotBlank(role))) {
+                    // different validation based on selected type
+                    validateContent(role, testValue);
                 }
             }
         }
 
         //  simple field validation
-
         if (StringUtils.isBlank(testValue)) {
             if (required) {
                 fieldValid = false;
@@ -261,6 +210,98 @@ public class MetadataField {
         else if (StringUtils.isNotBlank(testValue) && StringUtils.isNotBlank(validationExpression) && !testValue.matches(validationExpression)) {
             fieldValid = false;
         }
+    }
+
+    private String validateContent(String role, String value) {
+        switch (role) {
+            case "ISBN":
+                //  zulässige Zeichen: Ziffern, Bindestriche und X
+                //  Zeichenbegrenzung: max. 17 Zeichen
+
+                if (value.length() > 17) {
+                    // to many characters
+                    fieldValid = false;
+                }
+                // ISBN-13: 978-3-86680-192-9
+                // ISBN-10: 3-86640-001-2
+
+                // remove hyphens
+                String number = value.replace("-", "");
+                // must be numeric or numeric + X
+                if (!number.matches("[0-9]{10}|[0-9]{9}X|[0-9]{13}|[0-9]{12}X")) {
+                    // invalid characters
+                    validationErrorText = "Falsche Anzahl oder ungültige Zeichen, bitte ISBN-10 oder ISBN-13 angeben.";
+                    fieldValid = false;
+                }
+                // check length, should be 10 or 13
+                // 10 -> isbn validation
+                if (number.length() == 10 && !validateIdentifier(number)) {
+                    validationErrorText = "Ungültige ISBN-10 Nummer.";
+                    fieldValid = false;
+
+                }
+                // 13 -> ean validation
+                if (number.length() == 13 && !EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(number)) {
+                    validationErrorText = "Ungültige ISBN-13 Nummer.";
+                    fieldValid = false;
+                }
+
+                // wrong number of digits
+                if (number.length() != 10 && number.length() != 13) {
+                    validationErrorText = "Falsche Anzahl Zeichen, bitte ISBN-10 oder ISBN-13 angeben.";
+                    fieldValid = false;
+                }
+                break;
+
+            case "GTIN/EAN":
+                // last character is used as checksum. Calculation is done with this algorithm: https://www.gs1.org/services/how-calculate-check-digit-manually
+                // some valid codes:
+                // GTIN-8: 12345670
+                // EAN / GTIN-13: 4012345000009
+                // GTIN-14: 94054321000019
+
+                // zulässige Zeichen: Ziffern
+                // Zeichenbegrenzung: max. 14 Zeichen, bei geringerer Stelligkeit werden vorangehende Leerstellen mit Nullen aufgefüllt
+                if (value.length() > 14) {
+                    // to many characters
+                    fieldValid = false;
+                }
+                if (!EAN13CheckDigit.EAN13_CHECK_DIGIT.isValid(value)) {
+                    validationErrorText = "Kein gültiger GTIN/EAN Code.";
+                    fieldValid = false;
+                }
+
+                if (value.length() < 14) {
+                    // fill string with leading 000
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < 14 - value.length(); i++) {
+                        sb.append("0");
+                    }
+                    sb.append(value);
+
+                    value = sb.toString();
+                }
+                break;
+
+            case "ISSN":
+                // zulässige Zeichen: Ziffern, Bindestriche und X
+                // Zeichenbegrenzung: 9 Zeichen
+                if (!value.matches("[0-9]{8}|[0-9]{7}X|[0-9]{4}\\-[0-9]{4}|[0-9]{4}\\-[0-9]{3}X")) { //NOSONAR
+                    // invalid characters
+                    fieldValid = false;
+                }
+
+                if (!validateIdentifier(value)) {
+                    // invalid characters
+                    // valid examples: 0317-8471, 1050-124X
+                    validationErrorText = "ISSN ist invalide. Bitte eine gültige ISSN in der Form XXXX-XXXX angeben.";
+                    fieldValid = false;
+                }
+                break;
+            default:
+                // do nothing
+        }
+        return value;
     }
 
     /*
