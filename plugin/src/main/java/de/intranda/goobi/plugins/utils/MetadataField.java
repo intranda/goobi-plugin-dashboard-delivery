@@ -1,5 +1,6 @@
 package de.intranda.goobi.plugins.utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,8 +20,9 @@ import de.sub.goobi.persistence.managers.VocabularyManager;
 import lombok.Data;
 
 @Data
-public class MetadataField {
+public class MetadataField implements Serializable {
 
+    private static final long serialVersionUID = -2601314844043091136L;
     private String rulesetName; // ruleset name
     private String label; // display name in UI
     private String displayType; // input, textarea, dropdown, person, corporate, picklist

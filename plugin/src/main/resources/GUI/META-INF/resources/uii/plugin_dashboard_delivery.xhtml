@@ -19,50 +19,65 @@
 
     <ui:define name="content">
 
-	<!-- Custom styles for this plugin -->
-  <!-- Find them in goobi-plugin-rest-usercreation! -->
-	<link
-		type="text/css"
-		rel="stylesheet"
-		href="#{HelperForm.applicationWebsiteUrl}uii/template/assets/css/dist/dashboard-delivery.min.css" />
+        <!-- Custom styles for this plugin -->
+        <!-- Find them in goobi-plugin-rest-usercreation! -->
+        <link
+            type="text/css"
+            rel="stylesheet"
+            href="#{HelperForm.applicationWebsiteUrl}uii/template/assets/css/dist/dashboard-delivery.min.css" />
 
-    <!-- breadcrumb area -->
-    <ui:define name="breadcrumb">
-        <intranda:breadcrumb
-            id="index"
-            label="#{DashboardForm.plugin==null?msgs.startseite:msgs.dashboard}"
-            action="external_index"
-            navId="a0"
-            noSeparator="#{true}" />
-    </ui:define>
+        <!-- breadcrumb area -->
+        <ui:define name="breadcrumb">
+            <intranda:breadcrumb
+                id="index"
+                label="#{DashboardForm.plugin==null?msgs.startseite:msgs.dashboard}"
+                action="external_index"
+                navId="a0"
+                noSeparator="#{true}" />
+        </ui:define>
 
 
 
         <h:panelGroup
             layout="block"
             id="main-area"
-            class="deliveryPlugin flow"
-            >
+            class="deliveryPlugin flow">
 
-<h:inputHidden id="focusField" value="#{DashboardForm.plugin.focusField}" />
+            <h:inputHidden
+                id="focusField"
+                value="#{DashboardForm.plugin.focusField}" />
 
             <!-- main area, select document type -->
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='main'}">
 
-              <ui:include src="includes/helpModalsDD.xhtml">
-                  <ui:param name="header" value="plugin_dashboard_delivery_main_helpHeader" />
-                  <ui:param name="body1" value="plugin_dashboard_delivery_main_helpBody1" />
-                  <ui:param name="body2" value="plugin_dashboard_delivery_main_helpBody2" />
-                  <ui:param name="img" value="plugin_dashboard_delivery_main_helpImg" />
-              </ui:include>
+                <ui:include src="includes/helpModalsDD.xhtml">
+                    <ui:param
+                        name="header"
+                        value="plugin_dashboard_delivery_main_helpHeader" />
+                    <ui:param
+                        name="body1"
+                        value="plugin_dashboard_delivery_main_helpBody1" />
+                    <ui:param
+                        name="body2"
+                        value="plugin_dashboard_delivery_main_helpBody2" />
+                    <ui:param
+                        name="img"
+                        value="plugin_dashboard_delivery_main_helpImg" />
+                </ui:include>
 
                 <h1 class="page__heading">
-                  <h:outputFormat value="#{msgs['plugin_dashboard_delivery_wellcomeMessage']}">
-                    <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
-                  </h:outputFormat>
+                    <h:outputFormat value="#{msgs['plugin_dashboard_delivery_wellcomeMessage']}">
+                        <f:param value="#{LoginForm.myBenutzer.vorname} #{LoginForm.myBenutzer.nachname}" />
+                    </h:outputFormat>
 
-                    <button type="button" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" class="btn page__help" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
-                      <ui:include src="/uii/includes/icon-help.xhtml" />
+                    <button
+                        type="button"
+                        aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                        class="btn page__help"
+                        data-bs-toggle="modal"
+                        data-bs-title="help title"
+                        data-bs-target="#pageHelpModal">
+                        <ui:include src="/uii/includes/icon-help.xhtml" />
                     </button>
                 </h1>
 
@@ -70,289 +85,319 @@
                 <h:form>
                     <div class="common-region common-region--no-borders common-region--three-cols">
 
-                      <!-- Monographs -->
-                      <div class="item flow #{DashboardForm.plugin.incompleteUserData ? 'incomplete-user-data' : ''}">
+                        <!-- Monographs -->
+                        <div class="item flow #{DashboardForm.plugin.incompleteUserData ? 'incomplete-user-data' : ''}">
 
-                        <div class="item__icons">
-                          <ui:include src="/uii/includes/icon-book.xhtml" />
+                            <div class="item__icons">
+                                <ui:include src="/uii/includes/icon-book.xhtml" />
+                            </div>
+
+                            <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</h2>
+
+                            <p
+                                jsf:rendered="#{!DashboardForm.plugin.incompleteUserData}"
+                                class="item__text">#{msgs.plugin_dashboard_delivery_deliverMonograph}</p>
+
+                            <p
+                                jsf:rendered="#{DashboardForm.plugin.incompleteUserData}"
+                                class="item__text text-danger">#{msgs.plugin_dashboard_delivery_info_incompleteUserData}</p>
+
+                            <button
+                                jsf:disabled="#{DashboardForm.plugin.incompleteUserData}"
+                                jsf:id="monograph"
+                                class="item__cta btn btn-primary-400"
+                                title="#{msgs.plugin_dashboard_delivery_deliverMonographButton}"
+                                jsf:action="#{DashboardForm.plugin.startNewImport}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverMonographButton}" />
+                                <f:setPropertyActionListener
+                                    value="upload"
+                                    target="#{DashboardForm.plugin.navigation}" />
+                                <f:setPropertyActionListener
+                                    value="monograph"
+                                    target="#{DashboardForm.plugin.documentType}" />
+                                <f:ajax
+                                    render="main-area"
+                                    execute="@this" />
+                            </button>
                         </div>
-
-                          <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</h2>
-
-                          <p
-                            jsf:rendered="#{!DashboardForm.plugin.incompleteUserData}"
-                            class="item__text">#{msgs.plugin_dashboard_delivery_deliverMonograph}
-                          </p>
-
-                          <p
-                            jsf:rendered="#{DashboardForm.plugin.incompleteUserData}"
-                            class="item__text text-danger"
-                            >
-                            #{msgs.plugin_dashboard_delivery_info_incompleteUserData}
-                          </p>
-
-                          <button
-                              jsf:disabled="#{DashboardForm.plugin.incompleteUserData}"
-                              jsf:id="monograph"
-                              class="item__cta btn btn-primary-400"
-                              title="#{msgs.plugin_dashboard_delivery_deliverMonographButton}"
-                              jsf:action="#{DashboardForm.plugin.startNewImport}">
-                              <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverMonographButton}" />
-                              <f:setPropertyActionListener
-                                  value="upload"
-                                  target="#{DashboardForm.plugin.navigation}" />
-                              <f:setPropertyActionListener
-                                  value="monograph"
-                                  target="#{DashboardForm.plugin.documentType}" />
-                              <f:ajax
-                                  render="main-area"
-                                  execute="@this" />
-                          </button>
-                        </div> <!-- end item -->
+                        <!-- end item -->
 
                         <!-- Journals -->
 
                         <div class="item flow #{DashboardForm.plugin.incompleteUserData ? 'incomplete-user-data' : ''}">
 
-                          <div class="item__icons">
-                            <ui:include src="/uii/includes/icon-book.xhtml" />
-                            <ui:include src="/uii/includes/icon-book.xhtml" />
-                            <ui:include src="/uii/includes/icon-book.xhtml" />
-                          </div>
+                            <div class="item__icons">
+                                <ui:include src="/uii/includes/icon-book.xhtml" />
+                                <ui:include src="/uii/includes/icon-book.xhtml" />
+                                <ui:include src="/uii/includes/icon-book.xhtml" />
+                            </div>
 
-                          <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverJournalsHeader}</h2>
-
-                            <p
-                              jsf:rendered="#{!DashboardForm.plugin.incompleteUserData}"
-                              class="item__text"
-                              >
-                              #{msgs.plugin_dashboard_delivery_deliverJournals}
-                            </p>
+                            <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverJournalsHeader}</h2>
 
                             <p
-                              jsf:rendered="#{DashboardForm.plugin.incompleteUserData}"
-                              class="item__text text-danger"
-                              >
-                              #{msgs.plugin_dashboard_delivery_info_incompleteUserData}
-                            </p>
+                                jsf:rendered="#{!DashboardForm.plugin.incompleteUserData}"
+                                class="item__text">#{msgs.plugin_dashboard_delivery_deliverJournals}</p>
 
-                          <button
-                              jsf:disabled="#{DashboardForm.plugin.incompleteUserData}"
-                              jsf:id="journals"
-                              class="item__cta btn btn-primary-400"
-                              title="#{msgs.plugin_dashboard_delivery_deliverJournalsButton}">
-                              <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverJournalsButton}" />
-                              <f:setPropertyActionListener
-                                  value="titleSelection"
-                                  target="#{DashboardForm.plugin.navigation}" />
-                              <f:setPropertyActionListener
-                                  value="journal"
-                                  target="#{DashboardForm.plugin.documentType}" />
-                              <f:ajax
-                                  render="main-area"
-                                  execute="@this" />
-                          </button>
-                        </div> <!-- end item -->
+                            <p
+                                jsf:rendered="#{DashboardForm.plugin.incompleteUserData}"
+                                class="item__text text-danger">#{msgs.plugin_dashboard_delivery_info_incompleteUserData}</p>
+
+                            <button
+                                jsf:disabled="#{DashboardForm.plugin.incompleteUserData}"
+                                jsf:id="journals"
+                                class="item__cta btn btn-primary-400"
+                                title="#{msgs.plugin_dashboard_delivery_deliverJournalsButton}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverJournalsButton}" />
+                                <f:setPropertyActionListener
+                                    value="titleSelection"
+                                    target="#{DashboardForm.plugin.navigation}" />
+                                <f:setPropertyActionListener
+                                    value="journal"
+                                    target="#{DashboardForm.plugin.documentType}" />
+                                <f:ajax
+                                    render="main-area"
+                                    execute="@this" />
+                            </button>
+                        </div>
+                        <!-- end item -->
 
                         <!-- show existing deliveries -->
                         <div class="item flow">
-                          <div class="item__icons">
-                            <ui:include src="/uii/includes/icon-file-text.xhtml" />
-                          </div>
+                            <div class="item__icons">
+                                <ui:include src="/uii/includes/icon-file-text.xhtml" />
+                            </div>
 
-                          <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverShowExistingDataHeader}</h2>
-                          <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverShowExistingData}</p>
+                            <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverShowExistingDataHeader}</h2>
+                            <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverShowExistingData}</p>
 
-                          <button
-                              jsf:id="existingData"
-                              class="item__cta btn btn-primary-400"
-                              title="#{msgs.plugin_dashboard_delivery_deliverShowExistingDataButton}"
-                              jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}">
-                              <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverShowExistingDataButton}" />
-                              <f:setPropertyActionListener
-                                  value="existingData"
-                                  target="#{DashboardForm.plugin.navigation}" />
-                              <f:ajax
-                                  render="main-area"
-                                  execute="@this" />
-                          </button>
-                        </div> <!-- end item -->
+                            <button
+                                jsf:id="existingData"
+                                class="item__cta btn btn-primary-400"
+                                title="#{msgs.plugin_dashboard_delivery_deliverShowExistingDataButton}"
+                                jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverShowExistingDataButton}" />
+                                <f:setPropertyActionListener
+                                    value="existingData"
+                                    target="#{DashboardForm.plugin.navigation}" />
+                                <f:ajax
+                                    render="main-area"
+                                    execute="@this" />
+                            </button>
+                        </div>
+                        <!-- end item -->
 
 
                         <!-- Help -->
                         <div class="item flow">
-                          <div class="item__icons">
-                            <ui:include src="/uii/includes/icon-mortarboard.xhtml" />
-                          </div>
+                            <div class="item__icons">
+                                <ui:include src="/uii/includes/icon-mortarboard.xhtml" />
+                            </div>
 
-                          <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverHelpHeader}</h2>
-                          <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverHelp}</p>
+                            <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverHelpHeader}</h2>
+                            <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverHelp}</p>
 
-                          <button class="item__cta btn btn-primary-400">
-                              <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverHelpButton}" />
-                          </button>
+                            <button class="item__cta btn btn-primary-400">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverHelpButton}" />
+                            </button>
 
-                        </div> <!-- end item -->
+                        </div>
+                        <!-- end item -->
 
 
                         <!-- edit user data -->
                         <div class="item flow">
-                          <div class="item__icons">
-                            <ui:include src="/uii/includes/icon-file-text.xhtml" />
-                          </div>
+                            <div class="item__icons">
+                                <ui:include src="/uii/includes/icon-file-text.xhtml" />
+                            </div>
 
-                          <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverShowDataHeader}</h2>
-                          <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverShowData}</p>
+                            <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverShowDataHeader}</h2>
+                            <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverShowData}</p>
 
-                          <button
-                              jsf:id="userData"
-                              class="item__cta btn btn-primary-400"
-                              title="#{msgs.plugin_dashboard_delivery_deliverShowDataButton}"
-                              jsf:action="#{DashboardForm.plugin.readUserConfiguration}">
-                              <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverShowDataButton}" />
-                              <f:setPropertyActionListener
-                                  value="userdata"
-                                  target="#{DashboardForm.plugin.navigation}" />
-                              <f:ajax
-                                  render="main-area"
-                                  execute="@this" />
-                          </button>
-                        </div> <!-- end item -->
+                            <button
+                                jsf:id="userData"
+                                class="item__cta btn btn-primary-400"
+                                title="#{msgs.plugin_dashboard_delivery_deliverShowDataButton}"
+                                jsf:action="#{DashboardForm.plugin.readUserConfiguration}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverShowDataButton}" />
+                                <f:setPropertyActionListener
+                                    value="userdata"
+                                    target="#{DashboardForm.plugin.navigation}" />
+                                <f:ajax
+                                    render="main-area"
+                                    execute="@this" />
+                            </button>
+                        </div>
+                        <!-- end item -->
 
-                    </div> <!-- end common-region -->
+                        <!-- logout button -->
+                        <div class="item flow">
+                            <div class="item__icons">
+                                <ui:include src="/uii/includes/icon-file-text.xhtml" />
+                            </div>
+
+                            <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverLogoutHeader}</h2>
+                            <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverLogout}</p>
+
+                            <button
+                                jsf:id="logout"
+                                class="item__cta btn btn-primary-400"
+                                title="#{msgs.logout}"
+                                jsf:action="#{LoginForm.logoutExternalUser}">
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverLogoutButton}" />
+                            </button>
+                        </div>
+                        <!-- end item -->
+
+                    </div>
+                    <!-- end common-region -->
 
                 </h:form>
             </ui:fragment>
 
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='upload'}">
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='upload'}">
 
 
-        <ui:include src="includes/helpModalsDD.xhtml">
-            <ui:param name="header" value="plugin_dashboard_delivery_monograph_upload_helpHeader" />
-            <ui:param name="body1" value="plugin_dashboard_delivery_monograph_upload_helpBody1" />
-            <ui:param name="body2" value="plugin_dashboard_delivery_monograph_upload_helpBody2" />
-            <ui:param name="img" value="plugin_dashboard_delivery_monograph_upload_helpImg" />
-        </ui:include>
+                <ui:include src="includes/helpModalsDD.xhtml">
+                    <ui:param
+                        name="header"
+                        value="plugin_dashboard_delivery_monograph_upload_helpHeader" />
+                    <ui:param
+                        name="body1"
+                        value="plugin_dashboard_delivery_monograph_upload_helpBody1" />
+                    <ui:param
+                        name="body2"
+                        value="plugin_dashboard_delivery_monograph_upload_helpBody2" />
+                    <ui:param
+                        name="img"
+                        value="plugin_dashboard_delivery_monograph_upload_helpImg" />
+                </ui:include>
 
-				<h1 class="page__heading">
-          <span>#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</span>
+                <h1 class="page__heading">
+                    <span>#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</span>
 
-					<button type="button" class="btn page__help" aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}" data-bs-toggle="modal" data-bs-title="help title" data-bs-target="#pageHelpModal">
-					  <ui:include src="/uii/includes/icon-help.xhtml" />
-					</button>
-				</h1>
-
-
-
-        <h:form
-            prependId="false"
-            id="uploadForm"
-            class="form flow"
-            enctype="multipart/form-data">
+                    <button
+                        type="button"
+                        class="btn page__help"
+                        aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                        data-bs-toggle="modal"
+                        data-bs-title="help title"
+                        data-bs-target="#pageHelpModal">
+                        <ui:include src="/uii/includes/icon-help.xhtml" />
+                    </button>
+                </h1>
 
 
 
-          <zlb:uploadFormIcons />
-          <zlb:uploadFormMessages />
+                <h:form
+                    prependId="false"
+                    id="uploadForm"
+                    class="form flow"
+                    enctype="multipart/form-data">
 
-          <label for="file" class="sr-only">#{msgs.plugin_dashboard_delivery_uploadFormLabel}</label>
-            <h:inputFile
-                id="file"
-                styleClass="form-control form-control-lg"
-                value="#{DashboardForm.plugin.file}"
-                title="#{msgs.plugin_dashboard_delivery_ariaLabel_uploadForm}"
-                name="file" />
 
-					<div class="form__actions">
-            <zlb:uploadFormButtons />
 
-            <h:commandButton
-                id="submit"
-                value="senden"
-                styleClass="btn btn-primary-400 d-none"
-                />
-					</div>
-        </h:form>
+                    <zlb:uploadFormIcons />
+                    <zlb:uploadFormMessages />
 
-          <!-- Frontend: handle submit of documents -->
-          <script
-            type="text/javascript"
-            src="#{HelperForm.applicationWebsiteUrl}uii/template/assets/js/fileUpload.js">
-          </script>
-          <script>
-            fileUpload.init({DSForm: '#file', DSSubmit: '#submit'})
-          </script>
+                    <label
+                        for="file"
+                        class="sr-only">#{msgs.plugin_dashboard_delivery_uploadFormLabel}</label>
+                    <h:inputFile
+                        id="file"
+                        styleClass="form-control form-control-lg"
+                        value="#{DashboardForm.plugin.file}"
+                        title="#{msgs.plugin_dashboard_delivery_ariaLabel_uploadForm}"
+                        name="file" />
 
-          <zlb:urlUploadModal />
+                    <div class="form__actions">
+                        <zlb:uploadFormButtons />
 
-      </ui:fragment>
+                        <h:commandButton
+                            id="submit"
+                            value="senden"
+                            styleClass="btn btn-primary-400 d-none" />
+                    </div>
+                </h:form>
+
+                <!-- Frontend: handle submit of documents -->
+                <script
+                    type="text/javascript"
+                    src="#{HelperForm.applicationWebsiteUrl}uii/template/assets/js/fileUpload.js">
+                                                                    
+                                                                </script>
+                <script>
+                                                                    fileUpload.init( {
+                                                                        DSForm: '#file',
+                                                                        DSSubmit: '#submit'
+                                                                    } )
+                                                                </script>
+
+                <zlb:urlUploadModal />
+
+            </ui:fragment>
 
             <ui:fragment
                 id="monographs"
                 rendered="#{DashboardForm.plugin.documentType == 'monograph'}">
-                 <div class="container">
+                <div class="container">
                     <ui:include src="include_monographs.xhtml" />
-                  </div>
+                </div>
             </ui:fragment>
 
 
             <ui:fragment
                 id="journals"
                 rendered="#{DashboardForm.plugin.documentType == 'journal' or DashboardForm.plugin.documentType == 'issue'}">
-                 <div class="container">
+                <div class="container">
                     <ui:include src="include_journals.xhtml" />
-                  </div>
+                </div>
             </ui:fragment>
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata' or DashboardForm.plugin.navigation=='user' or DashboardForm.plugin.navigation=='institution'or DashboardForm.plugin.navigation=='contact'}">
-                 <div class="container container--user-data">
+                <div class="container container--user-data">
                     <ui:include src="include_userdata.xhtml" />
-                  </div>
+                </div>
             </ui:fragment>
 
             <ui:fragment
                 id="data"
                 rendered="#{DashboardForm.plugin.navigation=='existingData'}">
-                 <div class="container existing-data">
+                <div class="container existing-data">
                     <ui:include src="include_existingData.xhtml" />
-                  </div>
+                </div>
             </ui:fragment>
 
         </h:panelGroup>
 
-<script>
+        <script>
+                                    function focusField( elem ) {
+                                        document.getElementById( "focusField" ).value = elem.id;
+                                    }
 
-function focusField (elem) {
-    document.getElementById("focusField" ).value =elem.id;
-}
+                                    function updateFocus() {
+                                        var focus = $( '#focusField' ).val();
+                                        const inp = document.getElementById( focus );
+                                        if ( inp != null ) {
+                                            inp.focus();
+                                        }
+                                    }
 
-function updateFocus() {
-    var focus = $('#focusField').val();
-    const inp = document.getElementById(focus);
-    if (inp != null){
-    	inp.focus();            
-    }
-}
-
-
-jsf.ajax.addOnEvent( function( data ) {
-    var ajaxstatus = data.status; // Can be "begin", "complete" and "success"
-    var source = data.source;
-    switch ( ajaxstatus ) {
-        case "begin": // This is called right before ajax request is been sent.
-            break;
-        case "complete": // This is called right after ajax response is received.
-            break;
-        case "success": // This is called when ajax response is successfully processed.
-            // find element,set focus
-           updateFocus();
-            break;
-    }
-} ); 
-
-
-</script>
+                                    jsf.ajax.addOnEvent( function( data ) {
+                                        var ajaxstatus = data.status; // Can be "begin", "complete" and "success"
+                                        var source = data.source;
+                                        switch ( ajaxstatus ) {
+                                            case "begin": // This is called right before ajax request is been sent.
+                                                break;
+                                            case "complete": // This is called right after ajax response is received.
+                                                break;
+                                            case "success": // This is called when ajax response is successfully processed.
+                                                // find element,set focus
+                                                updateFocus();
+                                                break;
+                                        }
+                                    } );
+                                </script>
 
 
     </ui:define>

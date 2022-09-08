@@ -1,12 +1,15 @@
 package de.intranda.goobi.plugins.utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
 
 @Data
-public class FieldGrouping {
+public class FieldGrouping implements Serializable {
+
+    private static final long serialVersionUID = -1167645687386330344L;
 
     private String label; // display name in UI
 

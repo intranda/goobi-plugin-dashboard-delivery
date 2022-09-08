@@ -87,6 +87,8 @@ import ugh.fileformats.mets.MetsMods;
 @Log4j2
 public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
+    private static final long serialVersionUID = -6261703469505380104L;
+
     private static final String NEWLINE = "<br />";
     private static final String COLON = ": ";
 
@@ -121,7 +123,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     private PluginGuiType pluginGuiType = PluginGuiType.FULL;
 
     // upload a file
-    private Part file;
+    private transient Part file;
 
     private String monographTemplateName = "Standard";
     private String journalTemplateName = "Standard";
@@ -151,9 +153,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     @Getter
     private FieldGrouping contact2Data;
     @Getter
-    private List<Path> files = new ArrayList<>();
+    private transient List<Path> files = new ArrayList<>();
 
-    private Path temporaryFolder;
+    private transient Path temporaryFolder;
 
     @Getter
     protected ProcessPaginator paginator;
