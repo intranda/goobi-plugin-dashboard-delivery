@@ -134,7 +134,7 @@ field: individual input field
             <selectfield value="CC BY-NC-SA" label="CC BY-NC-SA" />
             <selectfield value="CC BY-NC-ND" label="CC BY-NC-ND" />
         </field>
-        <field rulesetName="Copyright" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+        <field rulesetName="Copyright" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum" replaceWith="institution-copyright">  
             <selectfield value="gesperrt" label="gesperrt" />
             <selectfield value="gesperrt, Zugriff nur nach Antrag" label="gesperrt, Zugriff nur nach Antrag" />
             <selectfield value="beschränkt" label="beschränkt" />
@@ -300,7 +300,7 @@ field: individual input field
 
 
     <zdbTitle>
-        <recipient>robert@intranda.com</recipient>
+        <recipient>goetze@jpberlin.de</recipient>
         <subject>Neuer Zeitschriftentitel</subject>
         <body>Es wurde ein neuer Zeitschriftentitel erstellt, bitte prüfen und ZDB ID eintragen.</body>
     </zdbTitle>
