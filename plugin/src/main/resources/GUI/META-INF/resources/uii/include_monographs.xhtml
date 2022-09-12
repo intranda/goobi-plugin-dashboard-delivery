@@ -20,10 +20,18 @@
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='data1'}">
 
             <ui:include src="includes/helpModalsDD.xhtml">
-                <ui:param name="header" value="plugin_dashboard_delivery_monograph_data1_helpHeader" />
-                <ui:param name="body1" value="plugin_dashboard_delivery_monograph_data1_helpBody1" />
-                <ui:param name="body2" value="plugin_dashboard_delivery_monograph_data1_helpBody2" />
-                <ui:param name="img" value="plugin_dashboard_delivery_monograph_data1_helpImg" />
+                <ui:param
+                    name="header"
+                    value="plugin_dashboard_delivery_monograph_data1_helpHeader" />
+                <ui:param
+                    name="body1"
+                    value="plugin_dashboard_delivery_monograph_data1_helpBody1" />
+                <ui:param
+                    name="body2"
+                    value="plugin_dashboard_delivery_monograph_data1_helpBody2" />
+                <ui:param
+                    name="img"
+                    value="plugin_dashboard_delivery_monograph_data1_helpImg" />
             </ui:include>
 
             <h1 class="page__heading">
@@ -46,9 +54,7 @@
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
                     <ui:fragment rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
-                        <div
-                            class="common-region"
-                            >
+                        <div class="common-region">
                             <h2 class="grid-full-width">
                                 <h:outputText value="#{group.label}" />
                             </h2>
@@ -73,7 +79,9 @@
                                         subClass="persongrid"
                                         fieldName="#{field.label}"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        fieldValidator="#{field.validateField}" />
+                                        fieldValidator="#{field.validateField}"
+                                        showHelpBtn="#{field.displayHelpButton}"
+                                        helpText="#{field.helpMessage}" />
                                 </ui:fragment>
 
                                 <ui:fragment rendered="#{field.displayType == 'corporate'}">
@@ -89,7 +97,9 @@
                                         selectItems="#{field.selectList}"
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        fieldValidator="#{field.validateField}" />
+                                        fieldValidator="#{field.validateField}"
+                                        showHelpBtn="#{field.displayHelpButton}"
+                                        helpText="#{field.helpMessage}" />
                                 </ui:fragment>
 
                                 <ui:fragment rendered="#{field.displayType == 'picklist'}">
@@ -105,7 +115,9 @@
                                         selectItems="#{field.selectList}"
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        fieldValidator="#{field.validateField}" />
+                                        fieldValidator="#{field.validateField}"
+                                        showHelpBtn="#{field.displayHelpButton}"
+                                        helpText="#{field.helpMessage}" />
                                 </ui:fragment>
 
 
@@ -124,7 +136,9 @@
                                         booleanValue="#{field.booleanValue}"
                                         subValue="#{field.value2}"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                        fieldValidator="#{field.validateField}" />
+                                        fieldValidator="#{field.validateField}"
+                                        showHelpBtn="#{field.displayHelpButton}"
+                                        helpText="#{field.helpMessage}" />
                                 </ui:fragment>
                             </ui:repeat>
                         </div>
@@ -140,10 +154,18 @@
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='data2'}">
 
             <ui:include src="includes/helpModalsDD.xhtml">
-                <ui:param name="header" value="plugin_dashboard_delivery_monograph_data2_helpHeader" />
-                <ui:param name="body1" value="plugin_dashboard_delivery_monograph_data2_helpBody1" />
-                <ui:param name="body2" value="plugin_dashboard_delivery_monograph_data2_helpBody2" />
-                <ui:param name="img" value="plugin_dashboard_delivery_monograph_data2_helpImg" />
+                <ui:param
+                    name="header"
+                    value="plugin_dashboard_delivery_monograph_data2_helpHeader" />
+                <ui:param
+                    name="body1"
+                    value="plugin_dashboard_delivery_monograph_data2_helpBody1" />
+                <ui:param
+                    name="body2"
+                    value="plugin_dashboard_delivery_monograph_data2_helpBody2" />
+                <ui:param
+                    name="img"
+                    value="plugin_dashboard_delivery_monograph_data2_helpImg" />
             </ui:include>
 
             <h1 class="page__heading">
@@ -196,7 +218,9 @@
                                         fieldName="#{field.label}"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp"
-                                        fieldValidator="#{field.validateField}" />
+                                        fieldValidator="#{field.validateField}"
+                                        showHelpBtn="#{field.displayHelpButton}"
+                                        helpText="#{field.helpMessage}" />
                                 </ui:fragment>
 
                                 <ui:fragment rendered="#{field.displayType == 'corporate'}">
@@ -213,7 +237,9 @@
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp"
-                                        fieldValidator="#{field.validateField}" />
+                                        fieldValidator="#{field.validateField}"
+                                        showHelpBtn="#{field.displayHelpButton}"
+                                        helpText="#{field.helpMessage}" />
                                 </ui:fragment>
 
                                 <ui:fragment rendered="#{field.displayType == 'picklist'}">
@@ -230,7 +256,9 @@
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp"
-                                        fieldValidator="#{field.validateField}" />
+                                        fieldValidator="#{field.validateField}"
+                                        showHelpBtn="#{field.displayHelpButton}"
+                                        helpText="#{field.helpMessage}" />
                                 </ui:fragment>
 
 
@@ -249,7 +277,9 @@
                                         subValue="#{field.value2}"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp"
-                                        fieldValidator="#{field.validateField}" />
+                                        fieldValidator="#{field.validateField}"
+                                        showHelpBtn="#{field.displayHelpButton}"
+                                        helpText="#{field.helpMessage}" />
                                 </ui:fragment>
                             </ui:repeat>
                         </div>
@@ -265,10 +295,18 @@
 
 
             <ui:include src="includes/helpModalsDD.xhtml">
-                <ui:param name="header" value="plugin_dashboard_delivery_monograph_data3_helpHeader" />
-                <ui:param name="body1" value="plugin_dashboard_delivery_monograph_data3_helpBody1" />
-                <ui:param name="body2" value="plugin_dashboard_delivery_monograph_data3_helpBody2" />
-                <ui:param name="img" value="plugin_dashboard_delivery_monograph_data3_helpImg" />
+                <ui:param
+                    name="header"
+                    value="plugin_dashboard_delivery_monograph_data3_helpHeader" />
+                <ui:param
+                    name="body1"
+                    value="plugin_dashboard_delivery_monograph_data3_helpBody1" />
+                <ui:param
+                    name="body2"
+                    value="plugin_dashboard_delivery_monograph_data3_helpBody2" />
+                <ui:param
+                    name="img"
+                    value="plugin_dashboard_delivery_monograph_data3_helpImg" />
             </ui:include>
 
             <h1 class="page__heading">
@@ -320,7 +358,9 @@
                                         fieldName="#{field.label}"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp"
-                                        fieldValidator="#{field.validateField}" />
+                                        fieldValidator="#{field.validateField}"
+                                        showHelpBtn="#{field.displayHelpButton}"
+                                        helpText="#{field.helpMessage}" />
                                 </ui:fragment>
 
                                 <ui:fragment rendered="#{field.displayType == 'corporate'}">
@@ -337,7 +377,9 @@
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp"
-                                        fieldValidator="#{field.validateField}" />
+                                        fieldValidator="#{field.validateField}"
+                                        showHelpBtn="#{field.displayHelpButton}"
+                                        helpText="#{field.helpMessage}" />
                                 </ui:fragment>
 
                                 <ui:fragment rendered="#{field.displayType == 'picklist'}">
@@ -354,7 +396,9 @@
                                         subClass="corporategrid"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp"
-                                        fieldValidator="#{field.validateField}" />
+                                        fieldValidator="#{field.validateField}"
+                                        showHelpBtn="#{field.displayHelpButton}"
+                                        helpText="#{field.helpMessage}" />
                                 </ui:fragment>
 
 
@@ -373,7 +417,9 @@
                                         subValue="#{field.value2}"
                                         displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
                                         render=":grp"
-                                        fieldValidator="#{field.validateField}" />
+                                        fieldValidator="#{field.validateField}"
+                                        showHelpBtn="#{field.displayHelpButton}"
+                                        helpText="#{field.helpMessage}" />
                                 </ui:fragment>
 
                             </ui:repeat>
@@ -386,10 +432,18 @@
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='overview'}">
 
             <ui:include src="includes/helpModalsDD.xhtml">
-                <ui:param name="header" value="plugin_dashboard_delivery_monograph_overview_helpHeader" />
-                <ui:param name="body1" value="plugin_dashboard_delivery_monograph_overview_helpBody1" />
-                <ui:param name="body2" value="plugin_dashboard_delivery_monograph_overview_helpBody2" />
-                <ui:param name="img" value="plugin_dashboard_delivery_monograph_overview_helpImg" />
+                <ui:param
+                    name="header"
+                    value="plugin_dashboard_delivery_monograph_overview_helpHeader" />
+                <ui:param
+                    name="body1"
+                    value="plugin_dashboard_delivery_monograph_overview_helpBody1" />
+                <ui:param
+                    name="body2"
+                    value="plugin_dashboard_delivery_monograph_overview_helpBody2" />
+                <ui:param
+                    name="img"
+                    value="plugin_dashboard_delivery_monograph_overview_helpImg" />
             </ui:include>
 
             <h1 class="page__heading">

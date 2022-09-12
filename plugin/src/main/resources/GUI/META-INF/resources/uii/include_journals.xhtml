@@ -188,7 +188,8 @@
                                             fieldName="#{field.label}"
                                             fieldRequired="#{field.required}"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                             />
+                                            showHelpBtn="#{field.displayHelpButton}"
+                                            helpText="#{field.helpMessage}" />
                                     </ui:fragment>
 
                                     <ui:fragment rendered="#{field.displayType == 'corporate'}">
@@ -205,7 +206,8 @@
                                             selectItems="#{field.selectList}"
                                             subClass="corporategrid"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                            />
+                                            showHelpBtn="#{field.displayHelpButton}"
+                                            helpText="#{field.helpMessage}" />
                                     </ui:fragment>
 
                                     <ui:fragment rendered="#{field.displayType == 'picklist'}">
@@ -221,7 +223,9 @@
                                             selectItems="#{field.selectList}"
                                             fieldRequired="#{field.required}"
                                             subClass="corporategrid"
-                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}" />
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            showHelpBtn="#{field.displayHelpButton}"
+                                            helpText="#{field.helpMessage}" />
                                     </ui:fragment>
 
 
@@ -239,7 +243,9 @@
                                             fieldRequired="#{field.required}"
                                             booleanValue="#{field.booleanValue}"
                                             subValue="#{field.value2}"
-                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}" />
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            showHelpBtn="#{field.displayHelpButton}"
+                                            helpText="#{field.helpMessage}" />
 
                                     </ui:fragment>
 
@@ -397,7 +403,9 @@
                                             subClass="persongrid"
                                             fieldName="#{field.label}"
                                             fieldRequired="#{field.required}"
-                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}" />
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            showHelpBtn="#{field.displayHelpButton}"
+                                            helpText="#{field.helpMessage}" />
                                     </ui:fragment>
 
                                     <ui:fragment rendered="#{field.displayType == 'corporate'}">
@@ -413,7 +421,9 @@
                                             selectItems="#{field.selectList}"
                                             fieldRequired="#{field.required}"
                                             subClass="corporategrid"
-                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}" />
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            showHelpBtn="#{field.displayHelpButton}"
+                                            helpText="#{field.helpMessage}" />
                                     </ui:fragment>
 
                                     <ui:fragment rendered="#{field.displayType == 'picklist'}">
@@ -429,7 +439,9 @@
                                             selectItems="#{field.selectList}"
                                             fieldRequired="#{field.required}"
                                             subClass="corporategrid"
-                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}" />
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            showHelpBtn="#{field.displayHelpButton}"
+                                            helpText="#{field.helpMessage}" />
                                     </ui:fragment>
 
 
@@ -447,7 +459,9 @@
                                             selectItems="#{field.selectList}"
                                             booleanValue="#{field.booleanValue}"
                                             subValue="#{field.value2}"
-                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}" />
+                                            displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            showHelpBtn="#{field.displayHelpButton}"
+                                            helpText="#{field.helpMessage}" />
                                     </ui:fragment>
 
                                 </h:panelGroup>

@@ -362,4 +362,8 @@ public class MetadataField implements Serializable {
         return mf;
 
     }
+
+    public boolean isDisplayHelpButton() {
+        return StringUtils.isNotBlank(helpMessage);
+    }
 }

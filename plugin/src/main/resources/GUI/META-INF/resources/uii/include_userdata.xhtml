@@ -230,7 +230,9 @@
                                 fieldRequired="#{field.required}"
                                 subValue="#{field.value2}"
                                 displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                render="@form" />
+                                render="@form"
+                                showHelpBtn="#{field.displayHelpButton}"
+                                helpText="#{field.helpMessage}" />
                         </h:panelGroup>
                     </ui:repeat>
                 </span>
@@ -378,7 +380,9 @@
                                 booleanValue="#{field.booleanValue}"
                                 subValue="#{field.value2}"
                                 displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                render="@form" />
+                                render="@form"
+                                showHelpBtn="#{field.displayHelpButton}"
+                                helpText="#{field.helpMessage}" />
                         </h:panelGroup>
                     </ui:repeat>
                 </span>
@@ -423,7 +427,9 @@
                                 booleanValue="#{field.booleanValue}"
                                 subValue="#{field.value2}"
                                 displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                render="@form" />
+                                render="@form"
+                                showHelpBtn="#{field.displayHelpButton}"
+                                helpText="#{field.helpMessage}" />
                         </h:panelGroup>
                     </ui:repeat>
                 </span>
@@ -482,7 +488,9 @@
                                     booleanValue="#{field.booleanValue}"
                                     subValue="#{field.value2}"
                                     displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
-                                    render="@form" />
+                                    render="@form"
+                                    showHelpBtn="#{field.displayHelpButton}"
+                                    helpText="#{field.helpMessage}" />
                             </h:panelGroup>
                         </ui:repeat>
                     </span>
