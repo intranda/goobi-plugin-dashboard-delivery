@@ -86,12 +86,20 @@
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata'}">
 
 
-          <ui:include src="includes/helpModalsDD.xhtml">
-              <ui:param name="header" value="plugin_dashboard_delivery_userdata_options_helpHeader" />
-              <ui:param name="body1" value="plugin_dashboard_delivery_userdata_options_helpBody1" />
-              <ui:param name="body2" value="plugin_dashboard_delivery_userdata_options_helpBody2" />
-              <ui:param name="img" value="plugin_dashboard_delivery_userdata_options_helpImg" />
-          </ui:include>
+            <ui:include src="includes/helpModalsDD.xhtml">
+                <ui:param
+                    name="header"
+                    value="plugin_dashboard_delivery_userdata_options_helpHeader" />
+                <ui:param
+                    name="body1"
+                    value="plugin_dashboard_delivery_userdata_options_helpBody1" />
+                <ui:param
+                    name="body2"
+                    value="plugin_dashboard_delivery_userdata_options_helpBody2" />
+                <ui:param
+                    name="img"
+                    value="plugin_dashboard_delivery_userdata_options_helpImg" />
+            </ui:include>
 
             <h:form>
                 <div class="common-region common-region--no-borders common-region--three-cols">
@@ -115,6 +123,16 @@
                             <f:setPropertyActionListener
                                 value="user"
                                 target="#{DashboardForm.plugin.navigation}" />
+                            <f:setPropertyActionListener
+                                value=""
+                                target="#{DashboardForm.plugin.passwordValidationError}" />
+
+                            <f:setPropertyActionListener
+                                value="true"
+                                target="#{DashboardForm.plugin.oldPasswordValid}" />
+                            <f:setPropertyActionListener
+                                value="true"
+                                target="#{DashboardForm.plugin.newPasswordValid}" />
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
@@ -177,12 +195,20 @@
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
 
-              <ui:include src="includes/helpModalsDD.xhtml">
-                  <ui:param name="header" value="plugin_dashboard_delivery_userdata_user_helpHeader" />
-                  <ui:param name="body1" value="plugin_dashboard_delivery_userdata_user_helpBody1" />
-                  <ui:param name="body2" value="plugin_dashboard_delivery_userdata_user_helpBody2" />
-                  <ui:param name="img" value="plugin_dashboard_delivery_userdata_user_helpImg" />
-              </ui:include>
+                <ui:include src="includes/helpModalsDD.xhtml">
+                    <ui:param
+                        name="header"
+                        value="plugin_dashboard_delivery_userdata_user_helpHeader" />
+                    <ui:param
+                        name="body1"
+                        value="plugin_dashboard_delivery_userdata_user_helpBody1" />
+                    <ui:param
+                        name="body2"
+                        value="plugin_dashboard_delivery_userdata_user_helpBody2" />
+                    <ui:param
+                        name="img"
+                        value="plugin_dashboard_delivery_userdata_user_helpImg" />
+                </ui:include>
 
                 <span class="common-region">
                     <ui:repeat
@@ -208,19 +234,126 @@
                         </h:panelGroup>
                     </ui:repeat>
                 </span>
-                
-                <!-- TODO add new region to set new password -->
-                
+
+                <!-- region to set new password -->
+                <span class="common-region">
+                    <h:panelGroup
+                        layout="block"
+                        styleClass="form-group">
+                        <label
+                            for="old_password"
+                            class="zlb-label">
+                            <h:outputText
+                                escape="false"
+                                value="#{msgs.altesPasswort}" />
+                        </label>
+                        <div class="form form-field #{!DashboardForm.plugin.oldPasswordValid ? 'validate--danger' : ''}">
+                            <x:inputSecret
+                                id="old_password"
+                                pt:aria-label="#{msgs.altesPasswort}"
+                                styleClass="form-control"
+                                value="#{DashboardForm.plugin.oldPassword}"
+                                onfocus="focusField(this);"
+                                required="false">
+                                <f:passThroughAttribute
+                                    name="placeholder"
+                                    value="" />
+                                <f:ajax execute="@this" />
+                            </x:inputSecret>
+                        </div>
+                        <h:panelGroup
+                            layout="block"
+                            rendered="#{!DashboardForm.plugin.oldPasswordValid}"
+                            styleClass="font-danger validation-message">
+                            <h:outputText value="#{msgs.altesPasswortFalschEingegeben}" />
+                        </h:panelGroup>
+                        <h:outputText
+                            styleClass="help-block font-light"
+                            rendered="#{NavigationForm.showHelp}"
+                            value="#{msgs.helpAltesPasswort}" />
+                    </h:panelGroup>
+
+
+                    <h:panelGroup
+                        layout="block"
+                        styleClass="form-group column-start">
+                        <label
+                            for="newPassword"
+                            class="zlb-label">
+                            <h:outputText
+                                escape="false"
+                                value="#{msgs.neuesPasswort}" />
+                        </label>
+                        <div class="form form-field #{!DashboardForm.plugin.newPasswordValid ? 'validate--danger' : ''}">
+                            <x:inputSecret
+                                id="newPassword"
+                                pt:aria-label="#{msgs.neuesPasswort}"
+                                styleClass="form-control"
+                                value="#{DashboardForm.plugin.newPassword}"
+                                onfocus="focusField(this);"
+                                required="false">
+                                <f:passThroughAttribute
+                                    name="placeholder"
+                                    value="" />
+                                <f:ajax execute="@this" />
+                            </x:inputSecret>
+                        </div>
+                        <h:panelGroup
+                            layout="block"
+                            rendered="#{!DashboardForm.plugin.newPasswordValid}"
+                            styleClass="font-danger validation-message">
+                            <h:outputText value="#{DashboardForm.plugin.passwordValidationError}" />
+                        </h:panelGroup>
+                        <h:outputText
+                            styleClass="help-block font-light"
+                            rendered="#{NavigationForm.showHelp}"
+                            value="#{msgs.helpNeuesPasswort}" />
+                    </h:panelGroup>
+
+                    <h:panelGroup
+                        layout="block"
+                        styleClass="form-group">
+                        <label
+                            for="confirmnewPassword"
+                            class="zlb-label">
+                            <h:outputText
+                                escape="false"
+                                value="#{msgs.confirmNewPassword}" />
+                        </label>
+                        <div class="form form-field #{!DashboardForm.plugin.newPasswordValid ? 'validate--danger' : ''}">
+                            <x:inputSecret
+                                id="confirmnewPassword"
+                                pt:aria-label="#{msgs.confirmNewPassword}"
+                                styleClass="form-control"
+                                value="#{DashboardForm.plugin.newPasswordRepeated}"
+                                onfocus="focusField(this);"
+                                required="false">
+                                <f:ajax execute="@this" />
+                                <f:passThroughAttribute
+                                    name="placeholder"
+                                    value="" />
+                            </x:inputSecret>
+                        </div>
+                    </h:panelGroup>
+                </span>
             </ui:fragment>
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
 
-              <ui:include src="includes/helpModalsDD.xhtml">
-                  <ui:param name="header" value="plugin_dashboard_delivery_userdata_institution_helpHeader" />
-                  <ui:param name="body1" value="plugin_dashboard_delivery_userdata_institution_helpBody1" />
-                  <ui:param name="body2" value="plugin_dashboard_delivery_userdata_institution_helpBody2" />
-                  <ui:param name="img" value="plugin_dashboard_delivery_userdata_institution_helpImg" />
-              </ui:include>
+                <ui:include src="includes/helpModalsDD.xhtml">
+                    <ui:param
+                        name="header"
+                        value="plugin_dashboard_delivery_userdata_institution_helpHeader" />
+                    <ui:param
+                        name="body1"
+                        value="plugin_dashboard_delivery_userdata_institution_helpBody1" />
+                    <ui:param
+                        name="body2"
+                        value="plugin_dashboard_delivery_userdata_institution_helpBody2" />
+                    <ui:param
+                        name="img"
+                        value="plugin_dashboard_delivery_userdata_institution_helpImg" />
+                </ui:include>
 
                 <span class="common-region">
                     <ui:repeat
@@ -255,12 +388,20 @@
 
             <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
 
-              <ui:include src="includes/helpModalsDD.xhtml">
-                  <ui:param name="header" value="plugin_dashboard_delivery_userdata_contact_helpHeader" />
-                  <ui:param name="body1" value="plugin_dashboard_delivery_userdata_contact_helpBody1" />
-                  <ui:param name="body2" value="plugin_dashboard_delivery_userdata_contact_helpBody2" />
-                  <ui:param name="img" value="plugin_dashboard_delivery_userdata_contact_helpImg" />
-              </ui:include>
+                <ui:include src="includes/helpModalsDD.xhtml">
+                    <ui:param
+                        name="header"
+                        value="plugin_dashboard_delivery_userdata_contact_helpHeader" />
+                    <ui:param
+                        name="body1"
+                        value="plugin_dashboard_delivery_userdata_contact_helpBody1" />
+                    <ui:param
+                        name="body2"
+                        value="plugin_dashboard_delivery_userdata_contact_helpBody2" />
+                    <ui:param
+                        name="img"
+                        value="plugin_dashboard_delivery_userdata_contact_helpImg" />
+                </ui:include>
 
                 <span class="common-region">
                     <ui:repeat
@@ -344,10 +485,6 @@
                         <f:ajax
                             render="main-area"
                             execute="@this" />
-
-                        <f:setPropertyActionListener
-                            value="userdata"
-                            target="#{DashboardForm.plugin.navigation}" />
                     </button>
                 </ui:fragment>
 

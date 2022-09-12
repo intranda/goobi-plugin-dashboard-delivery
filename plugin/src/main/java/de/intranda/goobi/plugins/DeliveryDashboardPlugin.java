@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,10 +40,12 @@ import org.goobi.beans.Processproperty;
 import org.goobi.beans.Step;
 import org.goobi.beans.User;
 import org.goobi.files.FileValidator;
+import org.goobi.managedbeans.UserBean;
 import org.goobi.production.enums.PluginGuiType;
 import org.goobi.production.enums.PluginType;
 import org.goobi.production.plugin.interfaces.IDashboardPlugin;
 import org.goobi.reporting.Report;
+import org.goobi.security.authentication.IAuthenticationProvider.AuthenticationType;
 import org.goobi.vocabulary.Field;
 import org.goobi.vocabulary.VocabRecord;
 
@@ -51,6 +54,7 @@ import de.intranda.goobi.plugins.utils.MetadataField;
 import de.intranda.goobi.plugins.utils.ProcessMetadataManager;
 import de.intranda.goobi.plugins.utils.ProcessPaginator;
 import de.sub.goobi.config.ConfigPlugins;
+import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.helper.BeanHelper;
 import de.sub.goobi.helper.Helper;
 import de.sub.goobi.helper.ScriptThreadWithoutHibernate;
@@ -58,6 +62,7 @@ import de.sub.goobi.helper.StorageProvider;
 import de.sub.goobi.helper.enums.PropertyType;
 import de.sub.goobi.helper.exceptions.DAOException;
 import de.sub.goobi.helper.exceptions.SwapException;
+import de.sub.goobi.helper.ldap.LdapAuthentication;
 import de.sub.goobi.persistence.managers.InstitutionManager;
 import de.sub.goobi.persistence.managers.MySQLHelper;
 import de.sub.goobi.persistence.managers.ProcessManager;
@@ -186,6 +191,27 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     @Getter
     private boolean incompleteUserData = false;
+
+    @Getter
+    @Setter
+    private String oldPassword;
+
+    @Getter
+    @Setter
+    private String newPassword;
+
+    @Getter
+    @Setter
+    private String newPasswordRepeated;
+    @Getter
+    @Setter
+    private boolean oldPasswordValid = true;
+    @Getter
+    @Setter
+    private boolean newPasswordValid = true;
+    @Getter
+    @Setter
+    private String passwordValidationError;
 
     public DeliveryDashboardPlugin() {
         try {
@@ -520,7 +546,47 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     // update user object, save it
     public void saveUserData() {
+        oldPasswordValid = true;
+        newPasswordValid = true;
+        passwordValidationError = "";
         User user = Helper.getCurrentUser();
+        // check if password fields are filled
+        if (StringUtils.isNotBlank(newPassword) || StringUtils.isNotBlank(newPasswordRepeated)) {
+            navigation="user";
+
+            // old pw is blank or old pw is wrong
+            if (StringUtils.isBlank(oldPassword) || !user.istPasswortKorrekt(oldPassword)) {
+                oldPasswordValid = false;
+                return;
+            }
+
+            // new pw field is blank or fields don't match
+            if (StringUtils.isBlank(newPassword) || StringUtils.isBlank(newPasswordRepeated) || !newPassword.equals(newPasswordRepeated)) {
+                passwordValidationError = Helper.getTranslation("neuesPasswortNichtGleich");
+                newPasswordValid = false;
+                return;
+            }
+
+            // new pw doesn't fulfill requirements
+            int minimumLength = ConfigurationHelper.getInstance().getMinimumPasswordLength();
+            if (newPassword.length() < minimumLength) {
+                passwordValidationError = Helper.getTranslation("neuesPasswortNichtLangGenug", "" + minimumLength);
+                newPasswordValid = false;
+                return;
+            }
+            // 6.) save new pw
+            if (AuthenticationType.LDAP.equals(user.getLdapGruppe().getAuthenticationTypeEnum()) && !user.getLdapGruppe().isReadonly()) {
+
+                LdapAuthentication myLdap = new LdapAuthentication();
+                try {
+                    myLdap.changeUserPassword(user, oldPassword, newPassword);
+                } catch (NoSuchAlgorithmException e) {
+                    log.error(e);
+                }
+            }
+            UserBean.saltAndSaveUserPassword(user, newPassword);
+        }
+
         for (MetadataField mf : userData.getFields()) {
             if ("firstname".equals(mf.getAdditionalType())) {
                 user.setVorname(mf.getValue());
@@ -528,11 +594,13 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 user.setNachname(mf.getValue());
             }
         }
+
         try {
             UserManager.saveUser(user);
         } catch (DAOException e) {
             log.error(e);
         }
+        navigation="userdata";
         readUserConfiguration();
     }
 
