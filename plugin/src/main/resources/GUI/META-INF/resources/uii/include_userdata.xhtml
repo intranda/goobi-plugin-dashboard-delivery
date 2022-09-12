@@ -427,13 +427,47 @@
                         </h:panelGroup>
                     </ui:repeat>
                 </span>
-                <ui:fragment rendered="#{!DashboardForm.plugin.contact2Data.fields.isEmpty()}">
+                <div>
+                    <button
+                        jsf:rendered="#{!DashboardForm.plugin.displaySecondContact}"
+                        jsf:id="createNewContact"
+                        jsf:action="#{DashboardForm.plugin.createNewContact}"
+                        style="margin-bottom: 20px; float: right;"
+                        class="btn btn-link ms-auto">
+
+                        <ui:include src="/uii/includes/icon-plus.xhtml" />
+                        <span>
+                            <h:outputText value="#{msgs.plugin_rest_usercreation_new_createNewContact}" />
+                        </span>
+                    </button>
+
+
+                </div>
+                <ui:fragment rendered="#{DashboardForm.plugin.displaySecondContact}">
                     <span class="common-region">
+                        <h3 class="heading__contact grid-full-width">
+                            <button
+                                jsf:id="disableContact"
+                                jsf:action="#{DashboardForm.plugin.disableContact}"
+                                style="float: right"
+                                class="btn btn-link ms-auto"
+                                jsf:rendered="#{DashboardForm.plugin.displaySecondContact}">
+
+                                <span>
+                                    <h:outputText value="#{msgs.plugin_rest_usercreation_new_disableContact}" />
+                                </span>
+                            </button>
+                        </h3>
+
+
+
                         <ui:repeat
                             var="field"
                             value="#{DashboardForm.plugin.contact2Data.fields}"
                             varStatus="status">
-                            <h:panelGroup id="grp">
+                            <h:panelGroup
+                                id="grp"
+                                styleClass="#{status.index == 0 ? 'column-start':''}">
                                 <zlb:field
                                     identifier="field_#{status.index}"
                                     labelText="#{field.label}"

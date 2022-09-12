@@ -213,6 +213,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     @Setter
     private String passwordValidationError;
 
+    @Getter
+    @Setter
+    private  boolean displaySecondContact = false;
+
     public DeliveryDashboardPlugin() {
         try {
             temporaryFolder = Files.createTempDirectory("delivery");
@@ -482,15 +486,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
 
             }
-            boolean secondContact = false;
+            displaySecondContact = false;
             for (MetadataField mf : contact2Data.getFields()) {
                 if (StringUtils.isNotBlank(mf.getValue())) {
-                    secondContact = true;
+                    displaySecondContact = true;
                     break;
                 }
-            }
-            if (!secondContact) {
-                contact2Data = new FieldGrouping();
             }
         }
     }
@@ -1611,6 +1612,20 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             ci.next();
         }
         return String.format("%.1f %cB", bytes / 1000.0, ci.current());
+    }
+
+
+    public void disableContact() {
+        // delete content from second contract page
+        for (MetadataField ucf : contact2Data.getFields()) {
+            ucf.setValue("");
+        }
+        displaySecondContact = false;
+    }
+
+    public void createNewContact() {
+        // show fields for second contract in ui
+        displaySecondContact = true;
     }
 
 }
