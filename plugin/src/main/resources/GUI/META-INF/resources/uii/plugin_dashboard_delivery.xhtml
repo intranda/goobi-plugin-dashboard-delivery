@@ -71,17 +71,18 @@
                     </h:outputFormat>
 
                     <span
-                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
                         title="#{msgs.plugin_rest_usercreation_helpText_page}">
-                    <button
-                        type="button"
-                        aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
-                        class="btn page__help"
-                        data-bs-toggle="modal"
-                        data-bs-title="help title"
-                        data-bs-target="#pageHelpModal">
-                        <ui:include src="/uii/includes/icon-help.xhtml" />
-                    </button>
+                        <button
+                            type="button"
+                            aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                            class="btn page__help"
+                            data-bs-toggle="modal"
+                            data-bs-title="help title"
+                            data-bs-target="#pageHelpModal">
+                            <ui:include src="/uii/includes/icon-help.xhtml" />
+                        </button>
                     </span>
                 </h1>
 
@@ -281,7 +282,8 @@
                     <span>#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</span>
 
                     <span
-                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
                         title="#{msgs.plugin_rest_usercreation_helpText_page}">
                     <button
                         type="button"
@@ -402,7 +404,6 @@
                                             case "success": // This is called when ajax response is successfully processed.
                                                 // find element,set focus
                                                 updateFocus();
-                                                tooltisInit(); // Find this function in script.js
                                                 break;
                                         }
                                     } );

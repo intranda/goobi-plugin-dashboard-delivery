@@ -50,6 +50,11 @@
         <h1 class="page__heading">
             #{msgs.plugin_dashboard_delivery_deliverShowExistingDataHeader}
 
+            <span
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="#{msgs.plugin_rest_usercreation_helpText_page}">
+
             <button
                 type="button"
                 class="btn page__help"
@@ -59,6 +64,7 @@
                 data-bs-target="#pageHelpModal">
                 <ui:include src="/uii/includes/icon-help.xhtml" />
             </button>
+            </span>
 
         </h1>
         <div class="existing-data__content">
