@@ -427,7 +427,10 @@
                         value="plugin_dashboard_delivery_userdata_contact_helpImg" />
                 </ui:include>
 
-                <span class="common-region">
+                <span class="common-region" style="counter-reset: section;">
+                    <h3 class="heading__contact grid-full-width">
+                        #{msgs.plugin_dashboard_delivery_contactPerson}
+                    </h3>
                     <ui:repeat
                         var="field"
                         value="#{DashboardForm.plugin.contactData.fields}"
@@ -469,22 +472,25 @@
 
 
                 </div>
+
                 <ui:fragment rendered="#{DashboardForm.plugin.displaySecondContact}">
                     <span class="common-region">
                         <h3 class="heading__contact grid-full-width">
+                            #{msgs.plugin_dashboard_delivery_contactPerson}
+                        </h3>
+
+                        <div class="grid-full-width">
                             <button
                                 jsf:id="disableContact"
                                 jsf:action="#{DashboardForm.plugin.disableContact}"
-                                style="float: right"
-                                class="btn btn-link ms-auto"
+                                class="btn btn-primary-400 ms-auto"
                                 jsf:rendered="#{DashboardForm.plugin.displaySecondContact}">
 
                                 <span>
                                     <h:outputText value="#{msgs.plugin_rest_usercreation_new_disableContact}" />
                                 </span>
                             </button>
-                        </h3>
-
+                        </div>
 
 
                         <ui:repeat
@@ -525,7 +531,7 @@
                 </div>
             </ui:fragment>
 
-            <div>
+            <div class="dd-bottom-nav-actions">
                 <button
                     jsf:immediate="true"
                     jsf:action="#{DashboardForm.plugin.previousPage}"
