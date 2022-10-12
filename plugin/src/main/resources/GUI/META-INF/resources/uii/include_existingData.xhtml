@@ -122,33 +122,7 @@
                             <thead>
                                 <tr role="row">
 
-
-                                    <!-- Embedded Metadata -->
-                                    <intranda:columnheader
-                                        addClass="tableColumnOverflow maxWidth300"
-                                        value="#{msgs.metadata}"
-                                        sortable="false" />
-
-                                    <th
-                                        scope="col"
-                                        role="columnheader"
-                                        class="tableColumnOverflow maxWidth300"
-                                        aria-sort="#{DashboardForm.plugin.sortField== 'titelDesc' ? 'descending' : DashboardForm.plugin.sortField== 'titelAsc' ? 'ascending' :'none'}">
-                                        <button
-                                            class="button-link"
-                                            style="width: 100%; text-align: left;"
-                                            jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
-                                            aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'titelDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'titelAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
-                                            <h:outputText value="#{msgs.prozessTitel}" />
-                                            <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'titelDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'titelAsc' ?'fa-sort-asc':'fa-sort'}"></span>
-                                            <f:setPropertyActionListener
-                                                target="#{DashboardForm.plugin.sortField}"
-                                                value="#{DashboardForm.plugin.sortField== 'titelAsc' ? 'titelDesc' : 'titelAsc' }" />
-                                            <f:ajax render="@form" />
-                                        </button>
-                                    </th>
-
-
+                                    <!-- Creation date -->
                                     <th
                                         scope="col"
                                         role="columnheader"
@@ -168,7 +142,39 @@
                                         </button>
                                     </th>
 
+
+                                    <!-- Embedded Metadata -->
+                                    <intranda:columnheader
+                                        addClass="tableColumnOverflow maxWidth300"
+                                        value="#{msgs.metadata}"
+                                        sortable="false" />
+
+
+                                    <!--
+                                    <th
+                                        scope="col"
+                                        role="columnheader"
+                                        class="tableColumnOverflow maxWidth300"
+                                        aria-sort="#{DashboardForm.plugin.sortField== 'titelDesc' ? 'descending' : DashboardForm.plugin.sortField== 'titelAsc' ? 'ascending' :'none'}">
+                                        <button
+                                            class="button-link"
+                                            style="width: 100%; text-align: left;"
+                                            jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
+                                            aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'titelDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'titelAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                            <h:outputText value="#{msgs.prozessTitel}" />
+                                            <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'titelDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'titelAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                            <f:setPropertyActionListener
+                                                target="#{DashboardForm.plugin.sortField}"
+                                                value="#{DashboardForm.plugin.sortField== 'titelAsc' ? 'titelDesc' : 'titelAsc' }" />
+                                            <f:ajax render="@form" />
+                                        </button>
+                                    </th>
+                                    -->
+
+
+
                                     <!-- TitleDocMain -->
+                                    <!--
                                     <th
                                         scope="col"
                                         role="columnheader"
@@ -187,9 +193,11 @@
                                             <f:ajax render="@form" />
                                         </button>
                                     </th>
+                                    -->
 
 
                                     <!-- Author -->
+                                    <!--
                                     <th
                                         scope="col"
                                         role="columnheader"
@@ -208,7 +216,9 @@
                                             <f:ajax render="@form" />
                                         </button>
                                     </th>
+                                    -->
                                     <!-- PublicationYear -->
+                                    <!--
                                     <th
                                         scope="col"
                                         role="columnheader"
@@ -227,20 +237,31 @@
                                             <f:ajax render="@form" />
                                         </button>
                                     </th>
+                                    -->
 
 
                                     <!-- Buttons -->
+                                    <!--
                                     <intranda:columnheader
                                         addClass="width200"
                                         value="#{msgs.auswahl}"
                                         sortable="false" />
+                                    -->
                                 </tr>
                             </thead>
+
                             <ui:repeat
                                 var="item"
                                 value="#{DashboardForm.plugin.paginator.list}"
                                 varStatus="status">
                                 <tr role="row">
+
+                                    <!-- creation date -->
+                                    <td>
+                                        <h:outputText value="#{item.erstellungsdatum}">
+                                            <f:convertDateTime pattern="dd.MM.YYYY - hh:mm:ss" />
+                                        </h:outputText>
+                                    </td>
 
                                     <!-- Embedded Metadata -->
                                     <td>
@@ -253,7 +274,7 @@
                                                     <tr>
                                                         <td
                                                             class="fw-bold"
-                                                            style="border: none !important; padding: 2px; vertical-align: top;">
+                                                            style="border: none !important; padding: 2px; padding-right: 32px; vertical-align: top;">
                                                             <h:outputText value="#{msgs['process_grid_'.concat(metadata)]}:" />
                                                         </td>
                                                         <td style="border: none !important; padding: 2px; white-space: normal;">
@@ -266,6 +287,7 @@
                                     </td>
 
                                     <!-- Vorgangsdatum -->
+                                    <!--
                                     <td>
                                         <ui:include src="/uii/includes/ajaxPlusMinusButton.xhtml" />
                                         <h:panelGroup rendered="#{item.panelAusgeklappt}">
@@ -390,13 +412,12 @@
 
                                         </h:panelGroup>
                                     </td>
+                                    -->
 
-                                    <!-- creation date -->
-                                    <td>
-                                        <h:outputText value="#{item.erstellungsdatumAsString}">
-                                        </h:outputText>
-                                    </td>
+
+
                                     <!-- main title -->
+                                    <!--
                                     <td>
                                         <ui:repeat
                                             var="metadata"
@@ -406,7 +427,9 @@
                                             </h:panelGroup>
                                         </ui:repeat>
                                     </td>
+                                    -->
                                     <!-- author -->
+                                    <!--
                                     <td>
                                         <ui:repeat
                                             var="metadata"
@@ -416,7 +439,9 @@
                                             </h:panelGroup>
                                         </ui:repeat>
                                     </td>
+                                    -->
                                     <!-- publication year -->
+                                    <!--
                                     <td>
                                         <ui:repeat
                                             var="metadata"
@@ -426,11 +451,15 @@
                                             </h:panelGroup>
                                         </ui:repeat>
                                     </td>
+                                    -->
 
 
                                     <!-- Buttons -->
+                                    <!--
                                     <td class="width200">
+                                    -->
                                         <!-- Metadaten-Schaltknopf - Read only -->
+                                        <!--
                                         <h:commandLink
                                             action="#{Metadaten.XMLlesen}"
                                             id="action14"
@@ -455,8 +484,10 @@
                                                 name="zurueck"
                                                 value="plugin_dashboard_delivery.xhtml" />
                                         </h:commandLink>
+                                        -->
 
                                         <!-- Metadaten-Schaltknopf - Allow writing -->
+                                        <!--
                                         <h:commandLink
                                             action="#{Metadaten.XMLlesen}"
                                             id="action15"
@@ -515,8 +546,10 @@
                                                 value="#{null}"
                                                 target="#{NavigationForm.uiStatus.mets_toc5}" />
                                         </h:commandLink>
+                                        -->
 
                                         <!--  modal rendern  -->
+                                        <!--
                                         <h:panelGroup rendered="#{(LoginForm.hasRole('Task_Mets_Pagination') or LoginForm.hasRole('Task_Mets_Structure') or LoginForm.hasRole('Task_Mets_Metadata') or LoginForm.hasRole('Task_Mets_Files')) and item.temporaryMetadataFiles}">
                                             <a
                                                 class="text_head"
@@ -645,6 +678,7 @@
                                             </div>
                                         </div>
                                     </td>
+                                    -->
                                 </tr>
                             </ui:repeat>
                         </table>
