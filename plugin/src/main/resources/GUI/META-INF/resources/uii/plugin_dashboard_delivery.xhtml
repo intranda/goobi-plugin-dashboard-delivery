@@ -383,11 +383,9 @@
         <script>
                                     function focusField( elem ) {
                                         document.getElementById( "focusField" ).value = elem.id;
-                                        console.log('focusField');
                                     }
 
                                     function updateFocus() {
-                                        console.log('updateFocus');
                                         var focus = $( '#focusField' ).val();
                                         const inp = document.getElementById( focus );
                                         if ( inp != null ) {
@@ -406,7 +404,6 @@
                                             case "success": // This is called when ajax response is successfully processed.
                                                 // find element,set focus
                                                 updateFocus();
-                                                console.log('ajax');
                                                 break;
                                         }
                                     } );
