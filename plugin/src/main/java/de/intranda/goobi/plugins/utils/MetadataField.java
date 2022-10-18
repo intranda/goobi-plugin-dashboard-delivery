@@ -135,7 +135,7 @@ public class MetadataField implements Serializable {
         }
 
         // check field type, different validation for different types
-        if ("person".equals(displayType)) {
+        if ("person".equals(displayType) && comp != null) {
             // if required, role and either firstname or lastname must be filled
             if (required && StringUtils.isBlank(role)) {
                 fieldValid = false;
@@ -160,7 +160,7 @@ public class MetadataField implements Serializable {
                     fieldValid = false;
                 }
             }
-        } else if ("corporate".equals(displayType)) {
+        } else if ("corporate".equals(displayType) && comp != null) {
             // corporate name
             if (comp.getClientId().endsWith("input")) {
                 // new corporate name is empty, but role is set
@@ -177,7 +177,7 @@ public class MetadataField implements Serializable {
                     fieldValid = false;
                 }
             }
-        } else if ("picklist".equals(displayType)) {
+        } else if ("picklist".equals(displayType) && comp != null) {
             if (comp.getClientId().endsWith("select")) {
                 if ("null".equals(testValue)) {
                     testValue = null;
