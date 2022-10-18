@@ -25,15 +25,15 @@
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
-                <button
-                    type="button"
-                    class="btn page__help"
-                    aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
-                    data-bs-toggle="modal"
-                    data-bs-title="help title"
-                    data-bs-target="#pageHelpModal">
-                    <ui:include src="/uii/includes/icon-help.xhtml" />
-                </button>
+                    <button
+                        type="button"
+                        class="btn page__help"
+                        aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                        data-bs-toggle="modal"
+                        data-bs-title="help title"
+                        data-bs-target="#pageHelpModal">
+                        <ui:include src="/uii/includes/icon-help.xhtml" />
+                    </button>
                 </span>
             </h1>
         </ui:fragment>
@@ -46,15 +46,14 @@
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
-                <button
-                    type="button"
-                    class="btn page__help"
-                    aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
-                    data-bs-toggle="modal"
-                    data-bs-title="help title"
-                    data-bs-target="#pageHelpModal">
-                    <ui:include src="/uii/includes/icon-help.xhtml" />
-                </button>
+                    <button
+                        class="btn page__help"
+                        aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                        data-bs-toggle="modal"
+                        data-bs-title="help title"
+                        data-bs-target="#pageHelpModal">
+                        <ui:include src="/uii/includes/icon-help.xhtml" />
+                    </button>
                 </span>
             </h1>
         </ui:fragment>
@@ -67,15 +66,14 @@
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
-                <button
-                    type="button"
-                    class="btn page__help"
-                    aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
-                    data-bs-toggle="modal"
-                    data-bs-title="help title"
-                    data-bs-target="#pageHelpModal">
-                    <ui:include src="/uii/includes/icon-help.xhtml" />
-                </button>
+                    <button
+                        class="btn page__help"
+                        aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                        data-bs-toggle="modal"
+                        data-bs-title="help title"
+                        data-bs-target="#pageHelpModal">
+                        <ui:include src="/uii/includes/icon-help.xhtml" />
+                    </button>
                 </span>
             </h1>
         </ui:fragment>
@@ -88,15 +86,14 @@
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
-                <button
-                    type="button"
-                    class="btn page__help"
-                    aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
-                    data-bs-toggle="modal"
-                    data-bs-title="help title"
-                    data-bs-target="#pageHelpModal">
-                    <ui:include src="/uii/includes/icon-help.xhtml" />
-                </button>
+                    <button
+                        class="btn page__help"
+                        aria-label="#{msgs.plugin_dashboard_delivery_pageHelp}"
+                        data-bs-toggle="modal"
+                        data-bs-title="help title"
+                        data-bs-target="#pageHelpModal">
+                        <ui:include src="/uii/includes/icon-help.xhtml" />
+                    </button>
                 </span>
             </h1>
         </ui:fragment>
@@ -427,10 +424,10 @@
                         value="plugin_dashboard_delivery_userdata_contact_helpImg" />
                 </ui:include>
 
-                <span class="common-region" style="counter-reset: section;">
-                    <h3 class="heading__contact grid-full-width">
-                        #{msgs.plugin_dashboard_delivery_contactPerson}
-                    </h3>
+                <span
+                    class="common-region"
+                    style="counter-reset: section;">
+                    <h3 class="heading__contact grid-full-width">#{msgs.plugin_dashboard_delivery_contactPerson}</h3>
                     <ui:repeat
                         var="field"
                         value="#{DashboardForm.plugin.contactData.fields}"
@@ -475,9 +472,7 @@
 
                 <ui:fragment rendered="#{DashboardForm.plugin.displaySecondContact}">
                     <span class="common-region">
-                        <h3 class="heading__contact grid-full-width">
-                            #{msgs.plugin_dashboard_delivery_contactPerson}
-                        </h3>
+                        <h3 class="heading__contact grid-full-width">#{msgs.plugin_dashboard_delivery_contactPerson}</h3>
 
                         <div class="grid-full-width">
                             <button
