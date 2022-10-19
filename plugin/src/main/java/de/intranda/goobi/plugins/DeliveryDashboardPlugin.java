@@ -221,6 +221,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         try {
             temporaryFolder = Files.createTempDirectory("delivery");
             readUserConfiguration();
+            readConfiguration();
         } catch (IOException e) {
             log.error(e);
         }
@@ -1394,6 +1395,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         }
 
         createProcess(journalTemplateName);
+    }
+
+
+    public boolean isHasJournals() {
+        return !generateListOfJournalTitles().isEmpty();
+
     }
 
     private List<SelectItem> generateListOfJournalTitles() {

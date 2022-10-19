@@ -103,13 +103,15 @@
                         </div>
 
                         <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</h2>
-                        <p class="item__text">#{msgs.plugin_dashboard_delivery_deliverNewIssueTitle}</p>
+                        <p class="item__text"><h:outputText value="#{DashboardForm.plugin.hasJournals ? msgs['plugin_dashboard_delivery_deliverNewIssueTitle'] : msgs['plugin_dashboard_delivery_deliverNoJournalTitles']}"/></p>
 
                         <button
                             jsf:id="newIssue"
                             class="item__cta btn btn-primary-400"
                             title="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}"
-                            jsf:action="#{DashboardForm.plugin.startNewImport}">
+                            jsf:action="#{DashboardForm.plugin.startNewImport}"
+                            jsf:rendered="#{DashboardForm.plugin.hasJournals}"
+                            >
                             <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}" />
                             <f:setPropertyActionListener
                                 value="issueupload"
