@@ -765,21 +765,21 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             Path destination = Paths.get(temporaryFolder.toString(), fileName);
             Files.copy(in, destination);
 
-            //            Report report = FileValidator.validateFile(destination, institution.getShortName());
-            //
-            //            if (!report.isReachedTargetLevel()) {
-            //
-            //                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
-            //
-            //                // delete validation files
-            //                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
-            //                StorageProvider.getInstance().deleteDir(testFolder);
-            //
-            //                // delete file
-            //                StorageProvider.getInstance().deleteFile(destination);
-            //
-            //                return;
-            //            }
+            Report report = FileValidator.validateFile(destination, institution.getShortName());
+
+            if (!report.isReachedTargetLevel()) {
+
+                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
+
+                // delete validation files
+                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
+                StorageProvider.getInstance().deleteDir(testFolder);
+
+                // delete file
+                StorageProvider.getInstance().deleteFile(destination);
+
+                return;
+            }
             files.add(destination);
             Helper.setMeldung("plugin_dashboard_delivery_info_uploadSuccessful");
         } catch (IOException e) {
