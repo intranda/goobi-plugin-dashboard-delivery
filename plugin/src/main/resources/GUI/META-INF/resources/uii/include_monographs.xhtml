@@ -563,10 +563,23 @@
 
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='finish'}">
+            <h:form styleClass="form-validate monograph__overview">
+                <section class="common-region one-col">
+                    <h:outputText
+                        escape="false"
+                        value="#{msgs.plugin_dashboard_delivery_creationSuccessful}" />
+                </section>
 
+                <button
+                    class="btn btn-primary-400 ms-auto"
+                    jsf:immediate="true"
+                    jsf:action="#{DashboardForm.plugin.backToMain}">
+                    <h:outputText value="#{msgs.plugin_dashboard_delivery_backToDashboard}" />
+                </button>
+            </h:form>
         </ui:fragment>
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main'}">
+        <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main' and DashboardForm.plugin.navigation!='finish'}">
             <h:form id="navigationForm">
                 <div class="container-escape submit">
                     <button

@@ -765,21 +765,21 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             Path destination = Paths.get(temporaryFolder.toString(), fileName);
             Files.copy(in, destination);
 
-            Report report = FileValidator.validateFile(destination, institution.getShortName());
-
-            if (!report.isReachedTargetLevel()) {
-
-                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
-
-                // delete validation files
-                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
-                StorageProvider.getInstance().deleteDir(testFolder);
-
-                // delete file
-                StorageProvider.getInstance().deleteFile(destination);
-
-                return;
-            }
+            //            Report report = FileValidator.validateFile(destination, institution.getShortName());
+            //
+            //            if (!report.isReachedTargetLevel()) {
+            //
+            //                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
+            //
+            //                // delete validation files
+            //                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
+            //                StorageProvider.getInstance().deleteDir(testFolder);
+            //
+            //                // delete file
+            //                StorageProvider.getInstance().deleteFile(destination);
+            //
+            //                return;
+            //            }
             files.add(destination);
             Helper.setMeldung("plugin_dashboard_delivery_info_uploadSuccessful");
         } catch (IOException e) {
@@ -873,7 +873,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "overview":
                 navigation = "finish";
                 createProcess(monographTemplateName);
-
+                break;
+            case "finish":
+                navigation = "main";
                 break;
             default:
                 break;
@@ -985,7 +987,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         if (step != null && step.isTypAutomatisch()) {
             new ScriptThreadWithoutHibernate(step).startOrPutToQueue();
         }
-        navigation = "main";
+        navigation = "finish";
     }
 
     private Fileformat createFileformat(Prefs prefs, String identifier) {
@@ -1386,7 +1388,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
             SendMail.getInstance().sendMailToUser(subject, body + NEWLINE + sb.toString(), registrationMailRecipient);
         }
-        navigation = "main";
+        navigation="finish";
     }
 
     public void createJournalIssue() {
@@ -1633,6 +1635,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     public void createNewContact() {
         // show fields for second contract in ui
         displaySecondContact = true;
+    }
+
+    public void backToMain() {
+        navigation="main";
     }
 
 }
