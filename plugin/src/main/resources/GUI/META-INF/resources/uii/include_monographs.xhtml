@@ -506,51 +506,60 @@
                                 var="field"
                                 value="#{group.fields}"
                                 varStatus="status">
+
+                                <script>
+                                    console.log('label:', '#{field.label}')
+                                    console.log('value:', '#{field.value}')
+                                    console.log('value status:', '#{not empty field.value ? 'NOT EMPTY' : 'EMPTY'}')
+                                </script>
                                 <h:panelGroup
                                     layout="block"
                                     styleClass="form-group grid-row">
-                                    <h:outputLabel value="#{field.label}" />
 
 
                                     <ui:fragment rendered="#{field.displayType == 'person'}">
+                                        <h:outputLabel value="#{field.label}" styleClass="#{(empty field.value) and (empty field.value2) and (empty field.role)? 'empty-val' : ''}" />
                                         <div class="form-field persongrid">
                                             <h:outputText
-                                                styleClass="form-control"
-                                                value="#{field.value}" />
+                                                styleClass="form-control #{not empty field.value ? '' : 'empty-val'}"
+                                                value="#{not empty field.value ? field.value : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                             <h:outputText
-                                                styleClass="form-control"
-                                                value="#{field.value2}" />
+                                                styleClass="form-control #{not empty field.value2 ? '' : 'empty-val'}"
+                                                value="#{not empty field.value2 ? field.value2 : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                             <h:outputText
-                                                styleClass="form-control"
-                                                value="#{field.role}" />
+                                                styleClass="form-control #{not empty field.role ? '' : 'empty-val'}"
+                                                value="#{not empty field.role ? field.role : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                         </div>
                                     </ui:fragment>
 
                                     <ui:fragment rendered="#{field.displayType == 'corporate'}">
+                                        <h:outputLabel value="#{field.label}" styleClass="#{(not empty field.value) and (not empty field.role)? '' : 'empty-val'}" />
                                         <div class="form-field corporategrid">
                                             <h:outputText
-                                                styleClass="form-control"
-                                                value="#{field.value}" />
+                                                styleClass="form-control #{not empty field.value ? '' : 'empty-val'}"
+                                                value="#{not empty field.value ? field.value : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                             <h:outputText
-                                                styleClass="form-control"
-                                                value="#{field.role}" />
+                                                styleClass="form-control #{not empty field.role ? '' : 'empty-val'}"
+                                                value="#{not empty field.role ? field.role : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                         </div>
                                     </ui:fragment>
                                     <ui:fragment rendered="#{field.displayType == 'picklist'}">
+                                        <h:outputLabel value="#{field.label}" styleClass="#{(not empty field.value) and (not empty field.role)? '' : 'empty-val'}" />
                                         <div class="form-field corporategrid">
                                             <h:outputText
-                                                styleClass="form-control"
-                                                value="#{field.role}" />
+                                                styleClass="form-control #{not empty field.role ? '' : 'empty-val'}"
+                                                value="#{not empty field.role ? field.role : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                             <h:outputText
-                                                styleClass="form-control"
-                                                value="#{field.value}" />
+                                                styleClass="form-control #{not empty field.value ? '' : 'empty-val'}"
+                                                value="#{not empty field.value ? field.value : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                         </div>
                                     </ui:fragment>
                                     <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
+                                        <h:outputLabel value="#{field.label}" styleClass="#{not empty field.value ? '' : 'empty-val'}" />
                                         <div class="form-field">
                                             <h:outputText
-                                                styleClass="form-control"
-                                                value="#{field.value}" />
+                                                styleClass="form-control #{not empty field.value ? '' : 'empty-val'}"
+                                                value="#{not empty field.value ? field.value : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                         </div>
                                     </ui:fragment>
                                 </h:panelGroup>
