@@ -629,17 +629,23 @@
                             </h:panelGroup>
 
                         </li>
+                        <!--
                         <li class="#{DashboardForm.plugin.navigation=='finish' ? 'active': 'inactive'}">
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='finish' ? 'active': 'inactive'}">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_finish}" />
                             </h:panelGroup>
                         </li>
+                        -->
                     </ul>
                     <button
                         jsf:action="#{DashboardForm.plugin.nextPage}"
                         jsf:id="nextStep"
                         class="btn btn-success">
+                        <!--
                         <h:outputText value="#{msgs.weiter}" />
+                        -->
+                        <h:outputText value="#{DashboardForm.plugin.navigation=='overview' ? msgs.plugin_dashboard_delivery_buttonCopy_send : msgs.weiter}" />
+
                         <f:ajax
                             render="main-area globalMessage"
                             execute="@this" />
