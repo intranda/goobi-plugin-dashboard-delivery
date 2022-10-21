@@ -35,7 +35,7 @@
             </ui:include>
 
             <h1 class="page__heading">
-                #{msgs.plugin_dashboard_delivery_deliverMonographHeader}
+                #{msgs.plugin_dashboard_delivery_deliverMonographHeader_data1}
 
                 <span
                     data-bs-toggle="tooltip"
@@ -177,7 +177,7 @@
             </ui:include>
 
             <h1 class="page__heading">
-                #{msgs.plugin_dashboard_delivery_deliverMonographHeader}
+                #{msgs.plugin_dashboard_delivery_deliverMonographHeader_data2}
 
                 <span
                     data-bs-toggle="tooltip"
@@ -327,7 +327,7 @@
             </ui:include>
 
             <h1 class="page__heading">
-                #{msgs.plugin_dashboard_delivery_deliverMonographHeader}
+                #{msgs.plugin_dashboard_delivery_deliverMonographHeader_data3}
 
                 <span
                     data-bs-toggle="tooltip"
@@ -473,7 +473,7 @@
             </ui:include>
 
             <h1 class="page__heading">
-                #{msgs.plugin_dashboard_delivery_deliverMonographHeader}
+                #{msgs.plugin_dashboard_delivery_deliverMonographHeader_overview}
 
                 <span
                     data-bs-toggle="tooltip"
@@ -604,7 +604,7 @@
                         <li class="#{DashboardForm.plugin.navigation=='upload'?'active':'finished'}">
 
                             <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
-                                <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
+                                <h:outputText value="#{msgs.plugin_dashboard_delivery_monograph_upload}" />
                             </h:panelGroup>
                         </li>
                         <li class="#{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
@@ -641,9 +641,6 @@
                         jsf:action="#{DashboardForm.plugin.nextPage}"
                         jsf:id="nextStep"
                         class="btn btn-success">
-                        <!--
-                        <h:outputText value="#{msgs.weiter}" />
-                        -->
                         <h:outputText value="#{DashboardForm.plugin.navigation=='overview' ? msgs.plugin_dashboard_delivery_buttonCopy_send : msgs.weiter}" />
 
                         <f:ajax
