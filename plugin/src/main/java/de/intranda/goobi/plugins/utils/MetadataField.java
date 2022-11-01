@@ -109,14 +109,22 @@ public class MetadataField implements Serializable {
         selectList = new ArrayList<>(vocabList.size());
         if (currentVocabulary.getId() != null) {
             for (VocabRecord vr : vocabList) {
+                String val = null;
+                String lab = null;
+
                 for (Field f : vr.getFields()) {
-                    if (StringUtils.isBlank(vocabularyDisplayField) && f.getDefinition().isMainEntry()) {
-                        selectList.add(new SelectItem(String.valueOf(vr.getId()), f.getValue()));
-                        break;
-                    } else if (f.getDefinition().getLabel().equals(vocabularyDisplayField)) {
-                        selectList.add(new SelectItem(String.valueOf(vr.getId()), f.getValue()));
+                    if ((StringUtils.isBlank(vocabularyDisplayField) && f.getDefinition().isMainEntry())
+                            || f.getDefinition().getLabel().equals(vocabularyDisplayField)) {
+                        lab = f.getValue();
+                    }
+                    if (f.getDefinition().getLabel().equals(vocabularyImportField)) {
+                        val = f.getValue();
                     }
                 }
+                if (StringUtils.isNotBlank(val)) {
+                    selectList.add(new SelectItem(val, lab));
+                }
+
             }
         }
     }
