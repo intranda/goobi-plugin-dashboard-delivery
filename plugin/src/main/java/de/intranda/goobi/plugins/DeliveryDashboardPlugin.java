@@ -215,7 +215,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     @Getter
     @Setter
-    private  boolean displaySecondContact = false;
+    private boolean displaySecondContact = false;
 
     public DeliveryDashboardPlugin() {
         try {
@@ -554,7 +554,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         User user = Helper.getCurrentUser();
         // check if password fields are filled
         if (StringUtils.isNotBlank(newPassword) || StringUtils.isNotBlank(newPasswordRepeated)) {
-            navigation="user";
+            navigation = "user";
 
             // old pw is blank or old pw is wrong
             if (StringUtils.isBlank(oldPassword) || !user.istPasswortKorrekt(oldPassword)) {
@@ -602,7 +602,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         } catch (DAOException e) {
             log.error(e);
         }
-        navigation="userdata";
+        navigation = "userdata";
         readUserConfiguration();
     }
 
@@ -730,7 +730,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
 
                 // delete validation files
-                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
+                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".") + 1));
                 StorageProvider.getInstance().deleteDir(testFolder);
 
                 // delete file
@@ -912,13 +912,13 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         Process template = ProcessManager.getProcessByTitle(templateName);
         Prefs prefs = template.getRegelsatz().getPreferences();
         // username + shortname + counter
-        String processTitle = acccountName + "_" + institutionName + "_" + identifier;
+        String processTitle = institutionName + "_" + identifier.substring(identifier.lastIndexOf("-"));
 
         // create fileformat, import entered metadata
         Fileformat fileformat = createFileformat(prefs, identifier);
 
         // save metadata and create goobi process
-        Process process = new BeanHelper().createAndSaveNewProcess(template, processTitle.replaceAll("\\W", "").toLowerCase(), fileformat);
+        Process process = new BeanHelper().createAndSaveNewProcess(template, processTitle.replaceAll("^\\w-", "").toLowerCase(), fileformat);
 
         //  after creation, move uploaded files into process source folder
         try {
@@ -1355,13 +1355,13 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         }
         Process template = ProcessManager.getProcessByTitle(zdbProcessTemplateName);
         Prefs prefs = template.getRegelsatz().getPreferences();
-        String processTitle = "zdb" + "_" + acccountName + "_" + institutionName + "_" + identifier;
+        String processTitle = "zdb" + "_" + institutionName + "_" + identifier.substring(identifier.lastIndexOf("-") + 1);
 
         // create fileformat, import entered metadata
         Fileformat fileformat = createFileformat(prefs, identifier);
 
         // save metadata and create goobi process
-        Process process = new BeanHelper().createAndSaveNewProcess(template, processTitle.replaceAll("\\W", "").toLowerCase(), fileformat);
+        Process process = new BeanHelper().createAndSaveNewProcess(template, processTitle.replaceAll("^\\w-", "").toLowerCase(), fileformat);
 
         createProperties(process, acccountName, institutionName);
 
@@ -1400,7 +1400,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
         navigation = "finish";
     }
-
 
     public boolean isHasJournals() {
         return !generateListOfJournalTitles().isEmpty();
@@ -1625,7 +1624,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         return String.format("%.1f %cB", bytes / 1000.0, ci.current());
     }
 
-
     public void disableContact() {
         // delete content from second contract page
         for (MetadataField ucf : contact2Data.getFields()) {
@@ -1640,7 +1638,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     public void backToMain() {
-        navigation="main";
+        navigation = "main";
     }
 
 }
