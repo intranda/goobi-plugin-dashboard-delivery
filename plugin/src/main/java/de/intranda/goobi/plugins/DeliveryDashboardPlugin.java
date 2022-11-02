@@ -46,8 +46,6 @@ import org.goobi.production.enums.PluginType;
 import org.goobi.production.plugin.interfaces.IDashboardPlugin;
 import org.goobi.reporting.Report;
 import org.goobi.security.authentication.IAuthenticationProvider.AuthenticationType;
-import org.goobi.vocabulary.Field;
-import org.goobi.vocabulary.VocabRecord;
 
 import de.intranda.goobi.plugins.utils.FieldGrouping;
 import de.intranda.goobi.plugins.utils.MetadataField;
@@ -1234,7 +1232,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 switch (mf.getDisplayType()) {
                     case "person":
                         try {
-                            String roleTerm = getValueFromRecord(mf, mf.getRole());
+                            String roleTerm = mf.getRole();
                             Person person = new Person(prefs.getMetadataTypeByName(roleTerm));
                             person.setFirstname(mf.getValue());
                             person.setLastname(mf.getValue2());
@@ -1246,7 +1244,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                     case "corporate":
 
                         try {
-                            String roleTerm = getValueFromRecord(mf, mf.getRole());
+                            String roleTerm =  mf.getRole();
                             Corporate corp = new Corporate(prefs.getMetadataTypeByName(roleTerm));
                             corp.setMainName(mf.getValue());
                             docstruct.addCorporate(corp);
@@ -1279,29 +1277,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
             }
         }
-    }
-
-    private String getValueFromRecord(MetadataField mf, String field) {
-        String answer = null;
-        for (VocabRecord rec : mf.getVocabList()) {
-            if (field.equals(String.valueOf(rec.getId()))) {
-                for (Field f : rec.getFields()) { //NOSONAR
-                    if (StringUtils.isNotBlank(mf.getVocabularyImportField()) && f.getLabel().equals(mf.getVocabularyImportField())) {
-                        answer = f.getValue();
-                        break;
-                    } else if (StringUtils.isBlank(mf.getVocabularyImportField()) && StringUtils.isNotBlank(mf.getVocabularyDisplayField())
-                            && f.getLabel().equals(mf.getVocabularyDisplayField())) { //NOSONAR
-                        answer = f.getValue();
-                        break;
-                    } else if (StringUtils.isBlank(mf.getVocabularyImportField()) && StringUtils.isBlank(mf.getVocabularyDisplayField())
-                            && f.getDefinition().isMainEntry()) { //NOSONAR
-                        answer = f.getValue();
-                        break;
-                    }
-                }
-            }
-        }
-        return answer;
     }
 
     public void duplicateMetadataField() {
