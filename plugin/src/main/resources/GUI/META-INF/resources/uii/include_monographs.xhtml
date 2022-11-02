@@ -602,6 +602,9 @@
                             value=""
                             target="#{DashboardForm.plugin.documentType}" />
                         <h:outputText value="#{msgs.abbrechen}" />
+                        <f:ajax
+                            render="main-area"
+                            execute="@this" />                        
                     </button>
 
 

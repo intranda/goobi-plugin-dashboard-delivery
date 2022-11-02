@@ -534,7 +534,7 @@
 
                 <div class="submit">
                     <button
-                    jsf:rendered="#{DashboardForm.plugin.navigation=='issueupload' or DashboardForm.plugin.navigation=='newIssue' or DashboardForm.plugin.navigation=='newTitle'}"
+                        jsf:rendered="#{DashboardForm.plugin.navigation=='issueupload' or DashboardForm.plugin.navigation=='newIssue' or DashboardForm.plugin.navigation=='newTitle'}"
                         jsf:id="cancelMonograph"
                         class="btn btn-blank me-4"
                         jsf:immediate="true">
@@ -545,6 +545,9 @@
                             value=""
                             target="#{DashboardForm.plugin.documentType}" />
                         <h:outputText value="#{msgs.abbrechen}" />
+                        <f:ajax
+                            render="main-area"
+                            execute="@this" />
                     </button>
                     <button
                         jsf:action="#{DashboardForm.plugin.previousPage}"
