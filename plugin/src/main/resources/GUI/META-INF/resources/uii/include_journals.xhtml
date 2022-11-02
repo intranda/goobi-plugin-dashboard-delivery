@@ -529,8 +529,9 @@
                 </div>
             </ui:fragment>
 
+
             <!-- Status list -->
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main' }">
+            <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main' and DashboardForm.plugin.navigation!='finish'}">
 
                 <div class="submit">
                     <button

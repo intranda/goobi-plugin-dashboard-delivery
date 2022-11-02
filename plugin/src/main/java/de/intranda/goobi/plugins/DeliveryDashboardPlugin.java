@@ -1388,7 +1388,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
             SendMail.getInstance().sendMailToUser(subject, body + NEWLINE + sb.toString(), registrationMailRecipient);
         }
-        navigation="finish";
+        navigation = "finish";
     }
 
     public void createJournalIssue() {
@@ -1397,6 +1397,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         }
 
         createProcess(journalTemplateName);
+
+        navigation = "finish";
     }
 
 
