@@ -650,9 +650,11 @@
                     <button
                         jsf:action="#{DashboardForm.plugin.nextPage}"
                         jsf:id="nextStep"
-                        class="btn btn-success">
+                        class="btn btn-success btn-loader">
+                                        <span class="btn-ajax-loader" aria-hidden="true">
+                                            <img src="template/img/goobi/ajaxloader2.gif" alt="Ajax Button Loader" />
+                                        </span>
                         <h:outputText value="#{DashboardForm.plugin.navigation=='overview' ? msgs.plugin_dashboard_delivery_buttonCopy_send : msgs.weiter}" />
-
                         <f:ajax
                             render="main-area globalMessage"
                             execute="@this" />

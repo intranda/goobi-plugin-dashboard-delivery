@@ -19,6 +19,38 @@
 
     <ui:define name="content">
 
+<style>
+.btn-loader {
+    display: inline-block;
+    position: relative;
+    line-height: 29px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.btn-loader span {
+    position: absolute;
+    top:0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    background-color: #fff;
+}
+
+.btn-loader span.in {
+    display: block;
+}
+
+.btn-loader span img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0 auto;
+}
+
+</style>
+
         <!-- Custom styles for this plugin -->
         <!-- Find them in goobi-plugin-rest-usercreation! -->
         <link
@@ -398,10 +430,17 @@
                                         var source = data.source;
                                         switch ( ajaxstatus ) {
                                             case "begin": // This is called right before ajax request is been sent.
+                                                if (source.classList.contains('btn-loader')) {
+                                                    $('.btn-ajax-loader').addClass('in');
+                                                }                                        
+                                            
                                                 break;
                                             case "complete": // This is called right after ajax response is received.
                                                 break;
                                             case "success": // This is called when ajax response is successfully processed.
+                                                if (source.classList.contains('btn-loader')) {
+                                                    $('.btn-ajax-loader').removeClass('in');
+                                                }
                                                 // find element,set focus
                                                 updateFocus();
                                                 break;
