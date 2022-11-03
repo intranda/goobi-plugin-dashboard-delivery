@@ -910,7 +910,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         Process template = ProcessManager.getProcessByTitle(templateName);
         Prefs prefs = template.getRegelsatz().getPreferences();
         // username + shortname + counter
-        String processTitle = institutionName + "_" + identifier.substring(identifier.lastIndexOf("-"));
+        String processTitle = institutionName + "_" + identifier.substring(identifier.lastIndexOf("-") + 1);
 
         // create fileformat, import entered metadata
         Fileformat fileformat = createFileformat(prefs, identifier);
