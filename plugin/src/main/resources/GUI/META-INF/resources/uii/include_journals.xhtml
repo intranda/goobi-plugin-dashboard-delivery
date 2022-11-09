@@ -202,6 +202,7 @@
                                             fieldName="#{field.label}"
                                             fieldRequired="#{field.required}"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            displayRemoveButton="#{field.duplicate}"
                                             showHelpBtn="#{field.displayHelpButton}"
                                             helpText="#{field.helpMessage}" />
                                     </ui:fragment>
@@ -220,6 +221,7 @@
                                             selectItems="#{field.selectList}"
                                             subClass="corporategrid"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            displayRemoveButton="#{field.duplicate}"
                                             showHelpBtn="#{field.displayHelpButton}"
                                             helpText="#{field.helpMessage}" />
                                     </ui:fragment>
@@ -238,8 +240,10 @@
                                             fieldRequired="#{field.required}"
                                             subClass="corporategrid"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            displayRemoveButton="#{field.duplicate}"
                                             showHelpBtn="#{field.displayHelpButton}"
-                                            helpText="#{field.helpMessage}" />
+                                            helpText="#{field.helpMessage}"
+                                             />
                                     </ui:fragment>
 
 
@@ -258,8 +262,10 @@
                                             booleanValue="#{field.booleanValue}"
                                             subValue="#{field.value2}"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            displayRemoveButton="#{field.duplicate}"
                                             showHelpBtn="#{field.displayHelpButton}"
-                                            helpText="#{field.helpMessage}" />
+                                            helpText="#{field.helpMessage}"
+                                             />
 
                                     </ui:fragment>
 
@@ -428,6 +434,7 @@
                                             fieldName="#{field.label}"
                                             fieldRequired="#{field.required}"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            displayRemoveButton="#{field.duplicate}"
                                             showHelpBtn="#{field.displayHelpButton}"
                                             helpText="#{field.helpMessage}" />
                                     </ui:fragment>
@@ -446,6 +453,7 @@
                                             fieldRequired="#{field.required}"
                                             subClass="corporategrid"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            displayRemoveButton="#{field.duplicate}"
                                             showHelpBtn="#{field.displayHelpButton}"
                                             helpText="#{field.helpMessage}" />
                                     </ui:fragment>
@@ -464,6 +472,7 @@
                                             fieldRequired="#{field.required}"
                                             subClass="corporategrid"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            displayRemoveButton="#{field.duplicate}"
                                             showHelpBtn="#{field.displayHelpButton}"
                                             helpText="#{field.helpMessage}" />
                                     </ui:fragment>
@@ -484,6 +493,7 @@
                                             booleanValue="#{field.booleanValue}"
                                             subValue="#{field.value2}"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
+                                            displayRemoveButton="#{field.duplicate}"
                                             showHelpBtn="#{field.displayHelpButton}"
                                             helpText="#{field.helpMessage}" />
                                     </ui:fragment>

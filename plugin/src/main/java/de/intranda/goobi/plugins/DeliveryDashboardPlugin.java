@@ -1244,7 +1244,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                     case "corporate":
 
                         try {
-                            String roleTerm =  mf.getRole();
+                            String roleTerm = mf.getRole();
                             Corporate corp = new Corporate(prefs.getMetadataTypeByName(roleTerm));
                             corp.setMainName(mf.getValue());
                             docstruct.addCorporate(corp);
@@ -1296,8 +1296,23 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 if (found) {
                     // add a second field of the same type one position behind, mark as optional
                     MetadataField clone = currentField.cloneField();
+                    clone.setDuplicate(true);
+                    clone.setCardinality("1");
                     fg.getFields().add(position + 1, clone);
                     break;
+                }
+            }
+        }
+    }
+
+    public void removeMetadataField() {
+        for (FieldGrouping fg : configuredGroups) {
+            if (fg.getDocumentType().equals(documentType)) {
+                for (MetadataField mf : fg.getFields()) {
+                    if (mf == currentField) {
+                        fg.getFields().remove(mf);
+                        return;
+                    }
                 }
             }
         }

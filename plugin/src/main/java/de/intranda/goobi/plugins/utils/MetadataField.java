@@ -58,6 +58,8 @@ public class MetadataField implements Serializable {
 
     private boolean fieldValid = true;
 
+    private boolean duplicate = false;
+
     public void setBooleanValue(boolean val) {
         if (val) {
             value = "true";
