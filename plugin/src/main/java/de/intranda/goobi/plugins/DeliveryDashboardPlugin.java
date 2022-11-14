@@ -337,6 +337,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                     }
                 }
 
+                String defaultValue = field.getString("@defaultValue");
+                if (StringUtils.isNotBlank(defaultValue)) {
+                    mf.setValue(defaultValue);
+                }
+                
                 switch (mf.getDisplayType()) {
                     case "dropdown":
                     case "picklist": //NOSONAR
