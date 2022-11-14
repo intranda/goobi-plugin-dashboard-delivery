@@ -1410,48 +1410,51 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         // - was created by this institution (or user?)
         // - has no issue yet OR has a zdb id (metadata is filled)
         // - approved by zlb (has reached a certain step) ?
-
-        String institutionName = Helper.getCurrentUser().getInstitutionName();
-
-        StringBuilder sql = new StringBuilder();
-        sql.append("select * from metadata where processid in ( ");
-        sql.append("select processid from metadata where processid in ( ");
-        sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
-        sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
-        sql.append("and metadata.name = \"DocStruct\" and metadata.value= ? ");
-        sql.append(") and metadata.name= ? )");
-        sql.append("UNION ");
-        sql.append("select * from metadata where processid in ( ");
-        sql.append("select processid from metadata where processid in ( ");
-        sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
-        sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
-        sql.append("and not exists (select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid) ");
-        sql.append(") and metadata.name=\"CatalogIDDigital\" group by metadata.value having count(metadata.value)=1");
-        sql.append(" and metadata.name = \"DocStruct\" and metadata.value= ?) ");
-
-        Map<Integer, Map<String, String>> results = null;
-        Connection connection = null;
-        try {
-            connection = MySQLHelper.getInstance().getConnection();
-            results = new QueryRunner().query(connection, sql.toString(), resultSetToMapHandler, institutionName, zdbTitleDocType, zdbIdFieldName,
-                    institutionName, zdbIdFieldName, zdbTitleDocType);
-        } catch (SQLException e) {
-            log.error(e);
-        } finally {
-            if (connection != null) {
-                try {
-                    MySQLHelper.closeConnection(connection);
-                } catch (SQLException e) {
-                    log.error(e);
-                }
-            }
-        }
-        if (results != null) {
-            for (Integer processid : results.keySet()) { //NOSONAR
-                SelectItem item = new SelectItem(processid, results.get(processid).get("TitleDocMain"));
-                availableTitles.add(item);
-            }
-        }
+User user = Helper.getCurrentUser();
+if (user != null) {
+	String institutionName = user.getInstitutionName();
+	
+	StringBuilder sql = new StringBuilder();
+	sql.append("select * from metadata where processid in ( ");
+	sql.append("select processid from metadata where processid in ( ");
+	sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
+	sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
+	sql.append("and metadata.name = \"DocStruct\" and metadata.value= ? ");
+	sql.append(") and metadata.name= ? )");
+	sql.append("UNION ");
+	sql.append("select * from metadata where processid in ( ");
+	sql.append("select processid from metadata where processid in ( ");
+	sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
+	sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
+	sql.append("and not exists (select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid) ");
+	sql.append(") and metadata.name=\"CatalogIDDigital\" group by metadata.value having count(metadata.value)=1");
+	sql.append(" and metadata.name = \"DocStruct\" and metadata.value= ?) ");
+	
+	Map<Integer, Map<String, String>> results = null;
+	Connection connection = null;
+	try {
+		connection = MySQLHelper.getInstance().getConnection();
+		results = new QueryRunner().query(connection, sql.toString(), resultSetToMapHandler, institutionName, zdbTitleDocType, zdbIdFieldName,
+				institutionName, zdbIdFieldName, zdbTitleDocType);
+	} catch (SQLException e) {
+		log.error(e);
+	} finally {
+		if (connection != null) {
+			try {
+				MySQLHelper.closeConnection(connection);
+			} catch (SQLException e) {
+				log.error(e);
+			}
+		}
+	}
+	if (results != null) {
+		for (Integer processid : results.keySet()) { //NOSONAR
+			SelectItem item = new SelectItem(processid, results.get(processid).get("TitleDocMain"));
+			availableTitles.add(item);
+		}
+	}
+	
+}
 
         return availableTitles;
     }
