@@ -49,12 +49,13 @@ field: individual input field
 - validationExpression: regular expression to configure a validation
 - validationErrorText: text to display when validation fails
 - helpMessage: usefull message to display on screen
+- helpMessageTitle: title for help popup
 - replaceWith: get content from user data
 -->
 
 
     <group label="Titelinformationen" pageName="data1" documentType="monograph">
-        <field rulesetName="TitleDocMain" label="Titel" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Die Angabe ist ein Pflichtfeld" helpMessage="Tragen Sie hier den Titel ein."></field>
+        <field rulesetName="TitleDocMain" label="Titel" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Tragen Sie hier den Titel ein." helpMessageTitle="Titel"></field>
         <field rulesetName="TitleDocSub1" label="Untertitel" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="b" validationExpression="" validationErrorText="" helpMessage="Hilfetext für Untertitel"></field>
     </group>
 
@@ -80,20 +81,20 @@ field: individual input field
     </group>
 
     <group label="Angaben zur Entstehung" pageName="data1" documentType="monograph">
-        <field rulesetName="Edition" label="Auflage, Stand oder Version" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
-        <field rulesetName="PublicationYear" label="Erscheinungsjahr" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d{4}" validationErrorText="Geben Sie eiene vierstellige Jahreszahl ein" helpMessage="Tragen Sie hier das Jahr ein."></field>
+      <field rulesetName="PublicationYear" label="Erscheinungsjahr" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d{4}" validationErrorText="Geben Sie eiene vierstellige Jahreszahl ein" helpMessage="Tragen Sie hier das Jahr ein."></field>
+      <field rulesetName="Edition" label="Auflage, Stand oder Version" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
     </group>
 
     <group label="Sprache" pageName="data1" documentType="monograph">
-        <field rulesetName="DocLanguage" label="Sprache" defaultValue="ger" displayType="dropdown" metadataLevel="anchor" cardinality="+" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Die Angabe ist ein Pflichtfeld" helpMessage="Tragen Sie hier den Titel ein.">
+        <field rulesetName="DocLanguage" label="Sprache" defaultValue="ger" displayType="dropdown" metadataLevel="anchor" cardinality="+" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Tragen Sie hier den Titel ein.">
             <selectfield value="ger" label="Deutsch" />
             <selectfield value="eng" label="Englisch" />
-                   <selectfield value="rus" label="Russisch" />
+            <selectfield value="rus" label="Russisch" />
         </field>
     </group>
 
-    <group label="Ident-Nummern" pageName="data2" documentType="monograph">
-        <field rulesetName="CatalogIDDigital" label="Ident-Nummer" displayType="picklist" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+    <group label="Ident-Nummern (optional)" pageName="data2" documentType="monograph">
+        <field rulesetName="CatalogIDDigital" label="Ident-Nummer" displayType="picklist" metadataLevel="anchor" cardinality="*" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
             <selectfield value="ISBN" label="ISBN" />
             <selectfield value="ISMN" label="ISMN" />
             <selectfield value="DOI" label="DOI" />
@@ -107,76 +108,100 @@ field: individual input field
         </field>
     </group>
 
-    <group label="Beziehungen zu anderen Ressourcen" pageName="data2" documentType="monograph">
+    <group label="Beziehungen zu anderen Ressourcen (optional)" pageName="data2" documentType="monograph">
         <field rulesetName="TitleUnterreihe" label="Titel der Reihe" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
         <field rulesetName="TitlePartNumber" label="Zählung des Bandes" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
     </group>
 
     <group label="Beschreibung des Inhalts" pageName="data2" documentType="monograph">
-        <field rulesetName="DDC" label="Sachgruppe/Thema" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
-            	                <selectfield value="Allgemeines. Nachschlagewerke. Informationsmittel"  label="Allgemeines. Nachschlagewerke. Informationsmittel"/>
-            <selectfield value="Biografien"  label="Biografien"/>
-            <selectfield value="Buch- und Bibliothekswesen, Informationswissenschaft"  label="Buch- und Bibliothekswesen, Informationswissenschaft"/>
-            <selectfield value="Comics für Erwachsene"  label="Comics für Erwachsene"/>
-            <selectfield value="Freizeit und Leben / Eltern – Kind"  label="Freizeit und Leben / Eltern – Kind"/>
-            <selectfield value="Ethnologie"  label="Ethnologie"/>
-            <selectfield value="Geografie"  label="Geografie"/>
-            <selectfield value="Geschichte"  label="Geschichte"/>
-            <selectfield value="Freizeit und Leben / Hobby"  label="Freizeit und Leben / Hobby"/>
-            <selectfield value="Humor"  label="Humor"/>
-            <selectfield value="Informatik"  label="Informatik"/>
-            <selectfield value="Kommunalwissenschaften"  label="Kommunalwissenschaften"/>
-            <selectfield value="Kommunikation und Medien"  label="Kommunikation und Medien"/>
-            <selectfield value="Kunst"  label="Kunst"/>
-            <selectfield value="Landwirtschaft"  label="Landwirtschaft"/>
-            <selectfield value="Freizeit und Leben / Lebensgestaltung"  label="Freizeit und Leben / Lebensgestaltung"/>
-            <selectfield value="Literatur"  label="Literatur"/>
-            <selectfield value="Mathematik"  label="Mathematik"/>
-            <selectfield value="Medizin"  label="Medizin"/>
-            <selectfield value="Militär"  label="Militär"/>
-            <selectfield value="Musik, Musiktonträger, Noten"  label="Musik, Musiktonträger, Noten"/>
-            <selectfield value="Naturwissenschaften"  label="Naturwissenschaften"/>
-            <selectfield value="Pädagogik"  label="Pädagogik"/>
-            <selectfield value="Philosophie"  label="Philosophie"/>
-            <selectfield value="Politik"  label="Politik"/>
-            <selectfield value="Psychologie"  label="Psychologie"/>
-            <selectfield value="Recht"  label="Recht"/>
-            <selectfield value="Reise"  label="Reise"/>
-            <selectfield value="Religion"  label="Religion"/>
-            <selectfield value="Sozialwissenschaften"  label="Sozialwissenschaften"/>
-            <selectfield value="Sport"  label="Sport"/>
-            <selectfield value="Sprache"  label="Sprache"/>
-            <selectfield value="Technik"  label="Technik"/>
-            <selectfield value="Theater, Musiktheater, Tanz und Film"  label="Theater, Musiktheater, Tanz und Film"/>
-            <selectfield value="Umwelt"  label="Umwelt"/>
-            <selectfield value="Unterhaltungsromane"  label="Unterhaltungsromane"/>
-            <selectfield value="Volkskunde"  label="Volkskunde"/>
-            <selectfield value="Wirtschaft"  label="Wirtschaft"/>
-            <selectfield value="Fremdsprachige Bücher"  label="Fremdsprachige Bücher"/>
-            <selectfield value="Kinder- und Jugendbibliothek, Berliner Lernzentrum"  label="Kinder- und Jugendbibliothek, Berliner Lernzentrum"/>
-            <selectfield value="Historische Sammlungen"  label="Historische Sammlungen"/>
+        <field rulesetName="DDC" label="Sachgruppe/Thema" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Lorem ipsum">
+          <selectfield value="Allgemeines. Nachschlagewerke. Informationsmittel"  label="Allgemeines. Nachschlagewerke. Informationsmittel"/>
+          <selectfield value="Berlin"  label="Berlin"/>
+	  <selectfield value="Biografien"  label="Biografien"/>
+          <selectfield value="Buch- und Bibliothekswesen, Informationswissenschaft"  label="Buch- und Bibliothekswesen, Informationswissenschaft"/>
+          <selectfield value="Comics für Erwachsene"  label="Comics für Erwachsene"/>
+          <selectfield value="Freizeit und Leben / Eltern – Kind"  label="Freizeit und Leben / Eltern – Kind"/>
+          <selectfield value="Ethnologie"  label="Ethnologie"/>
+          <selectfield value="Geografie"  label="Geografie"/>
+          <selectfield value="Geschichte"  label="Geschichte"/>
+          <selectfield value="Freizeit und Leben / Hobby"  label="Freizeit und Leben / Hobby"/>
+          <selectfield value="Humor"  label="Humor"/>
+          <selectfield value="Informatik"  label="Informatik"/>
+          <selectfield value="Kinder- und Jugendbibliothek, Berliner Lernzentrum"  label="Kinder- und Jugendbibliothek, Berliner Lernzentrum"/>
+          <selectfield value="Kommunalwissenschaften"  label="Kommunalwissenschaften"/>
+          <selectfield value="Kommunikation und Medien"  label="Kommunikation und Medien"/>
+          <selectfield value="Kunst"  label="Kunst"/>
+          <selectfield value="Landwirtschaft"  label="Landwirtschaft"/>
+          <selectfield value="Freizeit und Leben / Lebensgestaltung"  label="Freizeit und Leben / Lebensgestaltung"/>
+          <selectfield value="Literatur"  label="Literatur"/>
+          <selectfield value="Mathematik"  label="Mathematik"/>
+          <selectfield value="Medizin"  label="Medizin"/>
+          <selectfield value="Militär"  label="Militär"/>
+          <selectfield value="Musik, Musiktonträger, Noten"  label="Musik, Musiktonträger, Noten"/>
+          <selectfield value="Naturwissenschaften"  label="Naturwissenschaften"/>
+          <selectfield value="Pädagogik"  label="Pädagogik"/>
+          <selectfield value="Philosophie"  label="Philosophie"/>
+          <selectfield value="Politik"  label="Politik"/>
+          <selectfield value="Psychologie"  label="Psychologie"/>
+          <selectfield value="Recht"  label="Recht"/>
+          <selectfield value="Reise"  label="Reise"/>
+          <selectfield value="Religion"  label="Religion"/>
+          <selectfield value="Sozialwissenschaften"  label="Sozialwissenschaften"/>
+          <selectfield value="Sport"  label="Sport"/>
+          <selectfield value="Sprache"  label="Sprache"/>
+          <selectfield value="Technik"  label="Technik"/>
+          <selectfield value="Theater, Musiktheater, Tanz und Film"  label="Theater, Musiktheater, Tanz und Film"/>
+          <selectfield value="Umwelt"  label="Umwelt"/>
+          <selectfield value="Unterhaltungsromane"  label="Unterhaltungsromane"/>
+          <selectfield value="Volkskunde"  label="Volkskunde"/>
+          <selectfield value="Wirtschaft"  label="Wirtschaft"/>
+          <selectfield value="Fremdsprachige Bücher"  label="Fremdsprachige Bücher"/>
 
 	    <!-- <selectfield value="Wert1" label="Wert1" /> -->
             <!-- <selectfield value="Wert2" label="Wert2" /> -->
             <!-- <selectfield value="Wert3" label="Wert3" /> -->
         </field>
-        <field rulesetName="SubjectTopic" label="Schlagwort(e)" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+
+	      <field rulesetName="singleDigCollection" label="Bei besonderem Bezug des Inhalts der Publikation zu Berlin" displayType="dropdown" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+   
+          <selectfield value="berlin#allgemeinelandeskunde"  label="Allgemeine Landeskunde, Natur, Umwelt"/>
+          <selectfield value="berlin#berlinerdialekt_literatur_literarischesleben"  label="Berliner Dialekt, Literatur, Literarisches Leben"/>
+          <selectfield value="berlin#berlinerinnenberliner"  label="Berlinerinnen, Berliner"/>
+          <selectfield value="berlin#berlinerorte_architektur_stadtentwicklung_wohnen"  label="Berliner Orte, Architektur, Stadtentwicklung, Wohnen"/>
+          <selectfield value="berlin#berlinerzeitungen_zeitschriften"  label="Berliner Zeitungen, Zeitschriften"/>
+          <selectfield value="berlin#bildung_schule_wissenschaft_forschung"  label="Bildung, Schule, Wissenschaft, Forschung"/>
+          <selectfield value="berlin#buehne_film_musik_bildendekunst"  label="Bühne, Film, Musik, Bildende Kunst"/>
+          <selectfield value="berlin#geschichte_kulturgeschichte"  label="Geschichte, Kulturgeschichte"/>
+          <selectfield value="berlin#gesellschaft_bevoelkerung_soziales_gesundheit"  label="Gesellschaft, Bevölkerung, Soziales, Gesundheit"/>
+          <selectfield value="berlin#religion"  label="Religion"/>
+	  <selectfield value="berlin#sport_erholung_freizeit"  label="Sport, Erholung, Freizeit"/>
+	  <selectfield value="berlin#staat_politik_verwaltung_recht"  label="Staat, Politik, Verwaltung, Recht"/>
+	  <selectfield value="berlin#stadtplaenestadtansichten"  label="Stadtpläne und Stadtansichten"/>
+	  <selectfield value="berlin#verlage_presse_kommunikation_medien"  label="Verlage, Presse, Kommunikation, Medien"/>
+	  <selectfield value="berlin#wirtschaft_verkehr_stadtversorgung"  label="Wirtschaft, Verkehr, Stadtversorgung"/>
+	 	  
+              </field>
 
         <field rulesetName="Abstract" label="Zusammenfassung oder Abstract" displayType="textarea" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
-    </group>
+
+
+	<field rulesetName="SubjectTopic" label="Schlagwort(e). Fügen Sie gegebenenfalls weitere hinzu!" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+
+
+      </group>
 
 
     <group label="Zugriffs- und Rechteinformation" pageName="data3" documentType="monograph">
-        <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
+        <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
 
-	  <selectfield value="Freier Zugang" label="Freier Zugang"/>
+	  <selectfield value="Freier Zugang" label="Freier Zugang (empfohlen)"/>
 	  <selectfield value="Eingeschränkter Zugang" label="Eingeschränkter Zugang"/>
-          <selectfield value="Eingeschränkter Zugang mit Nutzungsbeschränkungen" label="Eingeschränkter Zugang mit Nutzungsbeschränkungen"/>
+          <selectfield value="Eingeschränkter Zugang mit Nutzungsbeschränkungen" label="Eingeschränkter Zugang mit Nutzungsbeschränkungen (gesetzliche Mindestanforderung)"/>
 	  <!-- <selectfieldfield value="Beschränkt" label="Beschränkter Zugang in den Räumen der ZLB (Mindestanforderung)" /> -->
-	  <selectfield value="Gesperrt" label="Gesperrt"/>
+	  <!-- <selectfield value="Gesperrt" label="Gesperrt"/>
           <selectfield value="Gesperrt, Zugriff auf Antrag" label="Gesperrt, Zugriff auf Antrag"/>
           <selectfield value="Zurückgezogen" label="Zurückgezogen"/>
-
+-->
 	  <!--
           <selectfield value="gesperrt" label="gesperrt" />
             <selectfield value="gesperrt, Zugriff nur nach Antrag" label="gesperrt, Zugriff nur nach Antrag" />
@@ -185,8 +210,9 @@ field: individual input field
             <selectfield value="unbeschränkt" label="unbeschränkt" />
               -->        
         </field>
-        <field rulesetName="Copyright" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum" replaceWith="institution-copyright">  
-             <selectfield value="Rechte vorbehalten" label="Rechte vorbehalten" />
+        <field rulesetName="Copyright" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Lorem ipsum" replaceWith="institution-copyright">  
+             <selectfield value="Rights reserved" label="Rechte vorbehalten" />
+             <selectfield value="Rechte vorbehalten" label="Rechte vorbehalten Wert in deutscher Spracher" />
             <selectfield value="CC0" label="CC0" />
             <selectfield value="CC BY" label="CC BY" />
             <selectfield value="CC BY-SA" label="CC BY-SA" />
@@ -195,25 +221,30 @@ field: individual input field
             <selectfield value="CC BY-NC-SA" label="CC BY-NC-SA" />
             <selectfield value="CC BY-NC-ND" label="CC BY-NC-ND" />
         </field>
-        <field rulesetName="URL" label="Adresse der Originalveröffentlichung (URL)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
-    </group>
-
-    <group label="Anmerkungen" pageName="data3" documentType="monograph">
-        <field rulesetName="InternalNote" label="Mitteilung (nicht-öffentlich)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
-        <field rulesetName="FSK" label="Angabe zur freiwilligen Selbstkontrolle" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+      
+      <field rulesetName="FSK" label="Angabe zur freiwilligen Selbstkontrolle" defaultValue="Ohne Altersbeschränkung" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Lorem ipsum">
             <selectfield value="Ohne Altersbeschränkung" label="Ohne Altersbeschränkung" />
             <selectfield value="Freigegeben ab sechs Jahren" label="Freigegeben ab sechs Jahren" />
             <selectfield value="Freigegeben ab zwölf Jahren" label="Freigegeben ab zwölf Jahren" />
             <selectfield value="Freigegeben ab sechzehn Jahren" label="Freigegeben ab sechzehn Jahren" />
             <selectfield value="Freigegeben ab achtzehn Jahren" label="Freigegeben ab achtzehn Jahren" />
         </field>
+
+        <field rulesetName="URL" label="Adresse der Originalveröffentlichung (URL)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+
+    </group>
+
+    <group label="Anmerkungen" pageName="data3" documentType="monograph">
+
+      <field rulesetName="InternalNote" label="Mitteilung (nicht-öffentlich)" displayType="textarea" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
+      
     </group>
 
 
     <!-- metadata for journals -->
 
     <group label="Titelinformationen" pageName="newTitle" documentType="journal">
-        <field rulesetName="TitleDocMain" label="Titel" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Die Angabe ist ein Pflichtfeld" helpMessage="Tragen Sie hier den Titel ein."></field>
+        <field rulesetName="TitleDocMain" label="Titel" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Tragen Sie hier den Titel ein." helpMessageTitle="Titel"></field>
         <field rulesetName="TitleDocSub1" label="Untertitel" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="b" validationExpression="" validationErrorText="" helpMessage="Hilfetext für Untertitel"></field>
     </group>
 
@@ -232,10 +263,10 @@ field: individual input field
 
     <group label="Angaben zur Entstehung" pageName="newTitle" documentType="journal">
         <field rulesetName="PublicationStart" label="Erscheinungsdatum der ersten Ausgabe" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="\d{4,8}" validationErrorText="TTMMJJJJ und/oder MMJJJJJ und/oder JJJJ" helpMessage="TTMMJJJJ und/oder MMJJJJJ und/oder JJJJ"></field>
-        <field rulesetName="PublicationRun" label="Nummerierung der Erstausgabe (Jahrgangs-, Heftangabe etc.)" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="264" marcSubTag="c" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier das Jahr ein."></field>
+        <field rulesetName="PublicationRun" label="Nummerierung der Erstausgabe (Jahrgangs-, Heftangabe etc.)" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="264" marcSubTag="c" validationExpression="" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Tragen Sie hier das Jahr ein."></field>
     </group>
     <group label="Sprache" pageName="newTitle" documentType="journal">
-        <field rulesetName="DocLanguage" label="Sprache" displayType="dropdown" metadataLevel="anchor" cardinality="+" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Die Angabe ist ein Pflichtfeld" helpMessage="Tragen Sie hier den Titel ein.">
+        <field rulesetName="DocLanguage" label="Sprache" displayType="dropdown" defaultValue="ger" metadataLevel="anchor" cardinality="+" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Tragen Sie hier den Titel ein.">
             <selectfield value="ger" label="Deutsch" />
             <selectfield value="eng" label="Englisch" />
         </field>
@@ -254,16 +285,95 @@ field: individual input field
 
 
     <group label="Beschreibung des Inhalts" pageName="newTitle" documentType="journal">
-        <field rulesetName="DDC" label="Sachgruppe/Thema" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
-            <selectfield value="Wert1" label="Wert1" />
-            <selectfield value="Wert2" label="Wert2" />
-            <selectfield value="Wert3" label="Wert3" />
-        </field>
+      <field rulesetName="DDC" label="Sachgruppe/Thema" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Lorem ipsum">
+	          <selectfield value="Allgemeines. Nachschlagewerke. Informationsmittel"  label="Allgemeines. Nachschlagewerke. Informationsmittel"/>
+          <selectfield value="Berlin"  label="Berlin"/>
+	  <selectfield value="Biografien"  label="Biografien"/>
+          <selectfield value="Buch- und Bibliothekswesen, Informationswissenschaft"  label="Buch- und Bibliothekswesen, Informationswissenschaft"/>
+          <selectfield value="Comics für Erwachsene"  label="Comics für Erwachsene"/>
+          <selectfield value="Freizeit und Leben / Eltern – Kind"  label="Freizeit und Leben / Eltern – Kind"/>
+          <selectfield value="Ethnologie"  label="Ethnologie"/>
+          <selectfield value="Geografie"  label="Geografie"/>
+          <selectfield value="Geschichte"  label="Geschichte"/>
+          <selectfield value="Freizeit und Leben / Hobby"  label="Freizeit und Leben / Hobby"/>
+          <selectfield value="Humor"  label="Humor"/>
+          <selectfield value="Informatik"  label="Informatik"/>
+          <selectfield value="Kinder- und Jugendbibliothek, Berliner Lernzentrum"  label="Kinder- und Jugendbibliothek, Berliner Lernzentrum"/>
+          <selectfield value="Kommunalwissenschaften"  label="Kommunalwissenschaften"/>
+          <selectfield value="Kommunikation und Medien"  label="Kommunikation und Medien"/>
+          <selectfield value="Kunst"  label="Kunst"/>
+          <selectfield value="Landwirtschaft"  label="Landwirtschaft"/>
+          <selectfield value="Freizeit und Leben / Lebensgestaltung"  label="Freizeit und Leben / Lebensgestaltung"/>
+          <selectfield value="Literatur"  label="Literatur"/>
+          <selectfield value="Mathematik"  label="Mathematik"/>
+          <selectfield value="Medizin"  label="Medizin"/>
+          <selectfield value="Militär"  label="Militär"/>
+          <selectfield value="Musik, Musiktonträger, Noten"  label="Musik, Musiktonträger, Noten"/>
+          <selectfield value="Naturwissenschaften"  label="Naturwissenschaften"/>
+          <selectfield value="Pädagogik"  label="Pädagogik"/>
+          <selectfield value="Philosophie"  label="Philosophie"/>
+          <selectfield value="Politik"  label="Politik"/>
+          <selectfield value="Psychologie"  label="Psychologie"/>
+          <selectfield value="Recht"  label="Recht"/>
+          <selectfield value="Reise"  label="Reise"/>
+          <selectfield value="Religion"  label="Religion"/>
+          <selectfield value="Sozialwissenschaften"  label="Sozialwissenschaften"/>
+          <selectfield value="Sport"  label="Sport"/>
+          <selectfield value="Sprache"  label="Sprache"/>
+          <selectfield value="Technik"  label="Technik"/>
+          <selectfield value="Theater, Musiktheater, Tanz und Film"  label="Theater, Musiktheater, Tanz und Film"/>
+          <selectfield value="Umwelt"  label="Umwelt"/>
+          <selectfield value="Unterhaltungsromane"  label="Unterhaltungsromane"/>
+          <selectfield value="Volkskunde"  label="Volkskunde"/>
+          <selectfield value="Wirtschaft"  label="Wirtschaft"/>
+          <selectfield value="Fremdsprachige Bücher"  label="Fremdsprachige Bücher"/>
+	  <!--
+              <selectfield value="Wert1" label="Wert1" />
+              <selectfield value="Wert2" label="Wert2" />
+              <selectfield value="Wert3" label="Wert3" />
+	  -->
+      </field>
+
+      
+      <field rulesetName="singleDigCollection" label="Bei besonderem Bezug des Inhalts der Zeitschrift zu Berlin" displayType="dropdown" metadataLevel="anchor" cardinality="?" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
+   
+          <selectfield value="berlin#allgemeinelandeskunde"  label="Allgemeine Landeskunde, Natur, Umwelt"/>
+          <selectfield value="berlin#berlinerdialekt_literatur_literarischesleben"  label="Berliner Dialekt, Literatur, Literarisches Leben"/>
+          <selectfield value="berlin#berlinerinnenberliner"  label="Berlinerinnen, Berliner"/>
+          <selectfield value="berlin#berlinerorte_architektur_stadtentwicklung_wohnen"  label="Berliner Orte, Architektur, Stadtentwicklung, Wohnen"/>
+          <selectfield value="berlin#berlinerzeitungen_zeitschriften"  label="Berliner Zeitungen, Zeitschriften"/>
+          <selectfield value="berlin#bildung_schule_wissenschaft_forschung"  label="Bildung, Schule, Wissenschaft, Forschung"/>
+          <selectfield value="berlin#buehne_film_musik_bildendekunst"  label="Bühne, Film, Musik, Bildende Kunst"/>
+          <selectfield value="berlin#geschichte_kulturgeschichte"  label="Geschichte, Kulturgeschichte"/>
+          <selectfield value="berlin#gesellschaft_bevoelkerung_soziales_gesundheit"  label="Gesellschaft, Bevölkerung, Soziales, Gesundheit"/>
+          <selectfield value="berlin#religion"  label="Religion"/>
+	  <selectfield value="berlin#sport_erholung_freizeit"  label="Sport, Erholung, Freizeit"/>
+	  <selectfield value="berlin#staat_politik_verwaltung_recht"  label="Staat, Politik, Verwaltung, Recht"/>
+	  <selectfield value="berlin#stadtplaenestadtansichten"  label="Stadtpläne und Stadtansichten"/>
+	  <selectfield value="berlin#verlage_presse_kommunikation_medien"  label="Verlage, Presse, Kommunikation, Medien"/>
+	  <selectfield value="berlin#wirtschaft_verkehr_stadtversorgung"  label="Wirtschaft, Verkehr, Stadtversorgung"/>
+	 	  
+              </field>
+      
     </group>
 
     <group label="Zugriffs- und Rechteinformation" pageName="newTitle" documentType="journal">
-        <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
-            <selectfield value="Rechte vorbehalten" label="Rechte vorbehalten" />
+      <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
+	<selectfield value="Freier Zugang" label="Freier Zugang (empfohlen)"/>
+	<selectfield value="Eingeschränkter Zugang" label="Eingeschränkter Zugang"/>
+        <selectfield value="Eingeschränkter Zugang mit Nutzungsbeschränkungen" label="Eingeschränkter Zugang mit Nutzungsbeschränkungen (gesetzliche Mindestanforderung)"/>
+	<!--
+            <selectfield value="Rights reserved" label="Rechte vorbehalten" />
+            <selectfield value="CC0" label="CC0" />
+            <selectfield value="CC BY" label="CC BY" />
+            <selectfield value="CC BY-SA" label="CC BY-SA" />
+            <selectfield value="CC BY-ND" label="CC BY-ND" />
+            <selectfield value="CC BY-NC" label="CC BY-NC" />
+            <selectfield value="CC BY-NC-SA" label="CC BY-NC-SA" />
+            <selectfield value="CC BY-NC-ND" label="CC BY-NC-ND" /> -->
+        </field>
+        <field rulesetName="Copyright" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Lorem ipsum">
+             <selectfield value="Rights reserved" label="Rechte vorbehalten" />
             <selectfield value="CC0" label="CC0" />
             <selectfield value="CC BY" label="CC BY" />
             <selectfield value="CC BY-SA" label="CC BY-SA" />
@@ -271,13 +381,12 @@ field: individual input field
             <selectfield value="CC BY-NC" label="CC BY-NC" />
             <selectfield value="CC BY-NC-SA" label="CC BY-NC-SA" />
             <selectfield value="CC BY-NC-ND" label="CC BY-NC-ND" />
-        </field>
-        <field rulesetName="Copyright" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum">
-            <selectfield value="gesperrt" label="gesperrt" />
+
+	  <!-- <selectfield value="gesperrt" label="gesperrt" />
             <selectfield value="gesperrt, Zugriff nur nach Antrag" label="gesperrt, Zugriff nur nach Antrag" />
             <selectfield value="beschränkt" label="beschränkt" />
             <selectfield value="teil-beschränkt" label="teil-beschränkt" />
-            <selectfield value="unbeschränkt" label="unbeschränkt" />
+            <selectfield value="unbeschränkt" label="unbeschränkt" /> -->
         </field>
         <field rulesetName="URL" label="Adresse der Originalveröffentlichung (URL)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
     </group>
@@ -290,28 +399,44 @@ field: individual input field
     <!-- metadata for issues -->
 
 
+
+    <group label="Titel der Zeitschrift" pageName="newIssue" documentType="issue">
+        <!-- list all valid titles of the current customer/institution -->
+        <field rulesetName="" label="Wählen Sie den Zeitschriftentitel aus" displayType="journaltitles" metadataLevel="child" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Lorem ipsum"></field>
+    </group>
+
+
     <group label="Titelinformationen" pageName="newIssue" documentType="issue">
-        <field rulesetName="TitleDocMain" label="Eigenständiger Titel des Heftes" displayType="input" metadataLevel="child" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+        <field rulesetName="TitleDocMain" label="Eigenständiger Titel des Heftes (falls vorhanden)" displayType="input" metadataLevel="child" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
+    </group>
+
+
+    <group label="Erscheinungsjahr bzw. Erscheinungsdatum" pageName="newIssue" documentType="issue">
+        <field rulesetName="PublicationYear" label="Erscheinungsdatum" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d{4,8}" validationErrorText="TTMMJJJJ und/oder MMJJJJJ und/oder JJJJ" helpMessage="TTMMJJJJ und/oder MMJJJJJ und/oder JJJJ"></field>
     </group>
 
 
     <group label="Angaben zur Entstehung" pageName="newIssue" documentType="issue">
-        <field rulesetName="PublicationYear" label="Erscheinungsdatum" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d{4,8}" validationErrorText="TTMMJJJJ und/oder MMJJJJJ und/oder JJJJ" helpMessage="TTMMJJJJ und/oder MMJJJJJ und/oder JJJJ"></field>
-        <field rulesetName="VolumeNo" label="Bandnummer" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d+" validationErrorText="Nur Ziffern" helpMessage="Tragen Sie hier das Jahr ein."></field>
-        <field rulesetName="CurrentNo" label="Jahrgang" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Geben Sie eiene vierstellige Jahreszahl ein" helpMessage="Label."></field>
-        <field rulesetName="PartNumber" label="Heftnummer" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Unklar wozu das dienen soll"></field>
+        <!-- <field rulesetName="PublicationYear" label="Erscheinungsdatum" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d{4,8}" validationErrorText="TTMMJJJJ und/oder MMJJJJJ und/oder JJJJ" helpMessage="TTMMJJJJ und/oder MMJJJJJ und/oder JJJJ"></field> -->
+        <field rulesetName="VolumeNo" label="Bandnummer" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d+" validationErrorText="Nur Ziffern" helpTitle="Titel fuer Bandnummer" helpMessage="Bandangabe. Z.B. bei einem 25. Jahresbericht 2014: 25"></field>
+        <field rulesetName="CurrentNo" label="Jahrgang" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Bitte geben Sie eine vierstellige Jahreszahl ein." helpMessage="Jahrgang als vierstellige Jahreszahl. Z.B. bei einem 25. Jahresbericht 2014: 2014. Geben Sie eiene vierstellige Jahreszahl ein."></field>
+        <field rulesetName="PartNumber" label="Heftnummer" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Heftnummer. z.B. bei einem 14. Jahrgang Heft 7: 7"></field>
     </group>
 
 
-    <group label="Beziehungen zu anderen Ressourcen" pageName="newIssue" documentType="issue">
-        <!-- list all valid titles of the current customer/institution -->
-        <field rulesetName="" label="Zeitschriftentitel" displayType="journaltitles" metadataLevel="child" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Lorem ipsum"></field>
-    </group>
-
+    
     <!-- default values are taken from journal title values -->
     <group label="Zugriffs- und Rechteinformation" pageName="newIssue" documentType="issue">
-        <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="Wenn das Feld aktiviert wurde, dann muss auch eine Lizenz gewählt werden." helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
-            <selectfield value="Rechte vorbehalten" label="Rechte vorbehalten" />
+     
+      <field rulesetName="AccessLicense" label="Zugangsbedingungen" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="Wenn das Feld aktiviert wurde, dann muss auch eine Lizenz gewählt werden." helpMessage="Lorem ipsum" replaceWith="institution-accesscondition">
+	  <selectfield value="Freier Zugang" label="Freier Zugang (empfohlen)"/>
+	  <selectfield value="Eingeschränkter Zugang" label="Eingeschränkter Zugang"/>
+          <selectfield value="Eingeschränkter Zugang mit Nutzungsbeschränkungen" label="Eingeschränkter Zugang mit Nutzungsbeschränkungen (gesetzliche Mindestanforderung)"/>
+
+	  
+        </field>
+        <field rulesetName="Copyright" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="Wenn das Feld aktiviert wurde, dann muss auch eine Auswahl getroffen werden." helpMessage="Lorem ipsum">
+	  <selectfield value="Rights reserved" label="Rechte vorbehalten" />
             <selectfield value="CC0" label="CC0" />
             <selectfield value="CC BY" label="CC BY" />
             <selectfield value="CC BY-SA" label="CC BY-SA" />
@@ -319,13 +444,6 @@ field: individual input field
             <selectfield value="CC BY-NC" label="CC BY-NC" />
             <selectfield value="CC BY-NC-SA" label="CC BY-NC-SA" />
             <selectfield value="CC BY-NC-ND" label="CC BY-NC-ND" />
-        </field>
-        <field rulesetName="Copyright" label="Rechtestatus" displayType="dropdown" metadataLevel="anchor" cardinality="1" marcMainTag="110" marcSubTag="a" validationExpression="" validationErrorText="Wenn das Feld aktiviert wurde, dann muss auch eine Auswahl getroffen werden." helpMessage="Lorem ipsum">
-            <selectfield value="gesperrt" label="gesperrt" />
-            <selectfield value="gesperrt, Zugriff nur nach Antrag" label="gesperrt, Zugriff nur nach Antrag" />
-            <selectfield value="beschränkt" label="beschränkt" />
-            <selectfield value="teil-beschränkt" label="teil-beschränkt" />
-            <selectfield value="unbeschränkt" label="unbeschränkt" />
         </field>
         <field rulesetName="URL" label="Adresse der Originalveröffentlichung (URL)" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
     </group>
@@ -346,8 +464,8 @@ field: individual input field
         <field rulesetName="ActionNote" defaultValue="Archivierung/Langzeitarchivierung geplant" replaceWith="" />
         <field rulesetName="LegalBasis" defaultValue="PEBE" replaceWith="" />
         <field rulesetName="ISIL" defaultValue="DE-109" replaceWith="" />
-        <field rulesetName="DigitalOrigin" defaultValue="born-digital" replaceWith="" />
-        <field rulesetName="TypeOfResource" defaultValue="Text" replaceWith="" />
+        <field rulesetName="DigitalOrigin" defaultValue="born digital" replaceWith="" />
+        <field rulesetName="TypeOfResource" defaultValue="text" replaceWith="" />
 
 
     </additionalMetadata>
@@ -363,18 +481,21 @@ field: individual input field
     <!-- metadata to display in process list -->
     <metadata>TitleDocMain</metadata>
     <metadata>TitleDocSub1</metadata>
-    <metadata>PublicationYear</metadata>
-    <metadata>DocLanguage</metadata>
-    <metadata>OtherCorporate</metadata>
-    <metadata>Copyright</metadata>
-    <metadata>AccessLicense</metadata>
     <metadata>Author</metadata>
-    <metadata>ActionNote</metadata>
-    <metadata>CatalogIDDigital</metadata>
-    <metadata>DDC</metadata>
+    <metadata>OtherCorporate</metadata>
+    <metadata>NoteStatementOfResponsibility</metadata>
+    <metadata>PublisherCorporate</metadata>
+    <metadata>PublisherName</metadata>
+
+    <metadata>PublicationYear</metadata>
     <metadata>Edition</metadata>
-    <metadata>FSK</metadata>
-    <metadata>ISSN</metadata>
+  	<metadata>DocLanguage</metadata>
+  
+    <!-- <metadata>ClassificationB</metadata> -->
+    <metadata>DDC</metadata>
+    <metadata>singleDigCollection</metadata>
+
+     <metadata>ISSN</metadata>
     <metadata>ISBN</metadata>
     <metadata>ISMN</metadata>
     <metadata>UPC</metadata>
@@ -384,9 +505,13 @@ field: individual input field
     <metadata>URN</metadata>
     <metadata>Handle</metadata>
     <metadata>Identifikation</metadata>
-    <metadata>NoteStatementOfResponsibility</metadata>
-    <metadata>PublisherCorporate</metadata>
-    <metadata>PublisherName</metadata>
 
-
+    <metadata>Copyright</metadata>
+    <metadata>AccessLicense</metadata>
+	<metadata>FSK</metadata>
+  
+    <metadata>ActionNote</metadata>
+  
+   <metadata>CatalogIDDigital</metadata>
+  
 </config_plugin>

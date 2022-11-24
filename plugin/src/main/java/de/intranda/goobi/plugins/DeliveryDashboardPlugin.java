@@ -311,7 +311,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 mf.setMarcSubTag(field.getString("@marcSubTag"));
                 mf.setValidationExpression(field.getString("@validationExpression"));
                 mf.setValidationErrorText(field.getString("@validationErrorText"));
-                mf.setHelpMessage(field.getString("@helpMessage"));
+                mf.setHelpMessageTitle(field.getString("@helpMessageTitle", ""));
+                mf.setHelpMessage(field.getString("@helpMessage", ""));
 
                 String replaceWith = field.getString("@replaceWith");
                 if (StringUtils.isNotBlank(replaceWith)) {
@@ -341,7 +342,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 if (StringUtils.isNotBlank(defaultValue)) {
                     mf.setValue(defaultValue);
                 }
-                
+
                 switch (mf.getDisplayType()) {
                     case "dropdown":
                     case "picklist": //NOSONAR
@@ -1063,53 +1064,53 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
             }
 
-            Metadata responsibility = new Metadata(prefs.getMetadataTypeByName("NoteStatementOfResponsibility"));
-
-            // first get authors
-            Map<String, String> data = new HashMap<>();
-            if (docstruct.getAllPersons() != null) {
-                for (Person p : docstruct.getAllPersons()) {
-                    String existing = data.get(p.getType().getLanguage("de"));
-                    if (StringUtils.isNotBlank(existing)) {
-                        existing += ", ";
-                    } else {
-                        existing = "";
-                        data.put(p.getType().getLanguage("de"), existing);
-                    }
-                    existing = existing + p.getFirstname() + " " + p.getLastname(); //NOSONAR
-                }
-            }
-
-            if (docstruct.getAllCorporates() != null) {
-                for (Corporate c : docstruct.getAllCorporates()) {
-                    String existing = data.get(c.getType().getLanguage("de"));
-                    if (StringUtils.isNotBlank(existing)) {
-                        existing += ", ";
-                    } else {
-                        existing = "";
-                    }
-                    existing += c.getMainName();
-                    data.put(c.getType().getLanguage("de"), existing);
-                }
-            }
-
-            StringBuilder sb = new StringBuilder();
-            // first author
-            String aut = data.get("Autor");
-            if (aut != null) {
-                sb.append(aut);
-            }
-            // then add other types
-            for (String type : data.keySet()) { //NOSONAR
-                if (!type.equals("Autor")) {
-                    if (sb.length() > 1) {
-                        sb.append(" ; ");
-                    }
-                    sb.append(type + " " + data.get(type));
-                }
-            }
-            responsibility.setValue(sb.toString());
-            docstruct.addMetadata(responsibility);
+            //            Metadata responsibility = new Metadata(prefs.getMetadataTypeByName("NoteStatementOfResponsibility"));
+            //
+            //            // first get authors
+            //            Map<String, String> data = new HashMap<>();
+            //            if (docstruct.getAllPersons() != null) {
+            //                for (Person p : docstruct.getAllPersons()) {
+            //                    String existing = data.get(p.getType().getLanguage("de"));
+            //                    if (StringUtils.isNotBlank(existing)) {
+            //                        existing += ", ";
+            //                    } else {
+            //                        existing = "";
+            //                        data.put(p.getType().getLanguage("de"), existing);
+            //                    }
+            //                    existing = existing + p.getFirstname() + " " + p.getLastname(); //NOSONAR
+            //                }
+            //            }
+            //
+            //            if (docstruct.getAllCorporates() != null) {
+            //                for (Corporate c : docstruct.getAllCorporates()) {
+            //                    String existing = data.get(c.getType().getLanguage("de"));
+            //                    if (StringUtils.isNotBlank(existing)) {
+            //                        existing += ", ";
+            //                    } else {
+            //                        existing = "";
+            //                    }
+            //                    existing += c.getMainName();
+            //                    data.put(c.getType().getLanguage("de"), existing);
+            //                }
+            //            }
+            //
+            //            StringBuilder sb = new StringBuilder();
+            //            // first author
+            //            String aut = data.get("Author");
+            //            if (aut != null) {
+            //                sb.append(aut);
+            //            }
+            //            // then add other types
+            //            for (String type : data.keySet()) { //NOSONAR
+            //                if (!type.equals("Author")) {
+            //                    if (sb.length() > 1) {
+            //                        sb.append(" ; ");
+            //                    }
+            //                    sb.append(type + " " + data.get(type));
+            //                }
+            //            }
+            //            responsibility.setValue(sb.toString());
+            //            docstruct.addMetadata(responsibility);
 
             for (MetadataField f : additionalMetadata) {
                 Metadata meta = new Metadata(prefs.getMetadataTypeByName(f.getRulesetName()));
@@ -1410,51 +1411,51 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         // - was created by this institution (or user?)
         // - has no issue yet OR has a zdb id (metadata is filled)
         // - approved by zlb (has reached a certain step) ?
-User user = Helper.getCurrentUser();
-if (user != null) {
-	String institutionName = user.getInstitutionName();
-	
-	StringBuilder sql = new StringBuilder();
-	sql.append("select * from metadata where processid in ( ");
-	sql.append("select processid from metadata where processid in ( ");
-	sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
-	sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
-	sql.append("and metadata.name = \"DocStruct\" and metadata.value= ? ");
-	sql.append(") and metadata.name= ? )");
-	sql.append("UNION ");
-	sql.append("select * from metadata where processid in ( ");
-	sql.append("select processid from metadata where processid in ( ");
-	sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
-	sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
-	sql.append("and not exists (select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid) ");
-	sql.append(") and metadata.name=\"CatalogIDDigital\" group by metadata.value having count(metadata.value)=1");
-	sql.append(" and metadata.name = \"DocStruct\" and metadata.value= ?) ");
-	
-	Map<Integer, Map<String, String>> results = null;
-	Connection connection = null;
-	try {
-		connection = MySQLHelper.getInstance().getConnection();
-		results = new QueryRunner().query(connection, sql.toString(), resultSetToMapHandler, institutionName, zdbTitleDocType, zdbIdFieldName,
-				institutionName, zdbIdFieldName, zdbTitleDocType);
-	} catch (SQLException e) {
-		log.error(e);
-	} finally {
-		if (connection != null) {
-			try {
-				MySQLHelper.closeConnection(connection);
-			} catch (SQLException e) {
-				log.error(e);
-			}
-		}
-	}
-	if (results != null) {
-		for (Integer processid : results.keySet()) { //NOSONAR
-			SelectItem item = new SelectItem(processid, results.get(processid).get("TitleDocMain"));
-			availableTitles.add(item);
-		}
-	}
-	
-}
+        User user = Helper.getCurrentUser();
+        if (user != null) {
+            String institutionName = user.getInstitutionName();
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("select * from metadata where processid in ( ");
+            sql.append("select processid from metadata where processid in ( ");
+            sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
+            sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
+            sql.append("and metadata.name = \"DocStruct\" and metadata.value= ? ");
+            sql.append(") and metadata.name= ? )");
+            sql.append("UNION ");
+            sql.append("select * from metadata where processid in ( ");
+            sql.append("select processid from metadata where processid in ( ");
+            sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
+            sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
+            sql.append("and not exists (select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid) ");
+            sql.append(") and metadata.name=\"CatalogIDDigital\" group by metadata.value having count(metadata.value)=1");
+            sql.append(" and metadata.name = \"DocStruct\" and metadata.value= ?) ");
+
+            Map<Integer, Map<String, String>> results = null;
+            Connection connection = null;
+            try {
+                connection = MySQLHelper.getInstance().getConnection();
+                results = new QueryRunner().query(connection, sql.toString(), resultSetToMapHandler, institutionName, zdbTitleDocType, zdbIdFieldName,
+                        institutionName, zdbIdFieldName, zdbTitleDocType);
+            } catch (SQLException e) {
+                log.error(e);
+            } finally {
+                if (connection != null) {
+                    try {
+                        MySQLHelper.closeConnection(connection);
+                    } catch (SQLException e) {
+                        log.error(e);
+                    }
+                }
+            }
+            if (results != null) {
+                for (Integer processid : results.keySet()) { //NOSONAR
+                    SelectItem item = new SelectItem(processid, results.get(processid).get("TitleDocMain"));
+                    availableTitles.add(item);
+                }
+            }
+
+        }
 
         return availableTitles;
     }

@@ -38,6 +38,7 @@ public class MetadataField implements Serializable {
     private String validationExpression; // regex to validate the results
     private String validationErrorText; // display, when value is invalid
 
+    private String helpMessageTitle; // display when help is activated
     private String helpMessage; // display when help is activated
 
     private String value; // actual value
