@@ -1302,8 +1302,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 if (found) {
                     // add a second field of the same type one position behind, mark as optional
                     MetadataField clone = currentField.cloneField();
-                    clone.setDuplicate(true);
-                    clone.setCardinality("1");
+                    currentField.setDuplicate(true);
+                    currentField.setCardinality("1");
                     fg.getFields().add(position + 1, clone);
                     break;
                 }
