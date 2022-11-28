@@ -63,12 +63,35 @@
                             <h2 class="grid-full-width">
                                 <h:outputText value="#{group.label}" />
                             </h2>
+<h:panelGroup layout="block" rendered="#{group.disableGroup}" styleClass="form-check">
+
+<div class="form-check-wrapper"> 
+                                <h:selectBooleanCheckbox
+                                    id="disableGroup"
+                                    pt:aria-label="#{group.disableLabel}"
+                                    styleClass="form-check-input"
+                                    value="#{group.disabled}"
+                                    >
+                                    <f:ajax
+                                        event="valueChange"
+                                        render="@form"
+                                        execute="@this" />
+                                </h:selectBooleanCheckbox>
+
+
+                                <h:outputLabel
+                                styleClass="zlb-label"
+                                    for="disableGroup"
+                                    value="#{group.disableLabel}" />
+</div>
+                            </h:panelGroup>
 
                             <ui:repeat
                                 var="field"
                                 value="#{group.fields}"
-                                varStatus="status">
+                                varStatus="status">                            
 
+                                <h:panelGroup rendered="#{!group.disabled}">    
                                 <ui:fragment rendered="#{field.displayType == 'person'}">
                                     <zlb:person
                                         identifier="field_#{status.index}"
@@ -156,6 +179,7 @@
                                         helpText="#{field.helpMessage}" 
                                         helpTitle="#{field.helpMessageTitle}"/>
                                 </ui:fragment>
+                                </h:panelGroup>
                             </ui:repeat>
                         </div>
                     </ui:fragment>
@@ -217,12 +241,35 @@
                             <h2 class="grid-full-width">
                                 <h:outputText value="#{group.label}" />
                             </h2>
+                            <h:panelGroup layout="block" rendered="#{group.disableGroup}" styleClass="form-check">
 
+<div class="form-check-wrapper"> 
+                                <h:selectBooleanCheckbox
+                                    id="disableGroup"
+                                    pt:aria-label="#{group.disableLabel}"
+                                    styleClass="form-check-input"
+                                    value="#{group.disabled}"
+                                    >
+                                    <f:ajax
+                                        event="valueChange"
+                                        render="@form"
+                                        execute="@this" />
+                                </h:selectBooleanCheckbox>
+
+
+                                <h:outputLabel
+                                styleClass="zlb-label"
+                                    for="disableGroup"
+                                    value="#{group.disableLabel}" />
+</div>
+                            </h:panelGroup>
                             <ui:repeat
                                 var="field"
                                 value="#{group.fields}"
                                 varStatus="status">
-
+<h:panelGroup
+                             
+                                    rendered="#{!group.disabled}"> 
                                 <ui:fragment rendered="#{field.displayType == 'person'}">
                                     <zlb:person
                                         identifier="field_#{status.index}"
@@ -314,6 +361,7 @@
                                         helpText="#{field.helpMessage}"
                                         helpTitle="#{field.helpMessageTitle}" />
                                 </ui:fragment>
+                                </h:panelGroup>
                             </ui:repeat>
                         </div>
                     </ui:fragment>
@@ -374,12 +422,36 @@
                             <h2 class="grid-full-width">
                                 <h:outputText value="#{group.label}" />
                             </h2>
+                            <h:panelGroup layout="block" rendered="#{group.disableGroup}" styleClass="form-check">
 
+<div class="form-check-wrapper"> 
+                                <h:selectBooleanCheckbox
+                                    id="disableGroup"
+                                    pt:aria-label="#{group.disableLabel}"
+                                    styleClass="form-check-input"
+                                    value="#{group.disabled}"
+                                    >
+                                    <f:ajax
+                                        event="valueChange"
+                                        render="@form"
+                                        execute="@this" />
+                                </h:selectBooleanCheckbox>
+
+
+                                <h:outputLabel
+                                styleClass="zlb-label"
+                                    for="disableGroup"
+                                    value="#{group.disableLabel}" />
+</div>
+                            </h:panelGroup>
+                            
                             <ui:repeat
                                 var="field"
                                 value="#{group.fields}"
                                 varStatus="status">
-
+     <h:panelGroup
+                                   
+                                    rendered="#{!group.disabled}">  
                                 <ui:fragment rendered="#{field.displayType == 'person'}">
                                     <zlb:person
                                         identifier="field_#{status.index}"
@@ -471,7 +543,7 @@
                                         helpText="#{field.helpMessage}" 
                                         helpTitle="#{field.helpMessageTitle}"/>
                                 </ui:fragment>
-
+</h:panelGroup>
                             </ui:repeat>
                         </div>
                     </ui:fragment>
@@ -538,7 +610,9 @@
                                 </script>
                                 <h:panelGroup
                                     layout="block"
-                                    styleClass="form-group grid-row">
+                                    styleClass="form-group grid-row"
+                                    rendered="#{!group.disabled}"
+                                    >
 
 
                                     <ui:fragment rendered="#{field.displayType == 'person'}">

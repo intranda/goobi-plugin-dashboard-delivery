@@ -416,7 +416,7 @@ field: individual input field
     </group>
 
 
-    <group label="Angaben zur Entstehung" pageName="newIssue" documentType="issue">
+    <group label="Angaben zur Entstehung" pageName="newIssue" documentType="issue" disableGroup="true" disableLabel="keine Zählung vorhanden">
         <!-- <field rulesetName="PublicationYear" label="Erscheinungsdatum" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d{4,8}" validationErrorText="TTMMJJJJ und/oder MMJJJJJ und/oder JJJJ" helpMessage="TTMMJJJJ und/oder MMJJJJJ und/oder JJJJ"></field> -->
         <field rulesetName="VolumeNo" label="Bandnummer" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d+" validationErrorText="Nur Ziffern" helpTitle="Titel fuer Bandnummer" helpMessage="Bandangabe. Z.B. bei einem 25. Jahresbericht 2014: 25"></field>
         <field rulesetName="CurrentNo" label="Jahrgang" displayType="input" metadataLevel="child" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="Bitte geben Sie eine vierstellige Jahreszahl ein." helpMessage="Jahrgang als vierstellige Jahreszahl. Z.B. bei einem 25. Jahresbericht 2014: 2014. Geben Sie eiene vierstellige Jahreszahl ein."></field>

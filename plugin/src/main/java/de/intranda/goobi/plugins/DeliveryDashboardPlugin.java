@@ -262,7 +262,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 User user = Helper.getCurrentUser();
                 if (user != null) {
                     Institution inst = user.getInstitution();
-                    if (replaceWith.equals("institution")) { //NOSONAR
+                    if ("institution".equals(replaceWith)) { //NOSONAR
                         mf.setValue(inst.getLongName());
                     } else if (replaceWith.startsWith("institution")) {
                         String val = inst.getAdditionalData().get(replaceWith);
@@ -292,6 +292,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             grp.setLabel(groupLabel);
             grp.setPageName(groupPageName);
             grp.setDocumentType(groupDocumentType);
+
+            grp.setDisableLabel(group.getString("@disableLabel"));
+            grp.setDisableGroup(group.getBoolean("@disableGroup", false));
+
             configuredGroups.add(grp);
 
             List<HierarchicalConfiguration> fields = group.configurationsAt("/field");
@@ -303,7 +307,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 mf.setMetadataLevel(("@metadataLevel"));
                 String cardinality = field.getString("@cardinality", "*");
                 mf.setCardinality(cardinality);
-                if (cardinality.equals("1") || cardinality.equals("+")) {
+                if ("1".equals(cardinality) || "+".equals(cardinality)) {
                     mf.setRequired(true);
                 }
 
@@ -321,7 +325,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                         Institution inst = user.getInstitution();
                         if (replaceWith.startsWith("institution")) {
                             String val = inst.getAdditionalData().get(replaceWith);
-                            if (!"false".equals(val) && mf.getDisplayType().equals("combo")) { //NOSONAR
+                            if (!"false".equals(val) && "combo".equals(mf.getDisplayType())) { //NOSONAR
                                 mf.setBooleanValue(true);
                                 if (!"true".equals(val)) {
                                     mf.setValue2(val);
@@ -460,7 +464,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 mf.setHelpMessage(helpMessage);
                 mf.setRulesetName(name);
 
-                if (fieldType.equals("dropdown") || fieldType.equals("combo")) {
+                if ("dropdown".equals(fieldType) || "combo".equals(fieldType)) {
                     List<HierarchicalConfiguration> valueList = hc.configurationsAt("/value");
                     for (HierarchicalConfiguration v : valueList) {
                         SelectItem si = new SelectItem(v.getString("."), v.getString("."));
@@ -478,7 +482,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
 
                 String val = inst.getAdditionalData().get(name);
-                if (!"false".equals(val) && mf.getDisplayType().equals("combo")) {
+                if (!"false".equals(val) && "combo".equals(mf.getDisplayType())) {
                     mf.setBooleanValue(true);
                     if (!"true".equals(val)) {
                         mf.setValue2(val);
@@ -624,12 +628,10 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 } else if ("longName".equals(mf.getAdditionalType())) {
                     institution.setLongName(mf.getValue());
                 }
+            } else if ("combo".equals(mf.getDisplayType()) && mf.getBooleanValue()) {
+                institution.getAdditionalData().put(mf.getRulesetName(), mf.getValue2());
             } else {
-                if (mf.getDisplayType().equals("combo") && mf.getBooleanValue()) {
-                    institution.getAdditionalData().put(mf.getRulesetName(), mf.getValue2());
-                } else {
-                    institution.getAdditionalData().put(mf.getRulesetName(), mf.getValue());
-                }
+                institution.getAdditionalData().put(mf.getRulesetName(), mf.getValue());
             }
         }
         if (fieldsValid) {
@@ -691,9 +693,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             if (StringUtils.isBlank(extension)) {
                 Header contentTypeHeader = resp.getEntity().getContentType();
                 if (contentTypeHeader != null) {
-                    if (contentTypeHeader.getValue().equalsIgnoreCase("application/pdf")) {
+                    if ("application/pdf".equalsIgnoreCase(contentTypeHeader.getValue())) {
                         extension = "pdf";
-                    } else if (contentTypeHeader.getValue().equalsIgnoreCase("application/epub+zip")) {
+                    } else if ("application/epub+zip".equalsIgnoreCase(contentTypeHeader.getValue())) {
                         extension = "epub";
                     }
                 }
@@ -889,7 +891,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     private boolean validateCurrentField() {
         boolean valid = true;
         for (FieldGrouping fg : configuredGroups) {
-            if (documentType.equals(fg.getDocumentType()) && navigation.equals(fg.getPageName())) {
+            if (documentType.equals(fg.getDocumentType()) && navigation.equals(fg.getPageName()) && !fg.isDisabled()) {
                 for (MetadataField mf : fg.getFields()) {
                     mf.validateField(null, null, mf.getValue());
                     if (!mf.isFieldValid()) {
@@ -1017,7 +1019,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             }
 
             Metadata genre = new Metadata(prefs.getMetadataTypeByName("ModsGenre"));
-            if (documentType.equals("monograph")) {
+            if ("monograph".equals(documentType)) {
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(monographicDocType));
                 dd.setLogicalDocStruct(docstruct);
                 docstruct.addMetadata(md);
@@ -1025,7 +1027,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 genre.setValue("Buch");
                 docstruct.addMetadata(genre);
 
-            } else if (documentType.equals("journal") && navigation.equals("newTitle")) {
+            } else if ("journal".equals(documentType) && "newTitle".equals(navigation)) {
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(zdbTitleDocType));
                 dd.setLogicalDocStruct(docstruct);
                 docstruct.addMetadata(md);
@@ -1033,7 +1035,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 genre.setValue("Zeitschrift");
                 docstruct.addMetadata(genre);
 
-            } else if (documentType.equals("issue") && navigation.equals("newIssue")) {
+            } else if ("issue".equals(documentType) && "newIssue".equals(navigation)) {
                 anchor = dd.createDocStruct(prefs.getDocStrctTypeByName(journalDocType));
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(issueDocType));
                 dd.setLogicalDocStruct(anchor);
@@ -1044,9 +1046,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 docstruct.addMetadata(genre);
 
                 for (FieldGrouping fg : configuredGroups) {
-                    if (fg.getDocumentType().equals("issue")) {
+                    if ("issue".equals(fg.getDocumentType())) {
                         for (MetadataField mf : fg.getFields()) {
-                            if (mf.getDisplayType().equals("journaltitles")) {
+                            if ("journaltitles".equals(mf.getDisplayType())) {
                                 String processid = mf.getValue();
                                 // load metadata
                                 Process otherProc = ProcessManager.getProcessById(Integer.parseInt(processid));
@@ -1059,7 +1061,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             }
 
             for (FieldGrouping fg : configuredGroups) {
-                if (fg.getDocumentType().equals(documentType)) {
+                if (fg.getDocumentType().equals(documentType) && !fg.isDisabled()) {
                     importMetadata(prefs, docstruct, fg);
                 }
             }
@@ -1463,29 +1465,29 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     public static final ResultSetHandler<Map<Integer, Map<String, String>>> resultSetToMapHandler =
             new ResultSetHandler<Map<Integer, Map<String, String>>>() {
 
-        @Override
-        public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
-            Map<Integer, Map<String, String>> answer = new HashMap<>();
-            try {
-                while (rs.next()) {
-                    Integer processid = rs.getInt("processid");
-                    String metadataName = rs.getString("name");
-                    String metadataValue = rs.getString("value");
-                    Map<String, String> metadataMap = new HashMap<>();
-                    if (answer.containsKey(processid)) {
-                        metadataMap = answer.get(processid);
-                    } else {
-                        metadataMap = new HashMap<>();
-                        answer.put(processid, metadataMap);
+                @Override
+                public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
+                    Map<Integer, Map<String, String>> answer = new HashMap<>();
+                    try {
+                        while (rs.next()) {
+                            Integer processid = rs.getInt("processid");
+                            String metadataName = rs.getString("name");
+                            String metadataValue = rs.getString("value");
+                            Map<String, String> metadataMap = new HashMap<>();
+                            if (answer.containsKey(processid)) {
+                                metadataMap = answer.get(processid);
+                            } else {
+                                metadataMap = new HashMap<>();
+                                answer.put(processid, metadataMap);
+                            }
+                            metadataMap.put(metadataName, metadataValue);
+                        }
+                    } finally {
+                        rs.close();
                     }
-                    metadataMap.put(metadataName, metadataValue);
+                    return answer;
                 }
-            } finally {
-                rs.close();
-            }
-            return answer;
-        }
-    };
+            };
 
     private void createProperties(Process process, String acccountName, String institutionName) {
 

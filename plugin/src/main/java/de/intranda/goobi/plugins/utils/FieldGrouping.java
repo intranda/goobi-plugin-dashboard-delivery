@@ -16,6 +16,11 @@ public class FieldGrouping implements Serializable {
     private String pageName; // defines on which page the item gets displayed
     private String documentType; // for monographs or journals
 
+    private boolean disableGroup;
+    private String disableLabel;
+
+    private boolean disabled;
+
     // actual metadata list
     private List<MetadataField> fields = new ArrayList<>();
 
