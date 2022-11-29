@@ -1066,60 +1066,13 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
             }
 
-            //            Metadata responsibility = new Metadata(prefs.getMetadataTypeByName("NoteStatementOfResponsibility"));
-            //
-            //            // first get authors
-            //            Map<String, String> data = new HashMap<>();
-            //            if (docstruct.getAllPersons() != null) {
-            //                for (Person p : docstruct.getAllPersons()) {
-            //                    String existing = data.get(p.getType().getLanguage("de"));
-            //                    if (StringUtils.isNotBlank(existing)) {
-            //                        existing += ", ";
-            //                    } else {
-            //                        existing = "";
-            //                        data.put(p.getType().getLanguage("de"), existing);
-            //                    }
-            //                    existing = existing + p.getFirstname() + " " + p.getLastname(); //NOSONAR
-            //                }
-            //            }
-            //
-            //            if (docstruct.getAllCorporates() != null) {
-            //                for (Corporate c : docstruct.getAllCorporates()) {
-            //                    String existing = data.get(c.getType().getLanguage("de"));
-            //                    if (StringUtils.isNotBlank(existing)) {
-            //                        existing += ", ";
-            //                    } else {
-            //                        existing = "";
-            //                    }
-            //                    existing += c.getMainName();
-            //                    data.put(c.getType().getLanguage("de"), existing);
-            //                }
-            //            }
-            //
-            //            StringBuilder sb = new StringBuilder();
-            //            // first author
-            //            String aut = data.get("Author");
-            //            if (aut != null) {
-            //                sb.append(aut);
-            //            }
-            //            // then add other types
-            //            for (String type : data.keySet()) { //NOSONAR
-            //                if (!type.equals("Author")) {
-            //                    if (sb.length() > 1) {
-            //                        sb.append(" ; ");
-            //                    }
-            //                    sb.append(type + " " + data.get(type));
-            //                }
-            //            }
-            //            responsibility.setValue(sb.toString());
-            //            docstruct.addMetadata(responsibility);
-
             for (MetadataField f : additionalMetadata) {
                 Metadata meta = new Metadata(prefs.getMetadataTypeByName(f.getRulesetName()));
                 meta.setValue(f.getValue());
                 docstruct.addMetadata(meta);
             }
 
+            // generate sorting number
             if (docstruct.getType().getName().equals(issueDocType)) {
                 String publicationYear = "";
                 String year = "";
@@ -1150,6 +1103,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
                 if (StringUtils.isNotBlank(year)) {
                     order += year;
+                } else {
+                    // create metadata CurrentNo
+                    Metadata currentNo = new Metadata(prefs.getMetadataTypeByName("CurrentNo"));
+                    currentNo.setValue(publicationYear);
+                    docstruct.addMetadata(currentNo);
                 }
                 if (StringUtils.isNotBlank(volume)) {
                     if (volume.length() > 1) {
@@ -1465,29 +1423,29 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     public static final ResultSetHandler<Map<Integer, Map<String, String>>> resultSetToMapHandler =
             new ResultSetHandler<Map<Integer, Map<String, String>>>() {
 
-                @Override
-                public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
-                    Map<Integer, Map<String, String>> answer = new HashMap<>();
-                    try {
-                        while (rs.next()) {
-                            Integer processid = rs.getInt("processid");
-                            String metadataName = rs.getString("name");
-                            String metadataValue = rs.getString("value");
-                            Map<String, String> metadataMap = new HashMap<>();
-                            if (answer.containsKey(processid)) {
-                                metadataMap = answer.get(processid);
-                            } else {
-                                metadataMap = new HashMap<>();
-                                answer.put(processid, metadataMap);
-                            }
-                            metadataMap.put(metadataName, metadataValue);
-                        }
-                    } finally {
-                        rs.close();
+        @Override
+        public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
+            Map<Integer, Map<String, String>> answer = new HashMap<>();
+            try {
+                while (rs.next()) {
+                    Integer processid = rs.getInt("processid");
+                    String metadataName = rs.getString("name");
+                    String metadataValue = rs.getString("value");
+                    Map<String, String> metadataMap = new HashMap<>();
+                    if (answer.containsKey(processid)) {
+                        metadataMap = answer.get(processid);
+                    } else {
+                        metadataMap = new HashMap<>();
+                        answer.put(processid, metadataMap);
                     }
-                    return answer;
+                    metadataMap.put(metadataName, metadataValue);
                 }
-            };
+            } finally {
+                rs.close();
+            }
+            return answer;
+        }
+    };
 
     private void createProperties(Process process, String acccountName, String institutionName) {
 
