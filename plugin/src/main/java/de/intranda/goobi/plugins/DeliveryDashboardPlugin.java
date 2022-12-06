@@ -39,12 +39,10 @@ import org.goobi.beans.Process;
 import org.goobi.beans.Processproperty;
 import org.goobi.beans.Step;
 import org.goobi.beans.User;
-import org.goobi.files.FileValidator;
 import org.goobi.managedbeans.UserBean;
 import org.goobi.production.enums.PluginGuiType;
 import org.goobi.production.enums.PluginType;
 import org.goobi.production.plugin.interfaces.IDashboardPlugin;
-import org.goobi.reporting.Report;
 import org.goobi.security.authentication.IAuthenticationProvider.AuthenticationType;
 
 import de.intranda.goobi.plugins.utils.FieldGrouping;
@@ -729,21 +727,21 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                     out.write(buf, 0, len);
                 }
             }
-            Report report = FileValidator.validateFile(destination, institution.getShortName());
-
-            if (!report.isReachedTargetLevel()) {
-
-                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
-
-                // delete validation files
-                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".") + 1));
-                StorageProvider.getInstance().deleteDir(testFolder);
-
-                // delete file
-                StorageProvider.getInstance().deleteFile(destination);
-
-                return;
-            }
+            //            Report report = FileValidator.validateFile(destination, institution.getShortName());
+            //
+            //            if (!report.isReachedTargetLevel()) {
+            //
+            //                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
+            //
+            //                // delete validation files
+            //                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".") + 1));
+            //                StorageProvider.getInstance().deleteDir(testFolder);
+            //
+            //                // delete file
+            //                StorageProvider.getInstance().deleteFile(destination);
+            //
+            //                return;
+            //            }
             files.add(destination);
             Helper.setMeldung("plugin_dashboard_delivery_info_uploadSuccessful");
             downloadUrl = "";
@@ -771,21 +769,21 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             Path destination = Paths.get(temporaryFolder.toString(), fileName);
             Files.copy(in, destination);
 
-            Report report = FileValidator.validateFile(destination, institution.getShortName());
-
-            if (!report.isReachedTargetLevel()) {
-
-                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
-
-                // delete validation files
-                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
-                StorageProvider.getInstance().deleteDir(testFolder);
-
-                // delete file
-                StorageProvider.getInstance().deleteFile(destination);
-
-                return;
-            }
+            //            Report report = FileValidator.validateFile(destination, institution.getShortName());
+            //
+            //            if (!report.isReachedTargetLevel()) {
+            //
+            //                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
+            //
+            //                // delete validation files
+            //                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
+            //                StorageProvider.getInstance().deleteDir(testFolder);
+            //
+            //                // delete file
+            //                StorageProvider.getInstance().deleteFile(destination);
+            //
+            //                return;
+            //            }
             files.add(destination);
             Helper.setMeldung("plugin_dashboard_delivery_info_uploadSuccessful");
         } catch (IOException e) {
@@ -811,7 +809,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "titleSelection":
             case "existingData":
             case "upload"://NOSONAR
-            case "issueupload":
+            case "newIssue"://NOSONAR
                 navigation = "main";
                 documentType = "";
                 break;
@@ -821,7 +819,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             case "contact":
                 navigation = "userdata";
                 break;
-            case "newIssue"://NOSONAR
+            case "issueupload":
             case "newTitle":
                 navigation = "titleSelection";
                 break;
@@ -860,13 +858,21 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
                 navigation = "data1";
                 break;
-            case "issueupload":
-                if (files.isEmpty()) {
-                    Helper.setFehlerMeldung(Helper.getTranslation("plugin_dashboard_delivery_noFileUploaded"));
+
+            case "newIssue":
+                if (!validateCurrentField()) {
                     return;
                 }
-                navigation = "newIssue";
+                navigation = "issueupload";
                 break;
+
+                //            case "issueupload":
+                //                if (files.isEmpty()) {
+                //                    Helper.setFehlerMeldung(Helper.getTranslation("plugin_dashboard_delivery_noFileUploaded"));
+                //                    return;
+                //                }
+                //                navigation = "newIssue";
+                //                break;
             case "data1":
                 navigation = "data2";
                 break;
@@ -1035,7 +1041,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 genre.setValue("Zeitschrift");
                 docstruct.addMetadata(genre);
 
-            } else if ("issue".equals(documentType) && "newIssue".equals(navigation)) {
+            } else if ("issue".equals(documentType) && "issueupload".equals(navigation)) {
                 anchor = dd.createDocStruct(prefs.getDocStrctTypeByName(journalDocType));
                 docstruct = dd.createDocStruct(prefs.getDocStrctTypeByName(issueDocType));
                 dd.setLogicalDocStruct(anchor);
@@ -1348,6 +1354,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     public void createJournalIssue() {
+        if (files.isEmpty()) {
+            Helper.setFehlerMeldung(Helper.getTranslation("plugin_dashboard_delivery_noFileUploaded"));
+            return;
+        }
+
         if (!validateCurrentField()) {
             return;
         }

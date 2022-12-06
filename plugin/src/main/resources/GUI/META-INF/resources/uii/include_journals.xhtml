@@ -113,7 +113,7 @@
                             jsf:rendered="#{DashboardForm.plugin.hasJournals}">
                             <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}" />
                             <f:setPropertyActionListener
-                                value="issueupload"
+                                value="newIssue"
                                 target="#{DashboardForm.plugin.navigation}" />
                             <f:setPropertyActionListener
                                 value="issue"
@@ -627,20 +627,20 @@
                     <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload' or DashboardForm.plugin.navigation=='newIssue'}">
 
                         <ul class="statuslist">
-                            <li class="#{DashboardForm.plugin.navigation=='issueupload'?'active':'finished'} ">
-                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
-                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
+                            <li class="#{DashboardForm.plugin.navigation=='newIssue' ? 'active': 'finished'}">
+                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='newIssue' ? 'active': 'finished'}">
+                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
                                 </h:panelGroup>
                             </li>
-                            <li class="#{DashboardForm.plugin.navigation=='newIssue' ? 'active': DashboardForm.plugin.navigation=='issueupload' ? 'inactive': 'finished'}">
-                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
-                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
+                            <li class="#{DashboardForm.plugin.navigation=='issueupload'?'active':'inactive'}">
+                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='issueupload'?'active':'inactive'}">
+                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
                                 </h:panelGroup>
                             </li>
                         </ul>
                     </ui:fragment>
 
-                    <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
+                    <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
                         <button
                             jsf:action="#{DashboardForm.plugin.nextPage}"
                             jsf:id="nextStep"
@@ -671,7 +671,7 @@
                                 execute="@this" />
                         </button>
                     </ui:fragment>
-                    <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
+                    <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
 
                         <button
                             jsf:action="#{DashboardForm.plugin.createJournalIssue}"
