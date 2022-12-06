@@ -39,10 +39,12 @@ import org.goobi.beans.Process;
 import org.goobi.beans.Processproperty;
 import org.goobi.beans.Step;
 import org.goobi.beans.User;
+import org.goobi.files.FileValidator;
 import org.goobi.managedbeans.UserBean;
 import org.goobi.production.enums.PluginGuiType;
 import org.goobi.production.enums.PluginType;
 import org.goobi.production.plugin.interfaces.IDashboardPlugin;
+import org.goobi.reporting.Report;
 import org.goobi.security.authentication.IAuthenticationProvider.AuthenticationType;
 
 import de.intranda.goobi.plugins.utils.FieldGrouping;
@@ -727,21 +729,21 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                     out.write(buf, 0, len);
                 }
             }
-            //            Report report = FileValidator.validateFile(destination, institution.getShortName());
-            //
-            //            if (!report.isReachedTargetLevel()) {
-            //
-            //                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
-            //
-            //                // delete validation files
-            //                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".") + 1));
-            //                StorageProvider.getInstance().deleteDir(testFolder);
-            //
-            //                // delete file
-            //                StorageProvider.getInstance().deleteFile(destination);
-            //
-            //                return;
-            //            }
+            Report report = FileValidator.validateFile(destination, institution.getShortName());
+
+            if (!report.isReachedTargetLevel()) {
+
+                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
+
+                // delete validation files
+                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".") + 1));
+                StorageProvider.getInstance().deleteDir(testFolder);
+
+                // delete file
+                StorageProvider.getInstance().deleteFile(destination);
+
+                return;
+            }
             files.add(destination);
             Helper.setMeldung("plugin_dashboard_delivery_info_uploadSuccessful");
             downloadUrl = "";
@@ -769,21 +771,21 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             Path destination = Paths.get(temporaryFolder.toString(), fileName);
             Files.copy(in, destination);
 
-            //            Report report = FileValidator.validateFile(destination, institution.getShortName());
-            //
-            //            if (!report.isReachedTargetLevel()) {
-            //
-            //                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
-            //
-            //                // delete validation files
-            //                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
-            //                StorageProvider.getInstance().deleteDir(testFolder);
-            //
-            //                // delete file
-            //                StorageProvider.getInstance().deleteFile(destination);
-            //
-            //                return;
-            //            }
+            Report report = FileValidator.validateFile(destination, institution.getShortName());
+
+            if (!report.isReachedTargetLevel()) {
+
+                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
+
+                // delete validation files
+                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
+                StorageProvider.getInstance().deleteDir(testFolder);
+
+                // delete file
+                StorageProvider.getInstance().deleteFile(destination);
+
+                return;
+            }
             files.add(destination);
             Helper.setMeldung("plugin_dashboard_delivery_info_uploadSuccessful");
         } catch (IOException e) {
