@@ -867,14 +867,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 }
                 navigation = "issueupload";
                 break;
-
-                //            case "issueupload":
-                //                if (files.isEmpty()) {
-                //                    Helper.setFehlerMeldung(Helper.getTranslation("plugin_dashboard_delivery_noFileUploaded"));
-                //                    return;
-                //                }
-                //                navigation = "newIssue";
-                //                break;
             case "data1":
                 navigation = "data2";
                 break;
@@ -1053,6 +1045,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 genre.setValue("Ausgabe");
                 docstruct.addMetadata(genre);
 
+                String anchorId = "";
                 for (FieldGrouping fg : configuredGroups) {
                     if ("issue".equals(fg.getDocumentType())) {
                         for (MetadataField mf : fg.getFields()) {
@@ -1060,12 +1053,23 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                                 String processid = mf.getValue();
                                 // load metadata
                                 Process otherProc = ProcessManager.getProcessById(Integer.parseInt(processid));
-                                writeAnchorData(anchor, otherProc);
+                                anchorId = writeAnchorData(anchor, otherProc);
 
                             }
                         }
                     }
                 }
+                if (isMasterIssue(anchorId)) {
+                    // write anchor master metadata for the first issue
+                    try {
+                        Metadata masterRecord = new Metadata(prefs.getMetadataTypeByName("InternalNote"));
+                        masterRecord.setValue("AnchorMaster");
+                        docstruct.addMetadata(masterRecord);
+                    } catch (Exception e) {
+                        log.error(e);
+                    }
+                }
+
             }
 
             for (FieldGrouping fg : configuredGroups) {
@@ -1142,7 +1146,39 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         return fileformat;
     }
 
-    private void writeAnchorData(DocStruct anchor, Process otherProc) throws ReadException, PreferencesException, WriteException {
+    private boolean isMasterIssue(String anchorId) {
+        if (StringUtils.isBlank(anchorId)) {
+            return true;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("select processid from metadata where metadata.processid in ( ");
+        sb.append("select processid from metadata where name = 'DocStruct' and value = ? ) ");
+        sb.append("and name = 'CatalogIDDigital_Delivery' and value = ?");
+
+        Connection connection = null;
+        try {
+            connection = MySQLHelper.getInstance().getConnection();
+            List<Integer> results =
+                    new QueryRunner().query(connection, sb.toString(), MySQLHelper.resultSetToIntegerListHandler, journalDocType, anchorId);
+            return results.isEmpty();
+        } catch (SQLException e) {
+            log.error(e);
+        } finally {
+            if (connection != null) {
+                try {
+                    MySQLHelper.closeConnection(connection);
+                } catch (SQLException e) {
+                    log.error(e);
+                }
+            }
+        }
+        return false;
+    }
+
+    private String writeAnchorData(DocStruct anchor, Process otherProc) throws ReadException, PreferencesException, WriteException {
+        String anchorID = "";
+
         try {
             Fileformat other = otherProc.readMetadataFile();
             // copy metadata to anchor
@@ -1150,6 +1186,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             if (templateDocstruct.getAllMetadata() != null) {
                 for (Metadata templateMetadata : templateDocstruct.getAllMetadata()) {
                     copyMetadata(anchor, templateMetadata);
+                    if (templateMetadata.getType().isIdentifier()) {
+                        anchorID = templateMetadata.getValue();
+                    }
                 }
             }
             if (templateDocstruct.getAllPersons() != null) {
@@ -1166,6 +1205,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         } catch (IOException | SwapException e) {
             log.error(e);
         }
+        return anchorID;
     }
 
     private void copyMetadata(DocStruct anchor, Metadata templateMetadata) {
