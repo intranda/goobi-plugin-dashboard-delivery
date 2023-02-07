@@ -781,8 +781,8 @@
                         </span>
                         <h:outputText value="#{DashboardForm.plugin.navigation=='overview' ? msgs.plugin_dashboard_delivery_buttonCopy_send : msgs.weiter}" />
                         <f:ajax
-                            render="main-area globalMessage"
-                            execute="@this" />
+                            render="@all globalMessage"
+                            execute="@form" />
                     </button>
                 </div>
 
