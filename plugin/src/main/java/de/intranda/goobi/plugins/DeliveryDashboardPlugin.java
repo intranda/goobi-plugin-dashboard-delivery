@@ -215,6 +215,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     @Setter
     private boolean displaySecondContact = false;
 
+    private List<SelectItem> availableTitles = new ArrayList<>();;
+
+
     public DeliveryDashboardPlugin() {
         try {
             temporaryFolder = Files.createTempDirectory("delivery");
@@ -1411,14 +1414,16 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     public boolean isHasJournals() {
-        return !generateListOfJournalTitles().isEmpty();
+        return !availableTitles.isEmpty();
 
     }
 
+
+
+
     private List<SelectItem> generateListOfJournalTitles() {
 
-        List<SelectItem> availableTitles = new ArrayList<>();
-
+        availableTitles = new ArrayList<>();
         // propulate a pickup list for issue creation
         // - search in journal processes only (special project, process title starts with a specific term?)
         // - was created by this institution (or user?)
