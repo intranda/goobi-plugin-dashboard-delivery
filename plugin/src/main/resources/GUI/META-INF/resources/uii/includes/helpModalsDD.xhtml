@@ -33,11 +33,11 @@
       modalId="pageHelpModal"
       modalTitle="#{msgs[header]}">
 
-      <p class="page-help__body">#{msgs[body1]}</p>
+      <p class="page-help__body"><h:outputText escape="false" value="#{msgs[body1]}"/></p>
       <div class="page-help__img">
           <h:outputText escape="false" value="#{msgs[img]}" />
       </div>
-      <p class="page-help__body2">#{msgs[body2]}</p>
+      <p class="page-help__body2"><h:outputText escape="false" value="#{msgs[body2]}"/></p>
 
     </zlb:modal>
 
