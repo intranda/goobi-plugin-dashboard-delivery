@@ -782,12 +782,10 @@
                         <h:outputText value="#{DashboardForm.plugin.navigation=='overview' ? msgs.plugin_dashboard_delivery_buttonCopy_send : msgs.weiter}" />
                         <f:ajax
                             render="@all globalMessage"
-                            execute="@form" />
+                            execute="@this" />
                     </button>
                 </div>
-
             </h:form>
-
         </ui:fragment>
     </composite:implementation>
 

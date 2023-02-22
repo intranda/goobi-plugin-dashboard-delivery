@@ -217,7 +217,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
 
     private List<SelectItem> availableTitles = new ArrayList<>();;
 
-
     public DeliveryDashboardPlugin() {
         try {
             temporaryFolder = Files.createTempDirectory("delivery");
@@ -326,8 +325,13 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                     User user = Helper.getCurrentUser();
                     if (user != null) {
                         Institution inst = user.getInstitution();
+                        String val;
                         if (replaceWith.startsWith("institution")) {
-                            String val = inst.getAdditionalData().get(replaceWith);
+                            if (replaceWith.endsWith("-name")) {
+                                val = inst.getLongName();
+                            } else {
+                                val = inst.getAdditionalData().get(replaceWith);
+                            }
                             if (!"false".equals(val) && "combo".equals(mf.getDisplayType())) { //NOSONAR
                                 mf.setBooleanValue(true);
                                 if (!"true".equals(val)) {
@@ -337,7 +341,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                                 mf.setValue(val);
                             }
                         } else {
-                            String val = user.getAdditionalData().get(replaceWith);
+                            if (replaceWith.endsWith("-name")) {
+                                val = user.getNachVorname();
+                            } else {
+                                val = user.getAdditionalData().get(replaceWith);
+                            }
                             if (!"false".equals(val)) {
                                 mf.setValue(val);
                             }
@@ -1417,9 +1425,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         return !availableTitles.isEmpty();
 
     }
-
-
-
 
     private List<SelectItem> generateListOfJournalTitles() {
 
