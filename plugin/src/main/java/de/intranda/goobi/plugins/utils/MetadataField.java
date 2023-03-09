@@ -27,13 +27,8 @@ public class MetadataField implements Serializable {
     private String label; // display name in UI
     private String displayType; // input, textarea, dropdown, person, corporate, picklist
 
-    private String metadataLevel; // anchor or volume, only relevant for periodical data
-
     private String cardinality; // 1 = exact one, ? = zero or one, * = any, + = at least one
     private boolean required;
-
-    private String marcMainTag; // only used if field gets imported from opac
-    private String marcSubTag; // only used if field gets imported from opac
 
     private String validationExpression; // regex to validate the results
     private String validationErrorText; // display, when value is invalid
@@ -355,9 +350,6 @@ public class MetadataField implements Serializable {
         mf.setDisplayType(displayType);
         mf.setHelpMessage(helpMessage);
         mf.setLabel(label);
-        mf.setMarcMainTag(marcMainTag);
-        mf.setMarcSubTag(marcSubTag);
-        mf.setMetadataLevel(metadataLevel);
         mf.setRequired(false);
 
         mf.setRulesetName(rulesetName);

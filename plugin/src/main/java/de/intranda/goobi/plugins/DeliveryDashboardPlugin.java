@@ -306,15 +306,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 mf.setRulesetName(field.getString("@rulesetName"));
                 mf.setLabel(field.getString("@label"));
                 mf.setDisplayType(field.getString("@displayType", "input")); //NOSONAR
-                mf.setMetadataLevel(("@metadataLevel"));
                 String cardinality = field.getString("@cardinality", "*");
                 mf.setCardinality(cardinality);
                 if ("1".equals(cardinality) || "+".equals(cardinality)) {
                     mf.setRequired(true);
                 }
 
-                mf.setMarcMainTag(field.getString("@marcMainTag"));
-                mf.setMarcSubTag(field.getString("@marcSubTag"));
                 mf.setValidationExpression(field.getString("@validationExpression"));
                 mf.setValidationErrorText(field.getString("@validationErrorText"));
                 mf.setHelpMessageTitle(field.getString("@helpMessageTitle", ""));
