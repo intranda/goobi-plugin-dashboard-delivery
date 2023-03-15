@@ -1443,13 +1443,11 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             sql.append("and metadata.name = \"DocStruct\" and metadata.value= ? ");
             sql.append(") and metadata.name= ? )");
             sql.append("UNION ");
-            sql.append("select * from metadata where processid in ( ");
-            sql.append("select processid from metadata where processid in ( ");
-            sql.append("select metadata.processid from prozesseeigenschaften left join metadata on prozesseeigenschaften.prozesseID = ");
-            sql.append("metadata.processid where titel =\"Institution\" and wert = ? ");
-            sql.append("and not exists (select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid) ");
-            sql.append(") and metadata.name=\"CatalogIDDigital_Delivery\" group by metadata.value having count(metadata.value)=1");
-            sql.append(" and metadata.name = \"DocStruct\" and metadata.value= ?) ");
+            sql.append("select * from metadata where processid in (select processid from metadata where processid in (select processid ");
+            sql.append("from metadata where processid in (select metadata.processid from prozesseeigenschaften left join metadata on ");
+            sql.append("prozesseeigenschaften.prozesseID = metadata.processid where titel ='Institution' and wert = ? and not exists ");
+            sql.append("(select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid)) and metadata.name='CatalogIDDigital_Delivery' ");
+            sql.append("group by metadata.value having count(metadata.value)=1) and metadata.name = 'DocStruct' and metadata.value= ?)");
 
             Map<Integer, Map<String, String>> results = null;
             Connection connection = null;
