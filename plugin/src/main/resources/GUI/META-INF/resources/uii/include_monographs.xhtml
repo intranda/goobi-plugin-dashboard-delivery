@@ -643,7 +643,7 @@
                                                 value="#{not empty field.value2 ? field.value2 : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                             <h:outputText
                                                 styleClass="form-control #{not empty field.role ? '' : 'empty-val'}"
-                                                value="#{not empty field.role ? field.role : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
+                                                value="#{not empty field.role ? msgs[field.role] : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                         </div>
                                     </ui:fragment>
 
@@ -657,7 +657,7 @@
                                                 value="#{not empty field.value ? field.value : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                             <h:outputText
                                                 styleClass="form-control #{not empty field.role ? '' : 'empty-val'}"
-                                                value="#{not empty field.role ? field.role : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
+                                                value="#{not empty field.role ? msgs[field.role] : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                         </div>
                                     </ui:fragment>
                                     <ui:fragment rendered="#{field.displayType == 'picklist'}">
@@ -667,7 +667,7 @@
                                         <div class="form-field corporategrid">
                                             <h:outputText
                                                 styleClass="form-control #{not empty field.role ? '' : 'empty-val'}"
-                                                value="#{not empty field.role ? field.role : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
+                                                value="#{not empty field.role ? msgs[field.role] : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                             <h:outputText
                                                 styleClass="form-control #{not empty field.value ? '' : 'empty-val'}"
                                                 value="#{not empty field.value ? field.value : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
