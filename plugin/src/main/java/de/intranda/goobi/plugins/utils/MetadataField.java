@@ -72,7 +72,7 @@ public class MetadataField implements Serializable {
 
         String val = value;
 
-        if (displayType.equals("combo") && getBooleanValue() && StringUtils.isBlank(value2)) {
+        if ("combo".equals(displayType) && getBooleanValue() && StringUtils.isBlank(value2)) {
             fieldValid = false;
             return false;
         }
@@ -131,11 +131,10 @@ public class MetadataField implements Serializable {
         if (obj instanceof Boolean) {
             return;
         }
-
         String testValue = (String) obj;
         fieldValid = true;
 
-        if (displayType.equals("combo")) {
+        if ("combo".equals(displayType)) {
             fieldValid = false;
             return;
         }

@@ -1446,7 +1446,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             sql.append("select * from metadata where processid in (select processid from metadata where processid in (select processid ");
             sql.append("from metadata where processid in (select metadata.processid from prozesseeigenschaften left join metadata on ");
             sql.append("prozesseeigenschaften.prozesseID = metadata.processid where titel ='Institution' and wert = ? and not exists ");
-            sql.append("(select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid)) and metadata.name='CatalogIDDigital_Delivery' ");
+            sql.append(
+                    "(select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid)) and metadata.name='CatalogIDDigital_Delivery' ");
             sql.append("group by metadata.value having count(metadata.value)=1) and metadata.name = 'DocStruct' and metadata.value= ?)");
 
             Map<Integer, Map<String, String>> results = null;
@@ -1481,29 +1482,29 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     public static final ResultSetHandler<Map<Integer, Map<String, String>>> resultSetToMapHandler =
             new ResultSetHandler<Map<Integer, Map<String, String>>>() {
 
-        @Override
-        public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
-            Map<Integer, Map<String, String>> answer = new HashMap<>();
-            try {
-                while (rs.next()) {
-                    Integer processid = rs.getInt("processid");
-                    String metadataName = rs.getString("name");
-                    String metadataValue = rs.getString("value");
-                    Map<String, String> metadataMap = new HashMap<>();
-                    if (answer.containsKey(processid)) {
-                        metadataMap = answer.get(processid);
-                    } else {
-                        metadataMap = new HashMap<>();
-                        answer.put(processid, metadataMap);
+                @Override
+                public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
+                    Map<Integer, Map<String, String>> answer = new HashMap<>();
+                    try {
+                        while (rs.next()) {
+                            Integer processid = rs.getInt("processid");
+                            String metadataName = rs.getString("name");
+                            String metadataValue = rs.getString("value");
+                            Map<String, String> metadataMap = new HashMap<>();
+                            if (answer.containsKey(processid)) {
+                                metadataMap = answer.get(processid);
+                            } else {
+                                metadataMap = new HashMap<>();
+                                answer.put(processid, metadataMap);
+                            }
+                            metadataMap.put(metadataName, metadataValue);
+                        }
+                    } finally {
+                        rs.close();
                     }
-                    metadataMap.put(metadataName, metadataValue);
+                    return answer;
                 }
-            } finally {
-                rs.close();
-            }
-            return answer;
-        }
-    };
+            };
 
     private void createProperties(Process process, String acccountName, String institutionName) {
 

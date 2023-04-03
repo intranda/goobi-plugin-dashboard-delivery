@@ -46,8 +46,7 @@
 
 
             <h1 class="page__heading">
-                #{msgs.plugin_dashboard_delivery_deliverJournalsHeader}
-                <span
+                #{msgs.plugin_dashboard_delivery_deliverJournalsHeader} <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -88,6 +87,9 @@
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
+                            <f:passThroughAttribute
+                                name="data-navigation"
+                                value="true" />
                         </button>
 
                     </div>
@@ -102,7 +104,8 @@
 
                         <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</h2>
                         <p class="item__text">
-                            <h:outputText value="#{DashboardForm.plugin.hasJournals ? msgs['plugin_dashboard_delivery_deliverNewIssueTitle'] : msgs['plugin_dashboard_delivery_deliverNoJournalTitles']}" />
+                            <h:outputText
+                                value="#{DashboardForm.plugin.hasJournals ? msgs['plugin_dashboard_delivery_deliverNewIssueTitle'] : msgs['plugin_dashboard_delivery_deliverNoJournalTitles']}" />
                         </p>
 
                         <button
@@ -121,6 +124,9 @@
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
+                            <f:passThroughAttribute
+                                name="data-navigation"
+                                value="true" />
                         </button>
                     </div>
                 </div>
@@ -152,8 +158,7 @@
                 </ui:include>
 
                 <h1 class="page__heading">
-                    #{msgs.plugin_dashboard_delivery_deliverNewJournalTitleHeader}
-                    <span
+                    #{msgs.plugin_dashboard_delivery_deliverNewJournalTitleHeader} <span
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -273,7 +278,8 @@
                                     </ui:fragment>
 
 
-                                    <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
+                                    <ui:fragment
+                                        rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
                                         <zlb:field
                                             identifier="field_#{status.index}"
                                             labelText="#{field.label}"
@@ -325,8 +331,7 @@
                 </ui:include>
 
                 <h1 class="page__heading">
-                    <span>#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</span>
-                    <span
+                    <span>#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</span> <span
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -375,14 +380,15 @@
                 <script
                     type="text/javascript"
                     src="#{HelperForm.applicationWebsiteUrl}uii/template/assets/js/fileUpload.js">
-                                                                    
-                                                                </script>
+																	
+																</script>
                 <script>
-                                                                    fileUpload.init( {
-                                                                        DSForm: '#issuefile',
-                                                                        DSSubmit: '#issuesubmit'
-                                                                    } )
-                                                                </script>
+																	fileUpload
+																			.init({
+																				DSForm : '#issuefile',
+																				DSSubmit : '#issuesubmit'
+																			})
+																</script>
 
                 <!-- URL upload -->
                 <zlb:urlUploadModal />
@@ -407,8 +413,7 @@
                 </ui:include>
 
                 <h1 class="page__heading">
-                    #{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}
-                    <span
+                    #{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader} <span
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -533,7 +538,8 @@
                                     </ui:fragment>
 
 
-                                    <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
+                                    <ui:fragment
+                                        rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
                                         <zlb:field
                                             identifier="field_#{status.index}"
                                             labelText="#{field.label}"
@@ -587,7 +593,8 @@
             </ui:fragment>
 
             <!-- Required Message -->
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main' and DashboardForm.plugin.navigation!='issueupload' and DashboardForm.plugin.navigation!='titleSelection' and DashboardForm.plugin.navigation!='finish'}">
+            <ui:fragment
+                rendered="#{DashboardForm.plugin.navigation!='main' and DashboardForm.plugin.navigation!='issueupload' and DashboardForm.plugin.navigation!='titleSelection' and DashboardForm.plugin.navigation!='finish'}">
                 <div class="info-required">
                     <h:outputText
                         escape="false"
@@ -627,16 +634,14 @@
                     <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload' or DashboardForm.plugin.navigation=='newIssue'}">
 
                         <ul class="statuslist">
-                            <li class="#{DashboardForm.plugin.navigation=='newIssue' ? 'active': 'finished'}">
-                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='newIssue' ? 'active': 'finished'}">
+                            <li class="#{DashboardForm.plugin.navigation=='newIssue' ? 'active': 'finished'}"><h:panelGroup
+                                    styleClass="status #{DashboardForm.plugin.navigation=='newIssue' ? 'active': 'finished'}">
                                     <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
-                                </h:panelGroup>
-                            </li>
-                            <li class="#{DashboardForm.plugin.navigation=='issueupload'?'active':'inactive'}">
-                                <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='issueupload'?'active':'inactive'}">
+                                </h:panelGroup></li>
+                            <li class="#{DashboardForm.plugin.navigation=='issueupload'?'active':'inactive'}"><h:panelGroup
+                                    styleClass="status #{DashboardForm.plugin.navigation=='issueupload'?'active':'inactive'}">
                                     <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
-                                </h:panelGroup>
-                            </li>
+                                </h:panelGroup></li>
                         </ul>
                     </ui:fragment>
 
@@ -660,12 +665,10 @@
                             class="btn btn-success grid-full-width ms-auto btn-loader">
                             <span
                                 class="btn-ajax-loader"
-                                aria-hidden="true">
-                                <img
-                                    src="template/img/goobi/ajaxloader2.gif"
-                                    alt="Ajax Button Loader" />
-                            </span>
-                            #{msgs.save}
+                                aria-hidden="true"> <img
+                                src="template/img/goobi/ajaxloader2.gif"
+                                alt="Ajax Button Loader" />
+                            </span> #{msgs.save}
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
@@ -679,12 +682,10 @@
                             class="btn btn-success ms-auto btn-loader">
                             <span
                                 class="btn-ajax-loader"
-                                aria-hidden="true">
-                                <img
-                                    src="template/img/goobi/ajaxloader2.gif"
-                                    alt="Ajax Button Loader" />
-                            </span>
-                            #{msgs.save}
+                                aria-hidden="true"> <img
+                                src="template/img/goobi/ajaxloader2.gif"
+                                alt="Ajax Button Loader" />
+                            </span> #{msgs.save}
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />

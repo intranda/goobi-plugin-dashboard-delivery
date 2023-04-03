@@ -737,6 +737,9 @@
                         <f:ajax
                             render="main-area"
                             execute="@this" />
+                                <f:passThroughAttribute
+                                    name="data-navigation"
+                                    value="true" />                            
                     </button>
                     <ul class="statuslist">
                         <li class="#{DashboardForm.plugin.navigation=='upload'?'active':'finished'}">
@@ -783,6 +786,9 @@
                         <f:ajax
                             render="@all globalMessage"
                             execute="@this" />
+                                <f:passThroughAttribute
+                                    name="data-navigation"
+                                    value="true" />                            
                     </button>
                 </div>
             </h:form>
