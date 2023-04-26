@@ -1401,6 +1401,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             SendMail.getInstance().sendMailToUser(subject, body + NEWLINE + sb.toString(), registrationMailRecipient);
         }
         navigation = "finish";
+
+        generateListOfJournalTitles();
     }
 
     public void createJournalIssue() {
