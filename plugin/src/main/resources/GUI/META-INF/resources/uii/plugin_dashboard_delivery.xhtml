@@ -19,40 +19,39 @@
 
     <ui:define name="content">
 
-<style>
+        <style>
 .btn-loader {
-    display: inline-block;
-    position: relative;
-    line-height: 29px;
-    padding-top: 0;
-    padding-bottom: 0;
+	display: inline-block;
+	position: relative;
+	line-height: 29px;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 .btn-loader span {
-    position: absolute;
-    top:0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: none;
-    background-color: #fff;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: none;
+	background-color: #fff;
 }
 
 .btn-loader span.in {
-    display: block;
+	display: block;
 }
 
 .btn-loader span img {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-  margin: 0 auto;
+	display: block;
+	max-width: 100%;
+	max-height: 100%;
+	margin: 0 auto;
 }
 
 .span2 {
-    grid-column: 1 / span 2;
+	grid-column: 1/span 2;
 }
-
 </style>
 
         <!-- Custom styles for this plugin -->
@@ -159,6 +158,9 @@
                                 <f:ajax
                                     render="main-area"
                                     execute="@this" />
+                                <f:passThroughAttribute
+                                    name="data-navigation"
+                                    value="true" />
                             </button>
                         </div>
                         <!-- end item -->
@@ -198,6 +200,9 @@
                                 <f:ajax
                                     render="main-area"
                                     execute="@this" />
+                                <f:passThroughAttribute
+                                    name="data-navigation"
+                                    value="true" />
                             </button>
                         </div>
                         <!-- end item -->
@@ -315,9 +320,7 @@
                 </ui:include>
 
                 <h1 class="page__heading">
-                    <span>#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</span>
-
-                    <span
+                    <span>#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</span> <span
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -400,7 +403,8 @@
                 </div>
             </ui:fragment>
 
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata' or DashboardForm.plugin.navigation=='user' or DashboardForm.plugin.navigation=='institution'or DashboardForm.plugin.navigation=='contact'}">
+            <ui:fragment
+                rendered="#{DashboardForm.plugin.navigation=='userdata' or DashboardForm.plugin.navigation=='user' or DashboardForm.plugin.navigation=='institution'or DashboardForm.plugin.navigation=='contact'}">
                 <div class="container container--user-data">
                     <ui:include src="include_userdata.xhtml" />
                 </div>
@@ -445,11 +449,19 @@
                                                 if (source.classList.contains('btn-loader')) {
                                                     $('.btn-ajax-loader').removeClass('in');
                                                 }
+                                                if (data?.source?.dataset.navigation=='true'){
+                                                    $( document ).ready(function() {
+                                                        $(".form-control.corporate").change();
+                                                    });
+                                            }
+                                            
                                                 // find element,set focus
                                                 updateFocus();
                                                 break;
                                         }
                                     } );
+
+                                    
                                 </script>
 
 
