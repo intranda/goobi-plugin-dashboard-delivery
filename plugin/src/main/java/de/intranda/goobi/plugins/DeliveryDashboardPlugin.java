@@ -1515,7 +1515,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         userProperty.setProcessId(process.getId());
         userProperty.setProzess(process);
         userProperty.setTitel("UserName");
-        userProperty.setType(PropertyType.String);
+        userProperty.setType(PropertyType.STRING);
         userProperty.setWert(acccountName);
         process.getEigenschaften().add(userProperty);
 
@@ -1523,7 +1523,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         institutionProperty.setProcessId(process.getId());
         institutionProperty.setProzess(process);
         institutionProperty.setTitel("Institution");
-        institutionProperty.setType(PropertyType.String);
+        institutionProperty.setType(PropertyType.STRING);
         institutionProperty.setWert(institutionName);
         process.getEigenschaften().add(institutionProperty);
 
