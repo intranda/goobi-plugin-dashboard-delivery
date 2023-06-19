@@ -471,7 +471,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 mf.setValidationErrorText(validationErrorMessage);
                 mf.setHelpMessage(helpMessage);
                 mf.setRulesetName(name);
-
+                mf.setHelpMessageTitle(hc.getString("@alternativeLabel", hc.getString("@label")));
                 if ("dropdown".equals(fieldType) || "combo".equals(fieldType)) {
                     List<HierarchicalConfiguration> valueList = hc.configurationsAt("/value");
                     for (HierarchicalConfiguration v : valueList) {
