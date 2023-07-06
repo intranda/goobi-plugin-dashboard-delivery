@@ -461,6 +461,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 String validation = hc.getString("@validation", null);
                 String validationErrorMessage = hc.getString("@validationErrorDescription", null);
                 String helpMessage = hc.getString("@helpMessage");
+                String helpMessageTitle = hc.getString("@helpMessageTitle");
+
 
                 MetadataField mf = new MetadataField();
                 mf.setLabel(label);
@@ -470,6 +472,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 mf.setValidationExpression(validation);
                 mf.setValidationErrorText(validationErrorMessage);
                 mf.setHelpMessage(helpMessage);
+                mf.setHelpMessageTitle(helpMessageTitle);
+
                 mf.setRulesetName(name);
                 mf.setHelpMessageTitle(hc.getString("@alternativeLabel", hc.getString("@label")));
                 if ("dropdown".equals(fieldType) || "combo".equals(fieldType)) {
