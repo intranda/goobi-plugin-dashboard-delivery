@@ -995,12 +995,12 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 fileSize.setValue(humanReadableByteCountSI(totalFileSize));
                 logical.addMetadata(fileSize);
             }
+            process.writeMetadataFile(fileformat);
         } catch (IOException | SwapException | UGHException e) {
             log.error(e);
         }
 
         createProperties(process, acccountName, institutionName);
-
         Step step = process.getAktuellerSchritt();
         if (step != null && step.isTypAutomatisch()) {
             new ScriptThreadWithoutHibernate(step).startOrPutToQueue();
