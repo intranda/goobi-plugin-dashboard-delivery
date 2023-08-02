@@ -543,6 +543,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         firstname.setCardinality("1");
         firstname.setAdditionalType("firstname");
         firstname.setValue(user.getVorname());
+        firstname.setHelpMessage(Helper.getTranslation("firstname"));
+        firstname.setHelpMessageTitle(Helper.getTranslation("plugin_rest_usercreation_helpText_firstname"));
         userData.getFields().add(firstname);
 
         MetadataField lastname = new MetadataField();
@@ -552,6 +554,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         lastname.setCardinality("1");
         lastname.setAdditionalType("lastname");
         lastname.setValue(user.getNachname());
+        lastname.setHelpMessage(Helper.getTranslation("lastname"));
+        lastname.setHelpMessageTitle(Helper.getTranslation("plugin_rest_usercreation_helpText_lastname"));
         userData.getFields().add(lastname);
     }
 

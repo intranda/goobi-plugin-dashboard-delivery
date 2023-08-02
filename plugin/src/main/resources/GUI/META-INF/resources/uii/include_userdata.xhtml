@@ -281,7 +281,20 @@
                                     value="" />
                                 <f:ajax execute="@this" />
                             </x:inputSecret>
+                            <button
+                                jsf:id="showHelpField_oldpw"
+                                jsf:onfocus="focusField(this);"
+                                type="button"
+                                class="form-icons__button form-icons__button--help"
+                                aria-label="#{msgs.plugin_rest_usercreation_ariaLabel_elementHelp}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                data-bs-body="#{msgs.plugin_rest_usercreation_helpText_old_password}"
+                                data-bs-title="#{msgs.plugin_rest_usercreation_old_account_password}">
+                                <ui:include src="/uii/includes/icon-help.xhtml" />
+                            </button>                            
                         </div>
+                      
                         <h:panelGroup
                             layout="block"
                             rendered="#{!DashboardForm.plugin.oldPasswordValid}"
@@ -318,7 +331,20 @@
                                     value="" />
                                 <f:ajax execute="@this" />
                             </x:inputSecret>
+                            <button
+                                jsf:id="showHelpField_pw1"
+                                jsf:onfocus="focusField(this);"
+                                type="button"
+                                class="form-icons__button form-icons__button--help"
+                                aria-label="#{msgs.plugin_rest_usercreation_ariaLabel_elementHelp}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                data-bs-body="#{msgs.plugin_rest_usercreation_helpText_password}"
+                                data-bs-title="#{msgs.plugin_rest_usercreation_new_account_password}">
+                                <ui:include src="/uii/includes/icon-help.xhtml" />
+                            </button>
                         </div>
+                        
                         <h:panelGroup
                             layout="block"
                             rendered="#{!DashboardForm.plugin.newPasswordValid}"
@@ -354,6 +380,18 @@
                                     name="placeholder"
                                     value="" />
                             </x:inputSecret>
+                            <button
+                                jsf:id="showHelpField_pw2"
+                                jsf:onfocus="focusField(this);"
+                                type="button"
+                                class="form-icons__button form-icons__button--help"
+                                aria-label="#{msgs.plugin_rest_usercreation_ariaLabel_elementHelp}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                data-bs-body="#{msgs.plugin_rest_usercreation_helpText_password2}"
+                                data-bs-title="#{msgs.plugin_rest_usercreation_new_account_password2}">
+                                <ui:include src="/uii/includes/icon-help.xhtml" />
+                            </button>
                         </div>
                     </h:panelGroup>
                 </span>
