@@ -579,16 +579,46 @@
                 <h:form styleClass="form-validate monograph__overview">
                     <section class="common-region one-col">
                         <h:outputText
+                            rendered="#{DashboardForm.plugin.documentType=='issue'}"
                             escape="false"
-                            value="#{msgs.plugin_dashboard_delivery_creationSuccessful}" />
-                    </section>
+                            value="#{msgs.plugin_dashboard_delivery_creationSuccessful_issue}" />
 
-                    <button
-                        class="btn btn-primary-400 ms-auto"
-                        jsf:immediate="true"
-                        jsf:action="#{DashboardForm.plugin.backToMain}">
-                        <h:outputText value="#{msgs.plugin_dashboard_delivery_backToDashboard}" />
-                    </button>
+                        <h:outputText
+                            rendered="#{DashboardForm.plugin.documentType=='journal'}"
+                            escape="false"
+                            value="#{msgs.plugin_dashboard_delivery_creationSuccessful_journal}" />
+
+                    </section>
+                    <div>
+                        <button
+                            style="float: right; margin-right: 10px;"
+                            jsf:rendered="#{DashboardForm.plugin.documentType=='journal'}"
+                            title="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}"
+                            jsf:action="#{DashboardForm.plugin.startNewImport}"
+                            class="btn btn-primary-400 ms-auto">
+                            <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}" />
+                            <f:setPropertyActionListener
+                                value="newIssue"
+                                target="#{DashboardForm.plugin.navigation}" />
+                            <f:setPropertyActionListener
+                                value="issue"
+                                target="#{DashboardForm.plugin.documentType}" />
+                            <f:ajax
+                                render="main-area"
+                                execute="@this" />
+                            <f:passThroughAttribute
+                                name="data-navigation"
+                                value="true" />
+                        </button>
+                        <button
+                            style="float: right"
+                            class="btn btn-primary-400 ms-auto"
+                            jsf:immediate="true"
+                            jsf:action="#{DashboardForm.plugin.backToMain}">
+                            <h:outputText value="#{msgs.plugin_dashboard_delivery_backToDashboard}" />
+                        </button>
+                    </div>
+
                 </h:form>
             </ui:fragment>
 
@@ -636,7 +666,7 @@
                         <ul class="statuslist">
                             <li class="#{DashboardForm.plugin.navigation=='newIssue' ? 'active': 'finished'}"><h:panelGroup
                                     styleClass="status #{DashboardForm.plugin.navigation=='newIssue' ? 'active': 'finished'}">
-                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
+                                    <h:outputText value="#{msgs.plugin_dashboard_delivery_journal}" />
                                 </h:panelGroup></li>
                             <li class="#{DashboardForm.plugin.navigation=='issueupload'?'active':'inactive'}"><h:panelGroup
                                     styleClass="status #{DashboardForm.plugin.navigation=='issueupload'?'active':'inactive'}">

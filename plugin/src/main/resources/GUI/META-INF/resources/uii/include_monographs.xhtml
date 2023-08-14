@@ -35,9 +35,7 @@
             </ui:include>
 
             <h1 class="page__heading">
-                #{msgs.plugin_dashboard_delivery_deliverMonographHeader_data1}
-
-                <span
+                #{msgs.plugin_dashboard_delivery_deliverMonographHeader_data1} <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -58,7 +56,8 @@
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
-                    <ui:fragment rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
+                    <ui:fragment
+                        rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
                         <div class="common-region">
                             <h2 class="grid-full-width">
                                 <h:outputText value="#{group.label}" />
@@ -86,7 +85,7 @@
                                         for="disableGroup"
                                         value="#{msgs[group.disableLabel]}" />
                                 </div>
-                                <br/>
+                                <br />
                             </h:panelGroup>
 
                             <ui:repeat
@@ -161,7 +160,8 @@
                                     </ui:fragment>
 
 
-                                    <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
+                                    <ui:fragment
+                                        rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
                                         <zlb:field
                                             identifier="field_#{status.index}"
                                             labelText="#{field.label}"
@@ -212,9 +212,7 @@
             </ui:include>
 
             <h1 class="page__heading">
-                #{msgs.plugin_dashboard_delivery_deliverMonographHeader_data2}
-
-                <span
+                #{msgs.plugin_dashboard_delivery_deliverMonographHeader_data2} <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -235,7 +233,8 @@
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
-                    <ui:fragment rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
+                    <ui:fragment
+                        rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
 
                         <div
                             class="common-region"
@@ -342,7 +341,8 @@
                                     </ui:fragment>
 
 
-                                    <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
+                                    <ui:fragment
+                                        rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
                                         <zlb:field
                                             identifier="field_#{status.index}"
                                             labelText="#{field.label}"
@@ -394,9 +394,7 @@
             </ui:include>
 
             <h1 class="page__heading">
-                #{msgs.plugin_dashboard_delivery_deliverMonographHeader_data3}
-
-                <span
+                #{msgs.plugin_dashboard_delivery_deliverMonographHeader_data3} <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -417,7 +415,8 @@
                 <ui:repeat
                     var="group"
                     value="#{DashboardForm.plugin.configuredGroups}">
-                    <ui:fragment rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
+                    <ui:fragment
+                        rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
                         <div
                             class="common-region"
                             id="grp">
@@ -524,7 +523,8 @@
                                     </ui:fragment>
 
 
-                                    <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
+                                    <ui:fragment
+                                        rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
                                         <zlb:field
                                             identifier="field_#{status.index}"
                                             labelText="#{field.label}"
@@ -572,9 +572,7 @@
             </ui:include>
 
             <h1 class="page__heading">
-                #{msgs.plugin_dashboard_delivery_deliverMonographHeader_overview}
-
-                <span
+                #{msgs.plugin_dashboard_delivery_deliverMonographHeader_overview} <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -599,6 +597,16 @@
 
                             <h3 class="grid-full-width">
                                 <h:outputText value="#{group.label}" />
+                                <button
+                                    class="btn bnt-link overview__edit"
+                                    style="float: right;"
+                                    jsf:immediate="true">
+                                    <f:setPropertyActionListener
+                                        value="#{group.pageName}"
+                                        target="#{DashboardForm.plugin.navigation}" />
+                                    <ui:include src="/uii/includes/icon-edit.xhtml" />
+                                    <span style="padding-left: .8rem;">#{msgs.bearbeiten}</span>
+                                </button>
                             </h3>
 
                             <h:panelGroup
@@ -616,13 +624,6 @@
                                 var="field"
                                 value="#{group.fields}"
                                 varStatus="status">
-
-                                <script>
-                                    console.log('label:', '#{field.label}')
-                                    console.log('value:', '#{field.value}')
-                                    console.log('value status:', '#{not empty field.value ? 'NOT EMPTY' : 'EMPTY'}')
-                                </script>
-
 
                                 <h:panelGroup
                                     layout="block"
@@ -673,7 +674,8 @@
                                                 value="#{not empty field.value ? field.value : msgs.plugin_administration_deliveryManagement_overview_emptyVal}" />
                                         </div>
                                     </ui:fragment>
-                                    <ui:fragment rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
+                                    <ui:fragment
+                                        rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
                                         <h:outputLabel
                                             value="#{field.label}"
                                             styleClass="#{not empty field.value ? '' : 'empty-val'}" />
@@ -697,7 +699,7 @@
                 <section class="common-region one-col">
                     <h:outputText
                         escape="false"
-                        value="#{msgs.plugin_dashboard_delivery_creationSuccessful}" />
+                        value="#{msgs.plugin_dashboard_delivery_creationSuccessful_monograph}" />
                 </section>
 
                 <button
@@ -709,7 +711,8 @@
             </h:form>
         </ui:fragment>
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main' and DashboardForm.plugin.navigation!='finish' and DashboardForm.plugin.navigation!='existingData'}">
+        <ui:fragment
+            rendered="#{DashboardForm.plugin.navigation!='main' and DashboardForm.plugin.navigation!='finish' and DashboardForm.plugin.navigation!='existingData'}">
             <h:form id="navigationForm">
                 <div class="container-escape submit">
                     <button
@@ -737,35 +740,72 @@
                         <f:ajax
                             render="main-area"
                             execute="@this" />
-                                <f:passThroughAttribute
-                                    name="data-navigation"
-                                    value="true" />                            
+                        <f:passThroughAttribute
+                            name="data-navigation"
+                            value="true" />
                     </button>
                     <ul class="statuslist">
-                        <li class="#{DashboardForm.plugin.navigation=='upload'?'active':'finished'}">
-
-                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
+                        <li class="#{DashboardForm.plugin.navigation=='upload'?'active':'finished'}"><h:panelGroup
+                                styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_monograph_upload}" />
-                            </h:panelGroup>
-                        </li>
-                        <li class="#{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
-                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
+                            </h:panelGroup></li>
+                        <li
+                            class="#{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
+
+                            <button
+                                style="padding-top: 20px;"
+                                class="btn bnt-link"
+                                jsf:immediate="true"
+                                jsf:disabled="#{DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='upload'}">
+                                <f:setPropertyActionListener
+                                    value="data1"
+                                    target="#{DashboardForm.plugin.navigation}" />
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
-                            </h:panelGroup>
+                            </button>
+
+
                         </li>
-                        <li class="#{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
-                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
+                        <li
+                            class="#{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
+
+                            <button
+                                style="padding-top: 20px;"
+                                class="btn bnt-link"
+                                jsf:immediate="true"
+                                jsf:disabled="#{DashboardForm.plugin.navigation=='data2' or DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1'}">
+                                <f:setPropertyActionListener
+                                    value="data2"
+                                    target="#{DashboardForm.plugin.navigation}" />
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_data2}" />
-                            </h:panelGroup>
+                            </button>
+
+
+
                         </li>
 
-                        <li class="#{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
-                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
+                        <li
+                            class="#{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
+
+                            <button
+                                style="padding-top: 20px;"
+                                class="btn bnt-link"
+                                jsf:immediate="true"
+                                jsf:disabled="#{DashboardForm.plugin.navigation=='data3' or DashboardForm.plugin.navigation=='data2' or DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1'}">
+                                <f:setPropertyActionListener
+                                    value="data3"
+                                    target="#{DashboardForm.plugin.navigation}" />
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_data3}" />
-                            </h:panelGroup>
+                            </button>
+
+
                         </li>
-                        <li class="#{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
-                            <h:panelGroup styleClass="status #{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
+                        <li
+                            class="#{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
+
+
+
+                            <h:panelGroup
+                                styleClass="status #{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_overview}" />
                             </h:panelGroup>
 
@@ -777,18 +817,18 @@
                         class="btn btn-success btn-loader">
                         <span
                             class="btn-ajax-loader"
-                            aria-hidden="true">
-                            <img
-                                src="template/img/goobi/ajaxloader2.gif"
-                                alt="Ajax Button Loader" />
+                            aria-hidden="true"> <img
+                            src="template/img/goobi/ajaxloader2.gif"
+                            alt="Ajax Button Loader" />
                         </span>
-                        <h:outputText value="#{DashboardForm.plugin.navigation=='overview' ? msgs.plugin_dashboard_delivery_buttonCopy_send : msgs.weiter}" />
+                        <h:outputText
+                            value="#{DashboardForm.plugin.navigation=='overview' ? msgs.plugin_dashboard_delivery_buttonCopy_send : msgs.weiter}" />
                         <f:ajax
                             render="@all globalMessage"
                             execute="@this" />
-                                <f:passThroughAttribute
-                                    name="data-navigation"
-                                    value="true" />                            
+                        <f:passThroughAttribute
+                            name="data-navigation"
+                            value="true" />
                     </button>
                 </div>
             </h:form>

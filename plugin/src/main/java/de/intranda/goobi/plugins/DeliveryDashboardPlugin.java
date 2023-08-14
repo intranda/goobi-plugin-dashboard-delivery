@@ -1492,29 +1492,29 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     public static final ResultSetHandler<Map<Integer, Map<String, String>>> resultSetToMapHandler =
             new ResultSetHandler<Map<Integer, Map<String, String>>>() {
 
-        @Override
-        public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
-            Map<Integer, Map<String, String>> answer = new HashMap<>();
-            try {
-                while (rs.next()) {
-                    Integer processid = rs.getInt("processid");
-                    String metadataName = rs.getString("name");
-                    String metadataValue = rs.getString("value");
-                    Map<String, String> metadataMap = new HashMap<>();
-                    if (answer.containsKey(processid)) {
-                        metadataMap = answer.get(processid);
-                    } else {
-                        metadataMap = new HashMap<>();
-                        answer.put(processid, metadataMap);
+                @Override
+                public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
+                    Map<Integer, Map<String, String>> answer = new HashMap<>();
+                    try {
+                        while (rs.next()) {
+                            Integer processid = rs.getInt("processid");
+                            String metadataName = rs.getString("name");
+                            String metadataValue = rs.getString("value");
+                            Map<String, String> metadataMap = new HashMap<>();
+                            if (answer.containsKey(processid)) {
+                                metadataMap = answer.get(processid);
+                            } else {
+                                metadataMap = new HashMap<>();
+                                answer.put(processid, metadataMap);
+                            }
+                            metadataMap.put(metadataName, metadataValue);
+                        }
+                    } finally {
+                        rs.close();
                     }
-                    metadataMap.put(metadataName, metadataValue);
+                    return answer;
                 }
-            } finally {
-                rs.close();
-            }
-            return answer;
-        }
-    };
+            };
 
     private void createProperties(Process process, String acccountName, String institutionName) {
 
@@ -1523,7 +1523,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         userProperty.setProcessId(process.getId());
         userProperty.setProzess(process);
         userProperty.setTitel("UserName");
-        userProperty.setType(PropertyType.String);
+        userProperty.setType(PropertyType.getByName("String"));
         userProperty.setWert(acccountName);
         process.getEigenschaften().add(userProperty);
 
@@ -1531,7 +1531,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         institutionProperty.setProcessId(process.getId());
         institutionProperty.setProzess(process);
         institutionProperty.setTitel("Institution");
-        institutionProperty.setType(PropertyType.String);
+        institutionProperty.setType(PropertyType.getByName("String"));
         institutionProperty.setWert(institutionName);
         process.getEigenschaften().add(institutionProperty);
 
