@@ -17,44 +17,46 @@
 
     <composite:implementation>
 
-<style>
+        <style>
 .dataTables_wrapper .dataTables_info {
-  float: left;
-  margin-left: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .dataTables_wrapper .dataTables_paginate {
-  float: right;
-  margin: 17px 5px 10px 0;
+    float: right;
+    margin: 17px 5px 10px 0;
 }
 
 .font-size-s {
-  font-size: 12px;
-}
-.margin-sides-10 {
-  display: inline-block;
-  margin-left: 10px;
-  margin-right: 10px;
+    font-size: 12px;
 }
 
+.margin-sides-10 {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+}
 </style>
 
         <script type="text/javascript">
-                                    function switchExpanded( id ) {
-                                        console.log( "called by: " + id );
-                                        var x = document.getElementById( id ).getAttribute( "aria-expanded" );
-                                        console.log( x )
-                                        if ( x == "true" ) {
-                                            x = "false"
-                                        }
-                                        else {
-                                            x = "true"
-                                        }
-                                        document.getElementById( id ).setAttribute( "aria-expanded", x );
-                                    }
-                                </script>
+									function switchExpanded(id) {
+										console.log("called by: " + id);
+										var x = document.getElementById(id)
+												.getAttribute("aria-expanded");
+										console.log(x)
+										if (x == "true") {
+											x = "false"
+										} else {
+											x = "true"
+										}
+										document.getElementById(id)
+												.setAttribute("aria-expanded",
+														x);
+									}
+								</script>
 
         <ui:include src="includes/helpModalsDD.xhtml">
             <ui:param
@@ -72,8 +74,7 @@
         </ui:include>
 
         <h1 class="page__heading">
-            #{msgs.plugin_dashboard_delivery_deliverShowExistingDataHeader} 
-            <span
+            #{msgs.plugin_dashboard_delivery_deliverShowExistingDataHeader} <span
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
                 title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -133,7 +134,7 @@
 
                         </h:form>
                     </div>
-                    <div>#{msgs.hits}:  #{DashboardForm.plugin.paginator.totalResults}</div> 
+                    <div>#{msgs.hits}: #{DashboardForm.plugin.paginator.totalResults}</div>
                     <h:form id="myform">
 
                         <!-- +++++++++++++++++  Display as table ++++++++++++++++++++++++ -->
@@ -155,9 +156,10 @@
                                             class="button-link"
                                             style="width: 100%; text-align: left;"
                                             jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
-                                            aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField== 'creationDateDesc' ? msgs.defaultSortFieldDesc : BenutzerverwaltungForm.sortierung== 'creationDateAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                            aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField == 'creationDateDesc' ? msgs.defaultSortFieldDesc : DashboardForm.plugin.sortField == 'creationDateAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
                                             <h:outputText value="#{msgs.vorgangsdatum}" />
-                                            <span class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'creationDateDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'creationDateAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                            <span
+                                                class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'creationDateDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'creationDateAsc' ?'fa-sort-asc':'fa-sort'}"></span>
                                             <f:setPropertyActionListener
                                                 target="#{DashboardForm.plugin.sortField}"
                                                 value="#{DashboardForm.plugin.sortField== 'creationDateAsc' ? 'creationDateDesc' : 'creationDateAsc' }" />
@@ -182,11 +184,9 @@
                                 <tr role="row">
 
                                     <!-- creation date -->
-                                    <td>
-                                        <h:outputText value="#{item.erstellungsdatum}">
+                                    <td><h:outputText value="#{item.erstellungsdatum}">
                                             <f:convertDateTime pattern="dd.MM.YYYY - hh:mm:ss" />
-                                        </h:outputText>
-                                    </td>
+                                        </h:outputText></td>
 
                                     <!-- Embedded Metadata -->
                                     <td>
@@ -202,9 +202,8 @@
                                                             style="border: none !important; padding: 2px; padding-right: 32px; vertical-align: top;">
                                                             <h:outputText value="#{msgs['process_grid_'.concat(metadata)]}:" />
                                                         </td>
-                                                        <td style="border: none !important; padding: 2px; white-space: normal;">
-                                                            <h:outputText value="#{item.getMetadataValue(metadata)}" />
-                                                        </td>
+                                                        <td style="border: none !important; padding: 2px; white-space: normal;"><h:outputText
+                                                                value="#{item.getMetadataValue(metadata)}" /></td>
                                                     </tr>
                                                 </ui:fragment>
                                             </ui:repeat>
@@ -220,9 +219,73 @@
                             style="float: left;"></div>
                         <div class="dataTables_paginate">
                             <!-- paginator -->
-                            <intranda:tablePaginator
-                                paginator="#{DashboardForm.plugin.paginator}"
-                                id="navigator" />
+
+                            <h:panelGroup rendered="#{DashboardForm.plugin.paginator.totalResults > LoginForm.myBenutzer.tabellengroesse}">
+
+                                <div class="dataTables__paginator">
+
+                                    <button
+                                        class="btn btn-blank"
+                                        aria-label="#{msgs.firstPage}"
+                                        jsf:action="#{DashboardForm.plugin.paginator.cmdMoveFirst}"
+                                        jsf:id="navfirst">
+                                        <i class="fa fa-angle-double-left"></i>
+                                        <f:ajax render="@form" />
+                                    </button>
+                                    <button
+                                        class="btn btn-primary-400"
+                                        jsf:action="#{DashboardForm.plugin.paginator.cmdMovePrevious}"
+                                        jsf:id="navprev">
+                                        <i class="fa fa-angle-left"></i>
+                                        <h:outputText value=" #{msgs.pagePrevious}" />
+                                        <f:ajax render="@form" />
+                                    </button>
+
+                                    <span class="dataTables__paginator__page-count"> <!-- aktuelle Seite anzeigen --> <x:outputText
+                                            id="txtMoveTo1"
+                                            forceId="false"
+                                            value="#{msgs.seite} #{DashboardForm.plugin.paginator.pageNumberCurrent} #{msgs.von} #{DashboardForm.plugin.paginator.pageNumberLast}"
+                                            onclick="document.querySelector('[id$=txtMoveTo2]').style.display='inline';
+                        document.querySelector('[id$=txtMoveTo1]').style.display='none';
+                            document.querySelector('[id$=txtMoveTo2]').focus();
+                            document.querySelector('[id$=txtMoveTo2]').select();" />
+
+                                        <!-- Seite direkt anspringen --> <x:inputText
+                                            id="txtMoveTo2"
+                                            forceId="false"
+                                            value="#{DashboardForm.plugin.paginator.txtMoveTo}"
+                                            style="display:none;width:30px"
+                                            required="true"
+                                            onblur="document.querySelector('[id$=txtMoveTo2]').style.display='none';document.querySelector('[id$=txtMoveTo1]').style.display='inline';"
+                                            onkeypress="return submitEnter(document.querySelector('[id$=cmdMoveTo]').id,event)" /> <x:commandButton
+                                            action="#{NavigationForm.Reload}"
+                                            id="cmdMoveTo"
+                                            forceId="false"
+                                            value="go"
+                                            style="display:none">
+
+                                        </x:commandButton>
+                                    </span>
+
+                                    <button
+                                        class="btn btn-primary-400"
+                                        jsf:action="#{DashboardForm.plugin.paginator.cmdMoveNext}"
+                                        jsf:id="navnext">
+                                        <h:outputText value="#{msgs.pageNext} " />
+                                        <i class="fa fa-angle-right"></i>
+                                        <f:ajax render="@form" />
+                                    </button>
+                                    <button
+                                        class="btn btn-blank"
+                                        aria-label="#{msgs.lastPage}"
+                                        jsf:action="#{DashboardForm.plugin.paginator.cmdMoveLast}"
+                                        jsf:id="navlast">
+                                        <i class="fa fa-angle-double-right"></i>
+                                        <f:ajax render="@form" />
+                                    </button>
+                                </div>
+                            </h:panelGroup>
+
                             <!-- /paginator -->
                         </div>
                     </h:form>

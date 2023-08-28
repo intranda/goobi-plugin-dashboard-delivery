@@ -463,7 +463,6 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 String helpMessage = hc.getString("@helpMessage");
                 String helpMessageTitle = hc.getString("@helpMessageTitle");
 
-
                 MetadataField mf = new MetadataField();
                 mf.setLabel(label);
                 mf.setDisplayType(fieldType);
@@ -543,8 +542,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         firstname.setCardinality("1");
         firstname.setAdditionalType("firstname");
         firstname.setValue(user.getVorname());
-        firstname.setHelpMessage(Helper.getTranslation("firstname"));
-        firstname.setHelpMessageTitle(Helper.getTranslation("plugin_rest_usercreation_helpText_firstname"));
+        firstname.setHelpMessage(Helper.getTranslation("plugin_rest_usercreation_helpText_firstname"));
+        firstname.setHelpMessageTitle(Helper.getTranslation("firstname"));
         userData.getFields().add(firstname);
 
         MetadataField lastname = new MetadataField();
@@ -554,8 +553,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
         lastname.setCardinality("1");
         lastname.setAdditionalType("lastname");
         lastname.setValue(user.getNachname());
-        lastname.setHelpMessage(Helper.getTranslation("lastname"));
-        lastname.setHelpMessageTitle(Helper.getTranslation("plugin_rest_usercreation_helpText_lastname"));
+        lastname.setHelpMessage(Helper.getTranslation("plugin_rest_usercreation_helpText_lastname"));
+        lastname.setHelpMessageTitle(Helper.getTranslation("lastname"));
         userData.getFields().add(lastname);
     }
 
