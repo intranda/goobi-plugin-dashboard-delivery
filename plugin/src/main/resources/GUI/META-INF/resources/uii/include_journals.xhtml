@@ -591,6 +591,13 @@
                     </section>
                     <div>
                         <button
+                            style="float: right margin-right: 10px;"
+                            class="btn btn-primary-400 ms-auto"
+                            jsf:immediate="true"
+                            jsf:action="#{DashboardForm.plugin.backToMain}">
+                            <h:outputText value="#{msgs.plugin_dashboard_delivery_backToDashboard}" />
+                        </button>                    
+                        <button
                             style="float: right; margin-right: 10px;"
                             jsf:rendered="#{DashboardForm.plugin.documentType=='journal'}"
                             title="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}"
@@ -609,13 +616,6 @@
                             <f:passThroughAttribute
                                 name="data-navigation"
                                 value="true" />
-                        </button>
-                        <button
-                            style="float: right"
-                            class="btn btn-primary-400 ms-auto"
-                            jsf:immediate="true"
-                            jsf:action="#{DashboardForm.plugin.backToMain}">
-                            <h:outputText value="#{msgs.plugin_dashboard_delivery_backToDashboard}" />
                         </button>
                     </div>
 
