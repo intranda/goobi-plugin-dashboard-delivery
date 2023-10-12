@@ -1025,6 +1025,15 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             physical = dd.createDocStruct(prefs.getDocStrctTypeByName("BoundBook"));
             dd.setPhysicalDocStruct(physical);
 
+            Metadata pathimagefiles = null;
+            try {//NOSONAR
+                pathimagefiles = new Metadata(prefs.getMetadataTypeByName("pathimagefiles"));
+                pathimagefiles.setValue(identifier);
+                physical.addMetadata(pathimagefiles);
+            } catch (MetadataTypeNotAllowedException e) {
+                log.error(e);
+            }
+
             Metadata md = null;
             try {//NOSONAR
                 md = new Metadata(prefs.getMetadataTypeByName("CatalogIDDigital_Delivery"));
@@ -1491,29 +1500,29 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     public static final ResultSetHandler<Map<Integer, Map<String, String>>> resultSetToMapHandler =
             new ResultSetHandler<Map<Integer, Map<String, String>>>() {
 
-                @Override
-                public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
-                    Map<Integer, Map<String, String>> answer = new HashMap<>();
-                    try {
-                        while (rs.next()) {
-                            Integer processid = rs.getInt("processid");
-                            String metadataName = rs.getString("name");
-                            String metadataValue = rs.getString("value");
-                            Map<String, String> metadataMap = new HashMap<>();
-                            if (answer.containsKey(processid)) {
-                                metadataMap = answer.get(processid);
-                            } else {
-                                metadataMap = new HashMap<>();
-                                answer.put(processid, metadataMap);
-                            }
-                            metadataMap.put(metadataName, metadataValue);
-                        }
-                    } finally {
-                        rs.close();
+        @Override
+        public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
+            Map<Integer, Map<String, String>> answer = new HashMap<>();
+            try {
+                while (rs.next()) {
+                    Integer processid = rs.getInt("processid");
+                    String metadataName = rs.getString("name");
+                    String metadataValue = rs.getString("value");
+                    Map<String, String> metadataMap = new HashMap<>();
+                    if (answer.containsKey(processid)) {
+                        metadataMap = answer.get(processid);
+                    } else {
+                        metadataMap = new HashMap<>();
+                        answer.put(processid, metadataMap);
                     }
-                    return answer;
+                    metadataMap.put(metadataName, metadataValue);
                 }
-            };
+            } finally {
+                rs.close();
+            }
+            return answer;
+        }
+    };
 
     private void createProperties(Process process, String acccountName, String institutionName) {
 
