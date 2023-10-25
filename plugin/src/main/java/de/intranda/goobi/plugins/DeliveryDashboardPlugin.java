@@ -953,6 +953,9 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             DigitalDocument dd = fileformat.getDigitalDocument();
             DocStruct physical = dd.getPhysicalDocStruct();
             DocStruct logical = dd.getLogicalDocStruct();
+            if (logical.getType().isAnchor()) {
+                logical = logical.getAllChildren().get(0);
+            }
             String imageFolder = process.getImagesTifDirectory(false);
             Path destinationFolder = Paths.get(imageFolder);
             if (!StorageProvider.getInstance().isFileExists(destinationFolder)) {
