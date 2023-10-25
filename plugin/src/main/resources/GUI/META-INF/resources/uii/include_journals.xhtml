@@ -281,7 +281,7 @@
                                     <ui:fragment
                                         rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
                                         <zlb:field
-                                            placeholderText="#{field.placeholderText}"
+                                            placeholderText="#{msgs[field.placeholderText]}"
                                             identifier="field_#{status.index}"
                                             labelText="#{field.label}"
                                             labelHelpText="{field.helpMessage}"
@@ -542,7 +542,7 @@
                                     <ui:fragment
                                         rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
                                         <zlb:field
-                                            placeholderText="#{field.placeholderText}"
+                                            placeholderText="#{msgs[field.placeholderText]}"
                                             identifier="field_#{status.index}"
                                             labelText="#{field.label}"
                                             labelHelpText="{field.helpMessage}"

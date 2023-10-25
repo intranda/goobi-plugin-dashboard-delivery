@@ -225,7 +225,7 @@
                         varStatus="status">
                         <h:panelGroup id="grp">
                             <zlb:field
-                                placeholderText="#{field.placeholderText}"
+                                placeholderText="#{msgs[field.placeholderText]}"
                                 identifier="field_#{status.index}"
                                 labelText="#{field.label}"
                                 labelHelpText="{field.helpMessage}"
@@ -406,7 +406,7 @@
                             id="grp"
                             styleClass="#{status.index == 1 ? 'column-start':''}">
                             <zlb:field
-                                placeholderText="#{field.placeholderText}"
+                                placeholderText="#{msgs[field.placeholderText]}"
                                 identifier="field_#{status.index}"
                                 labelText="#{field.label}"
                                 labelHelpText="{field.helpMessage}"
@@ -458,7 +458,7 @@
                         varStatus="status">
                         <h:panelGroup id="grp">
                             <zlb:field
-                                placeholderText="#{field.placeholderText}"
+                                placeholderText="#{msgs[field.placeholderText]}"
                                 identifier="field_#{status.index}"
                                 labelText="#{field.label}"
                                 labelHelpText="{field.helpMessage}"
@@ -518,7 +518,7 @@
                                 id="grp"
                                 styleClass="#{status.index == 0 ? 'column-start':''}">
                                 <zlb:field
-                                    placeholderText="#{field.placeholderText}"
+                                    placeholderText="#{msgs[field.placeholderText]}"
                                     identifier="field_#{status.index}"
                                     labelText="#{field.label}"
                                     labelHelpText="{field.helpMessage}"
