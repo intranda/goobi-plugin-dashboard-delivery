@@ -281,6 +281,7 @@
                                     <ui:fragment
                                         rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
                                         <zlb:field
+                                            placeholderText="#{field.placeholderText}"
                                             identifier="field_#{status.index}"
                                             labelText="#{field.label}"
                                             labelHelpText="{field.helpMessage}"
@@ -541,6 +542,7 @@
                                     <ui:fragment
                                         rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
                                         <zlb:field
+                                            placeholderText="#{field.placeholderText}"
                                             identifier="field_#{status.index}"
                                             labelText="#{field.label}"
                                             labelHelpText="{field.helpMessage}"
@@ -596,7 +598,7 @@
                             jsf:immediate="true"
                             jsf:action="#{DashboardForm.plugin.backToMain}">
                             <h:outputText value="#{msgs.plugin_dashboard_delivery_backToDashboard}" />
-                        </button>                    
+                        </button>
                         <button
                             style="float: right; margin-right: 10px;"
                             jsf:rendered="#{DashboardForm.plugin.documentType=='journal'}"

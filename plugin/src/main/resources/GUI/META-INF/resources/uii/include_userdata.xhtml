@@ -19,9 +19,7 @@
         <!-- Main Headings for individual views -->
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span>
-
-                <span
+                <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span> <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -40,9 +38,7 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span>
-
-                <span
+                <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span> <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -60,9 +56,7 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_delivery_deliverInstitutionData}</span>
-
-                <span
+                <span>#{msgs.plugin_dashboard_delivery_deliverInstitutionData}</span> <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -80,9 +74,7 @@
 
         <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_delivery_deliverContactPersonData}</span>
-
-                <span
+                <span>#{msgs.plugin_dashboard_delivery_deliverContactPersonData}</span> <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -227,13 +219,13 @@
                         value="plugin_dashboard_delivery_userdata_user_helpImg" />
                 </ui:include>
 
-                <span class="common-region">
-                    <ui:repeat
+                <span class="common-region"> <ui:repeat
                         var="field"
                         value="#{DashboardForm.plugin.userData.fields}"
                         varStatus="status">
                         <h:panelGroup id="grp">
                             <zlb:field
+                                placeholderText="#{field.placeholderText}"
                                 identifier="field_#{status.index}"
                                 labelText="#{field.label}"
                                 labelHelpText="{field.helpMessage}"
@@ -257,14 +249,12 @@
                 </span>
 
                 <!-- region to set new password -->
-                <span class="common-region">
-                    <h:panelGroup
+                <span class="common-region"> <h:panelGroup
                         layout="block"
                         styleClass="form-group">
                         <label
                             for="old_password"
-                            class="zlb-label">
-                            <h:outputText
+                            class="zlb-label"> <h:outputText
                                 escape="false"
                                 value="#{msgs.altesPasswort}" />
                         </label>
@@ -292,9 +282,9 @@
                                 data-bs-body="#{msgs.plugin_rest_usercreation_helpText_old_password}"
                                 data-bs-title="#{msgs.plugin_rest_usercreation_old_account_password}">
                                 <ui:include src="/uii/includes/icon-help.xhtml" />
-                            </button>                            
+                            </button>
                         </div>
-                      
+
                         <h:panelGroup
                             layout="block"
                             rendered="#{!DashboardForm.plugin.oldPasswordValid}"
@@ -305,16 +295,12 @@
                             styleClass="help-block font-light"
                             rendered="#{NavigationForm.showHelp}"
                             value="#{msgs.helpAltesPasswort}" />
-                    </h:panelGroup>
-
-
-                    <h:panelGroup
+                    </h:panelGroup> <h:panelGroup
                         layout="block"
                         styleClass="form-group column-start">
                         <label
                             for="newPassword"
-                            class="zlb-label">
-                            <h:outputText
+                            class="zlb-label"> <h:outputText
                                 escape="false"
                                 value="#{msgs.neuesPasswort}" />
                         </label>
@@ -344,7 +330,7 @@
                                 <ui:include src="/uii/includes/icon-help.xhtml" />
                             </button>
                         </div>
-                        
+
                         <h:panelGroup
                             layout="block"
                             rendered="#{!DashboardForm.plugin.newPasswordValid}"
@@ -355,15 +341,12 @@
                             styleClass="help-block font-light"
                             rendered="#{NavigationForm.showHelp}"
                             value="#{msgs.helpNeuesPasswort}" />
-                    </h:panelGroup>
-
-                    <h:panelGroup
+                    </h:panelGroup> <h:panelGroup
                         layout="block"
                         styleClass="form-group">
                         <label
                             for="confirmnewPassword"
-                            class="zlb-label">
-                            <h:outputText
+                            class="zlb-label"> <h:outputText
                                 escape="false"
                                 value="#{msgs.confirmNewPassword}" />
                         </label>
@@ -414,8 +397,7 @@
                         value="plugin_dashboard_delivery_userdata_institution_helpImg" />
                 </ui:include>
 
-                <span class="common-region">
-                    <ui:repeat
+                <span class="common-region"> <ui:repeat
                         var="field"
                         value="#{DashboardForm.plugin.institutionData.fields}"
                         varStatus="status">
@@ -424,6 +406,7 @@
                             id="grp"
                             styleClass="#{status.index == 1 ? 'column-start':''}">
                             <zlb:field
+                                placeholderText="#{field.placeholderText}"
                                 identifier="field_#{status.index}"
                                 labelText="#{field.label}"
                                 labelHelpText="{field.helpMessage}"
@@ -469,13 +452,13 @@
                 <span
                     class="common-region"
                     style="counter-reset: section;">
-                    <h3 class="heading__contact grid-full-width">#{msgs.plugin_dashboard_delivery_contactPerson}</h3>
-                    <ui:repeat
+                    <h3 class="heading__contact grid-full-width">#{msgs.plugin_dashboard_delivery_contactPerson}</h3> <ui:repeat
                         var="field"
                         value="#{DashboardForm.plugin.contactData.fields}"
                         varStatus="status">
                         <h:panelGroup id="grp">
                             <zlb:field
+                                placeholderText="#{field.placeholderText}"
                                 identifier="field_#{status.index}"
                                 labelText="#{field.label}"
                                 labelHelpText="{field.helpMessage}"
@@ -492,8 +475,8 @@
                                 displayRemoveButton="#{field.duplicate}"
                                 render="@form"
                                 showHelpBtn="#{field.displayHelpButton}"
-                                helpText="#{field.helpMessage}" 
-                                helpTitle="#{field.helpMessageTitle}"/>
+                                helpText="#{field.helpMessage}"
+                                helpTitle="#{field.helpMessageTitle}" />
                         </h:panelGroup>
                     </ui:repeat>
                 </span>
@@ -506,8 +489,7 @@
                         class="btn btn-link ms-auto">
 
                         <ui:include src="/uii/includes/icon-plus.xhtml" />
-                        <span>
-                            <h:outputText value="#{msgs.plugin_rest_usercreation_new_createNewContact}" />
+                        <span> <h:outputText value="#{msgs.plugin_rest_usercreation_new_createNewContact}" />
                         </span>
                     </button>
 
@@ -525,14 +507,10 @@
                                 class="btn btn-primary-400 ms-auto"
                                 jsf:rendered="#{DashboardForm.plugin.displaySecondContact}">
 
-                                <span>
-                                    <h:outputText value="#{msgs.plugin_rest_usercreation_new_disableContact}" />
+                                <span> <h:outputText value="#{msgs.plugin_rest_usercreation_new_disableContact}" />
                                 </span>
                             </button>
-                        </div>
-
-
-                        <ui:repeat
+                        </div> <ui:repeat
                             var="field"
                             value="#{DashboardForm.plugin.contact2Data.fields}"
                             varStatus="status">
@@ -540,6 +518,7 @@
                                 id="grp"
                                 styleClass="#{status.index == 0 ? 'column-start':''}">
                                 <zlb:field
+                                    placeholderText="#{field.placeholderText}"
                                     identifier="field_#{status.index}"
                                     labelText="#{field.label}"
                                     labelHelpText="{field.helpMessage}"

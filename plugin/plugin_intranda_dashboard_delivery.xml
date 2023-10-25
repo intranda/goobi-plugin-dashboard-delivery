@@ -55,7 +55,7 @@ field: individual input field
 
 
     <group label="Titelinformationen" pageName="data1" documentType="monograph">
-        <field rulesetName="TitleDocMain" label="Titel" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Tragen Sie hier den Titel ein." helpMessageTitle="Titel"></field>
+        <field rulesetName="TitleDocMain" placeholderText="Haupttitel" label="Titel" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression=".+" validationErrorText="plugin_dashboard_delivery_requiredField" helpMessage="Tragen Sie hier den Titel ein." helpMessageTitle="Titel"></field>
         <field rulesetName="TitleDocSub1" label="Untertitel" displayType="input" metadataLevel="anchor" cardinality="*" marcMainTag="245" marcSubTag="b" validationExpression="" validationErrorText="" helpMessage="Hilfetext für Untertitel"></field>
     </group>
 
@@ -81,7 +81,7 @@ field: individual input field
     </group>
 
     <group label="Angaben zur Entstehung" pageName="data1" documentType="monograph">
-      <field rulesetName="PublicationYear" label="Erscheinungsjahr" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d{4}" validationErrorText="Geben Sie eiene vierstellige Jahreszahl ein" helpMessage="Tragen Sie hier das Jahr ein."></field>
+      <field rulesetName="PublicationYear" placeholderText="YYYY" label="Erscheinungsjahr" displayType="input" metadataLevel="anchor" cardinality="1" marcMainTag="245" marcSubTag="a" validationExpression="\d{4}" validationErrorText="Geben Sie eiene vierstellige Jahreszahl ein" helpMessage="Tragen Sie hier das Jahr ein."></field>
       <field rulesetName="Edition" label="Auflage, Stand oder Version" displayType="input" metadataLevel="anchor" cardinality="?" marcMainTag="245" marcSubTag="a" validationExpression="" validationErrorText="" helpMessage="Tragen Sie hier den Titel ein."></field>
     </group>
 

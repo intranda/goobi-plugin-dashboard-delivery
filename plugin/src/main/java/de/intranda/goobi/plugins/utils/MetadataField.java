@@ -56,6 +56,8 @@ public class MetadataField implements Serializable {
 
     private boolean duplicate = false;
 
+    private String placeholderText;
+
     public void setBooleanValue(boolean val) {
         if (val) {
             value = "true";
@@ -360,7 +362,7 @@ public class MetadataField implements Serializable {
         mf.setVocabularyImportField(vocabularyImportField);
         mf.setVocabularyName(vocabularyName);
         mf.setVocabularyUrl(vocabularyUrl);
-
+        mf.setPlaceholderText(placeholderText);
         return mf;
 
     }

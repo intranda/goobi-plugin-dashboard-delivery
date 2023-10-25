@@ -283,6 +283,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
             if (StringUtils.isNotBlank(defaultValue)) {
                 mf.setValue(defaultValue);
             }
+            mf.setPlaceholderText(field.getString("@placeholderText", ""));
         }
 
         for (HierarchicalConfiguration group : groups) {
@@ -354,6 +355,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 if (StringUtils.isNotBlank(defaultValue)) {
                     mf.setValue(defaultValue);
                 }
+                mf.setPlaceholderText(field.getString("@placeholderText", ""));
 
                 switch (mf.getDisplayType()) {
                     case "dropdown":
@@ -463,6 +465,8 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 String helpMessage = hc.getString("@helpMessage");
                 String helpMessageTitle = hc.getString("@helpMessageTitle");
 
+                String placeholder = hc.getString("@placeholderText", "");
+
                 MetadataField mf = new MetadataField();
                 mf.setLabel(label);
                 mf.setDisplayType(fieldType);
@@ -472,7 +476,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 mf.setValidationErrorText(validationErrorMessage);
                 mf.setHelpMessage(helpMessage);
                 mf.setHelpMessageTitle(helpMessageTitle);
-
+                mf.setPlaceholderText(placeholder);
                 mf.setRulesetName(name);
                 mf.setHelpMessageTitle(hc.getString("@alternativeLabel", hc.getString("@label")));
                 if ("dropdown".equals(fieldType) || "combo".equals(fieldType)) {
@@ -1500,29 +1504,29 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     public static final ResultSetHandler<Map<Integer, Map<String, String>>> resultSetToMapHandler =
             new ResultSetHandler<Map<Integer, Map<String, String>>>() {
 
-        @Override
-        public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
-            Map<Integer, Map<String, String>> answer = new HashMap<>();
-            try {
-                while (rs.next()) {
-                    Integer processid = rs.getInt("processid");
-                    String metadataName = rs.getString("name");
-                    String metadataValue = rs.getString("value");
-                    Map<String, String> metadataMap = new HashMap<>();
-                    if (answer.containsKey(processid)) {
-                        metadataMap = answer.get(processid);
-                    } else {
-                        metadataMap = new HashMap<>();
-                        answer.put(processid, metadataMap);
+                @Override
+                public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
+                    Map<Integer, Map<String, String>> answer = new HashMap<>();
+                    try {
+                        while (rs.next()) {
+                            Integer processid = rs.getInt("processid");
+                            String metadataName = rs.getString("name");
+                            String metadataValue = rs.getString("value");
+                            Map<String, String> metadataMap = new HashMap<>();
+                            if (answer.containsKey(processid)) {
+                                metadataMap = answer.get(processid);
+                            } else {
+                                metadataMap = new HashMap<>();
+                                answer.put(processid, metadataMap);
+                            }
+                            metadataMap.put(metadataName, metadataValue);
+                        }
+                    } finally {
+                        rs.close();
                     }
-                    metadataMap.put(metadataName, metadataValue);
+                    return answer;
                 }
-            } finally {
-                rs.close();
-            }
-            return answer;
-        }
-    };
+            };
 
     private void createProperties(Process process, String acccountName, String institutionName) {
 
