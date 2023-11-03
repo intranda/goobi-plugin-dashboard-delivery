@@ -830,9 +830,7 @@
                         </span>
                         <h:outputText
                             value="#{DashboardForm.plugin.navigation=='overview' ? msgs.plugin_dashboard_delivery_buttonCopy_send : msgs.weiter}" />
-                        <f:ajax
-                            render="@all globalMessage"
-                            execute="@this" />
+                      
                         <f:passThroughAttribute
                             name="data-navigation"
                             value="true" />
