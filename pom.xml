@@ -28,7 +28,7 @@
     </dependency>
     <dependency>
       <groupId>io.goobi.workflow.plugin</groupId>
-      <artifactId>plugin-step-filename-validation-lib</artifactId>
+      <artifactId>plugin-step-file-validation-lib</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
