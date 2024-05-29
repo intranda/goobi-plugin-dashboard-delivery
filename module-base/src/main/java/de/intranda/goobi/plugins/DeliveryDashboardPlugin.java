@@ -464,7 +464,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 String validationErrorMessage = hc.getString("@validationErrorDescription", null);
                 String helpMessage = hc.getString("@helpMessage");
                 String helpMessageTitle = hc.getString("@helpMessageTitle");
-
+                String position = hc.getString("@position", "");
                 String placeholder = hc.getString("@placeholderText", "");
 
                 MetadataField mf = new MetadataField();
@@ -478,22 +478,25 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
                 mf.setHelpMessageTitle(helpMessageTitle);
                 mf.setPlaceholderText(placeholder);
                 mf.setRulesetName(name);
+
                 mf.setHelpMessageTitle(hc.getString("@alternativeLabel", hc.getString("@label")));
                 if ("dropdown".equals(fieldType) || "combo".equals(fieldType)) {
-                    List<HierarchicalConfiguration> valueList = hc.configurationsAt("/value");
+                    List<HierarchicalConfiguration> valueList = hc.configurationsAt("/selectfield");
                     for (HierarchicalConfiguration v : valueList) {
-                        SelectItem si = new SelectItem(v.getString("."), v.getString("."));
+                        SelectItem si = new SelectItem(v.getString("@value"), v.getString("@label"));
                         mf.getSelectList().add(si);
                     }
                 }
-                if ("institution".equals(currentType) && name.startsWith("contact2")) {
-                    contact2Data.getFields().add(mf);
-                } else if ("institution".equals(currentType) && name.startsWith("contact")) {
-                    contactData.getFields().add(mf);
-                } else if ("institution".equals(currentType)) {
-                    institutionData.getFields().add(mf);
-                } else {
-                    userData.getFields().add(mf);
+                if (!"admin".equals(position)) {
+                    if ("institution".equals(currentType) && name.startsWith("contact2")) {
+                        contact2Data.getFields().add(mf);
+                    } else if ("institution".equals(currentType) && name.startsWith("contact")) {
+                        contactData.getFields().add(mf);
+                    } else if ("institution".equals(currentType)) {
+                        institutionData.getFields().add(mf);
+                    } else {
+                        userData.getFields().add(mf);
+                    }
                 }
 
                 String val = inst.getAdditionalData().get(name);
@@ -1505,7 +1508,7 @@ public class DeliveryDashboardPlugin implements IDashboardPlugin {
     }
 
     public static final ResultSetHandler<Map<Integer, Map<String, String>>> resultSetToMapHandler =
-            new ResultSetHandler<Map<Integer, Map<String, String>>>() {
+            new ResultSetHandler<>() {
 
                 @Override
                 public Map<Integer, Map<String, String>> handle(ResultSet rs) throws SQLException {
