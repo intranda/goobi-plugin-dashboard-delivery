@@ -8,8 +8,9 @@
 		<exec executable="mvn">
 			<arg value="package"/>
 		</exec>
-		<copy file="module-main/target/plugin_intranda_dashboard_${name}.jar" todir="/opt/digiverso/goobi/plugins/dashboard/" overwrite="true"/>
-		<copy file="module-gui/target/plugin_intranda_dashboard_${name}-GUI.jar" todir="/opt/digiverso/goobi/plugins/GUI/" overwrite="true"/>
+		<copy file="module-base/target/plugin-dashboard-${name}-base.jar" todir="/opt/digiverso/goobi/plugins/dashboard/" overwrite="true"/>
+		<copy file="module-gui/target/plugin-dashboard-${name}-gui.jar" todir="/opt/digiverso/goobi/plugins/GUI/" overwrite="true"/>
+        <copy file="module-lib/target/plugin-dashboard-${name}-lib.jar" todir="/opt/digiverso/goobi/plugins/GUI/" overwrite="true"/>		
 	</target>
 
 </project>

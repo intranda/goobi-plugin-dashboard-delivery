@@ -94,12 +94,12 @@
         <div class="existing-data__content">
 
             <!-- Display this msg if no data -->
-            <ui:fragment rendered="#{DashboardForm.plugin.paginator.totalResults == 0}">
+            <ui:fragment rendered="#{deliveryBean.paginator.totalResults == 0}">
                 <p class="info__no-data">#{msgs.plugin_dashboard_delivery_info_noData}</p>
             </ui:fragment>
 
             <!-- Render table with data on submitted docs -->
-            <ui:fragment rendered="#{DashboardForm.plugin.paginator.totalResults != 0}">
+            <ui:fragment rendered="#{deliveryBean.paginator.totalResults != 0}">
 
 
                 <div class="dataTables_wrapper flow">
@@ -109,32 +109,32 @@
                             <h:selectOneMenu
                                 id="searchoption_select"
                                 styleClass="form-select"
-                                value="#{DashboardForm.plugin.selectedField}"
+                                value="#{deliveryBean.selectedField}"
                                 pt:aria-label="searchfield">
                                 <f:selectItem
                                     itemValue=""
                                     itemLabel="#{msgs.plugin_dashboard_delivery_anyField}" />
-                                <f:selectItems value="#{DashboardForm.plugin.metadataFields}" />
+                                <f:selectItems value="#{deliveryBean.metadataFields}" />
                             </h:selectOneMenu>
 
                             <x:inputText
                                 id="searchvalue_input"
                                 pt:aria-label="searchvalue"
                                 styleClass="form-control"
-                                value="#{DashboardForm.plugin.searchValue}">
+                                value="#{deliveryBean.searchValue}">
                             </x:inputText>
 
                             <button
                                 jsf:id="newSearch"
                                 class="btn btn-primary-400"
                                 title="#{msgs.search}"
-                                jsf:action="#{DashboardForm.plugin.search}">
+                                jsf:action="#{deliveryBean.search}">
                                 <h:outputText value="#{msgs.search}" />
                             </button>
 
                         </h:form>
                     </div>
-                    <div>#{msgs.hits}: #{DashboardForm.plugin.paginator.totalResults}</div>
+                    <div>#{msgs.hits}: #{deliveryBean.paginator.totalResults}</div>
                     <h:form id="myform">
 
                         <!-- +++++++++++++++++  Display as table ++++++++++++++++++++++++ -->
@@ -151,18 +151,18 @@
                                         scope="col"
                                         role="columnheader"
                                         class="tableColumnOverflow maxwidth200"
-                                        aria-sort="#{DashboardForm.plugin.sortField== 'creationDateDesc' ? 'descending' : DashboardForm.plugin.sortField== 'creationDateAsc' ? 'ascending' :'none'}">
+                                        aria-sort="#{deliveryBean.sortField== 'creationDateDesc' ? 'descending' : deliveryBean.sortField== 'creationDateAsc' ? 'ascending' :'none'}">
                                         <button
                                             class="button-link"
                                             style="width: 100%; text-align: left;"
-                                            jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}"
-                                            aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{DashboardForm.plugin.sortField == 'creationDateDesc' ? msgs.defaultSortFieldDesc : DashboardForm.plugin.sortField == 'creationDateAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
+                                            jsf:action="#{deliveryBean.getExistingDataForInstitution}"
+                                            aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{deliveryBean.sortField == 'creationDateDesc' ? msgs.defaultSortFieldDesc : deliveryBean.sortField == 'creationDateAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
                                             <h:outputText value="#{msgs.vorgangsdatum}" />
                                             <span
-                                                class="pull-right table-sort-icon fa #{DashboardForm.plugin.sortField== 'creationDateDesc' ?'fa-sort-desc':DashboardForm.plugin.sortField== 'creationDateAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                class="pull-right table-sort-icon fa #{deliveryBean.sortField== 'creationDateDesc' ?'fa-sort-desc':deliveryBean.sortField== 'creationDateAsc' ?'fa-sort-asc':'fa-sort'}"></span>
                                             <f:setPropertyActionListener
-                                                target="#{DashboardForm.plugin.sortField}"
-                                                value="#{DashboardForm.plugin.sortField== 'creationDateAsc' ? 'creationDateDesc' : 'creationDateAsc' }" />
+                                                target="#{deliveryBean.sortField}"
+                                                value="#{deliveryBean.sortField== 'creationDateAsc' ? 'creationDateDesc' : 'creationDateAsc' }" />
                                             <f:ajax render="@form" />
                                         </button>
                                     </th>
@@ -179,7 +179,7 @@
 
                             <ui:repeat
                                 var="item"
-                                value="#{DashboardForm.plugin.paginator.list}"
+                                value="#{deliveryBean.paginator.list}"
                                 varStatus="status">
                                 <tr role="row">
 
@@ -193,7 +193,7 @@
                                         <table>
                                             <ui:repeat
                                                 var="metadata"
-                                                value="#{DashboardForm.plugin.metadataDisplayList}"
+                                                value="#{deliveryBean.metadataDisplayList}"
                                                 varStatus="metadatastatus">
                                                 <ui:fragment rendered="#{item.getMetadataValue(metadata) != ''}">
                                                     <tr>
@@ -220,21 +220,21 @@
                         <div class="dataTables_paginate">
                             <!-- paginator -->
 
-                            <h:panelGroup rendered="#{DashboardForm.plugin.paginator.totalResults > LoginForm.myBenutzer.tabellengroesse}">
+                            <h:panelGroup rendered="#{deliveryBean.paginator.totalResults > LoginForm.myBenutzer.tabellengroesse}">
 
                                 <div class="dataTables__paginator">
 
                                     <button
                                         class="btn btn-blank"
                                         aria-label="#{msgs.firstPage}"
-                                        jsf:action="#{DashboardForm.plugin.paginator.cmdMoveFirst}"
+                                        jsf:action="#{deliveryBean.paginator.cmdMoveFirst}"
                                         jsf:id="navfirst">
                                         <i class="fa fa-angle-double-left"></i>
                                         <f:ajax render="@form" />
                                     </button>
                                     <button
                                         class="btn btn-primary-400"
-                                        jsf:action="#{DashboardForm.plugin.paginator.cmdMovePrevious}"
+                                        jsf:action="#{deliveryBean.paginator.cmdMovePrevious}"
                                         jsf:id="navprev">
                                         <i class="fa fa-angle-left"></i>
                                         <h:outputText value=" #{msgs.pagePrevious}" />
@@ -244,7 +244,7 @@
                                     <span class="dataTables__paginator__page-count"> <!-- aktuelle Seite anzeigen --> <x:outputText
                                             id="txtMoveTo1"
                                             forceId="false"
-                                            value="#{msgs.seite} #{DashboardForm.plugin.paginator.pageNumberCurrent} #{msgs.von} #{DashboardForm.plugin.paginator.pageNumberLast}"
+                                            value="#{msgs.seite} #{deliveryBean.paginator.pageNumberCurrent} #{msgs.von} #{deliveryBean.paginator.pageNumberLast}"
                                             onclick="document.querySelector('[id$=txtMoveTo2]').style.display='inline';
                         document.querySelector('[id$=txtMoveTo1]').style.display='none';
                             document.querySelector('[id$=txtMoveTo2]').focus();
@@ -253,7 +253,7 @@
                                         <!-- Seite direkt anspringen --> <x:inputText
                                             id="txtMoveTo2"
                                             forceId="false"
-                                            value="#{DashboardForm.plugin.paginator.txtMoveTo}"
+                                            value="#{deliveryBean.paginator.txtMoveTo}"
                                             style="display:none;width:30px"
                                             required="true"
                                             onblur="document.querySelector('[id$=txtMoveTo2]').style.display='none';document.querySelector('[id$=txtMoveTo1]').style.display='inline';"
@@ -269,7 +269,7 @@
 
                                     <button
                                         class="btn btn-primary-400"
-                                        jsf:action="#{DashboardForm.plugin.paginator.cmdMoveNext}"
+                                        jsf:action="#{deliveryBean.paginator.cmdMoveNext}"
                                         jsf:id="navnext">
                                         <h:outputText value="#{msgs.pageNext} " />
                                         <i class="fa fa-angle-right"></i>
@@ -278,7 +278,7 @@
                                     <button
                                         class="btn btn-blank"
                                         aria-label="#{msgs.lastPage}"
-                                        jsf:action="#{DashboardForm.plugin.paginator.cmdMoveLast}"
+                                        jsf:action="#{deliveryBean.paginator.cmdMoveLast}"
                                         jsf:id="navlast">
                                         <i class="fa fa-angle-double-right"></i>
                                         <f:ajax render="@form" />
@@ -301,7 +301,7 @@
 
             <div>
                 <button
-                    jsf:action="#{DashboardForm.plugin.previousPage}"
+                    jsf:action="#{deliveryBean.previousPage}"
                     jsf:id="backToMain"
                     class="btn btn-blank pull-left">
                     <h:outputText value="#{msgs.plugin_rest_usercreation_back}" />

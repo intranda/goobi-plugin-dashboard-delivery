@@ -65,7 +65,7 @@
         <ui:define name="breadcrumb">
             <intranda:breadcrumb
                 id="index"
-                label="#{DashboardForm.plugin==null?msgs.startseite:msgs.dashboard}"
+                label="#{deliveryBean==null?msgs.startseite:msgs.dashboard}"
                 action="external_index"
                 navId="a0"
                 noSeparator="#{true}" />
@@ -80,10 +80,10 @@
 
             <h:inputHidden
                 id="focusField"
-                value="#{DashboardForm.plugin.focusField}" />
+                value="#{deliveryBean.focusField}" />
 
             <!-- main area, select document type -->
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='main'}">
+            <ui:fragment rendered="#{deliveryBean.navigation=='main'}">
 
                 <ui:include src="includes/helpModalsDD.xhtml">
                     <ui:param
@@ -126,7 +126,7 @@
                     <div class="common-region common-region--no-borders common-region--three-cols">
 
                         <!-- Monographs -->
-                        <div class="item #{DashboardForm.plugin.incompleteUserData ? 'incomplete-user-data' : ''}">
+                        <div class="item #{deliveryBean.incompleteUserData ? 'incomplete-user-data' : ''}">
 
                             <div class="item__icons">
                                 <ui:include src="/uii/includes/icon-book.xhtml" />
@@ -135,26 +135,26 @@
                             <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverMonographHeader}</h2>
 
                             <p
-                                jsf:rendered="#{!DashboardForm.plugin.incompleteUserData}"
+                                jsf:rendered="#{!deliveryBean.incompleteUserData}"
                                 class="item__text">#{msgs.plugin_dashboard_delivery_deliverMonograph}</p>
 
                             <p
-                                jsf:rendered="#{DashboardForm.plugin.incompleteUserData}"
+                                jsf:rendered="#{deliveryBean.incompleteUserData}"
                                 class="item__text text-danger">#{msgs.plugin_dashboard_delivery_info_incompleteUserData}</p>
 
                             <button
-                                jsf:disabled="#{DashboardForm.plugin.incompleteUserData}"
+                                jsf:disabled="#{deliveryBean.incompleteUserData}"
                                 jsf:id="monograph"
                                 class="item__cta btn btn-primary-400"
                                 title="#{msgs.plugin_dashboard_delivery_deliverMonographButton}"
-                                jsf:action="#{DashboardForm.plugin.startNewImport}">
+                                jsf:action="#{deliveryBean.startNewImport}">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverMonographButton}" />
                                 <f:setPropertyActionListener
                                     value="upload"
-                                    target="#{DashboardForm.plugin.navigation}" />
+                                    target="#{deliveryBean.navigation}" />
                                 <f:setPropertyActionListener
                                     value="monograph"
-                                    target="#{DashboardForm.plugin.documentType}" />
+                                    target="#{deliveryBean.documentType}" />
                                 <f:ajax
                                     render="main-area"
                                     execute="@this" />
@@ -167,7 +167,7 @@
 
                         <!-- Journals -->
 
-                        <div class="item #{DashboardForm.plugin.incompleteUserData ? 'incomplete-user-data' : ''}">
+                        <div class="item #{deliveryBean.incompleteUserData ? 'incomplete-user-data' : ''}">
 
                             <div class="item__icons">
                                 <ui:include src="/uii/includes/icon-book.xhtml" />
@@ -178,25 +178,25 @@
                             <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverJournalsHeader}</h2>
 
                             <p
-                                jsf:rendered="#{!DashboardForm.plugin.incompleteUserData}"
+                                jsf:rendered="#{!deliveryBean.incompleteUserData}"
                                 class="item__text">#{msgs.plugin_dashboard_delivery_deliverJournals}</p>
 
                             <p
-                                jsf:rendered="#{DashboardForm.plugin.incompleteUserData}"
+                                jsf:rendered="#{deliveryBean.incompleteUserData}"
                                 class="item__text text-danger">#{msgs.plugin_dashboard_delivery_info_incompleteUserData}</p>
 
                             <button
-                                jsf:disabled="#{DashboardForm.plugin.incompleteUserData}"
+                                jsf:disabled="#{deliveryBean.incompleteUserData}"
                                 jsf:id="journals"
                                 class="item__cta btn btn-primary-400"
                                 title="#{msgs.plugin_dashboard_delivery_deliverJournalsButton}">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverJournalsButton}" />
                                 <f:setPropertyActionListener
                                     value="titleSelection"
-                                    target="#{DashboardForm.plugin.navigation}" />
+                                    target="#{deliveryBean.navigation}" />
                                 <f:setPropertyActionListener
                                     value="journal"
-                                    target="#{DashboardForm.plugin.documentType}" />
+                                    target="#{deliveryBean.documentType}" />
                                 <f:ajax
                                     render="main-area"
                                     execute="@this" />
@@ -220,11 +220,11 @@
                                 jsf:id="existingData"
                                 class="item__cta btn btn-primary-400"
                                 title="#{msgs.plugin_dashboard_delivery_deliverShowExistingDataButton}"
-                                jsf:action="#{DashboardForm.plugin.getExistingDataForInstitution}">
+                                jsf:action="#{deliveryBean.getExistingDataForInstitution}">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverShowExistingDataButton}" />
                                 <f:setPropertyActionListener
                                     value="existingData"
-                                    target="#{DashboardForm.plugin.navigation}" />
+                                    target="#{deliveryBean.navigation}" />
                                 <f:ajax
                                     render="main-area"
                                     execute="@this" />
@@ -263,11 +263,11 @@
                                 jsf:id="userData"
                                 class="item__cta btn btn-primary-400"
                                 title="#{msgs.plugin_dashboard_delivery_deliverShowDataButton}"
-                                jsf:action="#{DashboardForm.plugin.readUserConfiguration}">
+                                jsf:action="#{deliveryBean.readUserConfiguration}">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverShowDataButton}" />
                                 <f:setPropertyActionListener
                                     value="userdata"
-                                    target="#{DashboardForm.plugin.navigation}" />
+                                    target="#{deliveryBean.navigation}" />
                                 <f:ajax
                                     render="main-area"
                                     execute="@this" />
@@ -301,7 +301,7 @@
             </ui:fragment>
 
 
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='upload'}">
+            <ui:fragment rendered="#{deliveryBean.navigation=='upload'}">
 
 
                 <ui:include src="includes/helpModalsDD.xhtml">
@@ -355,7 +355,7 @@
                     <h:inputFile
                         id="file"
                         styleClass="form-control form-control-lg"
-                        value="#{DashboardForm.plugin.file}"
+                        value="#{deliveryBean.file}"
                         title="#{msgs.plugin_dashboard_delivery_ariaLabel_uploadForm}"
                         name="file" />
 
@@ -388,7 +388,7 @@
 
             <ui:fragment
                 id="monographs"
-                rendered="#{DashboardForm.plugin.documentType == 'monograph'}">
+                rendered="#{deliveryBean.documentType == 'monograph'}">
                 <div class="container">
                     <ui:include src="include_monographs.xhtml" />
                 </div>
@@ -397,14 +397,14 @@
 
             <ui:fragment
                 id="journals"
-                rendered="#{DashboardForm.plugin.documentType == 'journal' or DashboardForm.plugin.documentType == 'issue'}">
+                rendered="#{deliveryBean.documentType == 'journal' or deliveryBean.documentType == 'issue'}">
                 <div class="container">
                     <ui:include src="include_journals.xhtml" />
                 </div>
             </ui:fragment>
 
             <ui:fragment
-                rendered="#{DashboardForm.plugin.navigation=='userdata' or DashboardForm.plugin.navigation=='user' or DashboardForm.plugin.navigation=='institution'or DashboardForm.plugin.navigation=='contact'}">
+                rendered="#{deliveryBean.navigation=='userdata' or deliveryBean.navigation=='user' or deliveryBean.navigation=='institution'or deliveryBean.navigation=='contact'}">
                 <div class="container container--user-data">
                     <ui:include src="include_userdata.xhtml" />
                 </div>
@@ -412,7 +412,7 @@
 
             <ui:fragment
                 id="data"
-                rendered="#{DashboardForm.plugin.navigation=='existingData'}">
+                rendered="#{deliveryBean.navigation=='existingData'}">
                 <div class="container existing-data">
                     <ui:include src="include_existingData.xhtml" />
                 </div>

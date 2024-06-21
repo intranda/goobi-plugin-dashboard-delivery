@@ -17,7 +17,7 @@
     <composite:implementation>
 
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='titleSelection'}">
+        <ui:fragment rendered="#{deliveryBean.navigation=='titleSelection'}">
 
             <ui:include src="includes/helpModalsDD.xhtml">
                 <ui:param
@@ -38,7 +38,7 @@
             <ui:define name="breadcrumb">
                 <intranda:breadcrumb
                     id="index"
-                    label="#{DashboardForm.plugin==null?msgs.startseite:msgs.dashboard}"
+                    label="#{deliveryBean==null?msgs.startseite:msgs.dashboard}"
                     action="external_index"
                     navId="a0"
                     noSeparator="#{true}" />
@@ -79,11 +79,11 @@
                             jsf:id="newTitle"
                             class="item__cta btn btn-primary-400"
                             title="#{msgs.plugin_dashboard_delivery_deliverNewJournalTitleButton}"
-                            jsf:action="#{DashboardForm.plugin.startNewImport}">
+                            jsf:action="#{deliveryBean.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverNewJournalTitleButton}" />
                             <f:setPropertyActionListener
                                 value="newTitle"
-                                target="#{DashboardForm.plugin.navigation}" />
+                                target="#{deliveryBean.navigation}" />
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
@@ -105,22 +105,22 @@
                         <h2 class="item__heading">#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</h2>
                         <p class="item__text">
                             <h:outputText
-                                value="#{DashboardForm.plugin.hasJournals ? msgs['plugin_dashboard_delivery_deliverNewIssueTitle'] : msgs['plugin_dashboard_delivery_deliverNoJournalTitles']}" />
+                                value="#{deliveryBean.hasJournals ? msgs['plugin_dashboard_delivery_deliverNewIssueTitle'] : msgs['plugin_dashboard_delivery_deliverNoJournalTitles']}" />
                         </p>
 
                         <button
                             jsf:id="newIssue"
                             class="item__cta btn btn-primary-400"
                             title="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}"
-                            jsf:action="#{DashboardForm.plugin.startNewImport}"
-                            jsf:rendered="#{DashboardForm.plugin.hasJournals}">
+                            jsf:action="#{deliveryBean.startNewImport}"
+                            jsf:rendered="#{deliveryBean.hasJournals}">
                             <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}" />
                             <f:setPropertyActionListener
                                 value="newIssue"
-                                target="#{DashboardForm.plugin.navigation}" />
+                                target="#{deliveryBean.navigation}" />
                             <f:setPropertyActionListener
                                 value="issue"
-                                target="#{DashboardForm.plugin.documentType}" />
+                                target="#{deliveryBean.documentType}" />
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
@@ -140,7 +140,7 @@
             class=" journal__data form-validate d-grid"
             enctype="multipart/form-data">
 
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newTitle'}">
+            <ui:fragment rendered="#{deliveryBean.navigation=='newTitle'}">
 
                 <ui:include src="includes/helpModalsDD.xhtml">
                     <ui:param
@@ -176,7 +176,7 @@
 
                 <ui:repeat
                     var="group"
-                    value="#{DashboardForm.plugin.configuredGroups}">
+                    value="#{deliveryBean.configuredGroups}">
                     <ui:fragment rendered="#{group.documentType == 'journal'}">
                         <div class="common-region">
                             <h2 class="grid-full-width">
@@ -319,7 +319,7 @@
             </ui:fragment>
 
 
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
+            <ui:fragment rendered="#{deliveryBean.navigation=='issueupload'}">
 
                 <ui:include src="includes/helpModalsDD.xhtml">
                     <ui:param
@@ -367,7 +367,7 @@
                     <h:inputFile
                         id="issuefile"
                         styleClass="form-control form-control-lg"
-                        value="#{DashboardForm.plugin.file}"
+                        value="#{deliveryBean.file}"
                         title="#{msgs.plugin_dashboard_delivery_ariaLabel_uploadForm}"
                         name="file" />
 
@@ -401,7 +401,7 @@
 
             </ui:fragment>
 
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
+            <ui:fragment rendered="#{deliveryBean.navigation=='newIssue'}">
 
                 <ui:include src="includes/helpModalsDD.xhtml">
                     <ui:param
@@ -439,7 +439,7 @@
 
                 <ui:repeat
                     var="group"
-                    value="#{DashboardForm.plugin.configuredGroups}">
+                    value="#{deliveryBean.configuredGroups}">
                     <ui:fragment rendered="#{group.documentType == 'issue'}">
                         <div class="common-region">
                             <h2 class="grid-full-width">
@@ -586,16 +586,16 @@
 
 
 
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='finish'}">
+            <ui:fragment rendered="#{deliveryBean.navigation=='finish'}">
                 <h:form styleClass="form-validate monograph__overview">
                     <section class="common-region one-col">
                         <h:outputText
-                            rendered="#{DashboardForm.plugin.documentType=='issue'}"
+                            rendered="#{deliveryBean.documentType=='issue'}"
                             escape="false"
                             value="#{msgs.plugin_dashboard_delivery_creationSuccessful_issue}" />
 
                         <h:outputText
-                            rendered="#{DashboardForm.plugin.documentType=='journal'}"
+                            rendered="#{deliveryBean.documentType=='journal'}"
                             escape="false"
                             value="#{msgs.plugin_dashboard_delivery_creationSuccessful_journal}" />
 
@@ -605,22 +605,22 @@
                             style="float: right margin-right: 10px;"
                             class="btn btn-primary-400 ms-auto"
                             jsf:immediate="true"
-                            jsf:action="#{DashboardForm.plugin.backToMain}">
+                            jsf:action="#{deliveryBean.backToMain}">
                             <h:outputText value="#{msgs.plugin_dashboard_delivery_backToDashboard}" />
                         </button>
                         <button
                             style="float: right; margin-right: 10px;"
-                            jsf:rendered="#{DashboardForm.plugin.documentType=='journal'}"
+                            jsf:rendered="#{deliveryBean.documentType=='journal'}"
                             title="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}"
-                            jsf:action="#{DashboardForm.plugin.startNewImport}"
+                            jsf:action="#{deliveryBean.startNewImport}"
                             class="btn btn-primary-400 ms-auto">
                             <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverNewIssueTitleButton}" />
                             <f:setPropertyActionListener
                                 value="newIssue"
-                                target="#{DashboardForm.plugin.navigation}" />
+                                target="#{deliveryBean.navigation}" />
                             <f:setPropertyActionListener
                                 value="issue"
-                                target="#{DashboardForm.plugin.documentType}" />
+                                target="#{deliveryBean.documentType}" />
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
@@ -635,7 +635,7 @@
 
             <!-- Required Message -->
             <ui:fragment
-                rendered="#{DashboardForm.plugin.navigation!='main' and DashboardForm.plugin.navigation!='issueupload' and DashboardForm.plugin.navigation!='titleSelection' and DashboardForm.plugin.navigation!='finish'}">
+                rendered="#{deliveryBean.navigation!='main' and deliveryBean.navigation!='issueupload' and deliveryBean.navigation!='titleSelection' and deliveryBean.navigation!='finish'}">
                 <div class="info-required">
                     <h:outputText
                         escape="false"
@@ -644,27 +644,27 @@
             </ui:fragment>
 
             <!-- Status list -->
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation!='main' and DashboardForm.plugin.navigation!='finish'}">
+            <ui:fragment rendered="#{deliveryBean.navigation!='main' and deliveryBean.navigation!='finish'}">
 
                 <div class="submit">
                     <button
-                        jsf:rendered="#{DashboardForm.plugin.navigation=='issueupload' or DashboardForm.plugin.navigation=='newIssue' or DashboardForm.plugin.navigation=='newTitle'}"
+                        jsf:rendered="#{deliveryBean.navigation=='issueupload' or deliveryBean.navigation=='newIssue' or deliveryBean.navigation=='newTitle'}"
                         jsf:id="cancelMonograph"
                         class="btn btn-blank me-4"
                         jsf:immediate="true">
                         <f:setPropertyActionListener
                             value="main"
-                            target="#{DashboardForm.plugin.navigation}" />
+                            target="#{deliveryBean.navigation}" />
                         <f:setPropertyActionListener
                             value=""
-                            target="#{DashboardForm.plugin.documentType}" />
+                            target="#{deliveryBean.documentType}" />
                         <h:outputText value="#{msgs.abbrechen}" />
                         <f:ajax
                             render="main-area"
                             execute="@this" />
                     </button>
                     <button
-                        jsf:action="#{DashboardForm.plugin.previousPage}"
+                        jsf:action="#{deliveryBean.previousPage}"
                         jsf:id="backToMain"
                         class="btn btn-blank me-auto">
                         <h:outputText value="#{msgs.plugin_rest_usercreation_back}" />
@@ -672,23 +672,23 @@
                             render="main-area"
                             execute="@this" />
                     </button>
-                    <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload' or DashboardForm.plugin.navigation=='newIssue'}">
+                    <ui:fragment rendered="#{deliveryBean.navigation=='issueupload' or deliveryBean.navigation=='newIssue'}">
 
                         <ul class="statuslist">
-                            <li class="#{DashboardForm.plugin.navigation=='newIssue' ? 'active': 'finished'}"><h:panelGroup
-                                    styleClass="status #{DashboardForm.plugin.navigation=='newIssue' ? 'active': 'finished'}">
+                            <li class="#{deliveryBean.navigation=='newIssue' ? 'active': 'finished'}"><h:panelGroup
+                                    styleClass="status #{deliveryBean.navigation=='newIssue' ? 'active': 'finished'}">
                                     <h:outputText value="#{msgs.plugin_dashboard_delivery_journal}" />
                                 </h:panelGroup></li>
-                            <li class="#{DashboardForm.plugin.navigation=='issueupload'?'active':'inactive'}"><h:panelGroup
-                                    styleClass="status #{DashboardForm.plugin.navigation=='issueupload'?'active':'inactive'}">
+                            <li class="#{deliveryBean.navigation=='issueupload'?'active':'inactive'}"><h:panelGroup
+                                    styleClass="status #{deliveryBean.navigation=='issueupload'?'active':'inactive'}">
                                     <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
                                 </h:panelGroup></li>
                         </ul>
                     </ui:fragment>
 
-                    <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newIssue'}">
+                    <ui:fragment rendered="#{deliveryBean.navigation=='newIssue'}">
                         <button
-                            jsf:action="#{DashboardForm.plugin.nextPage}"
+                            jsf:action="#{deliveryBean.nextPage}"
                             jsf:id="nextStep"
                             class="btn btn-success">
                             <h:outputText value="#{msgs.weiter}" />
@@ -697,11 +697,11 @@
                                 execute="@this" />
                         </button>
                     </ui:fragment>
-                    <ui:fragment rendered="#{DashboardForm.plugin.navigation=='newTitle'}">
+                    <ui:fragment rendered="#{deliveryBean.navigation=='newTitle'}">
 
 
                         <button
-                            jsf:action="#{DashboardForm.plugin.createJournalTitle}"
+                            jsf:action="#{deliveryBean.createJournalTitle}"
                             jsf:id="createJournalTitle"
                             class="btn btn-success grid-full-width ms-auto btn-loader">
                             <span
@@ -715,10 +715,10 @@
                                 execute="@this" />
                         </button>
                     </ui:fragment>
-                    <ui:fragment rendered="#{DashboardForm.plugin.navigation=='issueupload'}">
+                    <ui:fragment rendered="#{deliveryBean.navigation=='issueupload'}">
 
                         <button
-                            jsf:action="#{DashboardForm.plugin.createJournalIssue}"
+                            jsf:action="#{deliveryBean.createJournalIssue}"
                             jsf:id="createIssue"
                             class="btn btn-success ms-auto btn-loader">
                             <span

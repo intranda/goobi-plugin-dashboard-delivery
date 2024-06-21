@@ -12,6 +12,7 @@
   <modules>
     <module>module-base</module>
     <module>module-gui</module>
+    <module>module-lib</module>    
   </modules>
   <repositories>
     <repository>
