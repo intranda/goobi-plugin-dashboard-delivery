@@ -60,7 +60,7 @@
                         rendered="#{group.pageName==deliveryBean.navigation and group.documentType == deliveryBean.documentType}">
                         <div class="common-region">
                             <h2 class="grid-full-width">
-                                <h:outputText value="#{group.label}" />
+                                <h:outputText value="#{msgs[group.label]}" />
                             </h2>
                             <h:panelGroup
                                 layout="block"
@@ -246,7 +246,7 @@
                             id="grp">
 
                             <h2 class="grid-full-width">
-                                <h:outputText value="#{group.label}" />
+                                <h:outputText value="#{msgs[group.label]}" />
                             </h2>
                             <h:panelGroup
                                 layout="block"
@@ -428,7 +428,7 @@
                             id="grp">
 
                             <h2 class="grid-full-width">
-                                <h:outputText value="#{group.label}" />
+                                <h:outputText value="#{msgs[group.label]}" />
                             </h2>
                             <h:panelGroup
                                 layout="block"
@@ -603,7 +603,7 @@
                         <div class="common-region">
 
                             <h3 class="grid-full-width">
-                                <h:outputText value="#{group.label}" />
+                                <h:outputText value="#{msgs[group.label]}" />
                                 <button
                                     class="btn bnt-link overview__edit"
                                     style="float: right;"

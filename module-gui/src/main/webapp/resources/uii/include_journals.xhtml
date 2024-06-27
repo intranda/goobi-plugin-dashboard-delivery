@@ -180,7 +180,7 @@
                     <ui:fragment rendered="#{group.documentType == 'journal'}">
                         <div class="common-region">
                             <h2 class="grid-full-width">
-                                <h:outputText value="#{group.label}" />
+                                <h:outputText value="#{msgs[group.label]}" />
                             </h2>
                             <h:panelGroup
                                 layout="block"
@@ -443,7 +443,7 @@
                     <ui:fragment rendered="#{group.documentType == 'issue'}">
                         <div class="common-region">
                             <h2 class="grid-full-width">
-                                <h:outputText value="#{group.label}" />
+                                <h:outputText value="#{msgs[group.label]}" />
                             </h2>
 
 
