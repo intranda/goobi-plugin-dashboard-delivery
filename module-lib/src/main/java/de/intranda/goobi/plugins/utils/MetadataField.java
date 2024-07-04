@@ -1,28 +1,28 @@
 package de.intranda.goobi.plugins.utils;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import io.goobi.vocabulary.exchange.FieldDefinition;
+import io.goobi.vocabulary.exchange.Vocabulary;
+import io.goobi.vocabulary.exchange.VocabularySchema;
+import io.goobi.workflow.api.vocabulary.VocabularyAPIManager;
+import io.goobi.workflow.api.vocabulary.jsfwrapper.JSFVocabularyRecord;
+import lombok.Data;
+import lombok.extern.java.Log;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.validator.routines.checkdigit.EAN13CheckDigit;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.validator.routines.checkdigit.EAN13CheckDigit;
-import org.goobi.vocabulary.Field;
-import org.goobi.vocabulary.VocabRecord;
-import org.goobi.vocabulary.Vocabulary;
-
-import de.intranda.beans.DeliveryBean;
-import de.sub.goobi.persistence.managers.VocabularyManager;
-import lombok.Data;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Data
+@Log
 public class MetadataField implements Serializable {
-
     private static final long serialVersionUID = -2601314844043091136L;
+
     private String rulesetName; // ruleset name
     private String label; // display name in UI
     private String displayType; // input, textarea, dropdown, person, corporate, picklist
@@ -42,8 +42,9 @@ public class MetadataField implements Serializable {
 
     private List<SelectItem> selectList = new ArrayList<>(); // list of selectable values
 
-    private List<VocabRecord> vocabList = new ArrayList<>(); // list of selectable values
+    private List<JSFVocabularyRecord> vocabularyRecords = new ArrayList<>(); // list of selectable values
 
+    private final VocabularyAPIManager vocabularyAPIManager = VocabularyAPIManager.getInstance();
     private String vocabularyName;
     private String vocabularyDisplayField;
     private String vocabularyImportField;
@@ -101,30 +102,41 @@ public class MetadataField implements Serializable {
         vocabularyDisplayField = displayField;
         vocabularyImportField = importFied;
 
-        Vocabulary currentVocabulary = VocabularyManager.getVocabularyByTitle(vocabularyName);
-        vocabularyUrl = DeliveryBean.vocabularyUrl + currentVocabulary.getId();
-        VocabularyManager.getAllRecords(currentVocabulary);
-        vocabList = currentVocabulary.getRecords();
-        Collections.sort(vocabList);
-        selectList = new ArrayList<>(vocabList.size());
-        if (currentVocabulary.getId() != null) {
-            for (VocabRecord vr : vocabList) {
-                String val = null;
-                String lab = null;
+        Vocabulary vocabulary = vocabularyAPIManager.vocabularies().findByName(vocabularyName);
+        VocabularySchema schema = vocabularyAPIManager.vocabularySchemas().get(vocabulary.getSchemaId());
+        vocabularyUrl = vocabulary.get_links().get("self").getHref();
+        vocabularyRecords = vocabularyAPIManager.vocabularyRecords().all(vocabulary.getId());
 
-                for (Field f : vr.getFields()) {
-                    if ((StringUtils.isBlank(vocabularyDisplayField) && f.getDefinition().isMainEntry())
-                            || f.getDefinition().getLabel().equals(vocabularyDisplayField)) {
-                        lab = f.getValue();
-                    }
-                    if (f.getDefinition().getLabel().equals(vocabularyImportField)) {
-                        val = f.getValue();
-                    }
-                }
-                if (StringUtils.isNotBlank(val)) {
-                    selectList.add(new SelectItem(val, lab));
-                }
+        Optional<FieldDefinition> displayFieldDefinition = Optional.empty();
+        if (!StringUtils.isBlank(vocabularyDisplayField)) {
+            displayFieldDefinition = schema.getDefinitions().stream()
+                    .filter(d -> d.getName().equals(vocabularyDisplayField))
+                    .findFirst();
+            if (displayFieldDefinition.isEmpty()) {
+                log.warning("Vocabulary display field \"" + vocabularyDisplayField + "\" not present in vocabulary \"" + vocabularyName + "\"");
+            }
+        }
+        Optional<FieldDefinition> importFieldDefinition = schema.getDefinitions().stream()
+                .filter(d -> d.getName().equals(vocabularyImportField))
+                .findFirst();
+        if (importFieldDefinition.isEmpty()) {
+            log.warning("Vocabulary import field \"" + vocabularyImportField + "\" not present in vocabulary \"" + vocabularyName + "\"");
+            return;
+        }
 
+        selectList = new ArrayList<>(vocabularyRecords.size());
+
+        for (JSFVocabularyRecord vr : vocabularyRecords) {
+            String label = vr.getMainValue();
+            if (displayFieldDefinition.isPresent()) {
+                label = vr.getFieldValue(displayFieldDefinition.get());
+            }
+
+            String value = vr.getFieldValue(importFieldDefinition.get());
+
+            // This should never be blank, but let's stay safe
+            if (StringUtils.isNotBlank(value)) {
+                selectList.add(new SelectItem(value, label));
             }
         }
     }
@@ -214,9 +226,7 @@ public class MetadataField implements Serializable {
             if (required) {
                 fieldValid = false;
             }
-        }
-
-        else if (StringUtils.isNotBlank(testValue) && StringUtils.isNotBlank(validationExpression) && !testValue.matches(validationExpression)) {
+        } else if (StringUtils.isNotBlank(testValue) && StringUtils.isNotBlank(validationExpression) && !testValue.matches(validationExpression)) {
             fieldValid = false;
         }
     }
@@ -315,7 +325,7 @@ public class MetadataField implements Serializable {
 
     /*
      * Validate, if the given string is a valid identifier
-     * 
+     *
      * Algorithm:
      * remove optional hyphens
      * Take all but the last digits of the identifier
@@ -325,7 +335,7 @@ public class MetadataField implements Serializable {
      * Divide this sum by the modulus 11
      * Substract the remainder from 11
      * Compare the remainder with the most right position. If the remainder is 10, expect 'X' or 'x'
-     * 
+     *
      */
 
     public static boolean validateIdentifier(String value) {
@@ -357,7 +367,7 @@ public class MetadataField implements Serializable {
         mf.setSelectList(selectList);
         mf.setValidationErrorText(validationErrorText);
         mf.setValidationExpression(validationExpression);
-        mf.setVocabList(vocabList);
+        mf.setVocabularyRecords(vocabularyRecords);
         mf.setVocabularyDisplayField(vocabularyDisplayField);
         mf.setVocabularyImportField(vocabularyImportField);
         mf.setVocabularyName(vocabularyName);
