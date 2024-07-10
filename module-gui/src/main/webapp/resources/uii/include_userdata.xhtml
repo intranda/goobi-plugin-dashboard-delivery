@@ -17,7 +17,7 @@
     <composite:implementation>
 
         <!-- Main Headings for individual views -->
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata'}">
+        <ui:fragment rendered="#{deliveryBean.navigation=='userdata'}">
             <h1 class="page__heading">
                 <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span> <span
                     data-bs-toggle="tooltip"
@@ -36,7 +36,7 @@
             </h1>
         </ui:fragment>
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
+        <ui:fragment rendered="#{deliveryBean.navigation=='user'}">
             <h1 class="page__heading">
                 <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span> <span
                     data-bs-toggle="tooltip"
@@ -54,7 +54,7 @@
             </h1>
         </ui:fragment>
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
+        <ui:fragment rendered="#{deliveryBean.navigation=='institution'}">
             <h1 class="page__heading">
                 <span>#{msgs.plugin_dashboard_delivery_deliverInstitutionData}</span> <span
                     data-bs-toggle="tooltip"
@@ -72,7 +72,7 @@
             </h1>
         </ui:fragment>
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
+        <ui:fragment rendered="#{deliveryBean.navigation=='contact'}">
             <h1 class="page__heading">
                 <span>#{msgs.plugin_dashboard_delivery_deliverContactPersonData}</span> <span
                     data-bs-toggle="tooltip"
@@ -92,7 +92,7 @@
 
 
         <!-- User options => panel view -->
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='userdata'}">
+        <ui:fragment rendered="#{deliveryBean.navigation=='userdata'}">
 
 
             <ui:include src="includes/helpModalsDD.xhtml">
@@ -127,21 +127,21 @@
                             jsf:id="editUserData"
                             class="item__cta btn btn-primary-400"
                             title="#{msgs.plugin_dashboard_delivery_deliverUserDataButton}"
-                            jsf:action="#{DashboardForm.plugin.startNewImport}">
+                            jsf:action="#{deliveryBean.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverUserDataButton}" />
                             <f:setPropertyActionListener
                                 value="user"
-                                target="#{DashboardForm.plugin.navigation}" />
+                                target="#{deliveryBean.navigation}" />
                             <f:setPropertyActionListener
                                 value=""
-                                target="#{DashboardForm.plugin.passwordValidationError}" />
+                                target="#{deliveryBean.passwordValidationError}" />
 
                             <f:setPropertyActionListener
                                 value="true"
-                                target="#{DashboardForm.plugin.oldPasswordValid}" />
+                                target="#{deliveryBean.oldPasswordValid}" />
                             <f:setPropertyActionListener
                                 value="true"
-                                target="#{DashboardForm.plugin.newPasswordValid}" />
+                                target="#{deliveryBean.newPasswordValid}" />
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
@@ -162,11 +162,11 @@
                             jsf:id="editInstitution"
                             class="item__cta btn btn-primary-400"
                             title="#{msgs.plugin_dashboard_delivery_deliverInstitutionDataButton}"
-                            jsf:action="#{DashboardForm.plugin.startNewImport}">
+                            jsf:action="#{deliveryBean.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverInstitutionDataButton}" />
                             <f:setPropertyActionListener
                                 value="institution"
-                                target="#{DashboardForm.plugin.navigation}" />
+                                target="#{deliveryBean.navigation}" />
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
@@ -186,11 +186,11 @@
                             jsf:id="editContact"
                             class="item__cta btn btn-primary-400"
                             title="#{msgs.plugin_dashboard_delivery_deliverContactPersonDataButton}"
-                            jsf:action="#{DashboardForm.plugin.startNewImport}">
+                            jsf:action="#{deliveryBean.startNewImport}">
                             <h:outputText value="#{msgs.plugin_dashboard_delivery_deliverContactPersonDataButton}" />
                             <f:setPropertyActionListener
                                 value="contact"
-                                target="#{DashboardForm.plugin.navigation}" />
+                                target="#{deliveryBean.navigation}" />
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />
@@ -202,7 +202,7 @@
 
         <h:form styleClass="form-validate btn-inside">
 
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
+            <ui:fragment rendered="#{deliveryBean.navigation=='user'}">
 
                 <ui:include src="includes/helpModalsDD.xhtml">
                     <ui:param
@@ -221,7 +221,7 @@
 
                 <span class="common-region"> <ui:repeat
                         var="field"
-                        value="#{DashboardForm.plugin.userData.fields}"
+                        value="#{deliveryBean.userData.fields}"
                         varStatus="status">
                         <h:panelGroup id="grp">
                             <zlb:field
@@ -258,12 +258,12 @@
                                 escape="false"
                                 value="#{msgs.altesPasswort}" />
                         </label>
-                        <div class="form form-field #{!DashboardForm.plugin.oldPasswordValid ? 'validate--danger' : ''}">
+                        <div class="form form-field #{!deliveryBean.oldPasswordValid ? 'validate--danger' : ''}">
                             <x:inputSecret
                                 id="old_password"
                                 pt:aria-label="#{msgs.altesPasswort}"
                                 styleClass="form-control"
-                                value="#{DashboardForm.plugin.oldPassword}"
+                                value="#{deliveryBean.oldPassword}"
                                 onfocus="focusField(this);"
                                 required="false">
                                 <f:passThroughAttribute
@@ -287,7 +287,7 @@
 
                         <h:panelGroup
                             layout="block"
-                            rendered="#{!DashboardForm.plugin.oldPasswordValid}"
+                            rendered="#{!deliveryBean.oldPasswordValid}"
                             styleClass="font-danger validation-message">
                             <h:outputText value="#{msgs.altesPasswortFalschEingegeben}" />
                         </h:panelGroup>
@@ -304,12 +304,12 @@
                                 escape="false"
                                 value="#{msgs.neuesPasswort}" />
                         </label>
-                        <div class="form form-field #{!DashboardForm.plugin.newPasswordValid ? 'validate--danger' : ''}">
+                        <div class="form form-field #{!deliveryBean.newPasswordValid ? 'validate--danger' : ''}">
                             <x:inputSecret
                                 id="newPassword"
                                 pt:aria-label="#{msgs.neuesPasswort}"
                                 styleClass="form-control"
-                                value="#{DashboardForm.plugin.newPassword}"
+                                value="#{deliveryBean.newPassword}"
                                 onfocus="focusField(this);"
                                 required="false">
                                 <f:passThroughAttribute
@@ -333,9 +333,9 @@
 
                         <h:panelGroup
                             layout="block"
-                            rendered="#{!DashboardForm.plugin.newPasswordValid}"
+                            rendered="#{!deliveryBean.newPasswordValid}"
                             styleClass="font-danger validation-message">
-                            <h:outputText value="#{DashboardForm.plugin.passwordValidationError}" />
+                            <h:outputText value="#{deliveryBean.passwordValidationError}" />
                         </h:panelGroup>
                         <h:outputText
                             styleClass="help-block font-light"
@@ -350,12 +350,12 @@
                                 escape="false"
                                 value="#{msgs.confirmNewPassword}" />
                         </label>
-                        <div class="form form-field #{!DashboardForm.plugin.newPasswordValid ? 'validate--danger' : ''}">
+                        <div class="form form-field #{!deliveryBean.newPasswordValid ? 'validate--danger' : ''}">
                             <x:inputSecret
                                 id="confirmnewPassword"
                                 pt:aria-label="#{msgs.confirmNewPassword}"
                                 styleClass="form-control"
-                                value="#{DashboardForm.plugin.newPasswordRepeated}"
+                                value="#{deliveryBean.newPasswordRepeated}"
                                 onfocus="focusField(this);"
                                 required="false">
                                 <f:ajax execute="@this" />
@@ -380,7 +380,7 @@
                 </span>
             </ui:fragment>
 
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
+            <ui:fragment rendered="#{deliveryBean.navigation=='institution'}">
 
                 <ui:include src="includes/helpModalsDD.xhtml">
                     <ui:param
@@ -399,7 +399,7 @@
 
                 <span class="common-region"> <ui:repeat
                         var="field"
-                        value="#{DashboardForm.plugin.institutionData.fields}"
+                        value="#{deliveryBean.institutionData.fields}"
                         varStatus="status">
 
                         <h:panelGroup
@@ -432,7 +432,7 @@
             </ui:fragment>
 
 
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
+            <ui:fragment rendered="#{deliveryBean.navigation=='contact'}">
 
                 <ui:include src="includes/helpModalsDD.xhtml">
                     <ui:param
@@ -454,7 +454,7 @@
                     style="counter-reset: section;">
                     <h3 class="heading__contact grid-full-width">#{msgs.plugin_dashboard_delivery_contactPerson}</h3> <ui:repeat
                         var="field"
-                        value="#{DashboardForm.plugin.contactData.fields}"
+                        value="#{deliveryBean.contactData.fields}"
                         varStatus="status">
                         <h:panelGroup id="grp">
                             <zlb:field
@@ -482,9 +482,9 @@
                 </span>
                 <div>
                     <button
-                        jsf:rendered="#{!DashboardForm.plugin.displaySecondContact}"
+                        jsf:rendered="#{!deliveryBean.displaySecondContact}"
                         jsf:id="createNewContact"
-                        jsf:action="#{DashboardForm.plugin.createNewContact}"
+                        jsf:action="#{deliveryBean.createNewContact}"
                         style="margin-bottom: 20px; float: right;"
                         class="btn btn-link ms-auto">
 
@@ -496,23 +496,23 @@
 
                 </div>
 
-                <ui:fragment rendered="#{DashboardForm.plugin.displaySecondContact}">
+                <ui:fragment rendered="#{deliveryBean.displaySecondContact}">
                     <span class="common-region">
                         <h3 class="heading__contact grid-full-width">#{msgs.plugin_dashboard_delivery_contactPerson}</h3>
 
                         <div class="grid-full-width">
                             <button
                                 jsf:id="disableContact"
-                                jsf:action="#{DashboardForm.plugin.disableContact}"
+                                jsf:action="#{deliveryBean.disableContact}"
                                 class="btn btn-primary-400 ms-auto"
-                                jsf:rendered="#{DashboardForm.plugin.displaySecondContact}">
+                                jsf:rendered="#{deliveryBean.displaySecondContact}">
 
                                 <span> <h:outputText value="#{msgs.plugin_rest_usercreation_new_disableContact}" />
                                 </span>
                             </button>
                         </div> <ui:repeat
                             var="field"
-                            value="#{DashboardForm.plugin.contact2Data.fields}"
+                            value="#{deliveryBean.contact2Data.fields}"
                             varStatus="status">
                             <h:panelGroup
                                 id="grp"
@@ -543,7 +543,7 @@
                 </ui:fragment>
             </ui:fragment>
 
-            <ui:fragment rendered="#{DashboardForm.plugin.navigation!='userdata'}">
+            <ui:fragment rendered="#{deliveryBean.navigation!='userdata'}">
                 <div class="info-required">
                     <h:outputText
                         escape="false"
@@ -554,7 +554,7 @@
             <div class="dd-bottom-nav-actions">
                 <button
                     jsf:immediate="true"
-                    jsf:action="#{DashboardForm.plugin.previousPage}"
+                    jsf:action="#{deliveryBean.previousPage}"
                     jsf:id="backToMain"
                     class="float-left btn btn-blank font-size-s">
                     <h:outputText value="#{msgs.plugin_rest_usercreation_back}" />
@@ -563,9 +563,9 @@
                         execute="@this" />
                 </button>
 
-                <ui:fragment rendered="#{DashboardForm.plugin.navigation=='user'}">
+                <ui:fragment rendered="#{deliveryBean.navigation=='user'}">
                     <button
-                        jsf:action="#{DashboardForm.plugin.saveUserData}"
+                        jsf:action="#{deliveryBean.saveUserData}"
                         jsf:id="saveUserData"
                         class="btn btn-success grid-full-width ms-auto"
                         style="float: right;">
@@ -576,9 +576,9 @@
                     </button>
                 </ui:fragment>
 
-                <ui:fragment rendered="#{DashboardForm.plugin.navigation=='institution'}">
+                <ui:fragment rendered="#{deliveryBean.navigation=='institution'}">
                     <button
-                        jsf:action="#{DashboardForm.plugin.saveInstitutionData}"
+                        jsf:action="#{deliveryBean.saveInstitutionData}"
                         jsf:id="saveInstitutionData"
                         class="btn btn-success grid-full-width ms-auto"
                         style="float: right;">
@@ -588,13 +588,13 @@
                             execute="@this" />
                         <f:setPropertyActionListener
                             value="userdata"
-                            target="#{DashboardForm.plugin.navigation}" />
+                            target="#{deliveryBean.navigation}" />
                     </button>
                 </ui:fragment>
 
-                <ui:fragment rendered="#{DashboardForm.plugin.navigation=='contact'}">
+                <ui:fragment rendered="#{deliveryBean.navigation=='contact'}">
                     <button
-                        jsf:action="#{DashboardForm.plugin.saveContactData}"
+                        jsf:action="#{deliveryBean.saveContactData}"
                         jsf:id="saveContactData"
                         class="btn btn-success grid-full-width ms-auto"
                         style="float: right;">
@@ -604,7 +604,7 @@
                             execute="@this" />
                         <f:setPropertyActionListener
                             value="userdata"
-                            target="#{DashboardForm.plugin.navigation}" />
+                            target="#{deliveryBean.navigation}" />
                     </button>
 
                 </ui:fragment>

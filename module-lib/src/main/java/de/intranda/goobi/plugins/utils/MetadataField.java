@@ -15,7 +15,7 @@ import org.goobi.vocabulary.Field;
 import org.goobi.vocabulary.VocabRecord;
 import org.goobi.vocabulary.Vocabulary;
 
-import de.intranda.goobi.plugins.DeliveryDashboardPlugin;
+import de.intranda.beans.DeliveryBean;
 import de.sub.goobi.persistence.managers.VocabularyManager;
 import lombok.Data;
 
@@ -102,7 +102,7 @@ public class MetadataField implements Serializable {
         vocabularyImportField = importFied;
 
         Vocabulary currentVocabulary = VocabularyManager.getVocabularyByTitle(vocabularyName);
-        vocabularyUrl = DeliveryDashboardPlugin.vocabularyUrl + currentVocabulary.getId();
+        vocabularyUrl = DeliveryBean.vocabularyUrl + currentVocabulary.getId();
         VocabularyManager.getAllRecords(currentVocabulary);
         vocabList = currentVocabulary.getRecords();
         Collections.sort(vocabList);

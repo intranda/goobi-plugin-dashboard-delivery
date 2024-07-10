@@ -1,0 +1,9 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.goobi.workflow.plugin</groupId>
+    <artifactId>plugin-dashboard-delivery</artifactId>
+    <version>24.06</version>
+  </parent>
+  <artifactId>plugin-dashboard-delivery-lib</artifactId>
+</project>

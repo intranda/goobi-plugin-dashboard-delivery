@@ -17,7 +17,7 @@
     <composite:implementation>
 
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='data1'}">
+        <ui:fragment rendered="#{deliveryBean.navigation=='data1'}">
 
             <ui:include src="includes/helpModalsDD.xhtml">
                 <ui:param
@@ -55,12 +55,12 @@
 
                 <ui:repeat
                     var="group"
-                    value="#{DashboardForm.plugin.configuredGroups}">
+                    value="#{deliveryBean.configuredGroups}">
                     <ui:fragment
-                        rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
+                        rendered="#{group.pageName==deliveryBean.navigation and group.documentType == deliveryBean.documentType}">
                         <div class="common-region">
                             <h2 class="grid-full-width">
-                                <h:outputText value="#{group.label}" />
+                                <h:outputText value="#{msgs[group.label]}" />
                             </h2>
                             <h:panelGroup
                                 layout="block"
@@ -199,7 +199,7 @@
         </ui:fragment>
 
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='data2'}">
+        <ui:fragment rendered="#{deliveryBean.navigation=='data2'}">
 
             <ui:include src="includes/helpModalsDD.xhtml">
                 <ui:param
@@ -237,16 +237,16 @@
 
                 <ui:repeat
                     var="group"
-                    value="#{DashboardForm.plugin.configuredGroups}">
+                    value="#{deliveryBean.configuredGroups}">
                     <ui:fragment
-                        rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
+                        rendered="#{group.pageName==deliveryBean.navigation and group.documentType == deliveryBean.documentType}">
 
                         <div
                             class="common-region"
                             id="grp">
 
                             <h2 class="grid-full-width">
-                                <h:outputText value="#{group.label}" />
+                                <h:outputText value="#{msgs[group.label]}" />
                             </h2>
                             <h:panelGroup
                                 layout="block"
@@ -381,7 +381,7 @@
 
         </ui:fragment>
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='data3'}">
+        <ui:fragment rendered="#{deliveryBean.navigation=='data3'}">
 
 
             <ui:include src="includes/helpModalsDD.xhtml">
@@ -420,15 +420,15 @@
 
                 <ui:repeat
                     var="group"
-                    value="#{DashboardForm.plugin.configuredGroups}">
+                    value="#{deliveryBean.configuredGroups}">
                     <ui:fragment
-                        rendered="#{group.pageName==DashboardForm.plugin.navigation and group.documentType == DashboardForm.plugin.documentType}">
+                        rendered="#{group.pageName==deliveryBean.navigation and group.documentType == deliveryBean.documentType}">
                         <div
                             class="common-region"
                             id="grp">
 
                             <h2 class="grid-full-width">
-                                <h:outputText value="#{group.label}" />
+                                <h:outputText value="#{msgs[group.label]}" />
                             </h2>
                             <h:panelGroup
                                 layout="block"
@@ -561,7 +561,7 @@
             </h:form>
         </ui:fragment>
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='overview'}">
+        <ui:fragment rendered="#{deliveryBean.navigation=='overview'}">
 
             <ui:include src="includes/helpModalsDD.xhtml">
                 <ui:param
@@ -598,19 +598,19 @@
             <h:form styleClass="form-validate monograph__overview">
                 <ui:repeat
                     var="group"
-                    value="#{DashboardForm.plugin.configuredGroups}">
-                    <ui:fragment rendered="#{group.documentType == DashboardForm.plugin.documentType}">
+                    value="#{deliveryBean.configuredGroups}">
+                    <ui:fragment rendered="#{group.documentType == deliveryBean.documentType}">
                         <div class="common-region">
 
                             <h3 class="grid-full-width">
-                                <h:outputText value="#{group.label}" />
+                                <h:outputText value="#{msgs[group.label]}" />
                                 <button
                                     class="btn bnt-link overview__edit"
                                     style="float: right;"
                                     jsf:immediate="true">
                                     <f:setPropertyActionListener
                                         value="#{group.pageName}"
-                                        target="#{DashboardForm.plugin.navigation}" />
+                                        target="#{deliveryBean.navigation}" />
                                     <ui:include src="/uii/includes/icon-edit.xhtml" />
                                     <span style="padding-left: .8rem;">#{msgs.bearbeiten}</span>
                                 </button>
@@ -701,7 +701,7 @@
         </ui:fragment>
 
 
-        <ui:fragment rendered="#{DashboardForm.plugin.navigation=='finish'}">
+        <ui:fragment rendered="#{deliveryBean.navigation=='finish'}">
             <h:form styleClass="d-grid form-validate monograph__overview">
                 <section class="common-region one-col">
                     <h:outputText
@@ -712,14 +712,14 @@
                 <button
                     class="btn btn-primary-400 ms-auto"
                     jsf:immediate="true"
-                    jsf:action="#{DashboardForm.plugin.backToMain}">
+                    jsf:action="#{deliveryBean.backToMain}">
                     <h:outputText value="#{msgs.plugin_dashboard_delivery_backToDashboard}" />
                 </button>
             </h:form>
         </ui:fragment>
 
         <ui:fragment
-            rendered="#{DashboardForm.plugin.navigation!='main' and DashboardForm.plugin.navigation!='finish' and DashboardForm.plugin.navigation!='existingData'}">
+            rendered="#{deliveryBean.navigation!='main' and deliveryBean.navigation!='finish' and deliveryBean.navigation!='existingData'}">
             <h:form id="navigationForm">
                 <div class="container-escape submit">
                     <button
@@ -728,10 +728,10 @@
                         jsf:immediate="true">
                         <f:setPropertyActionListener
                             value="main"
-                            target="#{DashboardForm.plugin.navigation}" />
+                            target="#{deliveryBean.navigation}" />
                         <f:setPropertyActionListener
                             value=""
-                            target="#{DashboardForm.plugin.documentType}" />
+                            target="#{deliveryBean.documentType}" />
                         <h:outputText value="#{msgs.abbrechen}" />
                         <f:ajax
                             render="main-area"
@@ -740,7 +740,7 @@
 
 
                     <button
-                        jsf:action="#{DashboardForm.plugin.previousPage}"
+                        jsf:action="#{deliveryBean.previousPage}"
                         jsf:id="backToMain"
                         class="btn btn-blank">
                         <h:outputText value="#{msgs.zurueck}" />
@@ -752,37 +752,37 @@
                             value="true" />
                     </button>
                     <ul class="statuslist">
-                        <li class="#{DashboardForm.plugin.navigation=='upload'?'active':'finished'}"><h:panelGroup
-                                styleClass="status #{DashboardForm.plugin.navigation=='upload'?'active':'finished'} ">
+                        <li class="#{deliveryBean.navigation=='upload'?'active':'finished'}"><h:panelGroup
+                                styleClass="status #{deliveryBean.navigation=='upload'?'active':'finished'} ">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_monograph_upload}" />
                             </h:panelGroup></li>
                         <li
-                            class="#{DashboardForm.plugin.navigation=='data1' ? 'active': DashboardForm.plugin.navigation=='upload' ? 'inactive': 'finished'}">
+                            class="#{deliveryBean.navigation=='data1' ? 'active': deliveryBean.navigation=='upload' ? 'inactive': 'finished'}">
 
                             <button
                                 style="padding-top: 20px;"
                                 class="btn bnt-link"
                                 jsf:immediate="true"
-                                jsf:disabled="#{DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='upload'}">
+                                jsf:disabled="#{deliveryBean.navigation=='data1' or deliveryBean.navigation=='upload'}">
                                 <f:setPropertyActionListener
                                     value="data1"
-                                    target="#{DashboardForm.plugin.navigation}" />
+                                    target="#{deliveryBean.navigation}" />
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_data1}" />
                             </button>
 
 
                         </li>
                         <li
-                            class="#{DashboardForm.plugin.navigation=='data2' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' ? 'inactive': 'finished'}">
+                            class="#{deliveryBean.navigation=='data2' ? 'active': deliveryBean.navigation=='upload' or deliveryBean.navigation=='data1' ? 'inactive': 'finished'}">
 
                             <button
                                 style="padding-top: 20px;"
                                 class="btn bnt-link"
                                 jsf:immediate="true"
-                                jsf:disabled="#{DashboardForm.plugin.navigation=='data2' or DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1'}">
+                                jsf:disabled="#{deliveryBean.navigation=='data2' or deliveryBean.navigation=='upload' or deliveryBean.navigation=='data1'}">
                                 <f:setPropertyActionListener
                                     value="data2"
-                                    target="#{DashboardForm.plugin.navigation}" />
+                                    target="#{deliveryBean.navigation}" />
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_data2}" />
                             </button>
 
@@ -791,35 +791,35 @@
                         </li>
 
                         <li
-                            class="#{DashboardForm.plugin.navigation=='data3' ? 'active': DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1' or DashboardForm.plugin.navigation=='data2' ? 'inactive': 'finished'}">
+                            class="#{deliveryBean.navigation=='data3' ? 'active': deliveryBean.navigation=='upload' or deliveryBean.navigation=='data1' or deliveryBean.navigation=='data2' ? 'inactive': 'finished'}">
 
                             <button
                                 style="padding-top: 20px;"
                                 class="btn bnt-link"
                                 jsf:immediate="true"
-                                jsf:disabled="#{DashboardForm.plugin.navigation=='data3' or DashboardForm.plugin.navigation=='data2' or DashboardForm.plugin.navigation=='upload' or DashboardForm.plugin.navigation=='data1'}">
+                                jsf:disabled="#{deliveryBean.navigation=='data3' or deliveryBean.navigation=='data2' or deliveryBean.navigation=='upload' or deliveryBean.navigation=='data1'}">
                                 <f:setPropertyActionListener
                                     value="data3"
-                                    target="#{DashboardForm.plugin.navigation}" />
+                                    target="#{deliveryBean.navigation}" />
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_data3}" />
                             </button>
 
 
                         </li>
                         <li
-                            class="#{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
+                            class="#{deliveryBean.navigation=='overview' ? 'active': deliveryBean.navigation=='finish' ? 'finished': 'inactive'}">
 
 
 
                             <h:panelGroup
-                                styleClass="status #{DashboardForm.plugin.navigation=='overview' ? 'active': DashboardForm.plugin.navigation=='finish' ? 'finished': 'inactive'}">
+                                styleClass="status #{deliveryBean.navigation=='overview' ? 'active': deliveryBean.navigation=='finish' ? 'finished': 'inactive'}">
                                 <h:outputText value="#{msgs.plugin_dashboard_delivery_overview}" />
                             </h:panelGroup>
 
                         </li>
                     </ul>
                     <button
-                        jsf:action="#{DashboardForm.plugin.nextPage}"
+                        jsf:action="#{deliveryBean.nextPage}"
                         jsf:id="nextStep"
                         class="btn btn-success btn-loader">
                         <span
@@ -829,7 +829,7 @@
                             alt="Ajax Button Loader" />
                         </span>
                         <h:outputText
-                            value="#{DashboardForm.plugin.navigation=='overview' ? msgs.plugin_dashboard_delivery_buttonCopy_send : msgs.weiter}" />
+                            value="#{deliveryBean.navigation=='overview' ? msgs.plugin_dashboard_delivery_buttonCopy_send : msgs.weiter}" />
                       
                         <f:passThroughAttribute
                             name="data-navigation"
