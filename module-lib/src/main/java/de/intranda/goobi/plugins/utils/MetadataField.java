@@ -133,10 +133,10 @@ public class MetadataField implements Serializable {
         for (ExtendedVocabularyRecord vr : vocabularyRecords) {
             String label = vr.getMainValue();
             if (displayFieldDefinition.isPresent()) {
-                label = vr.getFieldValueForDefinition(displayFieldDefinition.get());
+                label = vr.getFieldValueForDefinition(displayFieldDefinition.get()).orElseThrow();
             }
 
-            String value = vr.getFieldValueForDefinition(importFieldDefinition.get());
+            String value = vr.getFieldValueForDefinition(importFieldDefinition.get()).orElseThrow();
 
             // This should never be blank, but let's stay safe
             if (StringUtils.isNotBlank(value)) {
