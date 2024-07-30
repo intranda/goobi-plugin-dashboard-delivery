@@ -4,7 +4,7 @@ import io.goobi.vocabulary.exchange.FieldDefinition;
 import io.goobi.vocabulary.exchange.Vocabulary;
 import io.goobi.vocabulary.exchange.VocabularySchema;
 import io.goobi.workflow.api.vocabulary.VocabularyAPIManager;
-import io.goobi.workflow.api.vocabulary.jsfwrapper.JSFVocabularyRecord;
+import io.goobi.workflow.api.vocabulary.helper.ExtendedVocabularyRecord;
 import lombok.Data;
 import lombok.extern.java.Log;
 import org.apache.commons.lang.StringUtils;
@@ -42,7 +42,7 @@ public class MetadataField implements Serializable {
 
     private List<SelectItem> selectList = new ArrayList<>(); // list of selectable values
 
-    private List<JSFVocabularyRecord> vocabularyRecords = new ArrayList<>(); // list of selectable values
+    private List<ExtendedVocabularyRecord> vocabularyRecords = new ArrayList<>(); // list of selectable values
 
     private final VocabularyAPIManager vocabularyAPIManager = VocabularyAPIManager.getInstance();
     private String vocabularyName;
@@ -105,7 +105,11 @@ public class MetadataField implements Serializable {
         Vocabulary vocabulary = vocabularyAPIManager.vocabularies().findByName(vocabularyName);
         VocabularySchema schema = vocabularyAPIManager.vocabularySchemas().get(vocabulary.getSchemaId());
         vocabularyUrl = vocabulary.get_links().get("self").getHref();
-        vocabularyRecords = vocabularyAPIManager.vocabularyRecords().all(vocabulary.getId());
+        vocabularyRecords = vocabularyAPIManager.vocabularyRecords()
+                .list(vocabulary.getId())
+                .all()
+                .request()
+                .getContent();
 
         Optional<FieldDefinition> displayFieldDefinition = Optional.empty();
         if (!StringUtils.isBlank(vocabularyDisplayField)) {
@@ -126,13 +130,13 @@ public class MetadataField implements Serializable {
 
         selectList = new ArrayList<>(vocabularyRecords.size());
 
-        for (JSFVocabularyRecord vr : vocabularyRecords) {
+        for (ExtendedVocabularyRecord vr : vocabularyRecords) {
             String label = vr.getMainValue();
             if (displayFieldDefinition.isPresent()) {
-                label = vr.getFieldValue(displayFieldDefinition.get());
+                label = vr.getFieldValueForDefinition(displayFieldDefinition.get());
             }
 
-            String value = vr.getFieldValue(importFieldDefinition.get());
+            String value = vr.getFieldValueForDefinition(importFieldDefinition.get());
 
             // This should never be blank, but let's stay safe
             if (StringUtils.isNotBlank(value)) {
