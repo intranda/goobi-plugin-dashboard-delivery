@@ -3,7 +3,7 @@
   <parent>
     <groupId>io.goobi.workflow.plugin</groupId>
     <artifactId>plugin-dashboard-delivery</artifactId>
-    <version>24.06</version>
+    <version>24.08.1</version>
   </parent>
   <artifactId>plugin-dashboard-delivery-gui</artifactId>
   <packaging>jar</packaging>

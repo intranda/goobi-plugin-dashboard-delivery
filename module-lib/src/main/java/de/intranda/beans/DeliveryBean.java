@@ -95,8 +95,6 @@ public class DeliveryBean implements Serializable {
     private static final String NEWLINE = "<br />";
     private static final String COLON = ": ";
 
-    public static String vocabularyUrl; //NOSONAR
-
     @Getter
     @Setter
     private String focusField;
@@ -225,8 +223,6 @@ public class DeliveryBean implements Serializable {
         additionalMetadata.clear();
 
         metadataDisplayList = Arrays.asList(config.getStringArray("/metadata"));
-
-        vocabularyUrl = config.getString("/vocabularyServerUrl"); //NOSONAR
 
         monographicDocType = config.getString("/doctypes/monographic", "Monograph");
         zdbTitleDocType = config.getString("/doctypes/zdbRecordType", "ZdbTitle");
