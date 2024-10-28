@@ -234,7 +234,10 @@
                                 fieldType="#{field.displayType}"
                                 propertyValid="#{field.fieldValid}"
                                 errorMessageText="#{field.validationErrorText}"
-                                selectItems="#{field.selectList}"
+                                                               selectItems="#{field.fields}"
+                                var="var"
+                                itemValue="#{var.value}"
+                                itemLabel="#{msgs[var.label]}"
                                 booleanValue="#{field.booleanValue}"
                                 fieldRequired="#{field.required}"
                                 subValue="#{field.value2}"
@@ -243,7 +246,12 @@
                                 render="@form"
                                 showHelpBtn="#{field.displayHelpButton}"
                                 helpText="#{field.helpMessage}"
-                                helpTitle="#{field.helpMessageTitle}" />
+                                helpTitle="#{field.helpMessageTitle}"
+                                
+                                                                var="lang"
+                                itemLabel="#{lang.value}"
+                                itemValue="#{lang.value}"
+                                 />
                         </h:panelGroup>
                     </ui:repeat>
                 </span>
@@ -416,7 +424,6 @@
                                 fieldRequired="#{field.required}"
                                 propertyValid="#{field.fieldValid}"
                                 errorMessageText="#{field.validationErrorText}"
-                                selectItems="#{field.selectList}"
                                 booleanValue="#{field.booleanValue}"
                                 subValue="#{field.value2}"
                                 displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
@@ -424,7 +431,16 @@
                                 render="@form"
                                 showHelpBtn="#{field.displayHelpButton}"
                                 helpText="#{field.helpMessage}"
-                                helpTitle="#{field.helpMessageTitle}" />
+                                helpTitle="#{field.helpMessageTitle}"
+                                selectItems="#{field.fields}"
+                                var="var"
+                                itemValue="#{var.value}"
+                                itemLabel="#{msgs[var.label]}"
+                                >
+
+                               
+                                    
+                                </zlb:field>
                         </h:panelGroup>
                     </ui:repeat>
                 </span>
@@ -468,7 +484,10 @@
                                 fieldRequired="#{field.required}"
                                 propertyValid="#{field.fieldValid}"
                                 errorMessageText="#{field.validationErrorText}"
-                                selectItems="#{field.selectList}"
+                                                               selectItems="#{field.fields}"
+                                var="var"
+                                itemValue="#{var.value}"
+                                itemLabel="#{msgs[var.label]}"
                                 booleanValue="#{field.booleanValue}"
                                 subValue="#{field.value2}"
                                 displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
@@ -528,7 +547,10 @@
                                     fieldRequired="#{field.required}"
                                     propertyValid="#{field.fieldValid}"
                                     errorMessageText="#{field.validationErrorText}"
-                                    selectItems="#{field.selectList}"
+                                                                    selectItems="#{field.fields}"
+                                var="var"
+                                itemValue="#{var.value}"
+                                itemLabel="#{msgs[var.label]}"
                                     booleanValue="#{field.booleanValue}"
                                     subValue="#{field.value2}"
                                     displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"

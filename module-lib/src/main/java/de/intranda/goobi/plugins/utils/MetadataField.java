@@ -1,5 +1,17 @@
 package de.intranda.goobi.plugins.utils;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.validator.routines.checkdigit.EAN13CheckDigit;
+
 import io.goobi.vocabulary.exchange.FieldDefinition;
 import io.goobi.vocabulary.exchange.Vocabulary;
 import io.goobi.vocabulary.exchange.VocabularySchema;
@@ -7,16 +19,6 @@ import io.goobi.workflow.api.vocabulary.VocabularyAPIManager;
 import io.goobi.workflow.api.vocabulary.helper.ExtendedVocabularyRecord;
 import lombok.Data;
 import lombok.extern.java.Log;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.validator.routines.checkdigit.EAN13CheckDigit;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Data
 @Log
@@ -113,14 +115,16 @@ public class MetadataField implements Serializable {
 
         Optional<FieldDefinition> displayFieldDefinition = Optional.empty();
         if (!StringUtils.isBlank(vocabularyDisplayField)) {
-            displayFieldDefinition = schema.getDefinitions().stream()
+            displayFieldDefinition = schema.getDefinitions()
+                    .stream()
                     .filter(d -> d.getName().equals(vocabularyDisplayField))
                     .findFirst();
             if (displayFieldDefinition.isEmpty()) {
                 log.warning("Vocabulary display field \"" + vocabularyDisplayField + "\" not present in vocabulary \"" + vocabularyName + "\"");
             }
         }
-        Optional<FieldDefinition> importFieldDefinition = schema.getDefinitions().stream()
+        Optional<FieldDefinition> importFieldDefinition = schema.getDefinitions()
+                .stream()
                 .filter(d -> d.getName().equals(vocabularyImportField))
                 .findFirst();
         if (importFieldDefinition.isEmpty()) {
@@ -383,5 +387,16 @@ public class MetadataField implements Serializable {
 
     public boolean isDisplayHelpButton() {
         return StringUtils.isNotBlank(helpMessage);
+    }
+
+    public List<RadioItem> getFields() {
+        List<RadioItem> spl = new ArrayList<>();
+        for (SelectItem si : selectList) {
+            spl.add(new RadioItem(si.getLabel(), String.valueOf(si.getValue())));
+
+        }
+
+        return spl;
+
     }
 }
