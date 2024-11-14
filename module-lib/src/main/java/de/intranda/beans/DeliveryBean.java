@@ -203,7 +203,7 @@ public class DeliveryBean implements Serializable {
     @Setter
     private boolean displaySecondContact = false;
 
-    private List<SelectItem> availableTitles = new ArrayList<>();;
+    private List<SelectItem> availableTitles = new ArrayList<>();
 
     public DeliveryBean() {
         try {
@@ -1369,7 +1369,7 @@ public class DeliveryBean implements Serializable {
         }
 
         String identifier = UUID.randomUUID().toString();
-
+        String journalTitle = null;
         User user = Helper.getCurrentUser();
         String acccountName = "";
         String institutionName = "";
@@ -1383,6 +1383,16 @@ public class DeliveryBean implements Serializable {
 
         // create fileformat, import entered metadata
         Fileformat fileformat = createFileformat(prefs, identifier);
+        //        title
+        try {
+            for (Metadata md : fileformat.getDigitalDocument().getLogicalDocStruct().getAllMetadata()) {
+                if ("TitleDocMain".equals(md.getType().getName())) {
+                    journalTitle = md.getValue();
+                }
+            }
+        } catch (PreferencesException e) {
+            log.trace(e);
+        }
 
         // save metadata and create goobi process
         Process process = new BeanHelper().createAndSaveNewProcess(template, processTitle.replaceAll("^\\w-", "").toLowerCase(), fileformat);
@@ -1412,9 +1422,21 @@ public class DeliveryBean implements Serializable {
 
             SendMail.getInstance().sendMailToUser(subject, body + NEWLINE + sb.toString(), registrationMailRecipient);
         }
-        navigation = "finish";
+        navigation = "newIssue";
 
         generateListOfJournalTitles();
+
+        for (FieldGrouping fg : configuredGroups) {
+            if ("issue".equals(fg.getDocumentType()) && !fg.isDisabled()) {
+                for (MetadataField mf : fg.getFields()) {
+                    if ("journaltitles".equals(mf.getDisplayType())) {
+                        mf.setValue(journalTitle);
+
+                    }
+                }
+            }
+
+        }
     }
 
     public void createJournalIssue() {

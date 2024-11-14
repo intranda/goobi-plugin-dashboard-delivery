@@ -44,9 +44,9 @@ public class MetadataField implements Serializable {
 
     private List<SelectItem> selectList = new ArrayList<>(); // list of selectable values
 
-    private List<ExtendedVocabularyRecord> vocabularyRecords = new ArrayList<>(); // list of selectable values
+    private transient List<ExtendedVocabularyRecord> vocabularyRecords = new ArrayList<>(); // list of selectable values
 
-    private final VocabularyAPIManager vocabularyAPIManager = VocabularyAPIManager.getInstance();
+    private final transient VocabularyAPIManager vocabularyAPIManager = VocabularyAPIManager.getInstance();
     private String vocabularyName;
     private String vocabularyDisplayField;
     private String vocabularyImportField;
