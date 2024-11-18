@@ -1424,14 +1424,12 @@ public class DeliveryBean implements Serializable {
         }
         navigation = "newIssue";
 
-        generateListOfJournalTitles();
-
         for (FieldGrouping fg : configuredGroups) {
             if ("issue".equals(fg.getDocumentType()) && !fg.isDisabled()) {
                 for (MetadataField mf : fg.getFields()) {
                     if ("journaltitles".equals(mf.getDisplayType())) {
-                        mf.setValue(journalTitle);
-
+                        mf.setValue(String.valueOf(process.getId()));
+                        mf.setSelectList(generateListOfJournalTitles());
                     }
                 }
             }
