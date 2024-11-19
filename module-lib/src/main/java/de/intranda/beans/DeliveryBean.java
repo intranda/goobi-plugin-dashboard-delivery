@@ -1423,6 +1423,7 @@ public class DeliveryBean implements Serializable {
             SendMail.getInstance().sendMailToUser(subject, body + NEWLINE + sb.toString(), registrationMailRecipient);
         }
         navigation = "newIssue";
+        documentType = "issue";
 
         for (FieldGrouping fg : configuredGroups) {
             if ("issue".equals(fg.getDocumentType()) && !fg.isDisabled()) {
@@ -1448,7 +1449,6 @@ public class DeliveryBean implements Serializable {
         }
 
         createProcess(journalTemplateName);
-
         navigation = "finish";
     }
 
