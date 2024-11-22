@@ -46,7 +46,8 @@
 
 
             <h1 class="page__heading">
-                #{msgs.plugin_dashboard_delivery_deliverJournalsHeader} <span
+                #{msgs.plugin_dashboard_delivery_deliverJournalsHeader}
+                <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -158,7 +159,8 @@
                 </ui:include>
 
                 <h1 class="page__heading">
-                    #{msgs.plugin_dashboard_delivery_deliverNewJournalTitleHeader} <span
+                    #{msgs.plugin_dashboard_delivery_deliverNewJournalTitleHeader}
+                    <span
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -294,7 +296,6 @@
                                             fieldType="#{field.displayType}"
                                             propertyValid="#{field.fieldValid}"
                                             errorMessageText="#{field.validationErrorText}"
-                                            selectItems="#{field.selectList}"
                                             fieldRequired="#{field.required}"
                                             booleanValue="#{field.booleanValue}"
                                             subValue="#{field.value2}"
@@ -303,6 +304,10 @@
                                             showHelpBtn="#{field.displayHelpButton}"
                                             helpText="#{field.helpMessage}"
                                             helpTitle="#{field.helpMessageTitle}"
+                                            selectItems="#{field.fields}"
+                                            var="var"
+                                            itemValue="#{var.value}"
+                                            itemLabel="#{msgs[var.label]}"
                                             render=":#{cc.clientId}:field_" />
 
                                     </ui:fragment>
@@ -337,7 +342,8 @@
                 </ui:include>
 
                 <h1 class="page__heading">
-                    <span>#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</span> <span
+                    <span>#{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}</span>
+                    <span
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -419,7 +425,8 @@
                 </ui:include>
 
                 <h1 class="page__heading">
-                    #{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader} <span
+                    #{msgs.plugin_dashboard_delivery_deliverNewJournalIssueHeader}
+                    <span
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -560,7 +567,10 @@
                                             fieldRequired="#{field.required}"
                                             propertyValid="#{field.fieldValid}"
                                             errorMessageText="#{field.validationErrorText}"
-                                            selectItems="#{field.selectList}"
+                                            selectItems="#{field.fields}"
+                                            var="var"
+                                            itemValue="#{var.value}"
+                                            itemLabel="#{msgs[var.label]}"
                                             booleanValue="#{field.booleanValue}"
                                             subValue="#{field.value2}"
                                             displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
@@ -675,14 +685,16 @@
                     <ui:fragment rendered="#{deliveryBean.navigation=='issueupload' or deliveryBean.navigation=='newIssue'}">
 
                         <ul class="statuslist">
-                            <li class="#{deliveryBean.navigation=='newIssue' ? 'active': 'finished'}"><h:panelGroup
-                                    styleClass="status #{deliveryBean.navigation=='newIssue' ? 'active': 'finished'}">
+                            <li class="#{deliveryBean.navigation=='newIssue' ? 'active': 'finished'}">
+                                <h:panelGroup styleClass="status #{deliveryBean.navigation=='newIssue' ? 'active': 'finished'}">
                                     <h:outputText value="#{msgs.plugin_dashboard_delivery_journal}" />
-                                </h:panelGroup></li>
-                            <li class="#{deliveryBean.navigation=='issueupload'?'active':'inactive'}"><h:panelGroup
-                                    styleClass="status #{deliveryBean.navigation=='issueupload'?'active':'inactive'}">
+                                </h:panelGroup>
+                            </li>
+                            <li class="#{deliveryBean.navigation=='issueupload'?'active':'inactive'}">
+                                <h:panelGroup styleClass="status #{deliveryBean.navigation=='issueupload'?'active':'inactive'}">
                                     <h:outputText value="#{msgs.plugin_dashboard_delivery_upload}" />
-                                </h:panelGroup></li>
+                                </h:panelGroup>
+                            </li>
                         </ul>
                     </ui:fragment>
 
@@ -706,13 +718,21 @@
                             class="btn btn-success grid-full-width ms-auto btn-loader">
                             <span
                                 class="btn-ajax-loader"
-                                aria-hidden="true"> <img
-                                src="template/img/goobi/ajaxloader2.gif"
-                                alt="Ajax Button Loader" />
-                            </span> #{msgs.save}
+                                aria-hidden="true">
+                                <img
+                                    src="template/img/goobi/ajaxloader2.gif"
+                                    alt="Ajax Button Loader" />
+                            </span>
+                            #{msgs.save}
                             <f:ajax
                                 render="main-area"
-                                execute="@this" />
+                                execute="@this" 
+                                onevent="(data) => {
+        if (data.status === 'success') {
+            window.scrollTo(0,0);
+        }
+    }"
+                                />
                         </button>
                     </ui:fragment>
                     <ui:fragment rendered="#{deliveryBean.navigation=='issueupload'}">
@@ -723,10 +743,12 @@
                             class="btn btn-success ms-auto btn-loader">
                             <span
                                 class="btn-ajax-loader"
-                                aria-hidden="true"> <img
-                                src="template/img/goobi/ajaxloader2.gif"
-                                alt="Ajax Button Loader" />
-                            </span> #{msgs.save}
+                                aria-hidden="true">
+                                <img
+                                    src="template/img/goobi/ajaxloader2.gif"
+                                    alt="Ajax Button Loader" />
+                            </span>
+                            #{msgs.save}
                             <f:ajax
                                 render="main-area"
                                 execute="@this" />

@@ -19,7 +19,8 @@
         <!-- Main Headings for individual views -->
         <ui:fragment rendered="#{deliveryBean.navigation=='userdata'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span> <span
+                <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span>
+                <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -38,7 +39,8 @@
 
         <ui:fragment rendered="#{deliveryBean.navigation=='user'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span> <span
+                <span>#{msgs.plugin_dashboard_delivery_deliverUserData}</span>
+                <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -56,7 +58,8 @@
 
         <ui:fragment rendered="#{deliveryBean.navigation=='institution'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_delivery_deliverInstitutionData}</span> <span
+                <span>#{msgs.plugin_dashboard_delivery_deliverInstitutionData}</span>
+                <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -74,7 +77,8 @@
 
         <ui:fragment rendered="#{deliveryBean.navigation=='contact'}">
             <h1 class="page__heading">
-                <span>#{msgs.plugin_dashboard_delivery_deliverContactPersonData}</span> <span
+                <span>#{msgs.plugin_dashboard_delivery_deliverContactPersonData}</span>
+                <span
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="#{msgs.plugin_rest_usercreation_helpText_page}">
@@ -219,7 +223,8 @@
                         value="plugin_dashboard_delivery_userdata_user_helpImg" />
                 </ui:include>
 
-                <span class="common-region"> <ui:repeat
+                <span class="common-region">
+                    <ui:repeat
                         var="field"
                         value="#{deliveryBean.userData.fields}"
                         varStatus="status">
@@ -234,7 +239,10 @@
                                 fieldType="#{field.displayType}"
                                 propertyValid="#{field.fieldValid}"
                                 errorMessageText="#{field.validationErrorText}"
-                                selectItems="#{field.selectList}"
+                                selectItems="#{field.fields}"
+                                var="var"
+                                itemValue="#{var.value}"
+                                itemLabel="#{msgs[var.label]}"
                                 booleanValue="#{field.booleanValue}"
                                 fieldRequired="#{field.required}"
                                 subValue="#{field.value2}"
@@ -249,12 +257,14 @@
                 </span>
 
                 <!-- region to set new password -->
-                <span class="common-region"> <h:panelGroup
+                <span class="common-region">
+                    <h:panelGroup
                         layout="block"
                         styleClass="form-group">
                         <label
                             for="old_password"
-                            class="zlb-label"> <h:outputText
+                            class="zlb-label">
+                            <h:outputText
                                 escape="false"
                                 value="#{msgs.altesPasswort}" />
                         </label>
@@ -295,12 +305,14 @@
                             styleClass="help-block font-light"
                             rendered="#{NavigationForm.showHelp}"
                             value="#{msgs.helpAltesPasswort}" />
-                    </h:panelGroup> <h:panelGroup
+                    </h:panelGroup>
+                    <h:panelGroup
                         layout="block"
                         styleClass="form-group column-start">
                         <label
                             for="newPassword"
-                            class="zlb-label"> <h:outputText
+                            class="zlb-label">
+                            <h:outputText
                                 escape="false"
                                 value="#{msgs.neuesPasswort}" />
                         </label>
@@ -341,12 +353,14 @@
                             styleClass="help-block font-light"
                             rendered="#{NavigationForm.showHelp}"
                             value="#{msgs.helpNeuesPasswort}" />
-                    </h:panelGroup> <h:panelGroup
+                    </h:panelGroup>
+                    <h:panelGroup
                         layout="block"
                         styleClass="form-group">
                         <label
                             for="confirmnewPassword"
-                            class="zlb-label"> <h:outputText
+                            class="zlb-label">
+                            <h:outputText
                                 escape="false"
                                 value="#{msgs.confirmNewPassword}" />
                         </label>
@@ -397,7 +411,8 @@
                         value="plugin_dashboard_delivery_userdata_institution_helpImg" />
                 </ui:include>
 
-                <span class="common-region"> <ui:repeat
+                <span class="common-region">
+                    <ui:repeat
                         var="field"
                         value="#{deliveryBean.institutionData.fields}"
                         varStatus="status">
@@ -416,7 +431,6 @@
                                 fieldRequired="#{field.required}"
                                 propertyValid="#{field.fieldValid}"
                                 errorMessageText="#{field.validationErrorText}"
-                                selectItems="#{field.selectList}"
                                 booleanValue="#{field.booleanValue}"
                                 subValue="#{field.value2}"
                                 displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
@@ -424,7 +438,15 @@
                                 render="@form"
                                 showHelpBtn="#{field.displayHelpButton}"
                                 helpText="#{field.helpMessage}"
-                                helpTitle="#{field.helpMessageTitle}" />
+                                helpTitle="#{field.helpMessageTitle}"
+                                selectItems="#{field.fields}"
+                                var="var"
+                                itemValue="#{var.value}"
+                                itemLabel="#{msgs[var.label]}">
+
+
+
+                            </zlb:field>
                         </h:panelGroup>
                     </ui:repeat>
                 </span>
@@ -452,7 +474,8 @@
                 <span
                     class="common-region"
                     style="counter-reset: section;">
-                    <h3 class="heading__contact grid-full-width">#{msgs.plugin_dashboard_delivery_contactPerson}</h3> <ui:repeat
+                    <h3 class="heading__contact grid-full-width">#{msgs.plugin_dashboard_delivery_contactPerson}</h3>
+                    <ui:repeat
                         var="field"
                         value="#{deliveryBean.contactData.fields}"
                         varStatus="status">
@@ -468,7 +491,10 @@
                                 fieldRequired="#{field.required}"
                                 propertyValid="#{field.fieldValid}"
                                 errorMessageText="#{field.validationErrorText}"
-                                selectItems="#{field.selectList}"
+                                selectItems="#{field.fields}"
+                                var="var"
+                                itemValue="#{var.value}"
+                                itemLabel="#{msgs[var.label]}"
                                 booleanValue="#{field.booleanValue}"
                                 subValue="#{field.value2}"
                                 displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
@@ -489,7 +515,8 @@
                         class="btn btn-link ms-auto">
 
                         <ui:include src="/uii/includes/icon-plus.xhtml" />
-                        <span> <h:outputText value="#{msgs.plugin_rest_usercreation_new_createNewContact}" />
+                        <span>
+                            <h:outputText value="#{msgs.plugin_rest_usercreation_new_createNewContact}" />
                         </span>
                     </button>
 
@@ -507,10 +534,12 @@
                                 class="btn btn-primary-400 ms-auto"
                                 jsf:rendered="#{deliveryBean.displaySecondContact}">
 
-                                <span> <h:outputText value="#{msgs.plugin_rest_usercreation_new_disableContact}" />
+                                <span>
+                                    <h:outputText value="#{msgs.plugin_rest_usercreation_new_disableContact}" />
                                 </span>
                             </button>
-                        </div> <ui:repeat
+                        </div>
+                        <ui:repeat
                             var="field"
                             value="#{deliveryBean.contact2Data.fields}"
                             varStatus="status">
@@ -528,7 +557,10 @@
                                     fieldRequired="#{field.required}"
                                     propertyValid="#{field.fieldValid}"
                                     errorMessageText="#{field.validationErrorText}"
-                                    selectItems="#{field.selectList}"
+                                    selectItems="#{field.fields}"
+                                    var="var"
+                                    itemValue="#{var.value}"
+                                    itemLabel="#{msgs[var.label]}"
                                     booleanValue="#{field.booleanValue}"
                                     subValue="#{field.value2}"
                                     displayDuplicateButton="#{field.cardinality == '+' or field.cardinality == '*'}"
