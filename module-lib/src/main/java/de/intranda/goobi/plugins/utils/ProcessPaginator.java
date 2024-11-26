@@ -18,7 +18,7 @@ public class ProcessPaginator extends DatabasePaginator {
     public ProcessPaginator(String order, String filter, IManager manager) {
         super(order, filter, manager, "");
         institution = null;
-        pageSize = 10;
+        pageSize = 1000;
         try {
             totalResults = manager.getHitSize(order, filter, null);
             load();
