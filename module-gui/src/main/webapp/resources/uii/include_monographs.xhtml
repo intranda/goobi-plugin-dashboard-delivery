@@ -649,7 +649,7 @@
 
                                     <ui:fragment rendered="#{field.displayType == 'person'}">
                                         <h:outputLabel
-                                            value="#{field.label}"
+                                            value="#{msgs[field.label]}"
                                             styleClass="#{(empty field.value) and (empty field.value2) and (empty field.role)? 'empty-val' : ''}" />
                                         <div class="form-field persongrid">
                                             <h:outputText
@@ -666,7 +666,7 @@
 
                                     <ui:fragment rendered="#{field.displayType == 'corporate'}">
                                         <h:outputLabel
-                                            value="#{field.label}"
+                                            value="#{msgs[field.label]}"
                                             styleClass="#{(not empty field.value) and (not empty field.role)? '' : 'empty-val'}" />
                                         <div class="form-field corporategrid">
                                             <h:outputText
@@ -679,7 +679,7 @@
                                     </ui:fragment>
                                     <ui:fragment rendered="#{field.displayType == 'picklist'}">
                                         <h:outputLabel
-                                            value="#{field.label}"
+                                            value="#{msgs[field.label]}"
                                             styleClass="#{(not empty field.value) and (not empty field.role)? '' : 'empty-val'}" />
                                         <div class="form-field corporategrid">
                                             <h:outputText
@@ -693,7 +693,7 @@
                                     <ui:fragment
                                         rendered="#{field.displayType != 'person' and field.displayType != 'corporate'and field.displayType != 'picklist'}">
                                         <h:outputLabel
-                                            value="#{field.label}"
+                                            value="#{msgs[field.label]}"
                                             styleClass="#{not empty field.value ? '' : 'empty-val'}" />
                                         <div class="form-field">
                                             <h:outputText
