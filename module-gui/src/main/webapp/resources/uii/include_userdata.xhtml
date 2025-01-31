@@ -4,7 +4,6 @@
     xmlns:composite="http://xmlns.jcp.org/jsf/composite"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:x="http://myfaces.apache.org/tomahawk"
     xmlns:intranda="http://xmlns.jcp.org/jsf/composite/composites"
     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:p="http://primefaces.org/ui"
@@ -240,7 +239,6 @@
                                 propertyValid="#{field.fieldValid}"
                                 errorMessageText="#{field.validationErrorText}"
                                 selectItems="#{field.fields}"
-                                var="var"
                                 itemValue="#{var.value}"
                                 itemLabel="#{msgs[var.label]}"
                                 booleanValue="#{field.booleanValue}"
@@ -269,7 +267,7 @@
                                 value="#{msgs.altesPasswort}" />
                         </label>
                         <div class="form form-field #{!deliveryBean.oldPasswordValid ? 'validate--danger' : ''}">
-                            <x:inputSecret
+                            <h:inputSecret
                                 id="old_password"
                                 pt:aria-label="#{msgs.altesPasswort}"
                                 styleClass="form-control"
@@ -280,7 +278,7 @@
                                     name="placeholder"
                                     value="" />
                                 <f:ajax execute="@this" />
-                            </x:inputSecret>
+                            </h:inputSecret>
                             <button
                                 jsf:id="showHelpField_oldpw"
                                 jsf:onfocus="focusField(this);"
@@ -317,7 +315,7 @@
                                 value="#{msgs.neuesPasswort}" />
                         </label>
                         <div class="form form-field #{!deliveryBean.newPasswordValid ? 'validate--danger' : ''}">
-                            <x:inputSecret
+                            <h:inputSecret
                                 id="newPassword"
                                 pt:aria-label="#{msgs.neuesPasswort}"
                                 styleClass="form-control"
@@ -328,7 +326,7 @@
                                     name="placeholder"
                                     value="" />
                                 <f:ajax execute="@this" />
-                            </x:inputSecret>
+                            </h:inputSecret>
                             <button
                                 jsf:id="showHelpField_pw1"
                                 jsf:onfocus="focusField(this);"
@@ -365,7 +363,7 @@
                                 value="#{msgs.confirmNewPassword}" />
                         </label>
                         <div class="form form-field #{!deliveryBean.newPasswordValid ? 'validate--danger' : ''}">
-                            <x:inputSecret
+                            <h:inputSecret
                                 id="confirmnewPassword"
                                 pt:aria-label="#{msgs.confirmNewPassword}"
                                 styleClass="form-control"
@@ -376,7 +374,7 @@
                                 <f:passThroughAttribute
                                     name="placeholder"
                                     value="" />
-                            </x:inputSecret>
+                            </h:inputSecret>
                             <button
                                 jsf:id="showHelpField_pw2"
                                 jsf:onfocus="focusField(this);"
@@ -440,12 +438,8 @@
                                 helpText="#{field.helpMessage}"
                                 helpTitle="#{field.helpMessageTitle}"
                                 selectItems="#{field.fields}"
-                                var="var"
                                 itemValue="#{var.value}"
                                 itemLabel="#{msgs[var.label]}">
-
-
-
                             </zlb:field>
                         </h:panelGroup>
                     </ui:repeat>
@@ -558,7 +552,6 @@
                                     propertyValid="#{field.fieldValid}"
                                     errorMessageText="#{field.validationErrorText}"
                                     selectItems="#{field.fields}"
-                                    var="var"
                                     itemValue="#{var.value}"
                                     itemLabel="#{msgs[var.label]}"
                                     booleanValue="#{field.booleanValue}"
