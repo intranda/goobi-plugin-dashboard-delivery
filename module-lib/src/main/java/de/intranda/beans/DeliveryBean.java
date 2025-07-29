@@ -1472,14 +1472,14 @@ public class DeliveryBean implements Serializable {
             sql.append("select * from metadata where processid in ( ");
             sql.append("select processid from metadata where processid in ( ");
             sql.append("select metadata.processid from properties left join metadata on object_type = 'process' and properties.object_id = ");
-            sql.append("metadata.processid where titel =\"Institution\" and property_value = ? ");
+            sql.append("metadata.processid where property_name =\"Institution\" and property_value = ? ");
             sql.append("and metadata.name = \"DocStruct\" and metadata.value= ? ");
             sql.append(") and metadata.name= ? )");
             sql.append("UNION ");
             sql.append("select * from metadata where processid in (select processid from metadata where processid in (select processid ");
             sql.append("from metadata where processid in (select metadata.processid from properties left join metadata on ");
             sql.append(
-                    "properties.object_id = metadata.processid and object_type = 'process' where titel ='Institution' and property_value = ? and not exists ");
+                    "properties.object_id = metadata.processid and object_type = 'process' where property_name ='Institution' and property_value = ? and not exists ");
             sql.append(
                     "(select * from metadata m2 where m2.name= ? and m2.processid = metadata.processid)) and metadata.name='CatalogIDDigital_Delivery' ");
             sql.append("group by metadata.value having count(metadata.value)=1) and metadata.name = 'DocStruct' and metadata.value= ?)");
