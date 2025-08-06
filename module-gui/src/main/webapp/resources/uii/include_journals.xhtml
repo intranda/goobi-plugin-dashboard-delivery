@@ -387,11 +387,9 @@
 
 
                 <!-- Frontend: handle submit of documents -->
-                <script
-                    type="text/javascript"
-                    src="#{HelperForm.applicationWebsiteUrl}uii/template/assets/js/fileUpload.js">
-																	
-																</script>
+                <h:outputScript
+                    library="GoobiThemeDelivery"
+                    name="js/fileUpload.js" />
                 <script>
 																	fileUpload
 																			.init({
@@ -723,7 +721,7 @@
                             #{msgs.save}
                             <f:ajax
                                 render="main-area"
-                                execute="@this" 
+                                execute="@this"
                                 onevent="(data) => {
         if (data.status === 'success') {
             window.scrollTo(0,0);
