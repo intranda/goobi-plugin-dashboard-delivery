@@ -259,13 +259,10 @@
                     <h:panelGroup
                         layout="block"
                         styleClass="form-group">
-                        <label
+                        <h:outputLabel
                             for="old_password"
-                            class="zlb-label">
-                            <h:outputText
-                                escape="false"
-                                value="#{msgs.altesPasswort}" />
-                        </label>
+                            styleClass="zlb-label"
+                            value="#{msgs.altesPasswort}" />
                         <div class="form form-field #{!deliveryBean.oldPasswordValid ? 'validate--danger' : ''}">
                             <h:inputSecret
                                 id="old_password"
@@ -307,13 +304,10 @@
                     <h:panelGroup
                         layout="block"
                         styleClass="form-group column-start">
-                        <label
+                        <h:outputLabel
                             for="newPassword"
-                            class="zlb-label">
-                            <h:outputText
-                                escape="false"
-                                value="#{msgs.neuesPasswort}" />
-                        </label>
+                            styleClass="zlb-label"
+                            value="#{msgs.neuesPasswort}" />
                         <div class="form form-field #{!deliveryBean.newPasswordValid ? 'validate--danger' : ''}">
                             <h:inputSecret
                                 id="newPassword"
@@ -355,13 +349,10 @@
                     <h:panelGroup
                         layout="block"
                         styleClass="form-group">
-                        <label
+                        <h:outputLabel
                             for="confirmnewPassword"
-                            class="zlb-label">
-                            <h:outputText
-                                escape="false"
-                                value="#{msgs.confirmNewPassword}" />
-                        </label>
+                            styleClass="zlb-label"
+                            value="#{msgs.confirmNewPassword}" />
                         <div class="form form-field #{!deliveryBean.newPasswordValid ? 'validate--danger' : ''}">
                             <h:inputSecret
                                 id="confirmnewPassword"

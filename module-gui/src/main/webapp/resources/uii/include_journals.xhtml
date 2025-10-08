@@ -373,7 +373,8 @@
                         styleClass="form-control form-control-lg"
                         value="#{deliveryBean.file}"
                         title="#{msgs.plugin_dashboard_delivery_ariaLabel_uploadForm}"
-                        name="file" />
+                        name="file"
+                        pt:data-file-upload="form" />
 
                     <div class="form__actions">
                         <zlb:uploadFormButtons />
@@ -381,22 +382,10 @@
                         <h:commandButton
                             id="issuesubmit"
                             value="submit"
-                            styleClass="btn btn-primary-400 d-none" />
+                            styleClass="btn btn-primary-400 d-none"
+                            pt:data-file-upload="submit" />
                     </div>
                 </div>
-
-
-                <!-- Frontend: handle submit of documents -->
-                <h:outputScript
-                    library="GoobiThemeDelivery"
-                    name="js/fileUpload.js" />
-                <script>
-																	fileUpload
-																			.init({
-																				DSForm : '#issuefile',
-																				DSSubmit : '#issuesubmit'
-																			})
-																</script>
 
                 <!-- URL upload -->
                 <zlb:urlUploadModal />
@@ -486,7 +475,7 @@
 
                                     <ui:fragment rendered="#{field.displayType == 'person'}">
                                         <zlb:person
-                                            identifier="field_#{status.index}"
+                                            identifier="field_#{status.index}_"
                                             labelText="#{field.label}"
                                             labelHelpText="{field.helpMessage}"
                                             value="#{field.value}"
