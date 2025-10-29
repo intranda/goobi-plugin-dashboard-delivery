@@ -464,7 +464,9 @@
                         var="field"
                         value="#{deliveryBean.contactData.fields}"
                         varStatus="status">
-                        <h:panelGroup id="grp">
+                        <h:panelGroup
+                            id="grp"
+                            layout="block">
                             <zlb:field
                                 placeholderText="#{msgs[field.placeholderText]}"
                                 identifier="field_#{status.index}"
@@ -503,6 +505,20 @@
                         <span>
                             <h:outputText value="#{msgs.plugin_rest_usercreation_new_createNewContact}" />
                         </span>
+                        <f:ajax
+                            render="@form"
+                            onevent="(data) => {
+                                if(data.status === 'success') {
+                                    const wrapperEl = document.querySelector(`[id$='grp2']`);
+                                    if(wrapperEl) {
+                                        wrapperEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                        const inputEl = wrapperEl.querySelector('input, select, textarea');
+                                        if(inputEl) {
+                                            inputEl.focus();
+                                        }
+                                    }
+                                }
+                            }" />
                     </button>
 
 
@@ -510,9 +526,9 @@
 
                 <ui:fragment rendered="#{deliveryBean.displaySecondContact}">
                     <span class="common-region">
-                        <h3 class="heading__contact grid-full-width">#{msgs.plugin_dashboard_delivery_contactPerson}</h3>
+                        <h3 class="heading__contact">#{msgs.plugin_dashboard_delivery_contactPerson}</h3>
 
-                        <div class="grid-full-width">
+                        <div class="ms-auto">
                             <button
                                 jsf:id="disableContact"
                                 jsf:action="#{deliveryBean.disableContact}"
@@ -522,6 +538,20 @@
                                 <span>
                                     <h:outputText value="#{msgs.plugin_rest_usercreation_new_disableContact}" />
                                 </span>
+                                <f:ajax
+                                    render="@form"
+                                    onevent="(data) => {
+                                        if(data.status === 'success') {
+                                            const wrapperEl = document.querySelector(`[id$='grp']`);
+                                            if(wrapperEl) {
+                                                wrapperEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                                const inputEl = wrapperEl.querySelector('input, select, textarea');
+                                                if(inputEl) {
+                                                    inputEl.focus();
+                                                }
+                                            }
+                                        }
+                                    }" />
                             </button>
                         </div>
                         <ui:repeat
@@ -529,8 +559,8 @@
                             value="#{deliveryBean.contact2Data.fields}"
                             varStatus="status">
                             <h:panelGroup
-                                id="grp"
-                                styleClass="#{status.index == 0 ? 'column-start':''}">
+                                id="grp2"
+                                layout="block">
                                 <zlb:field
                                     placeholderText="#{msgs[field.placeholderText]}"
                                     identifier="field_#{status.index}"
