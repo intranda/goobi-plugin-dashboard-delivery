@@ -424,8 +424,8 @@
             }
 
             faces.ajax.addOnEvent( function( data ) {
-                var ajaxstatus = data.status; // Can be "begin", "complete" and "success"
-                var source = data.source;
+                let ajaxstatus = data.status; // Can be "begin", "complete" and "success"
+                let source = data.source;
                 switch ( ajaxstatus ) {
                     case "begin": // This is called right before ajax request is been sent.
                         if (source.classList.contains('btn-loader')) {
