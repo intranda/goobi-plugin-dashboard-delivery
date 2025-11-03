@@ -437,6 +437,19 @@
                 }
             }
 
+            function handleSuccessButtons(buttonEl) {
+                const errorPresent = document.querySelector('.validate--danger');
+                if (errorPresent) {
+                    const errorInput = errorPresent.querySelector('input, select, textarea');
+                    if (errorInput) {
+                        errorInput.focus();
+                        errorInput.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
+                } else {
+                    window.scrollTo(0,0);
+                }
+            }
+
             faces.ajax.addOnEvent( function( data ) {
                 let ajaxstatus = data.status; // Can be "begin", "complete" and "success"
                 let source = data.source;
@@ -461,6 +474,9 @@
 
                         // find element,set focus
                         updateFocus();
+                        if (source.classList.contains('btn-success')) {
+                            handleSuccessButtons(source);
+                        }
                         break;
                 }
             } );
