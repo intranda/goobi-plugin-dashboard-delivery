@@ -402,24 +402,38 @@
 
         <script>
             function focusField( elem ) {
-                document.getElementById( "focusField" ).value = elem.id;
+                const focusEl = document.getElementById( "focusField" );
+                focusEl.value = elem.id;
+                focusEl.dataset.focusDirect = "true";
             }
 
-            function focusInput(targetId = '') {
+            function focusInput(sourceEl) {
+                const groupEl = sourceEl.closest('[id$="grp"]');
+
                 const focusEl = document.getElementById("focusField");
-                focusEl.value = targetId;
+                focusEl.value = groupEl.id;
+                focusEl.dataset.focusDirect = "false";
             }
 
             function updateFocus() {
-                const focus = document.querySelector('#focusField').value;
+                const focusEl = document.getElementById( "focusField" );
+                const focus = focusEl.value;
 
-                const targetEls = document.querySelectorAll(`[id$="` + focus + `"]`);
+                if ( focus === null || focus === '' ) return;
 
-                if (targetEls === null || targetEls.length === 0) return;
+                const targetEl = document.querySelector('[id$="' + focus + '"]');
 
-                const targetEl = targetEls[targetEls.length - 1];
-                if ( targetEl != null ) {
-                    targetEl.focus();
+                if ( targetEl !== null ) {
+                    if (focusEl.dataset.focusDirect === "false") {
+                        const wrapperEl = targetEl.parentElement;
+                        const lastChild = wrapperEl.lastElementChild;
+                        const focusTarget = lastChild.querySelector('input, select, textarea');
+                        if (focusTarget) {
+                            focusTarget.focus();
+                        }
+                    } else {
+                        targetEl.focus();
+                    }
                 }
             }
 
