@@ -401,48 +401,59 @@
         </div>
 
         <script>
-                                    function focusField( elem ) {
-                                        document.getElementById( "focusField" ).value = elem.id;
-                                    }
+            function focusField( elem ) {
+                document.getElementById( "focusField" ).value = elem.id;
+            }
 
-                                    function updateFocus() {
-                                        var focus = $( '#focusField' ).val();
-                                        const inp = document.getElementById( focus );
-                                        if ( inp != null ) {
-                                            inp.focus();
-                                        }
-                                    }
+            function focusInput(targetId = '') {
+                const focusEl = document.getElementById("focusField");
+                focusEl.value = targetId;
+            }
 
-                                    faces.ajax.addOnEvent( function( data ) {
-                                        var ajaxstatus = data.status; // Can be "begin", "complete" and "success"
-                                        var source = data.source;
-                                        switch ( ajaxstatus ) {
-                                            case "begin": // This is called right before ajax request is been sent.
-                                                if (source.classList.contains('btn-loader')) {
-                                                    $('.btn-ajax-loader').addClass('in');
-                                                }
+            function updateFocus() {
+                const focus = document.querySelector('#focusField').value;
 
-                                                break;
-                                            case "complete": // This is called right after ajax response is received.
-                                                break;
-                                            case "success": // This is called when ajax response is successfully processed.
-                                                if (source.classList.contains('btn-loader')) {
-                                                    $('.btn-ajax-loader').removeClass('in');
-                                                }
-                                                if (data?.source?.dataset.navigation=='true'){
-                                                    $( document ).ready(function() {
-                                                        $(".form-control.corporate").change();
-                                                    });
-                                            }
+                const targetEls = document.querySelectorAll(`[id$="` + focus + `"]`);
 
-                                                // find element,set focus
-                                                updateFocus();
-                                                break;
-                                        }
-                                    } );
+                if (targetEls === null || targetEls.length === 0) return;
+
+                const targetEl = targetEls[targetEls.length - 1];
+                if ( targetEl != null ) {
+                    targetEl.focus();
+                }
+            }
+
+            faces.ajax.addOnEvent( function( data ) {
+                var ajaxstatus = data.status; // Can be "begin", "complete" and "success"
+                var source = data.source;
+                switch ( ajaxstatus ) {
+                    case "begin": // This is called right before ajax request is been sent.
+                        if (source.classList.contains('btn-loader')) {
+                            $('.btn-ajax-loader').addClass('in');
+                        }
+
+                        break;
+                    case "complete": // This is called right after ajax response is received.
+                        break;
+                    case "success": // This is called when ajax response is successfully processed.
+                        if (source.classList.contains('btn-loader')) {
+                            $('.btn-ajax-loader').removeClass('in');
+                        }
+                        if (data?.source?.dataset.navigation=='true'){
+                            $( document ).ready(function() {
+                                $(".form-control.corporate").change();
+                            });
+                    }
+
+                        // find element,set focus
+                        console.log("AJAX success event triggered. Updating focus.");
+                        updateFocus();
+                        break;
+                }
+            } );
 
 
-                                </script>
+        </script>
 
 
     </ui:define>
