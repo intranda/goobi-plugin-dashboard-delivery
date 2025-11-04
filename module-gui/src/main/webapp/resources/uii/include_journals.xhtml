@@ -215,6 +215,7 @@
 
                                 <h:panelGroup
                                     id="grp"
+                                    layout="block"
                                     rendered="#{!group.disabled}">
                                     <ui:fragment rendered="#{field.displayType == 'person'}">
                                         <zlb:person
@@ -711,11 +712,6 @@
                             <f:ajax
                                 render="main-area"
                                 execute="@this"
-                                onevent="(data) => {
-        if (data.status === 'success') {
-            window.scrollTo(0,0);
-        }
-    }"
                                 />
                         </button>
                     </ui:fragment>

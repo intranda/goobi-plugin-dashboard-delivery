@@ -92,7 +92,10 @@
                                 value="#{group.fields}"
                                 varStatus="status">
 
-                                <h:panelGroup rendered="#{!group.disabled}">
+                                <h:panelGroup
+                                    layout="block"
+                                    id="grp"
+                                    rendered="#{!group.disabled}">
                                     <ui:fragment rendered="#{field.displayType == 'person'}">
                                         <zlb:person
                                             identifier="field_#{status.index}"
@@ -277,7 +280,10 @@
                                 var="field"
                                 value="#{group.fields}"
                                 varStatus="status">
-                                <h:panelGroup rendered="#{!group.disabled}">
+                                <h:panelGroup
+                                    layout="block"
+                                    id="grp"
+                                    rendered="#{!group.disabled}">
                                     <ui:fragment rendered="#{field.displayType == 'person'}">
                                         <zlb:person
                                             identifier="field_#{status.index}"
@@ -462,7 +468,10 @@
                                 var="field"
                                 value="#{group.fields}"
                                 varStatus="status">
-                                <h:panelGroup rendered="#{!group.disabled}">
+                                <h:panelGroup
+                                    layout="block"
+                                    id="grp"
+                                    rendered="#{!group.disabled}">
                                     <ui:fragment rendered="#{field.displayType == 'person'}">
                                         <zlb:person
                                             identifier="field_#{status.index}"

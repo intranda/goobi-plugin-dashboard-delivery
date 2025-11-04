@@ -401,48 +401,88 @@
         </div>
 
         <script>
-                                    function focusField( elem ) {
-                                        document.getElementById( "focusField" ).value = elem.id;
-                                    }
+            function focusField( elem ) {
+                const focusEl = document.getElementById( "focusField" );
+                focusEl.value = elem.id;
+                focusEl.dataset.focusDirect = "true";
+            }
 
-                                    function updateFocus() {
-                                        var focus = $( '#focusField' ).val();
-                                        const inp = document.getElementById( focus );
-                                        if ( inp != null ) {
-                                            inp.focus();
-                                        }
-                                    }
+            function focusInput(sourceEl) {
+                const groupEl = sourceEl.closest('[id$="grp"]');
 
-                                    faces.ajax.addOnEvent( function( data ) {
-                                        var ajaxstatus = data.status; // Can be "begin", "complete" and "success"
-                                        var source = data.source;
-                                        switch ( ajaxstatus ) {
-                                            case "begin": // This is called right before ajax request is been sent.
-                                                if (source.classList.contains('btn-loader')) {
-                                                    $('.btn-ajax-loader').addClass('in');
-                                                }
+                const focusEl = document.getElementById("focusField");
+                focusEl.value = groupEl.id;
+                focusEl.dataset.focusDirect = "false";
+            }
 
-                                                break;
-                                            case "complete": // This is called right after ajax response is received.
-                                                break;
-                                            case "success": // This is called when ajax response is successfully processed.
-                                                if (source.classList.contains('btn-loader')) {
-                                                    $('.btn-ajax-loader').removeClass('in');
-                                                }
-                                                if (data?.source?.dataset.navigation=='true'){
-                                                    $( document ).ready(function() {
-                                                        $(".form-control.corporate").change();
-                                                    });
-                                            }
+            function updateFocus() {
+                const focusEl = document.getElementById( "focusField" );
+                const focus = focusEl.value;
 
-                                                // find element,set focus
-                                                updateFocus();
-                                                break;
-                                        }
-                                    } );
+                if ( focus === null || focus === '' ) return;
+
+                const targetEl = document.querySelector('[id$="' + focus + '"]');
+
+                if ( targetEl !== null ) {
+                    if (focusEl.dataset.focusDirect === "false") {
+                        const wrapperEl = targetEl.parentElement;
+                        const lastChild = wrapperEl.lastElementChild;
+                        const focusTarget = lastChild.querySelector('input, select, textarea');
+                        if (focusTarget) {
+                            focusTarget.focus();
+                        }
+                    } else {
+                        targetEl.focus();
+                    }
+                }
+            }
+
+            function handleSuccessButtons(buttonEl) {
+                const errorPresent = document.querySelector('.validate--danger');
+                if (errorPresent) {
+                    const errorInput = errorPresent.querySelector('input, select, textarea');
+                    if (errorInput) {
+                        errorInput.focus();
+                        errorInput.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
+                } else {
+                    window.scrollTo(0,0);
+                }
+            }
+
+            faces.ajax.addOnEvent( function( data ) {
+                let ajaxstatus = data.status; // Can be "begin", "complete" and "success"
+                let source = data.source;
+                switch ( ajaxstatus ) {
+                    case "begin": // This is called right before ajax request is been sent.
+                        if (source.classList.contains('btn-loader')) {
+                            $('.btn-ajax-loader').addClass('in');
+                        }
+
+                        break;
+                    case "complete": // This is called right after ajax response is received.
+                        break;
+                    case "success": // This is called when ajax response is successfully processed.
+                        if (source.classList.contains('btn-loader')) {
+                            $('.btn-ajax-loader').removeClass('in');
+                        }
+                        if (data?.source?.dataset.navigation=='true'){
+                            $( document ).ready(function() {
+                                $(".form-control.corporate").change();
+                            });
+                    }
+
+                        // find element,set focus
+                        updateFocus();
+                        if (source.classList.contains('btn-success')) {
+                            handleSuccessButtons(source);
+                        }
+                        break;
+                }
+            } );
 
 
-                                </script>
+        </script>
 
 
     </ui:define>

@@ -13,50 +13,27 @@
     template="/uii/template/reduced_content_template.html">
     <composite:interface>
     </composite:interface>
-
     <composite:implementation>
-
         <style>
-.dataTables_wrapper .dataTables_info {
-    float: left;
-    margin-left: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.dataTables_wrapper .dataTables_paginate {
-    float: right;
-    margin: 17px 5px 10px 0;
-}
-
-.font-size-s {
-    font-size: 12px;
-}
-
-.margin-sides-10 {
-    display: inline-block;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-</style>
-
-        <script type="text/javascript">
-									function switchExpanded(id) {
-										console.log("called by: " + id);
-										var x = document.getElementById(id)
-												.getAttribute("aria-expanded");
-										console.log(x)
-										if (x == "true") {
-											x = "false"
-										} else {
-											x = "true"
-										}
-										document.getElementById(id)
-												.setAttribute("aria-expanded",
-														x);
-									}
-								</script>
-
+            .dataTables_wrapper .dataTables_info {
+                float: left;
+                margin-left: 10px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            .dataTables_wrapper .dataTables_paginate {
+                float: right;
+                margin: 17px 5px 10px 0;
+            }
+            .font-size-s {
+                font-size: 12px;
+            }
+            .margin-sides-10 {
+                display: inline-block;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+        </style>
         <ui:include src="includes/helpModalsDD.xhtml">
             <ui:param
                 name="header"
@@ -71,13 +48,11 @@
                 name="img"
                 value="plugin_dashboard_delivery_existingData_helpImg" />
         </ui:include>
-
         <h1 class="page__heading">
             #{msgs.plugin_dashboard_delivery_deliverShowExistingDataHeader} <span
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
                 title="#{msgs.plugin_rest_usercreation_helpText_page}">
-
                 <button
                     type="button"
                     class="btn page__help"
@@ -88,22 +63,17 @@
                     <ui:include src="/uii/includes/icon-help.xhtml" />
                 </button>
             </span>
-
         </h1>
         <div class="existing-data__content">
-
             <!-- Display this msg if no data -->
             <ui:fragment rendered="#{deliveryBean.paginator.totalResults == 0}">
                 <p class="info__no-data">#{msgs.plugin_dashboard_delivery_info_noData}</p>
             </ui:fragment>
-
             <!-- Render table with data on submitted docs -->
             <ui:fragment rendered="#{deliveryBean.paginator.totalResults != 0}">
 
-
                 <div class="dataTables_wrapper flow">
                     <div class="row">
-
                         <h:form id="searchform">
                             <h:selectOneMenu
                                 id="searchoption_select"
@@ -115,14 +85,12 @@
                                     itemLabel="#{msgs.plugin_dashboard_delivery_anyField}" />
                                 <f:selectItems value="#{deliveryBean.metadataFields}" />
                             </h:selectOneMenu>
-
                             <h:inputText
                                 id="searchvalue_input"
                                 pt:aria-label="searchvalue"
                                 styleClass="form-control"
                                 value="#{deliveryBean.searchValue}">
                             </h:inputText>
-
                             <button
                                 jsf:id="newSearch"
                                 class="btn btn-primary-400"
@@ -130,12 +98,10 @@
                                 jsf:action="#{deliveryBean.search}">
                                 <h:outputText value="#{msgs.search}" />
                             </button>
-
                         </h:form>
                     </div>
                     <div>#{msgs.hits}: #{deliveryBean.paginator.totalResults}</div>
                     <h:form id="myform">
-
                         <!-- +++++++++++++++++  Display as table ++++++++++++++++++++++++ -->
                         <table
                             role="grid"
@@ -144,7 +110,6 @@
                             <!-- ### Columnheader row ### -->
                             <thead>
                                 <tr role="row">
-
                                     <!-- Creation date -->
                                     <th
                                         scope="col"
@@ -158,7 +123,7 @@
                                             aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{deliveryBean.sortField == 'creationDateDesc' ? msgs.defaultSortFieldDesc : deliveryBean.sortField == 'creationDateAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
                                             <h:outputText value="#{msgs.vorgangsdatum}" />
                                             <span
-                                                class="pull-right table-sort-icon fa #{deliveryBean.sortField== 'creationDateDesc' ?'fa-sort-desc':deliveryBean.sortField== 'creationDateAsc' ?'fa-sort-asc':'fa-sort'}"></span>
+                                                class="pull-right table-sort-icon fa #{deliveryBean.sortField== 'creationDateDesc' ?'fa-sort-desc':deliveryBean.sortField== 'creationDateAsc' ?'fa-sort-asc':'fa-sort'}" aria-hidden="true"></span>
                                             <f:setPropertyActionListener
                                                 target="#{deliveryBean.sortField}"
                                                 value="#{deliveryBean.sortField== 'creationDateAsc' ? 'creationDateDesc' : 'creationDateAsc' }" />
@@ -166,27 +131,22 @@
                                         </button>
                                     </th>
 
-
                                     <!-- Embedded Metadata -->
                                     <intranda:columnheader
                                         addClass="tableColumnOverflow maxWidth300"
                                         value="#{msgs.metadata}"
                                         sortable="false" />
-
                                 </tr>
                             </thead>
-
                             <ui:repeat
                                 var="item"
                                 value="#{deliveryBean.paginator.list}"
                                 varStatus="status">
                                 <tr role="row">
-
                                     <!-- creation date -->
                                     <td><h:outputText value="#{item.erstellungsdatum}">
                                             <f:convertDateTime pattern="dd.MM.YYYY - hh:mm:ss" />
                                         </h:outputText></td>
-
                                     <!-- Embedded Metadata -->
                                     <td>
                                         <table>
@@ -208,48 +168,43 @@
                                             </ui:repeat>
                                         </table>
                                     </td>
-
                                 </tr>
                             </ui:repeat>
                         </table>
-
                         <div
                             class="dataTables_info"
                             style="float: left;"></div>
                         <div class="dataTables_paginate">
                             <!-- paginator -->
-
                             <h:panelGroup rendered="#{deliveryBean.paginator.totalResults > LoginForm.myBenutzer.tabellengroesse}">
-
                                 <div class="dataTables__paginator">
-
                                     <button
                                         class="btn btn-blank"
                                         aria-label="#{msgs.firstPage}"
                                         jsf:action="#{deliveryBean.paginator.cmdMoveFirst}"
                                         jsf:id="navfirst">
-                                        <i class="fa fa-angle-double-left"></i>
+                                        <i class="fa fa-angle-double-left" aria-hidden="true"></i>
                                         <f:ajax render="@form" />
                                     </button>
                                     <button
                                         class="btn btn-primary-400"
                                         jsf:action="#{deliveryBean.paginator.cmdMovePrevious}"
                                         jsf:id="navprev">
-                                        <i class="fa fa-angle-left"></i>
+                                        <i class="fa fa-angle-left" aria-hidden="true"></i>
                                         <h:outputText value=" #{msgs.pagePrevious}" />
                                         <f:ajax render="@form" />
                                     </button>
-
-                                    <span class="dataTables__paginator__page-count"> <!-- aktuelle Seite anzeigen --> <h:outputText
+                                    <span class="dataTables__paginator__page-count"> <!-- aktuelle Seite anzeigen -->
+                                        <h:outputText
                                             id="txtMoveTo1"
                                             forceId="false"
                                             value="#{msgs.seite} #{deliveryBean.paginator.pageNumberCurrent} #{msgs.von} #{deliveryBean.paginator.pageNumberLast}"
                                             onclick="document.querySelector('[id$=txtMoveTo2]').style.display='inline';
-                        document.querySelector('[id$=txtMoveTo1]').style.display='none';
-                            document.querySelector('[id$=txtMoveTo2]').focus();
-                            document.querySelector('[id$=txtMoveTo2]').select();" />
-
-                                        <!-- Seite direkt anspringen --> <h:inputText
+                                                document.querySelector('[id$=txtMoveTo1]').style.display='none';
+                                                document.querySelector('[id$=txtMoveTo2]').focus();
+                                                document.querySelector('[id$=txtMoveTo2]').select();" />
+                                        <!-- Seite direkt anspringen -->
+                                        <h:inputText
                                             id="txtMoveTo2"
                                             forceId="false"
                                             value="#{deliveryBean.paginator.txtMoveTo}"
@@ -262,16 +217,14 @@
                                             forceId="false"
                                             value="go"
                                             style="display:none">
-
                                         </h:commandButton>
                                     </span>
-
                                     <button
                                         class="btn btn-primary-400"
                                         jsf:action="#{deliveryBean.paginator.cmdMoveNext}"
                                         jsf:id="navnext">
                                         <h:outputText value="#{msgs.pageNext} " />
-                                        <i class="fa fa-angle-right"></i>
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>
                                         <f:ajax render="@form" />
                                     </button>
                                     <button
@@ -279,25 +232,19 @@
                                         aria-label="#{msgs.lastPage}"
                                         jsf:action="#{deliveryBean.paginator.cmdMoveLast}"
                                         jsf:id="navlast">
-                                        <i class="fa fa-angle-double-right"></i>
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                                         <f:ajax render="@form" />
                                     </button>
                                 </div>
                             </h:panelGroup>
-
                             <!-- /paginator -->
                         </div>
                     </h:form>
-
                 </div>
             </ui:fragment>
         </div>
 
-
         <h:form>
-
-
-
             <div>
                 <button
                     jsf:action="#{deliveryBean.previousPage}"
@@ -309,10 +256,7 @@
                         execute="@this" />
                 </button>
             </div>
-
         </h:form>
 
-
     </composite:implementation>
-
 </ui:composition>
