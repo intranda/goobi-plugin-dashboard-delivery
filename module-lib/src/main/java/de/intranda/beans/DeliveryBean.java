@@ -50,6 +50,7 @@ import de.sub.goobi.config.ConfigPlugins;
 import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.helper.BeanHelper;
 import de.sub.goobi.helper.Helper;
+import de.sub.goobi.helper.NIOFileUtils;
 import de.sub.goobi.helper.ScriptThreadWithoutHibernate;
 import de.sub.goobi.helper.StorageProvider;
 import de.sub.goobi.helper.enums.PropertyType;
@@ -1693,4 +1694,37 @@ public class DeliveryBean implements Serializable {
         navigation = "main";
     }
 
+    public String getThumbnailUrl(Process process) {
+        if (process != null) {
+            try {
+                String imagesFolder = process.getImagesDirectory();
+                Path imagesPath = Paths.get(imagesFolder);
+
+                if (StorageProvider.getInstance().isFileExists(imagesPath)) {
+                    List<Path> subfolders = StorageProvider.getInstance().listFiles(imagesFolder, NIOFileUtils.folderFilter);
+
+                    if (subfolders != null) {
+                        for (Path subfolder : subfolders) {
+                            String folderName = subfolder.getFileName().toString();
+
+                            if (folderName.endsWith("_thumbs")) {
+                                List<Path> thumbFiles = StorageProvider.getInstance().listFiles(subfolder.toString());
+
+                                if (thumbFiles != null && !thumbFiles.isEmpty()) {
+                                    Path thumbnailFile = thumbFiles.get(0);
+                                    String fileName = thumbnailFile.getFileName().toString();
+
+                                    String goobiUrl = ConfigurationHelper.getInstance().getGoobiUrl();
+                                    return goobiUrl + "/api/process/image/" + process.getId() + "/" + folderName + "/" + fileName + "/full/!800,800/0/default.jpg";
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                log.error("Error getting thumbnail URL for process " + process.getId(), e);
+            }
+        }
+        return null;
+    }
 }
