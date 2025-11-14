@@ -130,7 +130,6 @@
                                             <f:ajax render="@form" />
                                         </button>
                                     </th>
-
                                     <!-- Embedded Metadata -->
                                     <intranda:columnheader
                                         addClass="tableColumnOverflow maxWidth300"
@@ -144,11 +143,20 @@
                                 varStatus="status">
                                 <tr role="row">
                                     <!-- creation date -->
-                                    <td><h:outputText value="#{item.erstellungsdatum}">
-                                            <f:convertDateTime pattern="dd.MM.YYYY - hh:mm:ss" />
-                                        </h:outputText></td>
-                                    <!-- Embedded Metadata -->
                                     <td>
+                                        <h:outputText value="#{item.erstellungsdatum}">
+                                            <f:convertDateTime pattern="dd.MM.YYYY - hh:mm:ss" />
+                                        </h:outputText>
+                                    </td>
+                                    <!-- Embedded Metadata -->
+                                    <td class="d-flex justify-content-between align-items-start">
+                                        <ui:fragment rendered="#{deliveryBean.getThumbnailUrl(item) != null}">
+                                            <img
+                                                src="#{deliveryBean.getThumbnailUrl(item)}"
+                                                alt="#{msgs.thumbnail}"
+                                                class="img-thumbnail"
+                                                style="max-width: 300px;" />
+                                        </ui:fragment>
                                         <table>
                                             <ui:repeat
                                                 var="metadata"
