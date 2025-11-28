@@ -143,38 +143,54 @@
                                 varStatus="status">
                                 <tr role="row">
                                     <!-- creation date -->
-                                    <td>
+                                    <td class="data-existing-delivery">
                                         <h:outputText value="#{item.erstellungsdatum}">
                                             <f:convertDateTime pattern="dd.MM.YYYY - hh:mm:ss" />
                                         </h:outputText>
                                     </td>
                                     <!-- Embedded Metadata -->
-                                    <td class="d-flex justify-content-between align-items-start">
-                                        <ui:fragment rendered="#{deliveryBean.getThumbnailUrl(item) != null}">
-                                            <img
-                                                src="#{deliveryBean.getThumbnailUrl(item)}"
-                                                alt="#{msgs.thumbnail}"
-                                                class="img-thumbnail"
-                                                style="max-width: 300px;" />
-                                        </ui:fragment>
-                                        <table>
-                                            <ui:repeat
-                                                var="metadata"
-                                                value="#{deliveryBean.metadataDisplayList}"
-                                                varStatus="metadatastatus">
-                                                <ui:fragment rendered="#{item.getMetadataValue(metadata) != ''}">
-                                                    <tr>
-                                                        <td
-                                                            class="fw-bold"
-                                                            style="border: none !important; padding: 2px; padding-right: 32px; vertical-align: top;">
-                                                            <h:outputText value="#{msgs['process_grid_'.concat(metadata)]}:" />
-                                                        </td>
-                                                        <td style="border: none !important; padding: 2px; white-space: normal;"><h:outputText
-                                                                value="#{item.getMetadataValue(metadata)}" /></td>
-                                                    </tr>
-                                                </ui:fragment>
-                                            </ui:repeat>
-                                        </table>
+                                    <td class="data-existing-delivery d-flex justify-content-between align-items-start">
+                                        <div class="row">
+                                            <ui:fragment rendered="#{deliveryBean.getThumbnailUrl(item) != null}">
+                                                <div class="col-4">
+                                                    <img
+                                                        src="#{deliveryBean.getThumbnailUrl(item)}"
+                                                        alt="#{msgs.thumbnail}"
+                                                        class="img-thumbnail"
+                                                        style="max-width: 300px;" />
+                                                </div>
+                                            </ui:fragment>
+                                            <div class="col#{deliveryBean.getThumbnailUrl(item) != null ? '-8' : ''}">
+                                                <table class="table table-borderless">
+                                                    <ui:repeat
+                                                        var="metadata"
+                                                        value="#{deliveryBean.metadataDisplayList}"
+                                                        varStatus="metadatastatus">
+                                                        <ui:fragment rendered="#{item.getMetadataValue(metadata) != ''}">
+                                                            <tr>
+                                                                <td
+                                                                    class="fw-bold">
+                                                                    <h:outputText value="#{msgs['process_grid_'.concat(metadata)]}:" />
+                                                                </td>
+                                                                <td>
+                                                                    <ui:fragment rendered="#{metadata == 'URN'}">
+                                                                        <a
+                                                                            href="https://nbn-resolving.de/#{item.getMetadataValue('URN')}"
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer">
+                                                                            #{item.getMetadataValue(metadata)}
+                                                                        </a>
+                                                                    </ui:fragment>
+                                                                    <ui:fragment rendered="#{metadata != 'URN'}">
+                                                                        #{item.getMetadataValue(metadata)}
+                                                                    </ui:fragment>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:fragment>
+                                                    </ui:repeat>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </ui:repeat>
