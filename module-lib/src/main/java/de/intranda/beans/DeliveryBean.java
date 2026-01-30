@@ -205,6 +205,8 @@ public class DeliveryBean implements Serializable {
 
     private List<SelectItem> availableTitles = new ArrayList<>();
 
+    private boolean skipFileValidation = false;
+
     public DeliveryBean() {
         try {
             temporaryFolder = Files.createTempDirectory("delivery");
@@ -237,6 +239,8 @@ public class DeliveryBean implements Serializable {
         registrationMailRecipient = config.getString("/zdbTitle/recipient");
         registrationMailSubject = config.getString("/zdbTitle/subject");
         registrationMailBody = config.getString("/zdbTitle/body");
+
+        skipFileValidation = config.getBoolean("/skipFileValidation", false);
 
         List<HierarchicalConfiguration> groups = config.configurationsAt("/group");
 
@@ -737,20 +741,22 @@ public class DeliveryBean implements Serializable {
                     out.write(buf, 0, len);
                 }
             }
-            Report report = FileValidator.validateFile(destination, institution.getShortName());
+            if (!skipFileValidation) {
+                Report report = FileValidator.validateFile(destination, institution.getShortName());
 
-            if (!report.isReachedTargetLevel()) {
+                if (!report.isReachedTargetLevel()) {
 
-                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
+                    Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
 
-                // delete validation files
-                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".") + 1));
-                StorageProvider.getInstance().deleteDir(testFolder);
+                    // delete validation files
+                    Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".") + 1));
+                    StorageProvider.getInstance().deleteDir(testFolder);
 
-                // delete file
-                StorageProvider.getInstance().deleteFile(destination);
+                    // delete file
+                    StorageProvider.getInstance().deleteFile(destination);
 
-                return;
+                    return;
+                }
             }
             files.add(destination);
             Helper.setMeldung("plugin_dashboard_delivery_info_uploadSuccessful");
@@ -778,21 +784,22 @@ public class DeliveryBean implements Serializable {
         try (InputStream in = file.getInputStream()) {
             Path destination = Paths.get(temporaryFolder.toString(), fileName);
             Files.copy(in, destination);
+            if (!skipFileValidation) {
+                Report report = FileValidator.validateFile(destination, institution.getShortName());
 
-            Report report = FileValidator.validateFile(destination, institution.getShortName());
+                if (!report.isReachedTargetLevel()) {
 
-            if (!report.isReachedTargetLevel()) {
+                    Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
 
-                Helper.setFehlerMeldung(Helper.getTranslation(report.getErrorMessage()));
+                    // delete validation files
+                    Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
+                    StorageProvider.getInstance().deleteDir(testFolder);
 
-                // delete validation files
-                Path testFolder = Paths.get(destination.toString().substring(0, destination.toString().lastIndexOf(".")));
-                StorageProvider.getInstance().deleteDir(testFolder);
+                    // delete file
+                    StorageProvider.getInstance().deleteFile(destination);
 
-                // delete file
-                StorageProvider.getInstance().deleteFile(destination);
-
-                return;
+                    return;
+                }
             }
             files.add(destination);
             Helper.setMeldung("plugin_dashboard_delivery_info_uploadSuccessful");
@@ -1715,7 +1722,8 @@ public class DeliveryBean implements Serializable {
                                     String fileName = thumbnailFile.getFileName().toString();
 
                                     String goobiUrl = ConfigurationHelper.getInstance().getGoobiUrl();
-                                    return goobiUrl + "/api/process/image/" + process.getId() + "/" + folderName + "/" + fileName + "/full/!800,800/0/default.jpg";
+                                    return goobiUrl + "/api/process/image/" + process.getId() + "/" + folderName + "/" + fileName
+                                            + "/full/!800,800/0/default.jpg";
                                 }
                             }
                         }
