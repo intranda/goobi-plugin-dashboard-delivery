@@ -36,9 +36,9 @@ public class ProcessMetadataManager extends ProcessManager{
         sql.append("SELECT prozesse.* FROM prozesse left join batches on prozesse.batchID = batches.id ");
         sql.append("INNER JOIN projekte on prozesse.ProjekteID = projekte.ProjekteID ");
         sql.append("INNER JOIN institution on projekte.institution_id = institution.id ");
-        sql.append("left join metadata md1 on md1.processid = prozesse.ProzesseID and md1.name='TitleDocMain' ");
-        sql.append("left join metadata md2 on md2.processid = prozesse.ProzesseID and md2.name='Author' ");
-        sql.append("left join metadata md3 on md3.processid = prozesse.ProzesseID and md3.name='PublicationYear' ");
+        sql.append("left join (select processid, value from metadata where name='TitleDocMain' group by processid) md1 on md1.processid = prozesse.ProzesseID ");
+        sql.append("left join (select processid, value from metadata where name='Author' group by processid) md2 on md2.processid = prozesse.ProzesseID ");
+        sql.append("left join (select processid, value from metadata where name='PublicationYear' group by processid) md3 on md3.processid = prozesse.ProzesseID ");
 
 
         if (filter != null && !filter.isEmpty()) {
