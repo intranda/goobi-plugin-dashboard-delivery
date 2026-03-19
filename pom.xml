@@ -4,11 +4,15 @@
   <parent>
     <groupId>io.goobi.workflow</groupId>
     <artifactId>workflow-base</artifactId>
-    <version>26.03-SNAPSHOT</version>
+    <version>dev-SNAPSHOT</version>
     <relativePath/>
   </parent>
   <groupId>io.goobi.workflow.plugin</groupId>
   <artifactId>plugin-dashboard-delivery</artifactId>
+  <version>${revision}</version>
+  <properties>
+    <revision>dev-SNAPSHOT</revision>
+  </properties>
   <packaging>pom</packaging>
   <modules>
     <module>module-base</module>
@@ -25,13 +29,13 @@
     <dependency>
       <groupId>io.goobi.workflow</groupId>
       <artifactId>workflow-core</artifactId>
-      <version>26.03-SNAPSHOT</version>
+      <version>${revision}</version>
       <classifier>classes</classifier>
     </dependency>
     <dependency>
       <groupId>io.goobi.workflow.plugin</groupId>
       <artifactId>plugin-step-file-validation-lib</artifactId>
-      <version>26.03-SNAPSHOT</version>
+      <version>${revision}</version>
     </dependency>
   </dependencies>
 </project>
