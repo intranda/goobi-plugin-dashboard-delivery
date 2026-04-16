@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.goobi.workflow.plugin</groupId>
     <artifactId>plugin-dashboard-delivery</artifactId>
-    <version>${revision}</version>
+    <version>26.03.1</version>
   </parent>
   <artifactId>plugin-dashboard-delivery-lib</artifactId>
 </project>
