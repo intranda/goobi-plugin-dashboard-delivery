@@ -1603,15 +1603,15 @@ public class DeliveryBean implements Serializable {
         sql.append("(prozesse.ProzesseID in (select object_id from properties where properties.property_name =");
         sql.append("'Institution' and object_type = 'process' AND properties.property_value =");
         sql.append("'");
-        sql.append(institution.getShortName());
+        sql.append(institution.getShortName().replace("'", "''"));
         sql.append("')) ");
 
         if (StringUtils.isBlank(selectedField)) {
-            sql.append("AND (prozesse.ProzesseID IN (SELECT DISTINCT processid FROM metadata WHERE MATCH (value) AGAINST ('\"+*" + searchValue
-                    + "* ' IN BOOLEAN MODE)))");
+            sql.append("AND (prozesse.ProzesseID IN (SELECT DISTINCT processid FROM metadata WHERE MATCH (value) AGAINST ('\"+*"
+                    + searchValue.replace("'", "''") + "* ' IN BOOLEAN MODE)))");
         } else {
-            sql.append("AND (prozesse.ProzesseID IN (SELECT DISTINCT processid FROM metadata WHERE metadata.name =  '" + selectedField
-                    + "' AND value LIKE '%" + searchValue + "%' ))");
+            sql.append("AND (prozesse.ProzesseID IN (SELECT DISTINCT processid FROM metadata WHERE metadata.name =  '"
+                    + selectedField.replace("'", "''") + "' AND value LIKE '%" + searchValue.replace("'", "''") + "%' ))");
         }
 
         sql.append("AND prozesse.istTemplate = false ");
