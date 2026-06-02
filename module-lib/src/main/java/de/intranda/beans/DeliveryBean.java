@@ -1603,20 +1603,29 @@ public class DeliveryBean implements Serializable {
         sql.append("(prozesse.ProzesseID in (select object_id from properties where properties.property_name =");
         sql.append("'Institution' and object_type = 'process' AND properties.property_value =");
         sql.append("'");
-        sql.append(institution.getShortName().replace("'", "''"));
+        sql.append(escapeSql(institution.getShortName()));
         sql.append("')) ");
 
         if (StringUtils.isBlank(selectedField)) {
             sql.append("AND (prozesse.ProzesseID IN (SELECT DISTINCT processid FROM metadata WHERE MATCH (value) AGAINST ('\"+*"
-                    + searchValue.replace("'", "''") + "* ' IN BOOLEAN MODE)))");
+                    + escapeSql(searchValue) + "* ' IN BOOLEAN MODE)))");
         } else {
+            boolean validField = metadataFields.stream().anyMatch(si -> selectedField.equals(si.getValue()));
+            if (!validField) {
+                log.warn("Search rejected: unknown metadata field '{}'", selectedField);
+                return;
+            }
             sql.append("AND (prozesse.ProzesseID IN (SELECT DISTINCT processid FROM metadata WHERE metadata.name =  '"
-                    + selectedField.replace("'", "''") + "' AND value LIKE '%" + searchValue.replace("'", "''") + "%' ))");
+                    + escapeSql(selectedField) + "' AND value LIKE '%" + escapeSql(searchValue) + "%' ))");
         }
 
         sql.append("AND prozesse.istTemplate = false ");
 
         paginator = new ProcessPaginator(getOrder(), sql.toString(), m);
+    }
+
+    private static String escapeSql(String value) {
+        return value.replace("\\", "\\\\").replace("'", "''");
     }
 
     private String getOrder() {
