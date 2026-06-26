@@ -1579,7 +1579,7 @@ public class DeliveryBean implements Serializable {
 
         ProcessMetadataManager m = new ProcessMetadataManager();
         StringBuilder sql = new StringBuilder();
-        sql.append("(prozesse.ProzesseID in (select object_id from properties where properties.property_name =");
+        sql.append(" WHERE (prozesse.ProzesseID in (select object_id from properties where properties.property_name =");
         sql.append("'Institution'  and object_type = 'process' AND properties.property_value =");
         sql.append("'");
         sql.append(institution.getShortName());
@@ -1600,7 +1600,7 @@ public class DeliveryBean implements Serializable {
         Institution institution = user.getInstitution();
         ProcessMetadataManager m = new ProcessMetadataManager();
         StringBuilder sql = new StringBuilder();
-        sql.append("(prozesse.ProzesseID in (select object_id from properties where properties.property_name =");
+        sql.append(" WHERE (prozesse.ProzesseID in (select object_id from properties where properties.property_name =");
         sql.append("'Institution' and object_type = 'process' AND properties.property_value =");
         sql.append("'");
         sql.append(escapeSql(institution.getShortName()));
