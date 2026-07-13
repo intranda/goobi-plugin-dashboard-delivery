@@ -10,6 +10,7 @@
     xmlns:jsf="http://xmlns.jcp.org/jsf"
     xmlns:zlb="http://xmlns.jcp.org/jsf/composite/composites"
     xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:util="http://goobi.io/util"
     template="/uii/template/reduced_content_template.html">
     <composite:interface>
     </composite:interface>
@@ -122,8 +123,7 @@
                                             jsf:action="#{deliveryBean.getExistingDataForInstitution}"
                                             aria-label="#{msgs.defaultSortField} #{msgs.prozessTitel} #{deliveryBean.sortField == 'creationDateDesc' ? msgs.defaultSortFieldDesc : deliveryBean.sortField == 'creationDateAsc' ? msgs.defaultSortFieldAsc : msgs.defaultSortFieldNotSorted }">
                                             <h:outputText value="#{msgs.vorgangsdatum}" />
-                                            <span
-                                                class="pull-right table-sort-icon fa #{deliveryBean.sortField== 'creationDateDesc' ?'fa-sort-desc':deliveryBean.sortField== 'creationDateAsc' ?'fa-sort-asc':'fa-sort'}" aria-hidden="true"></span>
+                                            <util:icon name="#{deliveryBean.sortField== 'creationDateDesc' ?'sort-descending':deliveryBean.sortField== 'creationDateAsc' ?'sort-ascending':'arrows-sort'}" styleClass="ms-auto" />
                                             <f:setPropertyActionListener
                                                 target="#{deliveryBean.sortField}"
                                                 value="#{deliveryBean.sortField== 'creationDateAsc' ? 'creationDateDesc' : 'creationDateAsc' }" />
@@ -207,14 +207,14 @@
                                         aria-label="#{msgs.firstPage}"
                                         jsf:action="#{deliveryBean.paginator.cmdMoveFirst}"
                                         jsf:id="navfirst">
-                                        <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                                        <util:icon icon="chevrons-left"/>
                                         <f:ajax render="@form" />
                                     </button>
                                     <button
                                         class="btn btn-primary-400"
                                         jsf:action="#{deliveryBean.paginator.cmdMovePrevious}"
                                         jsf:id="navprev">
-                                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                        <util:icon icon="chevron-left"/>
                                         <h:outputText value=" #{msgs.pagePrevious}" />
                                         <f:ajax render="@form" />
                                     </button>
@@ -248,7 +248,7 @@
                                         jsf:action="#{deliveryBean.paginator.cmdMoveNext}"
                                         jsf:id="navnext">
                                         <h:outputText value="#{msgs.pageNext} " />
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        <util:icon icon="chevron-right"/>
                                         <f:ajax render="@form" />
                                     </button>
                                     <button
@@ -256,7 +256,7 @@
                                         aria-label="#{msgs.lastPage}"
                                         jsf:action="#{deliveryBean.paginator.cmdMoveLast}"
                                         jsf:id="navlast">
-                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                                        <util:icon icon="chevrons-right"/>
                                         <f:ajax render="@form" />
                                     </button>
                                 </div>
