@@ -1,6 +1,21 @@
 def mavenDockerImage = 'maven:3-eclipse-temurin-21'
 def mavenDockerArgs = '-v $HOME/.m2:/var/maven/.m2:z -v $HOME/.config:/var/maven/.config -v $HOME/.sonar:/var/maven/.sonar -u 1000 -e _JAVA_OPTIONS=-Duser.home=/var/maven -e MAVEN_CONFIG=/var/maven/.m2'
 
+// master and tags fail on failing tests and checkstyle errors, other branches only become unstable
+def isStrict() {
+  return env.TAG_NAME != null || env.BRANCH_NAME == 'master'
+}
+
+def runStrictOrUnstable(String cmd) {
+  if (isStrict()) {
+    sh cmd
+  } else {
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+      sh cmd
+    }
+  }
+}
+
 pipeline {
 
   agent any
@@ -8,11 +23,13 @@ pipeline {
   options {
     buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '15', daysToKeepStr: '90', numToKeepStr: '')
     disableConcurrentBuilds()
-    timeout(time: 10, unit: 'MINUTES')
+    timeout(time: 20, unit: 'MINUTES')
   }
 
   environment {
     NEXUS_BASE = 'intranda-nexus::https://nexus.intranda.com/repository'
+    // the tag without its "v", otherwise dev-SNAPSHOT
+    BUILD_VERSION = "${env.TAG_NAME ? env.TAG_NAME.replaceFirst('^v', '') : 'dev-SNAPSHOT'}"
   }
 
   stages {
@@ -30,21 +47,15 @@ pipeline {
       }
       steps {
         sh 'git reset --hard HEAD && git clean -fdx'
-        script {
-          env.BUILD_VERSION = env.TAG_NAME ? env.TAG_NAME.replaceAll('^v', '') : 'dev-SNAPSHOT'
-        }
-        sh "mvn clean install -U -Drevision=\$BUILD_VERSION -DskipTests -Dcheckstyle.skip=true -Djacoco.skip=true -P '!local-development' --no-transfer-progress"
+        sh 'mvn clean install -U -Drevision=$BUILD_VERSION -DskipTests -Dcheckstyle.skip=true -Djacoco.skip=true --no-transfer-progress'
         archiveArtifacts artifacts: '**/target/*.jar, install/*', fingerprint: true, allowEmptyArchive: true, onlyIfSuccessful: true
       }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // 2. TEST + LINT  (not v*: parallel unit tests and checkstyle)
+    // 2. TEST + LINT  (parallel unit tests and checkstyle)
     // ─────────────────────────────────────────────────────────────────────────
     stage('test + lint') {
-      when {
-        not { branch 'v*' }
-      }
       parallel {
 
         stage('test') {
@@ -56,17 +67,7 @@ pipeline {
             }
           }
           steps {
-            script {
-              def strict = env.BRANCH_NAME == 'master'
-              def cmd = "mvn test -Dmaven.main.skip=true -Drevision=\$BUILD_VERSION -P '!local-development' --no-transfer-progress"
-              if (strict) {
-                sh cmd
-              } else {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
-                  sh cmd
-                }
-              }
-            }
+            runStrictOrUnstable('mvn test -Dmaven.main.skip=true -Drevision=$BUILD_VERSION --no-transfer-progress')
             junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
             step([
                     $class           : 'JacocoPublisher',
@@ -88,15 +89,7 @@ pipeline {
           }
           steps {
             script {
-              def strict = (env.BRANCH_NAME == 'master') && !env.NO_STRICT_CHECKSTYLE
-              def cmd = "mvn checkstyle:check -Drevision=\$BUILD_VERSION -P '!local-development' --no-transfer-progress"
-              if (strict) {
-                sh cmd
-              } else {
-                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
-                  sh cmd
-                }
-              }
+              runStrictOrUnstable('mvn checkstyle:check -Drevision=$BUILD_VERSION --no-transfer-progress')
               // Set plugin specific checkstyle thresholds like PLUGIN_NAME_THRESHOLD = VALUE in Jenkins settings
               def pluginName = env.JOB_NAME.tokenize('/')[1].replace('-', '_').toUpperCase()
               def thresholdKey = "${pluginName}_THRESHOLD"
@@ -117,7 +110,37 @@ pipeline {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // 3. DEPLOY  (master only: root pom + lib module if present)
+    // 3. SONAR  
+    // ─────────────────────────────────────────────────────────────────────────
+    stage('sonar') {
+      when {
+        allOf {
+          anyOf {
+            branch 'master'
+            buildingTag()
+          }
+          not { expression { return fileExists('DO_NOT_PUBLISH') } }
+        }
+      }
+      agent {
+        docker {
+          image mavenDockerImage
+          args mavenDockerArgs
+          reuseNode true
+        }
+      }
+      options {
+        timeout(time: 10, unit: 'MINUTES')
+      }
+      steps {
+        withCredentials([string(credentialsId: 'jenkins-sonarcloud', variable: 'SONAR_TOKEN')]) {
+          sh 'mvn sonar:sonar -Drevision=$BUILD_VERSION -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true --no-transfer-progress'
+        }
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // 4. DEPLOY  (master only: root pom + lib module if present)
     //    Private plugins (DO_NOT_PUBLISH) deploy to internal Nexus
     // ─────────────────────────────────────────────────────────────────────────
     stage('deploy') {
@@ -145,7 +168,7 @@ pipeline {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // 4. UPDATE PARENT  (master only: advance submodule pointer in core or collection)
+    // 5. UPDATE PARENT  (master only: advance the submodule pointer in goobi-workflow)
     // ─────────────────────────────────────────────────────────────────────────
     stage('update-parent') {
       when {
@@ -161,25 +184,18 @@ pipeline {
       steps {
         withCredentials([gitUsernamePassword(credentialsId: '93f7e7d3-8f74-4744-a785-518fc4d55314', gitToolName: 'git-tool')]) {
           sh '''#!/bin/bash -xe
-            PLUGIN_NAME=$(basename $(git remote get-url origin) .git)
-
+            PLUGIN_NAME=$(basename "$(git remote get-url origin)" .git)
             BRANCH="master"
-            if [ -f "DO_NOT_PUBLISH" ]; then
-              REPO_URL="$COLLECTION_REPO_URL"
-              SUBMODULE_PATH="private-plugins/$PLUGIN_NAME"
-            else
-              REPO_URL="$CORE_REPO_URL"
-              SUBMODULE_PATH="plugins/$PLUGIN_NAME"
-            fi
+            SUBMODULE_PATH="workflow-plugins/$PLUGIN_NAME"
 
             WORK_DIR=$(mktemp -d)
-            git clone --depth 1 --branch $BRANCH "$REPO_URL" "$WORK_DIR"
+            git clone --depth 1 --branch "$BRANCH" "$CORE_REPO_URL" "$WORK_DIR"
             cd "$WORK_DIR"
             git submodule update --init --remote -- "$SUBMODULE_PATH"
             if git status --porcelain --ignore-submodules=none -- "$SUBMODULE_PATH" | grep -q .; then
               git add "$SUBMODULE_PATH"
               git commit -m "Update ${PLUGIN_NAME} to latest master"
-              git push origin $BRANCH
+              git push origin "$BRANCH"
             else
               echo "Submodule already up to date."
             fi
@@ -190,7 +206,7 @@ pipeline {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // 5. GITEA RELEASE  (v* tags only: publish jars, configs and install archive)
+    // 6. GITEA RELEASE  (v* tags only: publish the install archive, jars and config files)
     // ─────────────────────────────────────────────────────────────────────────
     stage('gitea-release') {
       when {
@@ -202,55 +218,7 @@ pipeline {
                                           passwordVariable: 'GITEA_TOKEN')]) {
           sh '''#!/bin/bash -e
             PLUGIN_NAME=$(basename "$(git remote get-url origin)" .git)
-            # goobi-plugin-<type>-<name> → <type> (step, workflow, import, export, ...)
-            PLUGIN_TYPE=$(echo "$PLUGIN_NAME" | sed -E 's/^goobi-plugin-([^-]+).*/\\1/')
-
-            # ── stage the installable tree: goobi/{lib,plugins/<type>,plugins/GUI} ──
-            STAGE=$(mktemp -d)
-            ROOT="$STAGE/goobi"
-            mkdir -p "$ROOT/lib" "$ROOT/plugins/$PLUGIN_TYPE" "$ROOT/plugins/GUI"
-
-            # Only top level target/ dirs of the root project and its modules; no
-            # sources/javadoc/test jars and no shade leftovers.
-            mapfile -t JARS < <(find . -mindepth 2 -maxdepth 3 -type f -name '*.jar' \
-                                  ! -name '*-sources.jar' ! -name '*-javadoc.jar' \
-                                  ! -name '*-tests.jar'   ! -name 'original-*.jar' \
-                                | grep -E '^\\./([^/]+/)?target/[^/]+\\.jar$' || true)
-
-            if [ ${#JARS[@]} -eq 0 ]; then
-              echo "No jars found - nothing to release."
-              exit 1
-            fi
-
-            for jar in "${JARS[@]}"; do
-              module=$(basename "$(dirname "$(dirname "$jar")")")
-              case "$module" in
-                # base module (or a single module project without module-* dirs)
-                module-base|.) dest="$ROOT/plugins/$PLUGIN_TYPE" ;;
-                module-gui)    dest="$ROOT/plugins/GUI" ;;
-                # module-lib, module-api, module-job, ... are plain libraries
-                *)             dest="$ROOT/lib" ;;
-              esac
-              echo "$jar -> ${dest#$ROOT/}"
-              cp "$jar" "$dest/"
-            done
-
-            # drop the dirs we prepared but did not fill (e.g. GUI)
-            find "$ROOT" -type d -empty -delete
-
-            ARCHIVE="$STAGE/${PLUGIN_NAME}.tar.gz"
-            tar -czf "$ARCHIVE" -C "$STAGE" goobi
-            cp "$ARCHIVE" .
-
-            # ── assets: the archive, the plain jars and the config files ──
-            ASSETS=("$ARCHIVE" "${JARS[@]}")
-            if [ -d install ]; then
-              for f in install/*; do
-                if [ -f "$f" ]; then
-                  ASSETS+=("$f")
-                fi
-              done
-            fi
+            bash .ci/package-release.sh "$PLUGIN_NAME"
 
             # ── gitea coordinates from the origin remote ──
             URL=$(git remote get-url origin)
@@ -288,18 +256,16 @@ pipeline {
               exit 1
             fi
 
-            for asset in "${ASSETS[@]}"; do
+            for asset in target/release-assets/*; do
               NAME=$(basename "$asset")
               echo "Uploading $NAME"
               curl -sS -f -u "$GITEA_USER:$GITEA_TOKEN" -X POST \
                    -F "attachment=@${asset}" \
                    "$API/releases/$RELEASE_ID/assets?name=$(printf '%s' "$NAME" | sed 's/ /%20/g')" > /dev/null
             done
-
-            rm -rf "$STAGE"
           '''
         }
-        archiveArtifacts artifacts: '*.tar.gz', fingerprint: true, allowEmptyArchive: true
+        archiveArtifacts artifacts: 'target/release-assets/*.tar.gz', fingerprint: true, allowEmptyArchive: true
       }
     }
 

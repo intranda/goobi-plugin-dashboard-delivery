@@ -1,3 +1,5 @@
+# GitHub release of a goobi workflow plugin (public or private mirror), with the same assets as the gitea release of the
+# Jenkinsfile. Distributed from ci/plugin-template/ of goobi-workflow-collection; change it there, not in the plugin.
 name: Publish Release Build
 
 permissions:
@@ -27,15 +29,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Build with Maven
-        run: mvn clean verify -U -P release-build
+        run: mvn clean verify -U -Drevision="${GITHUB_REF_NAME#v}" -DskipTests -Dcheckstyle.skip=true -Djacoco.skip=true
+      - name: Package release assets
+        run: bash .ci/package-release.sh "${{ github.event.repository.name }}"
       - name: Release
-        id: create_release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
         with:
           name: Release ${{ github.ref_name }}
           generate_release_notes: true
           draft: false
           prerelease: false
-          files: |
-            **/target/*.jar
-            install/*
+          files: target/release-assets/*
