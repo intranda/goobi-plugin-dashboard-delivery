@@ -16,6 +16,17 @@ def runStrictOrUnstable(String cmd) {
   }
 }
 
+// A failed sonar analysis (e.g. a red quality gate) only marks the build unstable, until specified otherwise
+def runSonar(String cmd) {
+  if (env.SONAR_FAIL_ON_QUALITY_GATE == 'true') {
+    sh cmd
+  } else {
+    catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+      sh cmd
+    }
+  }
+}
+
 pipeline {
 
   agent any
@@ -110,7 +121,7 @@ pipeline {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // 3. SONAR  
+    // 3. SONAR  (fails the build only with SONAR_FAIL_ON_QUALITY_GATE=true, otherwise unstable)
     // ─────────────────────────────────────────────────────────────────────────
     stage('sonar') {
       when {
@@ -134,7 +145,7 @@ pipeline {
       }
       steps {
         withCredentials([string(credentialsId: 'jenkins-sonarcloud', variable: 'SONAR_TOKEN')]) {
-          sh 'mvn sonar:sonar -Drevision=$BUILD_VERSION -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true --no-transfer-progress'
+          runSonar('mvn sonar:sonar -Drevision=$BUILD_VERSION -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true --no-transfer-progress')
         }
       }
     }
